@@ -18,12 +18,23 @@ package com.dev.orangebrowser.di.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import com.dev.orangebrowser.bloc.bookmark.BookMarkViewModel
 import com.dev.orangebrowser.bloc.browser.BrowserViewModel
+import com.dev.orangebrowser.bloc.download.DownloadViewModel
+import com.dev.orangebrowser.bloc.found.FoundViewModel
+import com.dev.orangebrowser.bloc.history.HistoryViewModel
 import com.dev.orangebrowser.bloc.home.HomeViewModel
 import com.dev.orangebrowser.bloc.host.MainViewModel
+import com.dev.orangebrowser.bloc.imageMode.ImageModeViewModel
 import com.dev.orangebrowser.bloc.news.NewsViewModel
+import com.dev.orangebrowser.bloc.readMode.ReadModeViewModel
+import com.dev.orangebrowser.bloc.resource.ResourceViewModel
+import com.dev.orangebrowser.bloc.scan.ScanViewModel
 import com.dev.orangebrowser.bloc.search.SearchViewModel
+import com.dev.orangebrowser.bloc.setting.SettingViewModel
+import com.dev.orangebrowser.bloc.sourcecode.SourceCodeViewModel
 import com.dev.orangebrowser.bloc.tabs.TabViewModel
+import com.dev.orangebrowser.bloc.theme.ThemeViewModel
 import dagger.Binds
 import dagger.Module
 import dagger.multibindings.IntoMap
@@ -60,4 +71,55 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(NewsViewModel::class)
     abstract fun bindsNewsViewModel(newsViewModel: NewsViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(FoundViewModel::class)
+    abstract fun bindsFoundViewModel(foundViewModel: FoundViewModel): ViewModel
+    @Binds
+    @IntoMap
+    @ViewModelKey(HistoryViewModel::class)
+    abstract fun bindsHistoryViewModel(historyViewModel: HistoryViewModel): ViewModel
+    @Binds
+    @IntoMap
+    @ViewModelKey(BookMarkViewModel::class)
+    abstract fun bindsBookMarkViewModel(bookMarkViewModel: BookMarkViewModel): ViewModel
+    @Binds
+    @IntoMap
+    @ViewModelKey(ThemeViewModel::class)
+    abstract fun bindsThemeViewModel(themeViewModel: ThemeViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(DownloadViewModel::class)
+    abstract fun bindsDownloadViewModel(downloadViewModel: DownloadViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(SettingViewModel::class)
+    abstract fun bindsSettingViewModel(settingViewModel:SettingViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(ScanViewModel::class)
+    abstract fun bindsScanViewModel(scanViewModel:ScanViewModel): ViewModel
+    @Binds
+    @IntoMap
+    @ViewModelKey(ReadModeViewModel::class)
+    abstract fun bindsReadModeViewModel(readModeViewModel: ReadModeViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(ImageModeViewModel::class)
+    abstract fun bindsImageModeViewModel(imageModeViewModel: ImageModeViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(SourceCodeViewModel::class)
+    abstract fun bindsSourceCodeViewModel(sourceCodeViewModel: SourceCodeViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(ResourceViewModel::class)
+    abstract fun bindsResourceViewModel(resourceViewModel: ResourceViewModel): ViewModel
 }

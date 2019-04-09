@@ -26,7 +26,7 @@ class SearchFragment : BaseFragment() {
     }
     //获取layoutResourceId
     override fun getLayoutResId(): Int {
-        return R.layout.search_fragment
+        return R.layout.fragment_search
     }
     override fun initView(view: View,savedInstanceState: Bundle?) {
         //TODO("not implemented") //To change body of created functions use File | Settings | File Templates.

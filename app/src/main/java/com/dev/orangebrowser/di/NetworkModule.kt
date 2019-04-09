@@ -1,7 +1,5 @@
 package com.dev.orangebrowser.di
 
-import android.content.Context
-import androidx.room.Room
 import com.dev.orangebrowser.BuildConfig
 import dagger.Module
 import dagger.Provides

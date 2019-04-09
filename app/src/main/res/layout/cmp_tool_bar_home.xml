@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:id="@+id/top_bar"
+              android:background="@color/colorPrimary" android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="horizontal">
+    <TextView android:id="@+id/search_text" android:layout_marginStart="8dp"
+              android:background="@drawable/bg_transparent_round" android:paddingStart="12dp"
+              android:layout_width="322dp" android:layout_height="32dp" android:layout_gravity="center_vertical"
+              android:hint="@string/search_or_input" android:gravity="left|center_vertical"
+              android:textColor="@color/colorWhite" android:textColorHint="@color/colorWhite" android:textSize="14sp"/>
+    <com.dev.view.IconfontTextView android:id="@+id/top_menu" android:clickable="true"
+                                   android:background="?android:attr/selectableItemBackgroundBorderless"
+                                   android:layout_gravity="center_vertical" android:focusable="true"
+                                   android:gravity="center" android:layout_width="26dp" android:layout_height="26dp"
+                                   android:textSize="@dimen/icon_text_size" android:text="@string/ic_more"
+                                   android:textColor="@color/colorWhite" android:layout_marginStart="2dp"
+                                   android:layout_marginEnd="2dp"/>
+</LinearLayout>

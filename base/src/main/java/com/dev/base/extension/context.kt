@@ -9,6 +9,9 @@ import android.content.Context
 import android.content.pm.PackageManager.PERMISSION_GRANTED
 import androidx.annotation.StringRes
 import androidx.core.content.ContextCompat
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
+import java.io.InputStreamReader
 
 /**
  * The (visible) version name of the application, as specified by the <manifest> tag's versionName
@@ -48,3 +51,12 @@ fun Context.isPermissionGranted(vararg permission: String): Boolean {
 }
 fun Context.getPreferenceKey(@StringRes resourceId: Int): String =
     resources.getString(resourceId)
+
+fun <T>Context.loadJsonArray(path:String):List<T>{
+    val stream=this.assets.open(path)
+    return Gson().fromJson<List<T>>(InputStreamReader(stream), object : TypeToken<List<T>>(){}.type)
+}
+fun <T>Context.loadJsonObject(path:String,mClass:Class<T>):T{
+    val stream=this.assets.open(path)
+    return Gson().fromJson<T>(InputStreamReader(stream), mClass)
+}

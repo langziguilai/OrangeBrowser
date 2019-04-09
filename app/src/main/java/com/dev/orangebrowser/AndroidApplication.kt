@@ -20,6 +20,6 @@ class AndroidApplication:BaseApplication() {
 
     fun initApplicationData(data:ApplicationData){applicationData=data}
     override fun injectMembers() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        appComponent.inject(this)
     }
 }

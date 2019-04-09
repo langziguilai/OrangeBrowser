@@ -14,7 +14,7 @@ abstract class BaseFragment : LogLifeCycleEventFragment() {
     lateinit var factory: ViewModelProvider.Factory
 
     //获取layoutId创建View
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         Log.d(this.javaClass.simpleName+this.hashCode(), "onCreateView")
         return inflater.inflate(getLayoutResId(), container, false)
     }

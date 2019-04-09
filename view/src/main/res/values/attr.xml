@@ -44,4 +44,18 @@
             <enum name="LEFT_RIGHT" value="1" />
         </attr>
     </declare-styleable>
+
+    <declare-styleable name="GridView">
+        <attr name="gv_column" format="integer"/>
+        <attr name="gv_reverse" format="boolean"/>
+        <attr name="gv_vertical" format="boolean"/>
+        <attr name="gv_horizon_space" format="dimension|reference"/>
+        <attr name="gv_vertical_space" format="dimension|reference"/>
+        <attr name="gv_space_color" format="color|reference"/>
+
+    </declare-styleable>
+    <declare-styleable name="ListView">
+        <attr name="lv_reverse" format="boolean"/>
+        <attr name="lv_vertical" format="boolean"/>
+    </declare-styleable>
 </resources>

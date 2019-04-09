@@ -1,4 +1,4 @@
-package com.dev.view
+package com.dev.view.recyclerview
 
 import android.graphics.drawable.ColorDrawable
 import android.view.View
@@ -13,6 +13,7 @@ import com.bumptech.glide.load.model.GlideUrl
 import com.bumptech.glide.load.model.Headers
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.bumptech.glide.request.RequestOptions
+import com.dev.view.R
 import com.dev.view.recyclerview.adapter.base.BaseViewHolder
 import java.util.*
 
@@ -26,7 +27,7 @@ fun getGlideUrlWithReferer(url:String, referer: String): GlideUrl {
 
     })
 }
-class CustomBaseViewHolder(view: View): BaseViewHolder(view){
+open class CustomBaseViewHolder(view: View): BaseViewHolder(view){
     fun setTextToAppCompatTextView(@IdRes viewId: Int, value: CharSequence): CustomBaseViewHolder {
         val view = getView<AppCompatTextView>(viewId)
         view.setTextFuture(
@@ -46,7 +47,7 @@ class CustomBaseViewHolder(view: View): BaseViewHolder(view){
         val view = getView<ImageView>(viewId)
         val mRequestOptions = RequestOptions.circleCropTransform()
             .centerCrop()
-        Glide.with(view.context).load(getGlideUrlWithReferer(url,referer))
+        Glide.with(view.context).load(getGlideUrlWithReferer(url, referer))
             .placeholder(ColorDrawable(view.context.resources.getColor(R.color.color_7A7A7A)))
             .transition(DrawableTransitionOptions().crossFade(500))
             .apply(mRequestOptions).into(view)
@@ -64,7 +65,7 @@ class CustomBaseViewHolder(view: View): BaseViewHolder(view){
         val view = getView<ImageView>(viewId)
         val mRequestOptions = RequestOptions.circleCropTransform()
             .circleCrop()
-        Glide.with(view.context).load(getGlideUrlWithReferer(url,referer))
+        Glide.with(view.context).load(getGlideUrlWithReferer(url, referer))
             .placeholder(ColorDrawable(view.context.resources.getColor(R.color.color_E6E6E5)))
             //.transition(DrawableTransitionOptions().crossFade(1000))
             .apply(mRequestOptions).into(view)
@@ -78,7 +79,7 @@ class CustomBaseViewHolder(view: View): BaseViewHolder(view){
             .apply(mRequestOptions).into(view)
         return this
     }
-    fun loadTextAsImage(@IdRes viewId:Int,text:String?,textColor:Int,backgroundColor:Int):CustomBaseViewHolder{
+    fun loadTextAsImage(@IdRes viewId:Int,text:String?,textColor:Int,backgroundColor:Int): CustomBaseViewHolder {
         val view = getView<ImageView>(viewId)
         val textDrawable = TextDrawable.builder()
             .beginConfig().textColor(textColor).endConfig()

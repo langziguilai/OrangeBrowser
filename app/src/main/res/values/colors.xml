@@ -1,6 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#008577</color>
-    <color name="colorPrimaryDark">#00574B</color>
+    <color name="colorPrimary">#6B7A99</color>
+    <color name="colorPrimaryDisable">#806B7A99</color>
+    <color name="colorPrimaryActive">#4CAF50</color>
+    <color name="colorPrimaryDark">#6B7A99</color>
+    <color name="themeColorDefault">#6A7998</color>
+    <color name="themeColor1">#7189C5</color>
+    <color name="themeColor2">#937CCC</color>
+    <color name="themeColor3">#FD7A99</color>
+    <color name="themeColor4">#E55051</color>
+    <color name="themeColor5">#0AA183</color>
+    <color name="themeColor6">#3073C0</color>
+    <color name="themeColor7">#A68483</color>
+    <color name="themeColor8">#393A3F</color>
     <color name="colorAccent">#D81B60</color>
+    <color name="background">#80FFFFFF</color>
+    <color name="ic_enabled">@color/colorPrimary</color>
+    <color name="ic_not_enabled">@color/colorPrimaryDisable</color>
+    <color name="colorWhite">#FFFFFF</color>
+    <color name="borderColor">#ededed</color>
 </resources>
