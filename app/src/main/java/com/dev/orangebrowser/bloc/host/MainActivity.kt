@@ -29,6 +29,9 @@ import com.dev.orangebrowser.extension.appComponent
 import com.dev.orangebrowser.extension.myApplication
 import com.dev.view.StatusBarUtil
 import es.dmoral.toasty.Toasty
+import android.view.ViewGroup
+
+
 
 class MainActivity : BaseActivity() {
 
@@ -44,23 +47,33 @@ class MainActivity : BaseActivity() {
     }
 
     override fun initView(savedInstanceState: Bundle?) {
-        viewModel.appData.observe(this, Observer {
-            it.either(fun(failure){
-                Toasty.error(this,failure.error,Toast.LENGTH_SHORT).show()
-            },fun(data){
-                myApplication.initApplicationData(data)
-                loadBrowserFragment("")
+        if (savedInstanceState!=null){
+
+        }else{
+            viewModel.appData.observe(this, Observer {
+                it.either(fun(failure){
+                    Toasty.error(this,failure.error,Toast.LENGTH_SHORT).show()
+                },fun(data){
+                    myApplication.initApplicationData(data)
+                    loadHomeFragment("")
+                })
             })
-        })
-        viewModel.theme.observe(this, Observer {
-            StatusBarUtil.setStatusBarColor(this,it.colorPrimaryDark)
-        })
-        viewModel.quitSignalClear.observe(this, Observer {
-            quitSignal=it
-        })
+            viewModel.theme.observe(this, Observer {
+                StatusBarUtil.setStatusBarColor(this,it.colorPrimaryDark)
+            })
+            viewModel.quitSignalClear.observe(this, Observer {
+                quitSignal=it
+            })
+        }
+//        val fragment=supportFragmentManager.findFragmentById(R.id.fragment_container)
+//        if(fragment==null){
+//
+//        }
     }
     override fun initData(savedInstanceState: Bundle?) {
-        viewModel.loadAppData()
+        if (savedInstanceState==null){
+            viewModel.loadAppData()
+        }
     }
     override fun onBackPressed() {
         supportFragmentManager.fragments.forEach {
@@ -70,7 +83,6 @@ class MainActivity : BaseActivity() {
         }
         super.onBackPressed()
     }
-
     //加载浏览器页面
     fun loadBrowserFragment(sessionId:String){
         supportFragmentManager.beginTransaction().replace(R.id.container, BrowserFragment.newInstance(sessionId)).commit()

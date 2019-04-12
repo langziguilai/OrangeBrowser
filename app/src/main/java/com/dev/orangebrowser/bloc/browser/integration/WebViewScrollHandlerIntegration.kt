@@ -30,6 +30,7 @@ class WebViewScrollHandlerIntegration(var binding: FragmentBrowserBinding, sessi
                             webViewVisionHelper.showMiniBottomBarAnimate()
                         }
                     }
+                    session.visionMode==Session.STATIC_FULL_SCREEN_MODE-> return //静态最大视野
                 }
             }
         }

@@ -31,12 +31,14 @@ class Session(
     var forbidImageMode:Boolean=false,
     var visionMode:Int=NORMAL_SCREEN_MODE,
     var themeColorMap:HashMap<String,Int> = HashMap(),
+    var isStatusBarDarkMode:Boolean=false,
     delegate: Observable<Observer> = ObserverRegistry()
 ) : Observable<Session.Observer> by delegate {
     companion object {
         const val NORMAL_SCREEN_MODE=1  //正常模式
         const val SCROLL_FULL_SCREEN_MODE=2  //滑动最大视野模式
         const val MAX_SCREEN_MODE=3  //保持最大视野模式
+        const val STATIC_FULL_SCREEN_MODE=4 //全局模式，不可以滑动，如视频这类的应用
     }
     /**
      * Holder for keeping a reference to an engine session and its observer to update this session
@@ -48,7 +50,7 @@ class Session(
      * Id of parent session, usually refer to the session which created this one. The clue to indicate if this session
      * is terminated, which target we should go back.
      */
-    internal var parentId: String? = null
+     var parentId: String? = null
 
     /**
      * Interface to be implemented by classes that want to observe a session.

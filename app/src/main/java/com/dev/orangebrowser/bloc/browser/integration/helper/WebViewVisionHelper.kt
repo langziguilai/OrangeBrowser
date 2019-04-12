@@ -44,6 +44,7 @@ class WebViewVisionHelper(var binding:FragmentBrowserBinding){
             }.start()
         }
     }
+
     fun showMiniBottomBarAnimate(){
         binding.miniBottomBar.animate().translationY(0f).setDuration(FAST_ANIMATION).setInterpolator(
             AccelerateInterpolator()

@@ -15,6 +15,8 @@ import com.dev.base.BaseLazyFragment
 import com.dev.base.extension.*
 import com.dev.base.support.BackHandler
 import com.dev.base.support.LifecycleAwareFeature
+import com.dev.browser.session.Session
+import com.dev.browser.session.SessionManager
 import com.dev.orangebrowser.R
 import com.dev.orangebrowser.bloc.browser.BrowserFragment
 import com.dev.orangebrowser.bloc.host.MainViewModel
@@ -32,8 +34,11 @@ import com.dev.view.recyclerview.adapter.base.BaseQuickAdapter
 import com.evernote.android.state.State
 import es.dmoral.toasty.Toasty
 import java.util.*
+import javax.inject.Inject
 
 class HomeFragment : BaseLazyFragment(), BackHandler {
+    @Inject
+    lateinit var sessionManager: SessionManager
     //data
     lateinit var viewModel: HomeViewModel
     lateinit var activityViewModel:MainViewModel
@@ -82,7 +87,11 @@ class HomeFragment : BaseLazyFragment(), BackHandler {
         bottomBarHelper.initView()
         topBarHelper.initView()
         initViewPager(savedInstanceState)
-
+        binding.search.setOnClickListener {
+            val session = Session(initialUrl = "https://www.baidu.com")
+            sessionManager.add(session, selected = true)
+            RouterActivity?.loadBrowserFragment(session.id)
+        }
     }
 
     //初始化ViewPager
@@ -95,6 +104,9 @@ class HomeFragment : BaseLazyFragment(), BackHandler {
 
     }
 
+    override fun onResume() {
+        super.onResume()
+    }
     //处理返回值
     override fun onBackPressed(): Boolean {
         for (backHandler in backHandlers){
@@ -107,6 +119,7 @@ class HomeFragment : BaseLazyFragment(), BackHandler {
 
     companion object {
         val Tag = "HomeFragment"
+        const val NO_SESSION_ID="NO_SESSION_ID"
         fun newInstance(sessionId:String):HomeFragment = HomeFragment().apply {
             arguments = Bundle().apply {
                 putString(BrowserFragment.SESSION_ID, sessionId)

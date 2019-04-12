@@ -51,7 +51,9 @@ class BottomBarHelper(private var binding: FragmentHomeBinding, var fragment:Hom
         }
         binding.bottomMenuPanel.apply {
             onGlobalLayoutComplete{
-                it.animate().translationY(this.height.toFloat()+ DensityUtil.dip2px(fragment.requireContext(),16f)).setDuration(0).start()
+                if (fragment.context!=null){
+                    it.translationY=this.height.toFloat()+ DensityUtil.dip2px(fragment.requireContext(),16f)
+                }
             }
         }
         bottomPanelBackHandler=object: BackHandler {

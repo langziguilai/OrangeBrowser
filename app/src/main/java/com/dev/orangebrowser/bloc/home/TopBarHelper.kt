@@ -41,7 +41,9 @@ class TopBarHelper(var binding: FragmentHomeBinding, var fragment:HomeFragment, 
         //initial hide
         binding.topMenuPanel.apply {
             onGlobalLayoutComplete{
-                it.animate().translationY(-this.height.toFloat()).setDuration(0).start()
+                if (fragment.context!=null){
+                    it.translationY=-this.height.toFloat()
+                }
             }
         }
         topPanelBackHandler=object: BackHandler {

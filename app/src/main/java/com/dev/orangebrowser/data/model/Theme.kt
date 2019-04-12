@@ -14,6 +14,16 @@ data class Theme(
     var colorPrimaryDisable: Int,
     var colorAccent: Int
 ) {
+
+    fun clone():Theme{
+        return Theme(
+            colorPrimary=this.colorPrimary,
+            colorAccent = this.colorAccent,
+            colorPrimaryDark = this.colorPrimaryDark,
+            colorPrimaryActive = this.colorPrimaryActive,
+            colorPrimaryDisable = this.colorPrimaryDisable
+        )
+    }
     companion object {
         fun defaultTheme(context: Context):Theme {
             return Theme(

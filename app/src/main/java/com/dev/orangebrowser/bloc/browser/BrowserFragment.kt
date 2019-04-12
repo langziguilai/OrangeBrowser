@@ -11,21 +11,21 @@ import com.dev.base.support.BackHandler
 import com.dev.base.support.LifecycleAwareFeature
 import com.dev.base.support.UserInteractionHandler
 import com.dev.base.support.ViewBoundFeatureWrapper
+import com.dev.browser.concept.Engine
 import com.dev.browser.engine.SystemEngineView
-import com.dev.browser.feature.SessionFeature
-import com.dev.browser.feature.SessionUseCases
-import com.dev.browser.feature.ThumbnailsFeature
+import com.dev.browser.feature.*
 import com.dev.browser.session.Session
 import com.dev.browser.session.SessionManager
 import com.dev.orangebrowser.R
 import com.dev.orangebrowser.bloc.browser.integration.*
-import com.dev.orangebrowser.bloc.browser.integration.helper.BottomPanelHelper
-import com.dev.orangebrowser.bloc.browser.integration.helper.TopPanelHelper
-import com.dev.orangebrowser.bloc.browser.integration.helper.WebViewVisionHelper
+import com.dev.orangebrowser.bloc.browser.integration.helper.*
+import com.dev.orangebrowser.bloc.home.HomeFragment
 import com.dev.orangebrowser.bloc.host.MainViewModel
 import com.dev.orangebrowser.databinding.FragmentBrowserBinding
 import com.dev.orangebrowser.extension.RouterActivity
 import com.dev.orangebrowser.extension.appComponent
+import com.dev.orangebrowser.extension.appData
+import com.dev.view.StatusBarUtil
 import java.util.*
 import javax.inject.Inject
 
@@ -33,6 +33,8 @@ import javax.inject.Inject
 class BrowserFragment : BaseFragment(), BackHandler, UserInteractionHandler {
     @Inject
     lateinit var applicationContext:Context
+    @Inject
+    lateinit var engine:Engine
     @Inject
     lateinit var sessionManager: SessionManager
     @Inject
@@ -44,15 +46,16 @@ class BrowserFragment : BaseFragment(), BackHandler, UserInteractionHandler {
 
     private val sessionFeature = ViewBoundFeatureWrapper<SessionFeature>()
     private val thumbnailsFeature = ViewBoundFeatureWrapper<ThumbnailsFeature>()
+    private val windowFeature = ViewBoundFeatureWrapper<WindowFeature>()
     //    private val toolbarIntegration = ViewBoundFeatureWrapper<ToolbarIntegration>()
 //    private val contextMenuIntegration = ViewBoundFeatureWrapper<ContextMenuIntegration>()
 //    private val downloadsFeature = ViewBoundFeatureWrapper<DownloadsFeature>()
 //    private val promptsFeature = ViewBoundFeatureWrapper<PromptFeature>()
-//    private val fullScreenFeature = ViewBoundFeatureWrapper<FullScreenFeature>()
+    private val fullScreenFeature = ViewBoundFeatureWrapper<FullScreenFeature>()
 //    private val customTabsIntegration = ViewBoundFeatureWrapper<CustomTabsIntegration>()
 //    private val findInPageIntegration = ViewBoundFeatureWrapper<FindInPageIntegration>()
 //    private val sitePermissionFeature = ViewBoundFeatureWrapper<SitePermissionsFeature>()
-//    private val pictureInPictureIntegration = ViewBoundFeatureWrapper<PictureInPictureIntegration>()
+    private val pictureInPictureIntegration = ViewBoundFeatureWrapper<PictureInPictureIntegration>()
     private val topBarIntegration = ViewBoundFeatureWrapper<TopBarIntegration>()
     private val bottomBarIntegration = ViewBoundFeatureWrapper<BottomBarIntegration>()
     private val miniBottomBarIntegration = ViewBoundFeatureWrapper<MiniBottomBarIntegration>()
@@ -73,7 +76,9 @@ class BrowserFragment : BaseFragment(), BackHandler, UserInteractionHandler {
     lateinit var binding: FragmentBrowserBinding
     //
     val backHandlers = LinkedList<BackHandler>()
-
+    //
+    lateinit var  fullScreenHelper:FullScreenHelper
+    //
     init {
         backHandlers.add(adaptToBackHandler(sessionFeature))
     }
@@ -117,11 +122,14 @@ class BrowserFragment : BaseFragment(), BackHandler, UserInteractionHandler {
     }
 
     override fun initViewWithDataBinding(savedInstanceState: Bundle?) {
-        val session = Session(initialUrl = "https://www.ihotmm.com")
-        sessionManager.add(session, selected = true)
+
+        val session=sessionManager.findSessionById(sessionId) ?: sessionManager.selectedSessionOrThrow
         //将EngineView添加到上面去
-        val engineView= SystemEngineView(applicationContext)
+        binding.webViewContainer.removeAllViews()
+        val engineView= SystemEngineView(requireContext().applicationContext)
         binding.webViewContainer.addView(engineView,FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT))
+
+        fullScreenHelper= FullScreenHelper(binding,requireActivity())
 
         val bottomPanelHelper = BottomPanelHelper(binding, this)
         val topPanelHelper = TopPanelHelper(binding, this, bottomPanelHelper)
@@ -180,7 +188,7 @@ class BrowserFragment : BaseFragment(), BackHandler, UserInteractionHandler {
             ), owner = this, view = binding.root
         )
         webViewLifeCycleIntegration.set(
-            WebViewLifeCycleIntegration(binding = binding, owner = this,engineView = engineView),
+            WebViewLifeCycleIntegration(binding = binding, owner = this,engineView =engineView),
             owner = this,
             view = binding.root
         )
@@ -202,6 +210,41 @@ class BrowserFragment : BaseFragment(), BackHandler, UserInteractionHandler {
             owner = this,
             view = binding.root
         )
+
+        //多窗口展示
+        val windowFeatureListener=object :WindowFeature.WindowFeatureListener{
+            override fun onOpenWindow(sessionAdd: Session) {
+                RouterActivity?.loadBrowserFragment(sessionAdd.id)
+            }
+            override fun onCloseWindow(sessionRemoved: Session) {
+                if (sessionManager.selectedSession!=null){
+                    //TODO:根据状态返回对应的fragment
+                    RouterActivity?.loadBrowserFragment(sessionManager.selectedSession!!.id)
+                }else{
+                    //返回首页
+                    RouterActivity?.loadHomeFragment(HomeFragment.NO_SESSION_ID)
+                }
+            }
+        }
+        windowFeature.set(
+            feature = WindowFeature(engine = engine,sessionManager = sessionManager,windowFeatureListener = windowFeatureListener),
+            owner = this,
+            view = binding.root
+        )
+        //pictureInPicture
+        pictureInPictureIntegration.set(
+            feature = PictureInPictureIntegration(sessionManager,requireActivity()),
+            owner = this,
+            view = binding.root
+        )
+        //全局模式
+        fullScreenFeature.set(
+            feature = FullScreenFeature(
+                sessionManager=sessionManager,
+                sessionUseCases = sessionUseCases,
+                sessionId = sessionId, fullScreenChanged =  ::fullScreenChanged),
+            owner = this,
+            view = binding.root)
     }
 
     override fun initData(savedInstanceState: Bundle?) {
@@ -209,7 +252,15 @@ class BrowserFragment : BaseFragment(), BackHandler, UserInteractionHandler {
     }
 
 
+
+
+
+
     private fun fullScreenChanged(enabled: Boolean) {
+        val session=sessionManager.findSessionById(sessionId)
+        session?.apply {
+            fullScreenHelper.toggleFullScreen(session =this,fullScreen = enabled)
+        }
 
     }
 
@@ -225,13 +276,21 @@ class BrowserFragment : BaseFragment(), BackHandler, UserInteractionHandler {
     }
 
     override fun onHomePressed(): Boolean {
-        val handled = false
+        var handled = false
+        pictureInPictureIntegration.withFeature {
+            handled = it.onHomePressed()
+        }
 
         return handled
     }
 
     override fun onPictureInPictureModeChanged(enabled: Boolean) {
-
+        val fullScreenMode = sessionManager.selectedSession?.fullScreenMode ?: false
+        // If we're exiting PIP mode and we're in fullscreen mode, then we should exit fullscreen mode as well.
+        if (!enabled && fullScreenMode) {
+            onBackPressed()
+            fullScreenChanged(false)
+        }
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
@@ -240,6 +299,16 @@ class BrowserFragment : BaseFragment(), BackHandler, UserInteractionHandler {
         }
     }
 
+    override fun onDestroy() {
+        binding.webViewContainer.removeAllViews()
+        super.onDestroy()
+    }
+    override fun onDetach() {
+        RouterActivity?.apply {
+            StatusBarUtil.setStatusBarColor(RouterActivity!!,activityViewModel.theme.value!!.colorPrimary)
+        }
+        super.onDetach()
+    }
     companion object {
         const val SESSION_ID = "session_id"
         private const val REQUEST_CODE_DOWNLOAD_PERMISSIONS = 1

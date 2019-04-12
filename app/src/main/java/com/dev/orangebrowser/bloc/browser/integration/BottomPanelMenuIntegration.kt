@@ -51,8 +51,9 @@ class BottomPanelMenuIntegration(
         //开始的时候隐藏
         binding.bottomMenuPanel.apply {
             onGlobalLayoutComplete {
-                it.animate().translationY(this.height.toFloat() + DensityUtil.dip2px(fragment.requireContext(), 16f))
-                    .setDuration(0).start()
+                fragment.context?.apply {
+                    it.translationY=it.height.toFloat() + DensityUtil.dip2px(fragment.requireContext(), 16f)
+                }
             }
         }
         sessionObserver=object :Session.Observer{

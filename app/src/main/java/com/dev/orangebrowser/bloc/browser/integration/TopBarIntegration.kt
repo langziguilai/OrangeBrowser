@@ -55,6 +55,20 @@ class TopBarIntegration(
         binding.stopIcon.setOnClickListener {
             sessionUseCases.stopLoading.invoke(session)
         }
+        if (session.securityInfo.secure){
+            binding.securityIcon.show()
+        }else{
+            binding.securityIcon.hide()
+        }
+        if(session.loading){
+            binding.reloadIcon.hide()
+            binding.stopIcon.show()
+            binding.progress.show()
+        } else {
+            binding.reloadIcon.show()
+            binding.stopIcon.hide()
+            binding.progress.hide()
+        }
         sessionObserver = object : Session.Observer {
             //加载改变
             override fun onLoadingStateChanged(session: Session, loading: Boolean) {

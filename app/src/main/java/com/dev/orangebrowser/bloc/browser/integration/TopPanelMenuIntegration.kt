@@ -1,6 +1,8 @@
 package com.dev.orangebrowser.bloc.browser.integration
 
+import android.drm.DrmStore
 import android.os.Bundle
+import androidx.annotation.ColorRes
 import com.dev.base.extension.onGlobalLayoutComplete
 import com.dev.base.support.LifecycleAwareFeature
 import com.dev.orangebrowser.R
@@ -25,18 +27,15 @@ class TopPanelMenuIntegration(var binding: FragmentBrowserBinding, var fragment:
         //initial hide
         binding.topMenuPanel.apply {
             onGlobalLayoutComplete{
-                it.animate().translationY(-this.height.toFloat()-binding.topBar.height.toFloat()).setDuration(0).start()
+                fragment.context?.apply {
+                     it.translationY=-it.height.toFloat()-binding.topBar.height.toFloat()
+                }
             }
         }
 
     }
     private fun initTopMenuGridView(topMenuPanel: GridView) {
-        val adapter=object: BaseQuickAdapter<ActionItem, CustomBaseViewHolder>(R.layout.item_top_action_item,fragment.appData.topMenuActionItems){
-            override fun convert(helper: CustomBaseViewHolder, item: ActionItem) {
-                helper.setText(R.id.icon,item.iconRes)
-                helper.setText(R.id.name,item.nameRes)
-            }
-        }
+        val adapter=TopMenuPanelAdapter(R.color.colorWhite,R.layout.item_top_action_item,fragment.appData.topMenuActionItems)
         adapter.setOnItemClickListener { _, _, position ->
             onTopMenuActionItemClick(fragment.appData.topMenuActionItems[position])
         }
@@ -108,4 +107,13 @@ class TopPanelMenuIntegration(var binding: FragmentBrowserBinding, var fragment:
         //TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
+}
+
+class TopMenuPanelAdapter(@ColorRes var color:Int, layoutId:Int, data:List<ActionItem>):BaseQuickAdapter<ActionItem,CustomBaseViewHolder>(layoutId,data){
+    override fun convert(helper: CustomBaseViewHolder, item: ActionItem) {
+        helper.setText(R.id.icon,item.iconRes)
+        helper.setTextColor(R.id.icon,helper.itemView.context.resources.getColor(color))
+        helper.setText(R.id.name,item.nameRes)
+        helper.setTextColor(R.id.name,helper.itemView.context.resources.getColor(color))
+    }
 }

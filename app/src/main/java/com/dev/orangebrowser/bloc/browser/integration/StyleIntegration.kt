@@ -22,13 +22,16 @@ class StyleIntegration(var binding: FragmentBrowserBinding,var fragment:BrowserF
     LifecycleAwareFeature {
     private var sessionObserver: Session.Observer
     init{
-        session.thumbnail?.apply {
+        if (session.thumbnail!=null){
             if (session.themeColorMap.containsKey(session.url)){
                 updateStyle(session.themeColorMap[session.url]!!)
             }else{
-                val color=this.getPixel(5,5)
+                val color=session.thumbnail!!.getPixel(5,5)
                 updateStyle(color)
             }
+        }else{
+            val color=fragment.activityViewModel.theme.value!!.colorPrimary
+            updateStyle(color)
         }
         sessionObserver=object:Session.Observer{
             override fun onThumbnailChanged(session: Session, bitmap: Bitmap?) {
@@ -57,10 +60,9 @@ class StyleIntegration(var binding: FragmentBrowserBinding,var fragment:BrowserF
         val hsl= FloatArray(3)
         //获取明度和饱和度
         ColorUtils.colorToHSL(color,hsl)
-        val bgDrawable=ColorDrawable(color)
         //1:set backgroundColor
-        binding.topBar.background=bgDrawable
-        binding.topMenuPanel.background=bgDrawable
+        binding.topBar.background=ColorDrawable(color)
+        binding.topMenuPanel.background=ColorDrawable(color)
         StatusBarUtil.setStatusBarColor(fragment.requireActivity(),color)
         //2:set text Color
         val saturation=hsl[1]  //饱和度：范围 [0...1]
@@ -76,18 +78,32 @@ class StyleIntegration(var binding: FragmentBrowserBinding,var fragment:BrowserF
     }
 
     private fun setTextLightMode(){
+        session.isStatusBarDarkMode=true
         StatusBarUtil.setDarkMode(fragment.requireActivity())
         val whiteColor=fragment.resources.getColor(R.color.colorWhite)
         binding.searchText.setTextColor(whiteColor)
         binding.searchText.setHintTextColor(whiteColor)
         binding.topMenu.setTextColor(whiteColor)
+        binding.progress.progressDrawable=fragment.context?.getDrawable(R.drawable.bg_progressbar_light)
+        val adapter=binding.topMenuPanel.adapter
+        if (adapter is TopMenuPanelAdapter){
+            adapter.color=R.color.colorWhite
+            adapter.notifyDataSetChanged()
+        }
     }
     private fun setTextDarkMode(){
+        session.isStatusBarDarkMode=false
         StatusBarUtil.setLightMode(fragment.requireActivity())
         val blackColor=fragment.resources.getColor(R.color.colorBlack)
         binding.searchText.setTextColor(blackColor)
         binding.searchText.setHintTextColor(blackColor)
         binding.topMenu.setTextColor(blackColor)
+        binding.progress.progressDrawable=fragment.context?.getDrawable(R.drawable.bg_progressbar_dark)
+        val adapter=binding.topMenuPanel.adapter
+        if (adapter is TopMenuPanelAdapter){
+            adapter.color=R.color.colorBlack
+            adapter.notifyDataSetChanged()
+        }
     }
     private fun loadBitmapFromView(v: View): Bitmap {
         val fullSizeBitmap = Bitmap.createBitmap(v.width, v.height, Bitmap.Config.ARGB_8888)

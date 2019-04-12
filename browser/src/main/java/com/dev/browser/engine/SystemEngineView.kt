@@ -85,15 +85,15 @@ class SystemEngineView @JvmOverloads constructor(
         }
     }
 
-//    private var mOnTouchListener: OnTouchListener? = null
-//    fun setListener(onTouchListener: OnTouchListener?) {
-//        mOnTouchListener = onTouchListener
-//    }
-//
-//    override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {
-//        mOnTouchListener?.onTouch(this, ev)
-//        return super.dispatchTouchEvent(ev)
-//    }
+    private var mOnTouchListener: OnTouchListener? = null
+    fun setListener(onTouchListener: OnTouchListener?) {
+        mOnTouchListener = onTouchListener
+    }
+
+    override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {
+        mOnTouchListener?.onTouch(this, ev)
+        return super.dispatchTouchEvent(ev)
+    }
 
     override fun onDestroy() {
         session?.apply {

@@ -39,7 +39,7 @@ public class WebViewToggleBehavior extends CoordinatorLayout.Behavior<View> {
 
     @Override
     public boolean onDependentViewChanged(@NonNull CoordinatorLayout parent, @NonNull View child, @NonNull View dependency) {
-        if (screenMode!=Session.NORMAL_SCREEN_MODE){
+        if (screenMode!=Session.NORMAL_SCREEN_MODE && screenMode!=Session.STATIC_FULL_SCREEN_MODE){
             child.setTop(dependency.getBottom());
         }
         return true;
@@ -62,11 +62,14 @@ public class WebViewToggleBehavior extends CoordinatorLayout.Behavior<View> {
                 View dependency= topBarRef.get();
                 child.layout(0,dependency.getBottom(),child.getMeasuredWidth(),dependency.getBottom()+child.getMeasuredHeight());
             }
-        }else{
+        }else if(screenMode==Session.MAX_SCREEN_MODE){
             if (topBarRef.get()!=null){
                 View dependency= topBarRef.get();
                 child.layout(0,dependency.getBottom(),child.getMeasuredWidth(),dependency.getBottom()+child.getMeasuredHeight());
             }
+        }else if(screenMode==Session.STATIC_FULL_SCREEN_MODE){
+            //全屏
+                child.layout(0,0,parent.getMeasuredWidth(),parent.getMeasuredHeight());
         }
         return true;
     }

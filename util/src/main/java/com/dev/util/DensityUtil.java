@@ -10,11 +10,17 @@ import android.util.DisplayMetrics;
 
 
 public class DensityUtil {
+    private static float LANDSCAPE_DESIGN_WIDTH=640f;
+    private static float PORTRAIT_DESIGN_WIDTH=360f;
     private static float DesignWidth=360.0f;
 
     //应用初始化的时候，可以设置设计宽度
-    public static void setDesignWidth(float width){
-        DesignWidth=width;
+    public static void setDesignWidthByOrientation(boolean isProtrait){
+        if (isProtrait){
+            DesignWidth=PORTRAIT_DESIGN_WIDTH;
+        }else{
+            DesignWidth=LANDSCAPE_DESIGN_WIDTH;
+        }
     }
     private static float sNoncompatDensity;
     private static float sNoncompatScaledDensity;

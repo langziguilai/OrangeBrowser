@@ -133,7 +133,7 @@ data class DefaultSettings(
     override var historyTrackingDelegate: HistoryTrackingDelegate? = null,
     override var userAgentString: String? = null,
     override var javaScriptCanOpenWindowsAutomatically: Boolean = false,
-    override var displayZoomControls: Boolean = true,
+    override var displayZoomControls: Boolean = false,//禁止展示zoomcontrols，否则转动的时候会出现错误
     override var loadWithOverviewMode: Boolean = false,
     override var allowFileAccess: Boolean = true,
     override var allowFileAccessFromFileURLs: Boolean = false,
@@ -142,7 +142,7 @@ data class DefaultSettings(
     override var verticalScrollBarEnabled: Boolean = true,
     override var horizontalScrollBarEnabled: Boolean = true,
     override var remoteDebuggingEnabled: Boolean = false,
-    override var supportMultipleWindows: Boolean = false,
+    override var supportMultipleWindows: Boolean = true,
     override var testingModeEnabled: Boolean = false
 ) : Settings()
 
