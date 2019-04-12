@@ -19,7 +19,7 @@ abstract class BaseLazyFragment : LogLifeCycleEventFragment() {
     var hasDataInitialized:Boolean=false  //数据时候已经初始化
 
     //获取layoutId创建View
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         Log.d(this.javaClass.simpleName+this.hashCode(), "onCreateView")
         return inflater.inflate(getLayoutResId(), container, false)
     }
@@ -31,15 +31,26 @@ abstract class BaseLazyFragment : LogLifeCycleEventFragment() {
     //在view被创建好之后初始化view
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initView(view, savedInstanceState)
-        hasViewInitialized=true
-        Log.d(this.javaClass.simpleName+this.hashCode(), "initView")
+        if (!useDataBinding()){
+            initView(view, savedInstanceState)
+            hasViewInitialized=true
+            Log.d(this.javaClass.simpleName+this.hashCode(), "initView")
+        }
     }
-
-    abstract fun initView(view: View, savedInstanceState: Bundle?)
+    open fun initView(view: View, savedInstanceState: Bundle?){}
+    open fun initViewWithDataBinding(savedInstanceState: Bundle?){}
+    //使用DataBinding，延后到Activity Attach时初始化View
+    open fun useDataBinding():Boolean{
+        return false
+    }
 
     //在activity被创建好之后初始化数据
     override fun onActivityCreated(savedInstanceState: Bundle?) {
+        if (useDataBinding()){
+            initViewWithDataBinding(savedInstanceState)
+            hasViewInitialized=true
+            Log.d(this.javaClass.simpleName+this.hashCode(), "initView")
+        }
         super.onActivityCreated(savedInstanceState)
         if (!hasOnActivityCreatedTriggered){
             hasOnActivityCreatedTriggered=true

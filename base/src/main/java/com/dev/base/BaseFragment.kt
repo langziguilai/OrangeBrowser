@@ -25,13 +25,22 @@ abstract class BaseFragment : LogLifeCycleEventFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         Log.d(this.javaClass.simpleName+this.hashCode(), "onViewCreated")
         super.onViewCreated(view, savedInstanceState)
-        initView(view, savedInstanceState)
+        if (!useDataBinding()){
+            initView(view, savedInstanceState)
+        }
     }
 
-    abstract fun initView(view: View, savedInstanceState: Bundle?)
-
+    open fun initView(view: View, savedInstanceState: Bundle?){}
+    open fun initViewWithDataBinding(savedInstanceState: Bundle?){}
+    //使用DataBinding，延后到Activity Attach时初始化View
+    open fun useDataBinding():Boolean{
+        return false
+    }
     //在activity被创建好之后初始化数据
     override fun onActivityCreated(savedInstanceState: Bundle?) {
+        if (useDataBinding()){
+            initViewWithDataBinding(savedInstanceState)
+        }
         super.onActivityCreated(savedInstanceState)
         initData(savedInstanceState)
     }

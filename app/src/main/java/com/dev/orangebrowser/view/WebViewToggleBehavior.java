@@ -5,6 +5,7 @@ import android.util.AttributeSet;
 import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import com.dev.browser.session.Session;
 import com.dev.orangebrowser.R;
 import com.dev.util.DensityUtil;
 
@@ -18,42 +19,53 @@ public class WebViewToggleBehavior extends CoordinatorLayout.Behavior<View> {
         super(context, attrs);
     }
 
-    public static int NORMAL_SCREEN_MODE=1;  //正常形态
-    public static int FULL_SCREEN_MODE=2;    //全局形态
-    private int screenMode=FULL_SCREEN_MODE;
+    private int screenMode= Session.NORMAL_SCREEN_MODE;//默认正常视野
 
-    private WeakReference<View> dependencyRef= new WeakReference<>(null);
+    private WeakReference<View> topBarRef = new WeakReference<>(null);
+    private WeakReference<View> bottomBarRef = new WeakReference<>(null);
 
     @Override
     public boolean layoutDependsOn(@NonNull CoordinatorLayout parent, @NonNull View child, @NonNull View dependency) {
 
         boolean result= dependency.getId()== R.id.top_bar;
         if (result){
-            dependencyRef=new WeakReference<View>(dependency);
+            topBarRef =new WeakReference<>(dependency);
+        }
+        if (dependency.getId()==R.id.bottom_bar){
+            bottomBarRef=new WeakReference<>(dependency);
         }
         return result;
     }
 
     @Override
     public boolean onDependentViewChanged(@NonNull CoordinatorLayout parent, @NonNull View child, @NonNull View dependency) {
-       // child.offsetTopAndBottom((int)dependency.getTranslationY()-(int)child.getTranslationY());
-        child.setTranslationY((int)dependency.getTranslationY());
-        //child.layout(0,dependency.getBottom(),child.getMeasuredWidth(),dependency.getBottom()+child.getMeasuredHeight());
-        //child.setTop(dependency.getBottom());
+        if (screenMode!=Session.NORMAL_SCREEN_MODE){
+            child.setTop(dependency.getBottom());
+        }
         return true;
     }
 
     @Override
     public boolean onLayoutChild(@NonNull CoordinatorLayout parent, @NonNull View child, int layoutDirection) {
-        if (screenMode==FULL_SCREEN_MODE){
-            if (dependencyRef.get()!=null){
-                View dependency=dependencyRef.get();
+        if (screenMode==Session.NORMAL_SCREEN_MODE){
+            if (topBarRef.get()!=null){
+                View dependency= topBarRef.get();
+                if (bottomBarRef.get()!=null){
+                    child.layout(0,dependency.getBottom(),child.getMeasuredWidth(),parent.getBottom()+bottomBarRef.get().getMeasuredHeight());
+                }else{
+                    child.layout(0,dependency.getBottom(),child.getMeasuredWidth(),parent.getBottom());
+                }
+
+            }
+        }else if (screenMode==Session.SCROLL_FULL_SCREEN_MODE){
+            if (topBarRef.get()!=null){
+                View dependency= topBarRef.get();
                 child.layout(0,dependency.getBottom(),child.getMeasuredWidth(),dependency.getBottom()+child.getMeasuredHeight());
             }
         }else{
-            if (dependencyRef.get()!=null){
-                View dependency=dependencyRef.get();
-                child.layout(0,dependency.getBottom(),child.getMeasuredWidth(),dependency.getBottom()+child.getMeasuredHeight()-dependency.getMeasuredHeight()- DensityUtil.dip2px(parent.getContext(),42));
+            if (topBarRef.get()!=null){
+                View dependency= topBarRef.get();
+                child.layout(0,dependency.getBottom(),child.getMeasuredWidth(),dependency.getBottom()+child.getMeasuredHeight());
             }
         }
         return true;

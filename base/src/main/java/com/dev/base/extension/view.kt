@@ -8,7 +8,7 @@ import android.view.animation.OvershootInterpolator
 
 const val FAST_ANIMATION=100L
 const val NORMAL_ANIMATION=500L
-const val SLOW_ANIMATION=1000L
+const val SLOW_ANIMATION=10000L
 //从下出现的动画
 //从下向上出现
 fun View.slideUpIn(){

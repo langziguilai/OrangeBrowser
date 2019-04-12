@@ -6,6 +6,7 @@ import android.view.View
 import androidx.lifecycle.ViewModelProviders
 import com.dev.base.BaseFragment
 import com.dev.orangebrowser.R
+import com.dev.orangebrowser.bloc.browser.BrowserFragment
 import com.dev.orangebrowser.extension.appComponent
 
 class SearchFragment : BaseFragment() {
@@ -13,7 +14,11 @@ class SearchFragment : BaseFragment() {
 
     companion object {
         val Tag="SearchFragment"
-        fun newInstance() = SearchFragment()
+        fun newInstance(sessionId:String) = SearchFragment().apply {
+            arguments = Bundle().apply {
+                putString(BrowserFragment.SESSION_ID, sessionId)
+            }
+        }
     }
 
     lateinit var viewModel: SearchViewModel

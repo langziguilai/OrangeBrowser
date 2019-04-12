@@ -27,6 +27,7 @@ import com.dev.orangebrowser.bloc.tabs.TabFragment
 import com.dev.orangebrowser.bloc.theme.ThemeFragment
 import com.dev.orangebrowser.extension.appComponent
 import com.dev.orangebrowser.extension.myApplication
+import com.dev.view.StatusBarUtil
 import es.dmoral.toasty.Toasty
 
 class MainActivity : BaseActivity() {
@@ -50,6 +51,9 @@ class MainActivity : BaseActivity() {
                 myApplication.initApplicationData(data)
                 loadBrowserFragment("")
             })
+        })
+        viewModel.theme.observe(this, Observer {
+            StatusBarUtil.setStatusBarColor(this,it.colorPrimaryDark)
         })
         viewModel.quitSignalClear.observe(this, Observer {
             quitSignal=it
@@ -85,8 +89,8 @@ class MainActivity : BaseActivity() {
         supportFragmentManager.beginTransaction().replace(R.id.container, NewsFragment.newInstance()).addToBackStack(null).commit()
     }
     //加载搜索页面
-    fun loadSearchFragment(){
-        supportFragmentManager.beginTransaction().replace(R.id.container, SearchFragment.newInstance()).commit()
+    fun loadSearchFragment(sessionId:String){
+        supportFragmentManager.beginTransaction().replace(R.id.container, SearchFragment.newInstance(sessionId)).commit()
     }
     //加载发现页面
     fun loadFoundFragment(){
@@ -117,20 +121,20 @@ class MainActivity : BaseActivity() {
         supportFragmentManager.beginTransaction().replace(R.id.container, ScanFragment.newInstance()).commit()
     }
     //加载阅读模式页面
-    fun loadReadModeFragment(){
-        supportFragmentManager.beginTransaction().replace(R.id.container, ReadModeFragment.newInstance()).commit()
+    fun loadReadModeFragment(sessionId: String){
+        supportFragmentManager.beginTransaction().replace(R.id.container, ReadModeFragment.newInstance(sessionId)).commit()
     }
     //加载图片模式页面
-    fun loadImageModeFragment(){
-        supportFragmentManager.beginTransaction().replace(R.id.container, ImageModeModeFragment.newInstance()).commit()
+    fun loadImageModeFragment(sessionId: String){
+        supportFragmentManager.beginTransaction().replace(R.id.container, ImageModeModeFragment.newInstance(sessionId)).commit()
     }
     //加载源代码页面
-    fun loadSourceCodeFragment(){
-        supportFragmentManager.beginTransaction().replace(R.id.container, SourceCodeFragment.newInstance()).commit()
+    fun loadSourceCodeFragment(sessionId: String){
+        supportFragmentManager.beginTransaction().replace(R.id.container, SourceCodeFragment.newInstance(sessionId)).commit()
     }
     //资源嗅探页面
-    fun loadResourceFragment(){
-        supportFragmentManager.beginTransaction().replace(R.id.container, ResourceFragment.newInstance()).commit()
+    fun loadResourceFragment(sessionId: String){
+        supportFragmentManager.beginTransaction().replace(R.id.container, ResourceFragment.newInstance(sessionId)).commit()
     }
     var quitSignal:Boolean=false
     //双击退出

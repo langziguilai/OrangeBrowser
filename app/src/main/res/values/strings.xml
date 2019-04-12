@@ -33,11 +33,14 @@
     <string name="ic_star">&#xe7e0;</string>
     <string name="ic_scissor">&#xe7e6;</string>
     <string name="ic_share">&#xe7e7;</string>
+    <string name="ic_circle_fill">&#xe502;</string>
     <string name="ic_right">&#xe7eb;</string>
     <string name="ic_left">&#xe7ec;</string>
     <string name="ic_up">&#xe7ed;</string>
     <string name="ic_down">&#xe7ee;</string>
-    <string name="ic_fullscreen">&#xe7ef;</string>
+    <string name="ic_auto_fullscreen">&#xe7ef;</string>
+    <string name="ic_normal_screen">&#xe62e;</string>
+    <string name="ic_fullscreen">&#xe739;</string>
     <string name="ic_menu">&#xe7f4;</string>
     <string name="ic_code">&#xe60a;</string>
     <string name="ic_resources_fang">&#xe715;</string>
@@ -58,6 +61,8 @@
     <string name="ic_translate">&#xe633;</string>
     <string name="ic_ad_mark">&#xe650;</string>
     <string name="ic_download">&#xe7f0;</string>
+    <string name="ic_close">&#xe7fd;</string>
+    <string name="ic_lock_fill">&#xe86a;</string>
 
 
     <string name="search_or_input">搜索或输入网址</string>

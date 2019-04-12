@@ -25,7 +25,7 @@ class MainViewModel @Inject constructor(var context: Context) : CoroutineViewMod
 
 //            val favorSitesInputStream=context.assets.open("favor_site.json")
 //            val favorSites=Gson().fromJson<List<Site>>(InputStreamReader(favorSitesInputStream), object : TypeToken<List<Site>>(){}.type)
-            val favorSites=context.loadJsonArray<Site>("favor_site.json")
+            val favorSites=context.loadJsonArray("favor_site.json",Site::class.java)
 //            val browserSetting=context.loadJsonObject<BrowserSetting>("browser_setting.json",BrowserSetting::class.java)
             val themes=ThemeSources.loadThemeSources(context)
             val applicationData=ApplicationData(favorSites,themes = themes)

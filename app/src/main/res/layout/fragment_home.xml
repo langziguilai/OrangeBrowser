@@ -11,8 +11,8 @@
             android:layout_height="match_parent">
         <!--顶部bar-->
         <LinearLayout android:id="@+id/top_bar"
-                      android:background="@color/colorPrimary" android:layout_width="match_parent"
-                      android:layout_height="match_parent"
+                      app:bgColor="@{activityViewModel.theme.colorPrimary}" android:layout_width="match_parent"
+                      android:layout_height="44dp"
                       android:orientation="horizontal">
             <TextView android:id="@+id/search_text" android:layout_marginStart="8dp"
                       android:background="@drawable/bg_transparent_round" android:paddingStart="12dp"
@@ -36,6 +36,7 @@
             />
             <!--底部bar-->
             <LinearLayout android:id="@+id/bottom_bar"
+                          android:layout_gravity="bottom"
                           android:orientation="vertical"
                           android:layout_width="match_parent"
                           android:layout_height="wrap_content">
@@ -47,31 +48,33 @@
                                                    android:id="@+id/back" android:gravity="center" android:layout_width="72dp"
                                                    android:layout_height="42dp" android:textSize="@dimen/icon_text_size"
                                                    android:text="@string/ic_left"
-                                                   android:textColor="@color/colorPrimaryDisable"/>
+                                                   android:textColor="@{activityViewModel.theme.colorPrimaryDisable}"/>
                     <com.dev.view.IconfontTextView android:clickable="true" android:focusable="true"
                                                    android:background="?android:attr/selectableItemBackgroundBorderless"
                                                    android:id="@+id/forward" android:gravity="center"
                                                    android:layout_width="72dp" android:layout_height="42dp"
                                                    android:textSize="@dimen/icon_text_size" android:text="@string/ic_right"
-                                                   android:textColor="@color/colorPrimaryDisable"/>
+                                                   android:textColor="@{activityViewModel.theme.colorPrimaryDisable}"/>
                     <com.dev.view.IconfontTextView android:id="@+id/search" android:gravity="center" android:layout_width="72dp"
                                                    android:layout_height="42dp" android:textSize="@dimen/icon_text_size"
-                                                   android:text="@string/ic_search" android:textColor="@color/colorPrimary"/>
+                                                   android:text="@string/ic_search" android:textColor="@{activityViewModel.theme.colorPrimary}"/>
                     <FrameLayout android:clickable="true" android:focusable="true"
                                  android:background="?android:attr/selectableItemBackgroundBorderless" android:id="@+id/counter"
                                  android:gravity="center" android:layout_width="72dp" android:layout_height="42dp">
                         <View android:layout_height="16dp" android:layout_width="16dp"
-                              android:background="@drawable/bg_square_border" android:layout_gravity="center"/>
+                              app:borderColor="@{activityViewModel.theme.colorPrimary}"
+                              app:borderWidth="@{1.3f}"
+                              android:layout_gravity="center"/>
                         <TextView android:id="@+id/counterNumber" tools:text="99" android:layout_width="wrap_content"
                                   android:layout_height="wrap_content" android:layout_gravity="center"
-                                  android:textColor="@color/colorPrimary" android:textSize="11dp"/>
+                                  android:textColor="@{activityViewModel.theme.colorPrimary}" android:textSize="11dp"/>
 
                     </FrameLayout>
                     <com.dev.view.IconfontTextView android:clickable="true" android:focusable="true"
                                                    android:background="?android:attr/selectableItemBackgroundBorderless"
                                                    android:id="@+id/menu" android:gravity="center" android:layout_width="72dp"
                                                    android:layout_height="42dp" android:textSize="@dimen/icon_text_size"
-                                                   android:text="@string/ic_menu" android:textColor="@color/colorPrimary"/>
+                                                   android:text="@string/ic_menu" android:textColor="@{activityViewModel.theme.colorPrimary}"/>
 
                 </LinearLayout>
             </LinearLayout>
@@ -81,7 +84,7 @@
                   android:background="@android:color/transparent" android:visibility="gone"/>
             <com.dev.view.GridView
                     android:id="@+id/top_menu_panel"
-                    android:background="@color/colorPrimary"
+                    android:background="@{activityViewModel.theme.colorPrimary}"
                     android:layout_gravity="top"
                     android:paddingLeft="4dp"
                     android:paddingRight="4dp"
@@ -117,7 +120,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"/>
                 <com.dev.view.IconfontTextView android:id="@+id/bottom_menu_grid_view_close" android:layout_marginTop="12dp"
-                                               android:textColor="@color/colorPrimary"
+                                               android:textColor="@{activityViewModel.theme.colorPrimary}"
                                                android:clickable="true"
                                                android:focusable="true"
                                                android:gravity="center" android:text="@string/ic_down"

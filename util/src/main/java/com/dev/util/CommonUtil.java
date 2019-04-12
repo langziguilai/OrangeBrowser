@@ -3,6 +3,8 @@ package com.dev.util;
 import android.app.Activity;
 import android.content.Context;
 import android.content.ContextWrapper;
+import android.graphics.Bitmap;
+import android.graphics.Matrix;
 import androidx.annotation.Nullable;
 
 public class CommonUtil {
@@ -17,5 +19,29 @@ public class CommonUtil {
         } else {
             return null;
         }
+    }
+
+    public static Bitmap getResizedBitmap(Bitmap bm, float newHeight, float newWidth) {
+
+        int width = bm.getWidth();
+
+        int height = bm.getHeight();
+
+        float scaleWidth =  newWidth / width;
+
+        float scaleHeight =  newHeight / height;
+
+       // CREATE A MATRIX FOR THE MANIPULATION
+
+        Matrix matrix = new Matrix();
+
+        // RESIZE THE BIT MAP
+
+        matrix.postScale(scaleWidth, scaleHeight);
+
+       // RECREATE THE NEW BITMAP
+
+        return Bitmap.createBitmap(bm, 0, 0, width, height, matrix, false);
+
     }
 }

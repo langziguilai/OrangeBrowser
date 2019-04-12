@@ -1,6 +1,6 @@
 [
-  {"name":"深灰","active":true,"colorPrimary":"#6B7A99","colorPrimaryDark":"#6B7A99","colorAccent":"#D81B60","colorPrimaryActive":"#4CAF50","colorPrimaryDisable":"#806B7A99"},
-  {"name":"蔚紫","active":false,"colorPrimary":"#7189C5","colorPrimaryDark":"#7189C5","colorAccent":"#D81B60","colorPrimaryActive":"#4CAF50","colorPrimaryDisable":"#807189C5"},
+  {"name":"深灰","active":false,"colorPrimary":"#6B7A99","colorPrimaryDark":"#6B7A99","colorAccent":"#D81B60","colorPrimaryActive":"#4CAF50","colorPrimaryDisable":"#806B7A99"},
+  {"name":"蔚紫","active":true,"colorPrimary":"#7189C5","colorPrimaryDark":"#7189C5","colorAccent":"#D81B60","colorPrimaryActive":"#4CAF50","colorPrimaryDisable":"#807189C5"},
   {"name":"姹紫","active":false,"colorPrimary":"#937CCC","colorPrimaryDark":"#937CCC","colorAccent":"#D81B60","colorPrimaryActive":"#4CAF50","colorPrimaryDisable":"#80937CCC"},
   {"name":"嫣红","active":false,"colorPrimary":"#FD7A99","colorPrimaryDark":"#FD7A99","colorAccent":"#D81B60","colorPrimaryActive":"#4CAF50","colorPrimaryDisable":"#80FD7A99"},
   {"name":"大红","active":false,"colorPrimary":"#E55051","colorPrimaryDark":"#E55051","colorAccent":"#D81B60","colorPrimaryActive":"#4CAF50","colorPrimaryDisable":"#80E55051"},

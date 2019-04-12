@@ -3,6 +3,7 @@ package com.dev.orangebrowser.extension
 import com.dev.orangebrowser.AndroidApplication
 import com.dev.orangebrowser.bloc.host.MainActivity
 import com.dev.orangebrowser.data.model.ApplicationData
+import com.dev.orangebrowser.data.model.Theme
 import com.dev.orangebrowser.di.ApplicationComponent
 
 val androidx.fragment.app.Fragment.appComponent: ApplicationComponent
@@ -23,4 +24,3 @@ val androidx.fragment.app.Fragment.RouterActivity: MainActivity?
 
 val androidx.fragment.app.Fragment.application:AndroidApplication
     get() = requireContext().applicationContext as AndroidApplication
-

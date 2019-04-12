@@ -18,5 +18,8 @@
     <color name="ic_enabled">@color/colorPrimary</color>
     <color name="ic_not_enabled">@color/colorPrimaryDisable</color>
     <color name="colorWhite">#FFFFFF</color>
+    <color name="colorBlack">#0E0E0E</color>
     <color name="borderColor">#ededed</color>
+    <color name="color_8F8F8F">#8F8F8F</color>
+    <color name="colorDarkGrey">#3A3A3A</color>
 </resources>

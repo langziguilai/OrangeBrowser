@@ -2,6 +2,8 @@ package com.dev.orangebrowser.data.model
 
 import android.content.Context
 import android.graphics.Color
+import android.os.Parcel
+import android.os.Parcelable
 import com.dev.base.extension.loadJsonArray
 import com.dev.orangebrowser.R
 
@@ -25,25 +27,54 @@ data class Theme(
 }
 
 data class ThemeSource(
-    var name:String,  //名称
-    var active:Boolean=false,
+    var name: String,  //名称
+    var active: Boolean = false,
     var colorPrimary: String,
     var colorPrimaryDark: String,
+    var colorAccent: String,
     var colorPrimaryActive: String,
-    var colorPrimaryDisable: String,
-    var colorAccent: String
-){
+    var colorPrimaryDisable: String
+) : Parcelable {
     //转换为Theme
-    fun toTheme():Theme{
+    fun toTheme(): Theme {
         return Theme(
-            colorPrimary= Color.parseColor(colorPrimary),
-            colorPrimaryDark= Color.parseColor(colorPrimaryDark),
-            colorPrimaryActive= Color.parseColor(colorPrimaryActive),
-            colorPrimaryDisable= Color.parseColor(colorPrimaryDisable),
-            colorAccent= Color.parseColor(colorAccent)
+            colorPrimary = Color.parseColor(colorPrimary),
+            colorPrimaryDark = Color.parseColor(colorPrimaryDark),
+            colorPrimaryActive = Color.parseColor(colorPrimaryActive),
+            colorPrimaryDisable = Color.parseColor(colorPrimaryDisable),
+            colorAccent = Color.parseColor(colorAccent)
         )
     }
 
+    constructor(source: Parcel) : this(
+        source.readString(),
+        1 == source.readInt(),
+        source.readString(),
+        source.readString(),
+        source.readString(),
+        source.readString(),
+        source.readString()
+    )
+
+    override fun describeContents() = 0
+
+    override fun writeToParcel(dest: Parcel, flags: Int) = with(dest) {
+        writeString(name)
+        writeInt((if (active) 1 else 0))
+        writeString(colorPrimary)
+        writeString(colorPrimaryDark)
+        writeString(colorPrimaryActive)
+        writeString(colorPrimaryDisable)
+        writeString(colorAccent)
+    }
+
+    companion object {
+        @JvmField
+        val CREATOR: Parcelable.Creator<ThemeSource> = object : Parcelable.Creator<ThemeSource> {
+            override fun createFromParcel(source: Parcel): ThemeSource = ThemeSource(source)
+            override fun newArray(size: Int): Array<ThemeSource?> = arrayOfNulls(size)
+        }
+    }
 }
 
 data class ThemeSources(var themeSources:List<ThemeSource>){
@@ -58,7 +89,8 @@ data class ThemeSources(var themeSources:List<ThemeSource>){
     }
     companion object {
         fun loadThemeSources(context:Context):ThemeSources{
-            return ThemeSources(themeSources =context.loadJsonArray<ThemeSource>("themes.json") )
+            val themes=context.loadJsonArray("themes.json",ThemeSource::class.java)
+            return ThemeSources(themeSources = themes)
         }
     }
 }

@@ -6,6 +6,7 @@ import android.view.View
 import androidx.lifecycle.ViewModelProviders
 import com.dev.base.BaseFragment
 import com.dev.orangebrowser.R
+import com.dev.orangebrowser.bloc.browser.BrowserFragment
 import com.dev.orangebrowser.extension.appComponent
 
 //资源嗅探
@@ -14,7 +15,11 @@ class ResourceFragment : BaseFragment() {
 
     companion object {
         val Tag="ResourceFragment"
-        fun newInstance() = ResourceFragment()
+        fun newInstance(sessionId:String) = ResourceFragment().apply {
+            arguments = Bundle().apply {
+                putString(BrowserFragment.SESSION_ID, sessionId)
+            }
+        }
     }
 
     lateinit var viewModel: ResourceViewModel

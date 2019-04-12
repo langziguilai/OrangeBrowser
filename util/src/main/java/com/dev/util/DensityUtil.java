@@ -7,7 +7,15 @@ import android.content.Context;
 import android.content.res.Configuration;
 import android.util.DisplayMetrics;
 
+
+
 public class DensityUtil {
+    private static float DesignWidth=360.0f;
+
+    //应用初始化的时候，可以设置设计宽度
+    public static void setDesignWidth(float width){
+        DesignWidth=width;
+    }
     private static float sNoncompatDensity;
     private static float sNoncompatScaledDensity;
     public static void setCustomDensity(Activity activity,final Application application){
@@ -29,7 +37,7 @@ public class DensityUtil {
                 }
             });
         }
-        final float targetDensity=appDisplayMetrics.widthPixels/360.0f;
+        final float targetDensity=appDisplayMetrics.widthPixels/DesignWidth;
         final float targetScaledDensity = targetDensity*(sNoncompatScaledDensity/sNoncompatDensity);
         final int targetDensityDpi=(int)(160*targetDensity);
         //设置application
@@ -61,7 +69,7 @@ public class DensityUtil {
                 }
             });
         }
-        final float targetDensity=appDisplayMetrics.widthPixels/360.0f;
+        final float targetDensity=appDisplayMetrics.widthPixels/DesignWidth;
         final float targetScaledDensity = targetDensity*(sNoncompatScaledDensity/sNoncompatDensity);
         final int targetDensityDpi=(int)(160*targetDensity);
         //设置application
