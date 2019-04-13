@@ -5,6 +5,7 @@ import android.content.Context
 import android.os.Bundle
 import android.view.*
 import android.widget.FrameLayout
+import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.lifecycle.ViewModelProviders
 import com.dev.base.BaseFragment
 import com.dev.base.support.BackHandler
@@ -25,6 +26,7 @@ import com.dev.orangebrowser.databinding.FragmentBrowserBinding
 import com.dev.orangebrowser.extension.RouterActivity
 import com.dev.orangebrowser.extension.appComponent
 import com.dev.orangebrowser.extension.appData
+import com.dev.orangebrowser.view.WebViewToggleBehavior
 import com.dev.view.StatusBarUtil
 import java.util.*
 import javax.inject.Inject
@@ -128,7 +130,12 @@ class BrowserFragment : BaseFragment(), BackHandler, UserInteractionHandler {
         binding.webViewContainer.removeAllViews()
         val engineView= SystemEngineView(requireContext().applicationContext)
         binding.webViewContainer.addView(engineView,FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT))
-
+        //get behavior
+        (binding.webViewContainer.layoutParams as? CoordinatorLayout.LayoutParams)?.apply {
+            (this.behavior as? WebViewToggleBehavior)?.apply {
+                this.setSession(session)
+            }
+        }
         fullScreenHelper= FullScreenHelper(binding,requireActivity())
 
         val bottomPanelHelper = BottomPanelHelper(binding, this)

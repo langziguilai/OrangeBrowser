@@ -30,6 +30,7 @@ class Session(
     val id: String = UUID.randomUUID().toString(),
     var forbidImageMode:Boolean=false,
     var visionMode:Int=NORMAL_SCREEN_MODE,
+    var enterFullScreenMode:Boolean=false,
     var themeColorMap:HashMap<String,Int> = HashMap(),
     var isStatusBarDarkMode:Boolean=false,
     delegate: Observable<Observer> = ObserverRegistry()

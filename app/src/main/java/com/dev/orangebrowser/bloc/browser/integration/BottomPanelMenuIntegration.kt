@@ -155,7 +155,6 @@ class BottomPanelMenuIntegration(
                 }else{
                     binding.miniBottomBar.visibility=View.GONE
                 }
-                behavior?.screenMode=session.visionMode
                 binding.fragmentContainer.requestLayout()
             }
             //电脑

@@ -28,6 +28,7 @@ class MiniBottomBarIntegration(var binding: FragmentBrowserBinding,var fragment:
             }
         }
         binding.miniShowBottomBar.setOnClickListener {
+            session.enterFullScreenMode=false
             webViewVisionHelper.showBottomAndTopBarAnimate()
             webViewVisionHelper.hideMiniBottomBarAnimate()
         }

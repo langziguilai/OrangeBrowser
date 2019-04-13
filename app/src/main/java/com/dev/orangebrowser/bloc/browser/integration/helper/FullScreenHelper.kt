@@ -6,6 +6,7 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout
 import com.dev.base.extension.hide
 import com.dev.base.extension.show
 import com.dev.browser.session.Session
+import com.dev.orangebrowser.bloc.host.MainActivity
 import com.dev.orangebrowser.databinding.FragmentBrowserBinding
 import com.dev.orangebrowser.view.WebViewToggleBehavior
 import com.dev.view.StatusBarUtil
@@ -28,10 +29,15 @@ class FullScreenHelper(var binding:FragmentBrowserBinding,var activity: Activity
                StatusBarUtil.hideStatusBar(activity)
                binding.topBar.hide()
                binding.bottomBar.hide()
+               binding.miniBottomBar.hide()
                session.visionMode=Session.STATIC_FULL_SCREEN_MODE
-               behavior?.screenMode=session.visionMode
-               activity.requestedOrientation= ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
                binding.fragmentContainer.requestLayout()
+               (activity as? MainActivity)?.apply {
+                   enableAutoOrientation=false
+               }
+               if (activity.resources.configuration.orientation==ActivityInfo.SCREEN_ORIENTATION_PORTRAIT){
+                   activity.requestedOrientation= ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
+               }
            }else{ //退出全局视野
                StatusBarUtil.showStatusBar(activity)
                //隐藏StatusBar之后，其文字的颜色会变为默认颜色，我们需要修改其颜色
@@ -40,12 +46,22 @@ class FullScreenHelper(var binding:FragmentBrowserBinding,var activity: Activity
                }else{
                    StatusBarUtil.setLightMode(activity)
                }
+               //恢复默认位置
                binding.topBar.show()
                binding.bottomBar.show()
+               //显示bottombar
+               binding.bottomBar.translationY=0f
+               binding.miniBottomBar.show()
+               //隐藏miniBottomBar
+               binding.miniBottomBar.translationY=binding.miniBottomBar.height.toFloat()
                session.visionMode=lastScreenMode
-               behavior?.screenMode=session.visionMode
-               activity.requestedOrientation= ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
                binding.fragmentContainer.requestLayout()
+               (activity as? MainActivity)?.apply {
+                   enableAutoOrientation=true
+               }
+               if (activity.resources.configuration.orientation!=ActivityInfo.SCREEN_ORIENTATION_PORTRAIT){
+                   activity.requestedOrientation= ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+               }
            }
     }
 }

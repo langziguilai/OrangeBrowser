@@ -19,7 +19,7 @@ public class WebViewToggleBehavior extends CoordinatorLayout.Behavior<View> {
         super(context, attrs);
     }
 
-    private int screenMode= Session.NORMAL_SCREEN_MODE;//默认正常视野
+    private Session session;
 
     private WeakReference<View> topBarRef = new WeakReference<>(null);
     private WeakReference<View> bottomBarRef = new WeakReference<>(null);
@@ -39,7 +39,7 @@ public class WebViewToggleBehavior extends CoordinatorLayout.Behavior<View> {
 
     @Override
     public boolean onDependentViewChanged(@NonNull CoordinatorLayout parent, @NonNull View child, @NonNull View dependency) {
-        if (screenMode!=Session.NORMAL_SCREEN_MODE && screenMode!=Session.STATIC_FULL_SCREEN_MODE){
+        if (session.getVisionMode()!=Session.NORMAL_SCREEN_MODE && session.getVisionMode()!=Session.STATIC_FULL_SCREEN_MODE){
             child.setTop(dependency.getBottom());
         }
         return true;
@@ -47,7 +47,7 @@ public class WebViewToggleBehavior extends CoordinatorLayout.Behavior<View> {
 
     @Override
     public boolean onLayoutChild(@NonNull CoordinatorLayout parent, @NonNull View child, int layoutDirection) {
-        if (screenMode==Session.NORMAL_SCREEN_MODE){
+        if (session.getVisionMode()==Session.NORMAL_SCREEN_MODE){
             if (topBarRef.get()!=null){
                 View dependency= topBarRef.get();
                 if (bottomBarRef.get()!=null){
@@ -57,28 +57,40 @@ public class WebViewToggleBehavior extends CoordinatorLayout.Behavior<View> {
                 }
 
             }
-        }else if (screenMode==Session.SCROLL_FULL_SCREEN_MODE){
+        }else if (session.getVisionMode()==Session.SCROLL_FULL_SCREEN_MODE){
             if (topBarRef.get()!=null){
                 View dependency= topBarRef.get();
-                child.layout(0,dependency.getBottom(),child.getMeasuredWidth(),dependency.getBottom()+child.getMeasuredHeight());
+                if (session.getEnterFullScreenMode()){
+                    //为何要这样做：因为webview在coordinatorlayout中有时候跳转页面的时候，会触发onLayout，
+                    // 并且dependency的位置会重置，恢复到默认状态，所以，在这里修复一下，如果是全屏模式：那么将dependency的位置调整到隐藏的位置，并将webview的容器大小设置为全屏
+                    int offset=dependency.getBottom();
+                    dependency.offsetTopAndBottom(-offset);
+                    child.layout(0,0,child.getMeasuredWidth(),child.getMeasuredHeight());
+                }else{
+                    child.layout(0,dependency.getBottom(),child.getMeasuredWidth(),dependency.getBottom()+child.getMeasuredHeight());
+                }
             }
-        }else if(screenMode==Session.MAX_SCREEN_MODE){
+        }else if(session.getVisionMode()==Session.MAX_SCREEN_MODE){
             if (topBarRef.get()!=null){
                 View dependency= topBarRef.get();
-                child.layout(0,dependency.getBottom(),child.getMeasuredWidth(),dependency.getBottom()+child.getMeasuredHeight());
+                if (session.getEnterFullScreenMode()){
+                    //为何要这样做：因为webview在coordinatorlayout中有时候跳转页面的时候，会触发onLayout，
+                    // 并且dependency的位置会重置，恢复到默认状态，所以，在这里修复一下，如果是全屏模式：那么将dependency的位置调整到隐藏的位置，并将webview的容器大小设置为全屏
+                    int offset=dependency.getBottom();
+                    dependency.offsetTopAndBottom(-offset);
+                    child.layout(0,0,child.getMeasuredWidth(),child.getMeasuredHeight());
+                }else{
+                    child.layout(0,dependency.getBottom(),child.getMeasuredWidth(),dependency.getBottom()+child.getMeasuredHeight());
+                }
             }
-        }else if(screenMode==Session.STATIC_FULL_SCREEN_MODE){
+        }else if(session.getVisionMode()==Session.STATIC_FULL_SCREEN_MODE){
             //全屏
                 child.layout(0,0,parent.getMeasuredWidth(),parent.getMeasuredHeight());
         }
         return true;
     }
 
-    public int getScreenMode() {
-        return screenMode;
-    }
-
-    public void setScreenMode(int screenMode) {
-        this.screenMode = screenMode;
+    public void setSession(Session session) {
+        this.session = session;
     }
 }

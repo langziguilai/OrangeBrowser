@@ -18,14 +18,18 @@ class WebViewScrollHandlerIntegration(var binding: FragmentBrowserBinding, sessi
                 when {
                     session.visionMode == Session.NORMAL_SCREEN_MODE -> return   //正常视野模式
                     session.visionMode == Session.SCROLL_FULL_SCREEN_MODE -> {     //滑动最大视野模式
+
                         if (direction == OnWebViewScrollDirectionListener.UP) {
+                            session.enterFullScreenMode=true
                             webViewVisionHelper.hideBottomAndTopBarAnimate()
                         } else {
+                            session.enterFullScreenMode=false
                             webViewVisionHelper.showBottomAndTopBarAnimate()
                         }
                     }
                     session.visionMode==Session.MAX_SCREEN_MODE -> {    //最大视野模式
                         if (direction == OnWebViewScrollDirectionListener.UP) {
+                            session.enterFullScreenMode=true
                             webViewVisionHelper.hideBottomAndTopBarAnimate()
                             webViewVisionHelper.showMiniBottomBarAnimate()
                         }
