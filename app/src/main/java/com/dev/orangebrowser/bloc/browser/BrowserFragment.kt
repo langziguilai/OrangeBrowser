@@ -49,7 +49,6 @@ class BrowserFragment : BaseFragment(), BackHandler, UserInteractionHandler {
     private val sessionFeature = ViewBoundFeatureWrapper<SessionFeature>()
     private val thumbnailsFeature = ViewBoundFeatureWrapper<ThumbnailsFeature>()
     private val windowFeature = ViewBoundFeatureWrapper<WindowFeature>()
-    //    private val toolbarIntegration = ViewBoundFeatureWrapper<ToolbarIntegration>()
 //    private val contextMenuIntegration = ViewBoundFeatureWrapper<ContextMenuIntegration>()
 //    private val downloadsFeature = ViewBoundFeatureWrapper<DownloadsFeature>()
 //    private val promptsFeature = ViewBoundFeatureWrapper<PromptFeature>()
@@ -82,6 +81,7 @@ class BrowserFragment : BaseFragment(), BackHandler, UserInteractionHandler {
     lateinit var  fullScreenHelper:FullScreenHelper
     //
     init {
+        backHandlers.add(adaptToBackHandler(fullScreenFeature))
         backHandlers.add(adaptToBackHandler(sessionFeature))
     }
 
@@ -90,7 +90,6 @@ class BrowserFragment : BaseFragment(), BackHandler, UserInteractionHandler {
             override fun onBackPressed(): Boolean {
                 return wrapper.onBackPressed()
             }
-
         }
     }
 
@@ -126,6 +125,9 @@ class BrowserFragment : BaseFragment(), BackHandler, UserInteractionHandler {
     override fun initViewWithDataBinding(savedInstanceState: Bundle?) {
 
         val session=sessionManager.findSessionById(sessionId) ?: sessionManager.selectedSessionOrThrow
+        val bottomPanelHelper = BottomPanelHelper(binding, this)
+        val topPanelHelper = TopPanelHelper(binding, this, bottomPanelHelper)
+        val webViewVisionHelper=WebViewVisionHelper(binding)
         //将EngineView添加到上面去
         binding.webViewContainer.removeAllViews()
         val engineView= SystemEngineView(requireContext().applicationContext)
@@ -134,13 +136,12 @@ class BrowserFragment : BaseFragment(), BackHandler, UserInteractionHandler {
         (binding.webViewContainer.layoutParams as? CoordinatorLayout.LayoutParams)?.apply {
             (this.behavior as? WebViewToggleBehavior)?.apply {
                 this.setSession(session)
+                this.setHelper(webViewVisionHelper)
             }
         }
         fullScreenHelper= FullScreenHelper(binding,requireActivity())
 
-        val bottomPanelHelper = BottomPanelHelper(binding, this)
-        val topPanelHelper = TopPanelHelper(binding, this, bottomPanelHelper)
-        val webViewVisionHelper=WebViewVisionHelper(binding)
+
         bottomBarIntegration.set(
             feature = BottomBarIntegration(
                 binding = binding,
@@ -268,7 +269,6 @@ class BrowserFragment : BaseFragment(), BackHandler, UserInteractionHandler {
         session?.apply {
             fullScreenHelper.toggleFullScreen(session =this,fullScreen = enabled)
         }
-
     }
 
     @Suppress("ReturnCount")
