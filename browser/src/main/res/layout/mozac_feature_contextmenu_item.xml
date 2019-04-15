@@ -8,11 +8,10 @@
     android:layout_width="match_parent"
     android:layout_height="48dp"
     android:background="?android:attr/selectableItemBackground"
+    android:textColor="#6C6C6C"
     android:clickable="true"
     android:ellipsize="end"
     android:focusable="true"
-    android:gravity="center_vertical"
+    android:gravity="center"
     android:lines="1"
-    android:paddingEnd="16dp"
-    android:paddingStart="16dp"
-    android:textSize="16sp" />
+    android:textSize="14sp" />

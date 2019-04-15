@@ -8,6 +8,7 @@ import android.annotation.TargetApi
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.Canvas
+import android.graphics.Point
 import android.net.Uri
 import android.net.http.SslError
 import android.os.Build
@@ -74,9 +75,12 @@ class SystemEngineView @JvmOverloads constructor(
         addView(initWebView(session.webView))
     }
 
-    fun onLongClick(view: View?): Boolean {
+    private fun onLongClick(view: View?): Boolean {
         val result = session?.webView?.hitTestResult
-        return result?.let { handleLongClick(result.type, result.extra) } ?: false
+        result?.extra?.apply {
+          return   handleLongClick(result.type, this)
+        }
+        return  false
     }
 
     override fun onPause() {
@@ -92,14 +96,21 @@ class SystemEngineView @JvmOverloads constructor(
             webView.resumeTimers()
         }
     }
-
+    private val longClickPoint:Point= Point()
     private val runnable= Runnable { onLongClick(null) }
-    private var longClickListener:LongClickListener= LongClickListener(runnable = runnable,view = this)
+    private var longClickListener:LongClickListener= LongClickListener(runnable = runnable,view = this,point = longClickPoint)
     override fun dispatchTouchEvent(ev: MotionEvent): Boolean {
         longClickListener.onTouch(ev)
         return super.dispatchTouchEvent(ev)
     }
-    class LongClickListener(var view:View,var runnable: Runnable){
+
+
+
+    override fun getLongClickPosition(): Point {
+        return longClickPoint
+    }
+
+    class LongClickListener(var view:View, var runnable: Runnable,var point:Point){
         /**
          * 上一次点击的的坐标
          */
@@ -126,6 +137,8 @@ class SystemEngineView @JvmOverloads constructor(
                     isMove = false
                     lastX = x
                     lastY = y
+                    //设置初始点的位置
+                    point.set(x.toInt(),y.toInt())
                     view.postDelayed(runnable, ViewConfiguration.getLongPressTimeout().toLong())
                 }
                 MotionEvent.ACTION_MOVE -> {

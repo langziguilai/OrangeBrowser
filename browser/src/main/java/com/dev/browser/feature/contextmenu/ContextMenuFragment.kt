@@ -5,26 +5,30 @@
 package com.dev.browser.feature.contextmenu
 
 import android.annotation.SuppressLint
-import android.app.Dialog
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.FrameLayout
 import android.widget.TextView
 import androidx.annotation.VisibleForTesting
-import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.widget.AppCompatTextView
 import androidx.fragment.app.DialogFragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.dev.base.extension.onGlobalLayoutComplete
 import com.dev.browser.R
 import com.dev.browser.session.Session
+import com.dev.util.DensityUtil
 
 private const val KEY_TITLE = "title"
 private const val KEY_SESSION_ID = "session_id"
 private const val KEY_IDS = "ids"
 private const val KEY_LABELS = "labels"
+private const val LOGN_CLICK_X = "long_click_x"
+private const val LOGN_CLICK_Y = "long_click_y"
 
 /**
  * [DialogFragment] implementation to display the actual context menu dialog.
@@ -37,45 +41,68 @@ class ContextMenuFragment : DialogFragment() {
     @VisibleForTesting internal val itemLabels: List<String> by lazy { arguments!!.getStringArrayList(KEY_LABELS)!! }
     @VisibleForTesting internal val sessionId: String by lazy { arguments!!.getString(KEY_SESSION_ID)!! }
     @VisibleForTesting internal val title: String by lazy { arguments!!.getString(KEY_TITLE)!! }
+    @VisibleForTesting internal val longClickX: Int by lazy { arguments!!.getInt(LOGN_CLICK_X) }
+    @VisibleForTesting internal val longClickY: Int by lazy { arguments!!.getInt(LOGN_CLICK_Y) }
 
-    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        val inflater = LayoutInflater.from(requireContext())
-
-        val builder = AlertDialog.Builder(requireContext())
-            .setCustomTitle(createDialogTitleView(inflater))
-            .setView(createDialogContentView(inflater))
-            .setOnCancelListener { feature?.onMenuCancelled(sessionId) }
-
-        return builder.create()
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setStyle(STYLE_NORMAL,R.style.Dialog_FullScreen)
     }
 
-    @SuppressLint("InflateParams")
-    internal fun createDialogTitleView(inflater: LayoutInflater): View {
-        return inflater.inflate(
-            R.layout.mozac_feature_contextmenu_title,
-            null
-        ).findViewById<AppCompatTextView>(
-            R.id.titleView
-        ).apply {
-            text = title
-        }
-    }
-
-    @SuppressLint("InflateParams")
-    internal fun createDialogContentView(inflater: LayoutInflater): View {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.mozac_feature_contextmenu_dialog, null)
-
-        view.findViewById<RecyclerView>(R.id.recyclerView).apply {
-            layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
-            adapter = ContextMenuAdapter(this@ContextMenuFragment, inflater)
-        }
-
+        initDialogContentView(view,inflater)
         return view
     }
 
+    override fun onStart() {
+        super.onStart()
+        dialog?.window?.apply {
+            setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+            val params=this.attributes
+            params.dimAmount=0.0f
+            this.attributes=params
+        }
+
+    }
+
+    var offSet:Int=-1
+    @SuppressLint("InflateParams")
+    internal fun initDialogContentView(container:View,inflater: LayoutInflater) {
+        offSet=DensityUtil.dip2px(container.context,20f)
+        container.setOnClickListener {
+            dismiss()
+        }
+        val recyclerView=container.findViewById<RecyclerView>(R.id.recyclerView).apply {
+            layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
+            adapter = ContextMenuAdapter(this@ContextMenuFragment, inflater)
+        }
+        recyclerView.onGlobalLayoutComplete {
+            (it.layoutParams as? FrameLayout.LayoutParams)?.apply {
+                this.leftMargin=calculateRecyclerViewLeftMargin(container.width,it.width,longClickX)
+                this.topMargin=calculateRecyclerViewTopMargin(container.height,it.height,longClickY)
+                it.layoutParams=this
+            }
+        }
+    }
+    //计算左边的距离
+    private fun calculateRecyclerViewLeftMargin(containerWidth: Int, childWidth: Int, x:Int):Int{
+        return if (x+childWidth+offSet>containerWidth){
+            x-childWidth-offSet
+        }else{
+            x+offSet
+        }
+    }
+    //计算左边的距离
+    private fun calculateRecyclerViewTopMargin(containerHeight: Int, childHeight: Int, y:Int):Int{
+        return when {
+            y+childHeight/2+offSet>containerHeight -> containerHeight-childHeight-offSet
+            y-childHeight/2-offSet<0 -> offSet
+            else -> y-childHeight/2
+        }
+    }
     internal fun onItemSelected(position: Int) {
         feature?.onMenuItemSelected(sessionId, itemIds[position])
-
         dismiss()
     }
 
@@ -87,13 +114,17 @@ class ContextMenuFragment : DialogFragment() {
             session: Session,
             title: String,
             ids: List<String>,
-            labels: List<String>
+            labels: List<String>,
+            longClickX:Int,
+            longClickY:Int
         ): ContextMenuFragment {
             val arguments = Bundle()
             arguments.putString(KEY_TITLE, title)
             arguments.putStringArrayList(KEY_IDS, ArrayList(ids))
             arguments.putStringArrayList(KEY_LABELS, ArrayList(labels))
             arguments.putString(KEY_SESSION_ID, session.id)
+            arguments.putInt(LOGN_CLICK_X, longClickX)
+            arguments.putInt(LOGN_CLICK_Y,longClickY)
 
             val fragment = ContextMenuFragment()
             fragment.arguments = arguments

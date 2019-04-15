@@ -58,15 +58,7 @@ data class ContextMenuCandidate(
             action = { parent, hitResult ->
                 val session = tabsUseCases.addTab.invoke(
                     hitResult.getLink(), selectTab = false, startLoading = true, parent = parent)
-
-                snackbarDelegate.show(
-                    snackBarParentView = snackBarParentView,
-                    text = R.string.mozac_feature_contextmenu_snackbar_new_tab_opened,
-                    duration = Snackbar.LENGTH_LONG,
-                    action = R.string.mozac_feature_contextmenu_snackbar_action_switch
-                ) {
-                    tabsUseCases.selectTab.invoke(session)
-                }
+                tabsUseCases.selectTab.invoke(session)
             }
         )
 
@@ -84,15 +76,7 @@ data class ContextMenuCandidate(
             action = { parent, hitResult ->
                 val session = tabsUseCases.addPrivateTab.invoke(
                     hitResult.src, selectTab = false, startLoading = true, parent = parent)
-
-                snackbarDelegate.show(
-                    snackBarParentView,
-                    R.string.mozac_feature_contextmenu_snackbar_new_private_tab_opened,
-                    Snackbar.LENGTH_LONG,
-                    R.string.mozac_feature_contextmenu_snackbar_action_switch
-                ) {
-                    tabsUseCases.selectTab.invoke(session)
-                }
+                tabsUseCases.selectTab.invoke(session)
             }
         )
 
@@ -115,15 +99,7 @@ data class ContextMenuCandidate(
                     tabsUseCases.addTab.invoke(
                         hitResult.src, selectTab = false, startLoading = true, parent = parent)
                 }
-
-                snackbarDelegate.show(
-                    snackBarParentView = snackBarParentView,
-                    text = R.string.mozac_feature_contextmenu_snackbar_new_tab_opened,
-                    duration = Snackbar.LENGTH_LONG,
-                    action = R.string.mozac_feature_contextmenu_snackbar_action_switch
-                ) {
-                    tabsUseCases.selectTab.invoke(session)
-                }
+                tabsUseCases.selectTab.invoke(session)
             }
         )
 
@@ -184,7 +160,6 @@ data class ContextMenuCandidate(
                 val clipboardManager = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
                 val clip = ClipData.newPlainText(hitResult.getLink(), hitResult.getLink())
                 clipboardManager.primaryClip = clip
-
                 snackbarDelegate.show(
                     snackBarParentView = snackBarParentView,
                     text = R.string.mozac_feature_contextmenu_snackbar_text_copied,

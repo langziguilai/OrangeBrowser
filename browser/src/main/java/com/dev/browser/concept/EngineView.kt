@@ -5,6 +5,7 @@
 package com.dev.browser.concept
 
 import android.graphics.Bitmap
+import android.graphics.Point
 import android.view.View
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.OnLifecycleEvent
@@ -19,7 +20,10 @@ interface EngineView {
      * Convenience method to cast the implementation of this interface to an Android View object.
      */
     fun asView(): View = this as View
-
+    /**
+     * 获取长按的位置
+     */
+    fun getLongClickPosition():Point
     /**
      * Render the content of the given session.
      */
