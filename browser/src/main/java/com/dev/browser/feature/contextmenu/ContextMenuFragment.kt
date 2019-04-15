@@ -27,8 +27,8 @@ private const val KEY_TITLE = "title"
 private const val KEY_SESSION_ID = "session_id"
 private const val KEY_IDS = "ids"
 private const val KEY_LABELS = "labels"
-private const val LOGN_CLICK_X = "long_click_x"
-private const val LOGN_CLICK_Y = "long_click_y"
+private const val LONG_CLICK_X = "long_click_x"
+private const val LONG_CLICK_Y = "long_click_y"
 
 /**
  * [DialogFragment] implementation to display the actual context menu dialog.
@@ -41,8 +41,8 @@ class ContextMenuFragment : DialogFragment() {
     @VisibleForTesting internal val itemLabels: List<String> by lazy { arguments!!.getStringArrayList(KEY_LABELS)!! }
     @VisibleForTesting internal val sessionId: String by lazy { arguments!!.getString(KEY_SESSION_ID)!! }
     @VisibleForTesting internal val title: String by lazy { arguments!!.getString(KEY_TITLE)!! }
-    @VisibleForTesting internal val longClickX: Int by lazy { arguments!!.getInt(LOGN_CLICK_X) }
-    @VisibleForTesting internal val longClickY: Int by lazy { arguments!!.getInt(LOGN_CLICK_Y) }
+    @VisibleForTesting internal val longClickX: Int by lazy { arguments!!.getInt(LONG_CLICK_X) }
+    @VisibleForTesting internal val longClickY: Int by lazy { arguments!!.getInt(LONG_CLICK_Y) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -123,8 +123,8 @@ class ContextMenuFragment : DialogFragment() {
             arguments.putStringArrayList(KEY_IDS, ArrayList(ids))
             arguments.putStringArrayList(KEY_LABELS, ArrayList(labels))
             arguments.putString(KEY_SESSION_ID, session.id)
-            arguments.putInt(LOGN_CLICK_X, longClickX)
-            arguments.putInt(LOGN_CLICK_Y,longClickY)
+            arguments.putInt(LONG_CLICK_X, longClickX)
+            arguments.putInt(LONG_CLICK_Y,longClickY)
 
             val fragment = ContextMenuFragment()
             fragment.arguments = arguments

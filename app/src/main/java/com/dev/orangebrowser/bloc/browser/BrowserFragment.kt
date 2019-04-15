@@ -15,6 +15,7 @@ import com.dev.base.support.ViewBoundFeatureWrapper
 import com.dev.browser.concept.Engine
 import com.dev.browser.engine.SystemEngineView
 import com.dev.browser.feature.session.*
+import com.dev.browser.feature.sitepermissions.SitePermissionsFeature
 import com.dev.browser.feature.tabs.TabsUseCases
 import com.dev.browser.session.Session
 import com.dev.browser.session.SessionManager
@@ -59,7 +60,7 @@ class BrowserFragment : BaseFragment(), BackHandler, UserInteractionHandler {
     private val fullScreenFeature = ViewBoundFeatureWrapper<FullScreenFeature>()
 //    private val customTabsIntegration = ViewBoundFeatureWrapper<CustomTabsIntegration>()
 //    private val findInPageIntegration = ViewBoundFeatureWrapper<FindInPageIntegration>()
-//    private val sitePermissionFeature = ViewBoundFeatureWrapper<SitePermissionsFeature>()
+    private val sitePermissionFeature = ViewBoundFeatureWrapper<SitePermissionsFeature>()
     private val pictureInPictureIntegration = ViewBoundFeatureWrapper<PictureInPictureIntegration>()
     private val topBarIntegration = ViewBoundFeatureWrapper<TopBarIntegration>()
     private val bottomBarIntegration = ViewBoundFeatureWrapper<BottomBarIntegration>()
@@ -235,21 +236,6 @@ class BrowserFragment : BaseFragment(), BackHandler, UserInteractionHandler {
             view = binding.root
         )
 
-        //多窗口展示
-//        val windowFeatureListener=object : WindowFeature.WindowFeatureListener{
-//            override fun onOpenWindow(sessionAdd: Session) {
-//                RouterActivity?.loadBrowserFragment(sessionAdd.id)
-//            }
-//            override fun onCloseWindow(sessionRemoved: Session) {
-//                if (sessionManager.selectedSession!=null){
-//                    //TODO:根据状态返回对应的fragment
-//                    RouterActivity?.loadBrowserFragment(sessionManager.selectedSession!!.id)
-//                }else{
-//                    //返回首页
-//                    RouterActivity?.loadHomeFragment(HomeFragment.NO_SESSION_ID)
-//                }
-//            }
-//        }
         windowFeature.set(
             feature = WindowFeature(
                 engine = engine,
@@ -273,6 +259,17 @@ class BrowserFragment : BaseFragment(), BackHandler, UserInteractionHandler {
             ),
             owner = this,
             view = binding.root)
+
+        sitePermissionFeature.set(
+            feature = SitePermissionsFeature(
+                anchorView = binding.bottomBar,
+                sessionManager = sessionManager
+            ) { permissions ->
+                requestPermissions(permissions, REQUEST_CODE_APP_PERMISSIONS)
+            },
+            owner = this,
+            view = binding.root
+        )
 
     }
 
@@ -324,6 +321,9 @@ class BrowserFragment : BaseFragment(), BackHandler, UserInteractionHandler {
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
         when (requestCode) {
 
+            REQUEST_CODE_APP_PERMISSIONS -> sitePermissionFeature.withFeature {
+                it.onPermissionsResult(grantResults)
+            }
         }
     }
 

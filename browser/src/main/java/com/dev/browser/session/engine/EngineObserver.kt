@@ -24,10 +24,18 @@ internal class EngineObserver(val session: Session) : EngineSession.Observer {
         session.searchTerms = ""
         session.title = ""
 
-        session.contentPermissionRequest.consume {
-            it.reject()
-            true
+        //当contentPermissionRequest不为空时，并且url不相同的时候清空request
+        session.contentPermissionRequest.value?.apply {
+            this.uri?.apply {
+                if (url!=this){
+                    session.contentPermissionRequest.consume {
+                        it.reject()
+                        true
+                    }
+                }
+            }
         }
+
     }
 
     override fun onTitleChange(title: String) {

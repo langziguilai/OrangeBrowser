@@ -1,6 +1,7 @@
 package com.dev.base.extension
 
 import android.view.View
+import android.view.ViewGroup
 import android.view.ViewTreeObserver
 import android.view.animation.AccelerateDecelerateInterpolator
 import android.view.animation.AccelerateInterpolator
@@ -97,4 +98,12 @@ fun View.onGlobalLayoutComplete(callback:(View)->Unit){
         viewTreeObserver.removeOnGlobalLayoutListener(listener)
     }
     this.viewTreeObserver.addOnGlobalLayoutListener(listener)
+}
+/**
+ * Performs the given action on each View in this ViewGroup.
+ */
+fun ViewGroup.forEach(action: (View) -> Unit) {
+    for (index in 0 until childCount) {
+        action(getChildAt(index))
+    }
 }

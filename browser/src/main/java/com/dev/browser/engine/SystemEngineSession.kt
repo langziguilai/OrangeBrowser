@@ -226,7 +226,7 @@ class SystemEngineSession(
                 Context.MODE_PRIVATE).path)
             webSettings.setAppCacheEnabled(true)
             //设置database
-            webSettings.databasePath=context.applicationContext.getDir("browser_database_cache",Context.MODE_PRIVATE).path
+            webSettings.databasePath=context.applicationContext.getDir("browser_database",Context.MODE_PRIVATE).path
             webSettings.databaseEnabled = false
             //允许https和http混合使用
             webSettings.mixedContentMode=WebSettings.MIXED_CONTENT_ALWAYS_ALLOW
@@ -234,8 +234,8 @@ class SystemEngineSession(
             setDeprecatedWebSettings(webSettings)
 
             //设置地理位置
+            webSettings.setGeolocationDatabasePath(context.applicationContext.getDir("browser_database_geo",Context.MODE_PRIVATE).path)
             webSettings.setGeolocationEnabled(true)
-
             // webViewSettings built-in zoom controls are the only supported ones, so they should be turned on.
             webSettings.builtInZoomControls = true
             //支持viewport

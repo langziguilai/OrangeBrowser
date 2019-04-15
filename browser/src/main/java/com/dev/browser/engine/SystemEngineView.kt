@@ -32,6 +32,7 @@ import com.dev.browser.concept.HitResult
 import com.dev.browser.concept.prompt.PromptRequest
 import com.dev.browser.concept.request.RequestInterceptor.InterceptionResponse
 import com.dev.browser.engine.matcher.UrlMatcher
+import com.dev.browser.engine.permission.SystemGeolocationRequest
 import com.dev.browser.engine.permission.SystemPermissionRequest
 import com.dev.browser.engine.window.SystemWindowRequest
 import com.dev.browser.support.DownloadUtils
@@ -360,7 +361,9 @@ class SystemEngineView @JvmOverloads constructor(
             removeFullScreenView()
             session?.internalNotifyObservers { onFullScreenChange(false) }
         }
-
+        override fun onGeolocationPermissionsShowPrompt(origin: String, callback: GeolocationPermissions.Callback) {
+            session?.internalNotifyObservers { onContentPermissionRequest(SystemGeolocationRequest(origin,callback)) }
+        }
         override fun onPermissionRequestCanceled(request: PermissionRequest) {
             session?.internalNotifyObservers { onCancelContentPermissionRequest(SystemPermissionRequest(request)) }
         }
