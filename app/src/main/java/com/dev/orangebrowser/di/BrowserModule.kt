@@ -1,12 +1,11 @@
 package com.dev.orangebrowser.di
 
 import android.content.Context
-import androidx.room.Room
 import com.dev.browser.concept.Engine
 import com.dev.browser.engine.SystemEngine
-import com.dev.browser.feature.SessionUseCases
+import com.dev.browser.feature.session.SessionUseCases
+import com.dev.browser.feature.tabs.TabsUseCases
 import com.dev.browser.session.SessionManager
-import com.dev.orangebrowser.data.AppDatabase
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton
@@ -27,7 +26,12 @@ class BrowserModule {
     }
     @Provides
     @Singleton
-    fun provideSessionUseCases(sessionManager: SessionManager):SessionUseCases{
+    fun provideSessionUseCases(sessionManager: SessionManager): SessionUseCases {
         return SessionUseCases(sessionManager)
+    }
+    @Provides
+    @Singleton
+    fun provideTabsUseCases(sessionManager: SessionManager): TabsUseCases {
+        return TabsUseCases(sessionManager)
     }
 }

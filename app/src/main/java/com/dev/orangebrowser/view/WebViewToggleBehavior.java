@@ -64,8 +64,6 @@ public class WebViewToggleBehavior extends CoordinatorLayout.Behavior<View> {
                 if (session.getEnterFullScreenMode()){
                     //为何要这样做：因为webview在coordinatorlayout中有时候跳转页面的时候，会触发onLayout，
                     // 并且dependency的位置会重置，恢复到默认状态，所以，在这里修复一下，如果是全屏模式：那么将dependency的位置调整到隐藏的位置，并将webview的容器大小设置为全屏
-//                    int offset=dependency.getBottom();
-//                    dependency.offsetTopAndBottom(-offset);
                     helper.restoreHideTopBar();
                     child.layout(0,0,child.getMeasuredWidth(),child.getMeasuredHeight());
                 }else{
@@ -78,8 +76,6 @@ public class WebViewToggleBehavior extends CoordinatorLayout.Behavior<View> {
                 if (session.getEnterFullScreenMode()){
                     //为何要这样做：因为webview在coordinatorlayout中有时候跳转页面的时候，会触发onLayout，
                     // 并且dependency的位置会重置，恢复到默认状态，所以，在这里修复一下，如果是全屏模式：那么将dependency的位置调整到隐藏的位置，并将webview的容器大小设置为全屏
-//                    int offset=dependency.getBottom();
-//                    dependency.offsetTopAndBottom(-offset);
                     helper.restoreHideTopBar();
                     child.layout(0,0,child.getMeasuredWidth(),child.getMeasuredHeight());
                 }else{

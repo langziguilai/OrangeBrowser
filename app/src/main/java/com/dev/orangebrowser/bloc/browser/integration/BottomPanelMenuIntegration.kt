@@ -7,7 +7,7 @@ import android.widget.Toast
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import com.dev.base.extension.onGlobalLayoutComplete
 import com.dev.base.support.LifecycleAwareFeature
-import com.dev.browser.feature.SessionUseCases
+import com.dev.browser.feature.session.SessionUseCases
 import com.dev.browser.session.Session
 import com.dev.orangebrowser.R
 import com.dev.orangebrowser.bloc.browser.BrowserFragment

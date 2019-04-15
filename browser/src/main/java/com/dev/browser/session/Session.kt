@@ -28,19 +28,20 @@ class Session(
     var private: Boolean = false,
     val source: Source = Source.NONE,
     val id: String = UUID.randomUUID().toString(),
-    var forbidImageMode:Boolean=false,
-    var visionMode:Int=NORMAL_SCREEN_MODE,
-    var enterFullScreenMode:Boolean=false,
-    var themeColorMap:HashMap<String,Int> = HashMap(),
-    var isStatusBarDarkMode:Boolean=false,
+    var forbidImageMode: Boolean = false,
+    var visionMode: Int = NORMAL_SCREEN_MODE,
+    var enterFullScreenMode: Boolean = false,
+    var themeColorMap: HashMap<String, Int> = HashMap(),
+    var isStatusBarDarkMode: Boolean = false,
     delegate: Observable<Observer> = ObserverRegistry()
 ) : Observable<Session.Observer> by delegate {
     companion object {
-        const val NORMAL_SCREEN_MODE=1  //正常模式
-        const val SCROLL_FULL_SCREEN_MODE=2  //滑动最大视野模式
-        const val MAX_SCREEN_MODE=3  //保持最大视野模式
-        const val STATIC_FULL_SCREEN_MODE=4 //全局模式，不可以滑动，如视频这类的应用
+        const val NORMAL_SCREEN_MODE = 1  //正常模式
+        const val SCROLL_FULL_SCREEN_MODE = 2  //滑动最大视野模式
+        const val MAX_SCREEN_MODE = 3  //保持最大视野模式
+        const val STATIC_FULL_SCREEN_MODE = 4 //全局模式，不可以滑动，如视频这类的应用
     }
+
     /**
      * Holder for keeping a reference to an engine session and its observer to update this session
      * object.
@@ -51,7 +52,7 @@ class Session(
      * Id of parent session, usually refer to the session which created this one. The clue to indicate if this session
      * is terminated, which target we should go back.
      */
-     var parentId: String? = null
+    var parentId: String? = null
 
     /**
      * Interface to be implemented by classes that want to observe a session.
@@ -155,72 +156,73 @@ class Session(
     /**
      * The currently loading or loaded URL.
      */
-    var url: String by Delegates.observable(initialUrl) {
-        _, old, new -> notifyObservers(old, new) { onUrlChanged(this@Session, new) }
+    var url: String by Delegates.observable(initialUrl) { _, old, new ->
+        notifyObservers(old, new) {
+            onUrlChanged(this@Session, new)
+        }
     }
-
     /**
      * The title of the currently displayed website changed.
      */
-    var title: String by Delegates.observable("") {
-        _, old, new -> notifyObservers(old, new) { onTitleChanged(this@Session, new) }
+    var title: String by Delegates.observable("") { _, old, new ->
+        notifyObservers(old, new) { onTitleChanged(this@Session, new) }
     }
 
     /**
      * The progress loading the current URL.
      */
-    var progress: Int by Delegates.observable(0) {
-        _, old, new -> notifyObservers(old, new) { onProgress(this@Session, new) }
+    var progress: Int by Delegates.observable(0) { _, old, new ->
+        notifyObservers(old, new) { onProgress(this@Session, new) }
     }
 
     /**
      * Loading state, true if this session's url is currently loading, otherwise false.
      */
-    var loading: Boolean by Delegates.observable(false) {
-        _, old, new -> notifyObservers(old, new) { onLoadingStateChanged(this@Session, new) }
+    var loading: Boolean by Delegates.observable(false) { _, old, new ->
+        notifyObservers(old, new) { onLoadingStateChanged(this@Session, new) }
     }
 
     /**
      * Navigation state, true if there's an history item to go back to, otherwise false.
      */
-    var canGoBack: Boolean by Delegates.observable(false) {
-        _, old, new -> notifyObservers(old, new) { onNavigationStateChanged(this@Session, new, canGoForward) }
+    var canGoBack: Boolean by Delegates.observable(false) { _, old, new ->
+        notifyObservers(old, new) { onNavigationStateChanged(this@Session, new, canGoForward) }
     }
 
     /**
      * Navigation state, true if there's an history item to go forward to, otherwise false.
      */
-    var canGoForward: Boolean by Delegates.observable(false) {
-        _, old, new -> notifyObservers(old, new) { onNavigationStateChanged(this@Session, canGoBack, new) }
+    var canGoForward: Boolean by Delegates.observable(false) { _, old, new ->
+        notifyObservers(old, new) { onNavigationStateChanged(this@Session, canGoBack, new) }
     }
 
     /**
      * The currently / last used search terms.
      */
-    var searchTerms: String by Delegates.observable("") {
-        _, _, new -> notifyObservers { if (!new.isEmpty()) onSearch(this@Session, new) }
+    var searchTerms: String by Delegates.observable("") { _, _, new ->
+        notifyObservers { if (!new.isEmpty()) onSearch(this@Session, new) }
     }
 
     /**
      * Security information indicating whether or not the current session is
      * for a secure URL, as well as the host and SSL certificate authority, if applicable.
      */
-    var securityInfo: SecurityInfo by Delegates.observable(SecurityInfo()) {
-        _, old, new -> notifyObservers(old, new) { onSecurityChanged(this@Session, new) }
+    var securityInfo: SecurityInfo by Delegates.observable(SecurityInfo()) { _, old, new ->
+        notifyObservers(old, new) { onSecurityChanged(this@Session, new) }
     }
 
     /**
      * Configuration data in case this session is used for a Custom Tab.
      */
-    var customTabConfig: CustomTabConfig? by Delegates.observable<CustomTabConfig?>(null) {
-        _, _, new -> notifyObservers { onCustomTabConfigChanged(this@Session, new) }
+    var customTabConfig: CustomTabConfig? by Delegates.observable<CustomTabConfig?>(null) { _, _, new ->
+        notifyObservers { onCustomTabConfigChanged(this@Session, new) }
     }
 
     /**
      * The Web App Manifest for the currently visited page (or null).
      */
-    var webAppManifest: WebAppManifest? by Delegates.observable<WebAppManifest?>(null) {
-        _, _, new -> notifyObservers { onWebAppManifestChanged(this@Session, new) }
+    var webAppManifest: WebAppManifest? by Delegates.observable<WebAppManifest?>(null) { _, _, new ->
+        notifyObservers { onWebAppManifestChanged(this@Session, new) }
     }
 
     /**
@@ -290,8 +292,8 @@ class Session(
     /**
      * The target of the latest thumbnail.
      */
-    var thumbnail: Bitmap? by Delegates.observable<Bitmap?>(null) {
-        _, _, new -> notifyObservers { onThumbnailChanged(this@Session, new) }
+    var thumbnail: Bitmap? by Delegates.observable<Bitmap?>(null) { _, _, new ->
+        notifyObservers { onThumbnailChanged(this@Session, new) }
     }
 
     /**
@@ -314,10 +316,9 @@ class Session(
      * [PermissionRequest.reject] must be called. A content permission request
      * can also be cancelled, which will result in a new empty [Consumable].
      */
-    var contentPermissionRequest: Consumable<PermissionRequest> by Delegates.vetoable(Consumable.empty()) {
-        _, _, request ->
-            val consumers = wrapConsumers<PermissionRequest> { onContentPermissionRequested(this@Session, it) }
-            !request.consumeBy(consumers)
+    var contentPermissionRequest: Consumable<PermissionRequest> by Delegates.vetoable(Consumable.empty()) { _, _, request ->
+        val consumers = wrapConsumers<PermissionRequest> { onContentPermissionRequested(this@Session, it) }
+        !request.consumeBy(consumers)
     }
 
     /**
@@ -325,17 +326,15 @@ class Session(
      * must be consumed i.e. either [PermissionRequest.grant] or
      * [PermissionRequest.reject] must be called.
      */
-    var appPermissionRequest: Consumable<PermissionRequest> by Delegates.vetoable(Consumable.empty()) {
-        _, _, request ->
-            val consumers = wrapConsumers<PermissionRequest> { onAppPermissionRequested(this@Session, it) }
-            !request.consumeBy(consumers)
+    var appPermissionRequest: Consumable<PermissionRequest> by Delegates.vetoable(Consumable.empty()) { _, _, request ->
+        val consumers = wrapConsumers<PermissionRequest> { onAppPermissionRequested(this@Session, it) }
+        !request.consumeBy(consumers)
     }
 
     /**
      * [Consumable] State for a prompt request from web content.
      */
-    var promptRequest: Consumable<PromptRequest> by Delegates.vetoable(Consumable.empty()) {
-            _, _, request ->
+    var promptRequest: Consumable<PromptRequest> by Delegates.vetoable(Consumable.empty()) { _, _, request ->
         val consumers = wrapConsumers<PromptRequest> { onPromptRequested(this@Session, it) }
         !request.consumeBy(consumers)
     }
@@ -343,8 +342,7 @@ class Session(
     /**
      * [Consumable] request to open/create a window.
      */
-    var openWindowRequest: Consumable<WindowRequest> by Delegates.vetoable(Consumable.empty()) {
-        _, _, request ->
+    var openWindowRequest: Consumable<WindowRequest> by Delegates.vetoable(Consumable.empty()) { _, _, request ->
         val consumers = wrapConsumers<WindowRequest> { onOpenWindowRequested(this@Session, it) }
         !request.consumeBy(consumers)
     }
@@ -352,8 +350,7 @@ class Session(
     /**
      * [Consumable] request to close a window.
      */
-    var closeWindowRequest: Consumable<WindowRequest> by Delegates.vetoable(Consumable.empty()) {
-        _, _, request ->
+    var closeWindowRequest: Consumable<WindowRequest> by Delegates.vetoable(Consumable.empty()) { _, _, request ->
         val consumers = wrapConsumers<WindowRequest> { onCloseWindowRequested(this@Session, it) }
         !request.consumeBy(consumers)
     }

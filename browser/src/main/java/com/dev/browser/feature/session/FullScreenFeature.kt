@@ -4,7 +4,7 @@
  *  file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-package com.dev.browser.feature
+package com.dev.browser.feature.session
 
 import com.dev.base.support.BackHandler
 import com.dev.base.support.LifecycleAwareFeature

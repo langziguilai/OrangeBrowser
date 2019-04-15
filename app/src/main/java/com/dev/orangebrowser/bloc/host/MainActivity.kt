@@ -50,10 +50,7 @@ class MainActivity : BaseActivity() {
         launch(Dispatchers.IO) {
             while (true){
                 launch(Dispatchers.Main) {
-                    println("test oritentation at : " + System.currentTimeMillis())
                     if (enableAutoOrientation) {
-                        println("requestOrientation is : $requestedOrientation")
-                        println("orientationType is : " + mOrientationDetector.orientationType)
                         if (requestedOrientation != mOrientationDetector.orientationType) {
                             requestedOrientation = mOrientationDetector.orientationType
                         }

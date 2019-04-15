@@ -7,6 +7,7 @@ package com.dev.browser.engine
 import android.annotation.TargetApi
 import android.content.Context
 import android.graphics.Bitmap
+import android.graphics.Canvas
 import android.net.Uri
 import android.net.http.SslError
 import android.os.Build
@@ -15,12 +16,14 @@ import android.os.Message
 import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.View
+import android.view.ViewConfiguration
 import android.webkit.*
 import android.webkit.WebChromeClient.FileChooserParams.MODE_OPEN_MULTIPLE
 import android.webkit.WebView.HitTestResult.*
 import android.widget.FrameLayout
 import androidx.annotation.VisibleForTesting
 import androidx.annotation.VisibleForTesting.PRIVATE
+import com.dev.browser.R
 import com.dev.browser.concept.EngineSession
 import com.dev.browser.concept.EngineSession.TrackingProtectionPolicy
 import com.dev.browser.concept.EngineView
@@ -32,11 +35,9 @@ import com.dev.browser.engine.permission.SystemPermissionRequest
 import com.dev.browser.engine.window.SystemWindowRequest
 import com.dev.browser.support.DownloadUtils
 import com.dev.browser.support.ErrorType
+import com.dev.util.CommonUtil
 import kotlinx.coroutines.runBlocking
 import java.util.*
-import android.graphics.Canvas
-import com.dev.browser.R
-import com.dev.util.CommonUtil
 
 
 /**
@@ -47,8 +48,16 @@ class SystemEngineView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
-) : FrameLayout(context, attrs, defStyleAttr), EngineView, View.OnLongClickListener {
-
+) : FrameLayout(context, attrs, defStyleAttr), EngineView {
+    init {
+        //
+        isClickable=true
+        isFocusable=true
+        isLongClickable=true
+        setOnClickListener{
+            onLongClick(it)
+        }
+    }
     @VisibleForTesting(otherwise = PRIVATE)
     internal var session: SystemEngineSession? = null
     internal var jsAlertCount = 0
@@ -60,13 +69,12 @@ class SystemEngineView @JvmOverloads constructor(
      */
     override fun render(session: EngineSession) {
         removeAllViews()
-
         this.session = session as SystemEngineSession
         (session.webView.parent as? SystemEngineView)?.removeView(session.webView)
         addView(initWebView(session.webView))
     }
 
-    override fun onLongClick(view: View?): Boolean {
+    fun onLongClick(view: View?): Boolean {
         val result = session?.webView?.hitTestResult
         return result?.let { handleLongClick(result.type, result.extra) } ?: false
     }
@@ -85,16 +93,55 @@ class SystemEngineView @JvmOverloads constructor(
         }
     }
 
-    private var mOnTouchListener: OnTouchListener? = null
-    fun setListener(onTouchListener: OnTouchListener?) {
-        mOnTouchListener = onTouchListener
-    }
-
-    override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {
-        mOnTouchListener?.onTouch(this, ev)
+    private val runnable= Runnable { onLongClick(null) }
+    private var longClickListener:LongClickListener= LongClickListener(runnable = runnable,view = this)
+    override fun dispatchTouchEvent(ev: MotionEvent): Boolean {
+        longClickListener.onTouch(ev)
         return super.dispatchTouchEvent(ev)
     }
-
+    class LongClickListener(var view:View,var runnable: Runnable){
+        /**
+         * 上一次点击的的坐标
+         */
+        private var lastX: Float = 0.toFloat()
+        private var lastY: Float = 0.toFloat()
+        /**
+         * 长按坐标
+         */
+        private val longPressX: Float = 0.toFloat()
+        private val longPressY: Float = 0.toFloat()
+        /**
+         * 是否移动
+         */
+        private var isMove: Boolean = false
+        /**
+         * 滑动的阈值
+         */
+        private val TOUCH_SLOP = 20
+        fun onTouch(event: MotionEvent){
+            val x = event.x
+            val y = event.y
+            when (event.action) {
+                MotionEvent.ACTION_DOWN -> {
+                    isMove = false
+                    lastX = x
+                    lastY = y
+                    view.postDelayed(runnable, ViewConfiguration.getLongPressTimeout().toLong())
+                }
+                MotionEvent.ACTION_MOVE -> {
+                    if (!isMove) {
+                        if (Math.abs(lastX - x) > TOUCH_SLOP || Math.abs(lastY - y) > TOUCH_SLOP) {
+                            //移动超过了阈值，表示移动了
+                            isMove = true
+                            //移除runnable
+                            view.removeCallbacks(runnable)
+                        }
+                    }
+                }
+                MotionEvent.ACTION_UP -> view.removeCallbacks(runnable)
+            }
+        }
+    }
     override fun onDestroy() {
         session?.apply {
             // The WebView instance is long-lived, as it's referenced in the
@@ -143,12 +190,12 @@ class SystemEngineView @JvmOverloads constructor(
             }
             resetJSAlertAbuseState()
         }
-
-        override fun onPageFinished(view: WebView?, url: String?) {
+        override fun onPageFinished(view: WebView, url: String?) {
             url?.let {
                 val cert = view?.certificate
                 session?.internalNotifyObservers {
                     onLocationChange(it)
+                    onNavigationStateChange(view.canGoBack(), view.canGoForward())
                     onLoadingStateChange(false)
                     onSecurityChange(
                         secure = cert != null,

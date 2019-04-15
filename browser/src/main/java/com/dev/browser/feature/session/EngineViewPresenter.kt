@@ -2,7 +2,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-package com.dev.browser.feature
+package com.dev.browser.feature.session
 
 import com.dev.browser.concept.EngineView
 import com.dev.browser.session.Session

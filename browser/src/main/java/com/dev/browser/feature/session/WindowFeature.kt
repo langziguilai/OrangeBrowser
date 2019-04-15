@@ -2,7 +2,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-package com.dev.browser.feature
+package com.dev.browser.feature.session
 
 import com.dev.base.support.LifecycleAwareFeature
 import com.dev.browser.concept.Engine
@@ -15,11 +15,11 @@ import com.dev.browser.session.SessionManager
 /**
  * Feature implementation for handling window requests.
  */
-class WindowFeature(private val engine: Engine, private val sessionManager: SessionManager,var windowFeatureListener: WindowFeatureListener?=null) : LifecycleAwareFeature {
-    interface WindowFeatureListener{
-        fun onOpenWindow(sessionAdd: Session)
-        fun onCloseWindow(sessionRemove:Session)
-    }
+class WindowFeature(private val engine: Engine, private val sessionManager: SessionManager) : LifecycleAwareFeature {
+//    interface WindowFeatureListener{
+//        fun onOpenWindow(sessionAdd: Session)
+//        fun onCloseWindow(sessionRemove:Session)
+//    }
     internal val windowObserver = object : SelectionAwareSessionObserver(sessionManager) {
         override fun onOpenWindowRequested(session: Session, windowRequest: WindowRequest): Boolean {
             val newSession = Session(windowRequest.url, session.private)
@@ -28,13 +28,13 @@ class WindowFeature(private val engine: Engine, private val sessionManager: Sess
 
             sessionManager.add(newSession, true, newEngineSession, parent = session)
             windowRequest.start()
-            windowFeatureListener?.onOpenWindow(newSession)
+            //windowFeatureListener?.onOpenWindow(newSession)
             return true
         }
 
         override fun onCloseWindowRequested(session: Session, windowRequest: WindowRequest): Boolean {
             sessionManager.remove(session)
-            windowFeatureListener?.onCloseWindow(session)
+            //windowFeatureListener?.onCloseWindow(session)
             return true
         }
     }

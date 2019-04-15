@@ -2,7 +2,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-package com.dev.browser.feature
+package com.dev.browser.feature.session
 
 import com.dev.browser.session.Session
 import com.dev.browser.session.SessionManager
@@ -185,14 +185,56 @@ class SessionUseCases(
             }
         }
     }
-    val loadUrl: DefaultLoadUrlUseCase by lazy { DefaultLoadUrlUseCase(sessionManager, onNoSession) }
-    val loadData: LoadDataUseCase by lazy { LoadDataUseCase(sessionManager, onNoSession) }
-    val reload: ReloadUrlUseCase by lazy { ReloadUrlUseCase(sessionManager) }
-    val stopLoading: StopLoadingUseCase by lazy { StopLoadingUseCase(sessionManager) }
-    val goBack: GoBackUseCase by lazy { GoBackUseCase(sessionManager) }
-    val goForward: GoForwardUseCase by lazy { GoForwardUseCase(sessionManager) }
-    val requestDesktopSite: RequestDesktopSiteUseCase by lazy { RequestDesktopSiteUseCase(sessionManager) }
-    val exitFullscreen: ExitFullScreenUseCase by lazy { ExitFullScreenUseCase(sessionManager) }
-    val clearData: ClearDataUseCase by lazy { ClearDataUseCase(sessionManager) }
-    val forbidLoadImage: ForbidLoadingImageUseCase by lazy { ForbidLoadingImageUseCase(sessionManager) }
+    val loadUrl: DefaultLoadUrlUseCase by lazy {
+        DefaultLoadUrlUseCase(
+            sessionManager,
+            onNoSession
+        )
+    }
+    val loadData: LoadDataUseCase by lazy {
+        LoadDataUseCase(
+            sessionManager,
+            onNoSession
+        )
+    }
+    val reload: ReloadUrlUseCase by lazy {
+        ReloadUrlUseCase(
+            sessionManager
+        )
+    }
+    val stopLoading: StopLoadingUseCase by lazy {
+        StopLoadingUseCase(
+            sessionManager
+        )
+    }
+    val goBack: GoBackUseCase by lazy {
+        GoBackUseCase(
+            sessionManager
+        )
+    }
+    val goForward: GoForwardUseCase by lazy {
+        GoForwardUseCase(
+            sessionManager
+        )
+    }
+    val requestDesktopSite: RequestDesktopSiteUseCase by lazy {
+        RequestDesktopSiteUseCase(
+            sessionManager
+        )
+    }
+    val exitFullscreen: ExitFullScreenUseCase by lazy {
+        ExitFullScreenUseCase(
+            sessionManager
+        )
+    }
+    val clearData: ClearDataUseCase by lazy {
+        ClearDataUseCase(
+            sessionManager
+        )
+    }
+    val forbidLoadImage: ForbidLoadingImageUseCase by lazy {
+        ForbidLoadingImageUseCase(
+            sessionManager
+        )
+    }
 }

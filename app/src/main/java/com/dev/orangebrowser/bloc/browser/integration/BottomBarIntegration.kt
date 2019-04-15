@@ -2,7 +2,7 @@ package com.dev.orangebrowser.bloc.browser.integration
 
 import android.os.Bundle
 import com.dev.base.support.LifecycleAwareFeature
-import com.dev.browser.feature.SessionUseCases
+import com.dev.browser.feature.session.SessionUseCases
 import com.dev.browser.session.Session
 import com.dev.browser.session.SessionManager
 import com.dev.orangebrowser.bloc.browser.BrowserFragment

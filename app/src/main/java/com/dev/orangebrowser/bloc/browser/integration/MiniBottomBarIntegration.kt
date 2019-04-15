@@ -3,14 +3,14 @@ package com.dev.orangebrowser.bloc.browser.integration
 
 import com.dev.base.extension.onGlobalLayoutComplete
 import com.dev.base.support.LifecycleAwareFeature
-import com.dev.browser.feature.SessionUseCases
+import com.dev.browser.feature.session.SessionUseCases
 import com.dev.browser.session.Session
 import com.dev.orangebrowser.bloc.browser.BrowserFragment
 import com.dev.orangebrowser.bloc.browser.integration.helper.WebViewVisionHelper
 import com.dev.orangebrowser.databinding.FragmentBrowserBinding
 
 //Mini底部导航栏
-class MiniBottomBarIntegration(var binding: FragmentBrowserBinding,var fragment: BrowserFragment,var sessionUseCases: SessionUseCases, var session: Session,webViewVisionHelper: WebViewVisionHelper):
+class MiniBottomBarIntegration(var binding: FragmentBrowserBinding, var fragment: BrowserFragment, var sessionUseCases: SessionUseCases, var session: Session, webViewVisionHelper: WebViewVisionHelper):
     LifecycleAwareFeature {
     private var sessionObserver: Session.Observer
     init{

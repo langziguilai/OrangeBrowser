@@ -2,7 +2,7 @@ package com.dev.orangebrowser.bloc.browser.integration
 
 import android.app.Activity
 import com.dev.base.support.LifecycleAwareFeature
-import com.dev.browser.feature.PictureInPictureFeature
+import com.dev.browser.feature.session.PictureInPictureFeature
 import com.dev.browser.session.SelectionAwareSessionObserver
 import com.dev.browser.session.Session
 import com.dev.browser.session.SessionManager

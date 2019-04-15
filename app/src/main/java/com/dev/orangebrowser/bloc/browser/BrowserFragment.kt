@@ -14,7 +14,8 @@ import com.dev.base.support.UserInteractionHandler
 import com.dev.base.support.ViewBoundFeatureWrapper
 import com.dev.browser.concept.Engine
 import com.dev.browser.engine.SystemEngineView
-import com.dev.browser.feature.*
+import com.dev.browser.feature.session.*
+import com.dev.browser.feature.tabs.TabsUseCases
 import com.dev.browser.session.Session
 import com.dev.browser.session.SessionManager
 import com.dev.orangebrowser.R
@@ -25,9 +26,9 @@ import com.dev.orangebrowser.bloc.host.MainViewModel
 import com.dev.orangebrowser.databinding.FragmentBrowserBinding
 import com.dev.orangebrowser.extension.RouterActivity
 import com.dev.orangebrowser.extension.appComponent
-import com.dev.orangebrowser.extension.appData
 import com.dev.orangebrowser.view.WebViewToggleBehavior
 import com.dev.view.StatusBarUtil
+import kotlinx.android.synthetic.main.fragment_browser.*
 import java.util.*
 import javax.inject.Inject
 
@@ -41,6 +42,8 @@ class BrowserFragment : BaseFragment(), BackHandler, UserInteractionHandler {
     lateinit var sessionManager: SessionManager
     @Inject
     lateinit var sessionUseCases: SessionUseCases
+    @Inject
+    lateinit var tabsUseCases: TabsUseCases
     //    @Inject
 //    lateinit var tabsUseCases: TabsUseCases
     lateinit var viewModel: BrowserViewModel
@@ -49,7 +52,8 @@ class BrowserFragment : BaseFragment(), BackHandler, UserInteractionHandler {
     private val sessionFeature = ViewBoundFeatureWrapper<SessionFeature>()
     private val thumbnailsFeature = ViewBoundFeatureWrapper<ThumbnailsFeature>()
     private val windowFeature = ViewBoundFeatureWrapper<WindowFeature>()
-//    private val contextMenuIntegration = ViewBoundFeatureWrapper<ContextMenuIntegration>()
+    private val contextMenuIntegration = ViewBoundFeatureWrapper<ContextMenuIntegration>()
+    private val sessionManagerListenerIntegration=ViewBoundFeatureWrapper<SessionManagerListenerIntegration>()
 //    private val downloadsFeature = ViewBoundFeatureWrapper<DownloadsFeature>()
 //    private val promptsFeature = ViewBoundFeatureWrapper<PromptFeature>()
     private val fullScreenFeature = ViewBoundFeatureWrapper<FullScreenFeature>()
@@ -205,6 +209,18 @@ class BrowserFragment : BaseFragment(), BackHandler, UserInteractionHandler {
             owner = this,
             view = binding.root
         )
+        //
+        contextMenuIntegration.set(
+            feature = ContextMenuIntegration(requireContext(),fragmentManager!!,
+                sessionManager,tabsUseCases,web_view_container,engineView,sessionId),
+            owner = this,
+            view = binding.root
+        )
+        sessionManagerListenerIntegration.set(
+            feature = SessionManagerListenerIntegration(session=session,activity = RouterActivity,sessionManager = sessionManager),
+            owner = this,
+            view = binding.root
+        )
         sessionFeature.set(
             feature = SessionFeature(
                 sessionManager,
@@ -214,28 +230,31 @@ class BrowserFragment : BaseFragment(), BackHandler, UserInteractionHandler {
             ), owner = this, view = binding.root
         )
         thumbnailsFeature.set(
-            feature = ThumbnailsFeature(requireContext(),engineView,sessionManager),
+            feature = ThumbnailsFeature(requireContext(), engineView, sessionManager),
             owner = this,
             view = binding.root
         )
 
         //多窗口展示
-        val windowFeatureListener=object :WindowFeature.WindowFeatureListener{
-            override fun onOpenWindow(sessionAdd: Session) {
-                RouterActivity?.loadBrowserFragment(sessionAdd.id)
-            }
-            override fun onCloseWindow(sessionRemoved: Session) {
-                if (sessionManager.selectedSession!=null){
-                    //TODO:根据状态返回对应的fragment
-                    RouterActivity?.loadBrowserFragment(sessionManager.selectedSession!!.id)
-                }else{
-                    //返回首页
-                    RouterActivity?.loadHomeFragment(HomeFragment.NO_SESSION_ID)
-                }
-            }
-        }
+//        val windowFeatureListener=object : WindowFeature.WindowFeatureListener{
+//            override fun onOpenWindow(sessionAdd: Session) {
+//                RouterActivity?.loadBrowserFragment(sessionAdd.id)
+//            }
+//            override fun onCloseWindow(sessionRemoved: Session) {
+//                if (sessionManager.selectedSession!=null){
+//                    //TODO:根据状态返回对应的fragment
+//                    RouterActivity?.loadBrowserFragment(sessionManager.selectedSession!!.id)
+//                }else{
+//                    //返回首页
+//                    RouterActivity?.loadHomeFragment(HomeFragment.NO_SESSION_ID)
+//                }
+//            }
+//        }
         windowFeature.set(
-            feature = WindowFeature(engine = engine,sessionManager = sessionManager,windowFeatureListener = windowFeatureListener),
+            feature = WindowFeature(
+                engine = engine,
+                sessionManager = sessionManager
+            ),
             owner = this,
             view = binding.root
         )
@@ -248,11 +267,13 @@ class BrowserFragment : BaseFragment(), BackHandler, UserInteractionHandler {
         //全局模式
         fullScreenFeature.set(
             feature = FullScreenFeature(
-                sessionManager=sessionManager,
+                sessionManager = sessionManager,
                 sessionUseCases = sessionUseCases,
-                sessionId = sessionId, fullScreenChanged =  ::fullScreenChanged),
+                sessionId = sessionId, fullScreenChanged = ::fullScreenChanged
+            ),
             owner = this,
             view = binding.root)
+
     }
 
     override fun initData(savedInstanceState: Bundle?) {
