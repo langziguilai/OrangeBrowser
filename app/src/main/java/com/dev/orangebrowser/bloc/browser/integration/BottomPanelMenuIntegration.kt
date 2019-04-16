@@ -2,9 +2,11 @@ package com.dev.orangebrowser.bloc.browser.integration
 
 import android.os.Bundle
 import android.view.View
+import android.view.ViewGroup
 import android.widget.TextView
 import android.widget.Toast
 import androidx.coordinatorlayout.widget.CoordinatorLayout
+import androidx.core.view.children
 import com.dev.base.extension.onGlobalLayoutComplete
 import com.dev.base.support.LifecycleAwareFeature
 import com.dev.browser.feature.session.SessionUseCases
@@ -127,6 +129,7 @@ class BottomPanelMenuIntegration(
                 var newVisionMode=Session.SCROLL_FULL_SCREEN_MODE
                 when {
                     session.visionMode==Session.NORMAL_SCREEN_MODE -> {
+
                         newVisionMode=Session.SCROLL_FULL_SCREEN_MODE
                         actionItem.active = !actionItem.active
                         view.findViewById<TextView>(R.id.icon)

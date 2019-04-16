@@ -5,6 +5,7 @@ package com.dev.browser.feature.downloads
 
 import android.os.Bundle
 import androidx.fragment.app.DialogFragment
+import com.dev.base.BaseTransparentFullScreenDialogFragment
 import com.dev.browser.session.Download
 
 /**
@@ -13,7 +14,7 @@ import com.dev.browser.session.Download
  * If [SimpleDownloadDialogFragment] is not flexible enough for your use case you should inherit for this class.
  * Be mindful to call [onStartDownload] when you want to start the download.
  */
-abstract class DownloadDialogFragment : DialogFragment() {
+abstract class DownloadDialogFragment : BaseTransparentFullScreenDialogFragment() {
 
     /**
      * A callback to trigger a download, call it when you are ready to start a download. For instance,

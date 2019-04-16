@@ -6,14 +6,16 @@ package com.dev.browser.feature.downloads
 import android.app.Dialog
 import android.content.Context
 import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.Gravity
+import android.view.View
 import android.widget.TextView
 import androidx.annotation.StringRes
 import androidx.annotation.StyleRes
 import androidx.annotation.VisibleForTesting
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.widget.AppCompatButton
+import androidx.appcompat.widget.AppCompatTextView
 import com.dev.browser.R
 import com.dev.util.DensityUtil
 
@@ -28,57 +30,38 @@ import com.dev.util.DensityUtil
  */
 //TODO:自定义样式
 class SimpleDownloadDialogFragment : DownloadDialogFragment() {
-
-    @VisibleForTesting
-    internal var testingContext: Context? = null
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setStyle(STYLE_NORMAL,R.style.Dialog_FullScreen)
+    override fun getLayoutId(): Int {
+        return R.layout.fragment_mozac_feature_download
     }
-    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        fun getBuilder(themeID: Int): AlertDialog.Builder {
-            val context = testingContext ?: requireContext()
-            return if (themeID == 0) AlertDialog.Builder(context) else AlertDialog.Builder(context, themeID)
-        }
 
+    override fun initViewAndData(rootView: View, bundle: Bundle?) {
         return with(requireBundle()) {
             val fileName = getString(KEY_FILE_NAME, "")
-            val dialogTitleText = getInt(KEY_TITLE_TEXT, R.string.mozac_feature_downloads_dialog_title)
+            val titleText = getInt(KEY_TITLE_TEXT, R.string.mozac_feature_downloads_dialog_title)
             val positiveButtonText = getInt(KEY_POSITIVE_TEXT,R.string.mozac_feature_downloads_dialog_download)
             val negativeButtonText = getInt(KEY_NEGATIVE_TEXT, R.string.mozac_feature_downloads_dialog_cancel)
-            val themeResId = getInt(KEY_THEME_ID, 0)
-            val cancelable = getBoolean(KEY_CANCELABLE, false)
-            val textView=TextView(requireContext())
-            textView.gravity= Gravity.CENTER
-            textView.textSize=DensityUtil.dip2px(context,16.0f).toFloat()
-            textView.setTextColor(Color.BLACK)
-            textView.text=context!!.getText(dialogTitleText)
-            textView.height=DensityUtil.dip2px(context,24.0f)
-            getBuilder(themeResId)
-                .setCustomTitle(textView)
-                .setMessage(fileName)
-                .setPositiveButton(positiveButtonText) { _, _ ->
-                    onStartDownload()
-                }
-                .setNegativeButton(negativeButtonText) { _, _ ->
+            rootView.findViewById<AppCompatTextView>(R.id.title).setText(titleText)
+            rootView.findViewById<AppCompatTextView>(R.id.file).text = fileName
+            rootView.findViewById<AppCompatTextView>(R.id.cancel_button).apply {
+                setText(negativeButtonText)
+                setOnClickListener {
                     dismiss()
                 }
-                .setCancelable(cancelable)
-                .create()
+            }
+            rootView.findViewById<AppCompatTextView>(R.id.ok_button).apply {
+                setText(positiveButtonText)
+                setOnClickListener {
+                    onStartDownload()
+                }
+            }
+            rootView.findViewById<View>(R.id.container).apply {
+                setOnClickListener {
+                    dismiss()
+                }
+            }
         }
     }
-    //设置背景色透明
-    override fun onStart() {
-        super.onStart()
-        dialog?.window?.apply {
-            setGravity(Gravity.BOTTOM)
-            setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-            val params=this.attributes
-            params.dimAmount=0.0f
-            this.attributes=params
-        }
 
-    }
     companion object {
         /**
          * A builder method for creating a [SimpleDownloadDialogFragment]
@@ -122,6 +105,6 @@ class SimpleDownloadDialogFragment : DownloadDialogFragment() {
     }
 
     private fun requireBundle(): Bundle {
-        return arguments ?: throw IllegalStateException("Fragment " + this + " arguments is not set.")
+        return arguments ?: throw IllegalStateException("Fragment $this arguments is not set.")
     }
 }

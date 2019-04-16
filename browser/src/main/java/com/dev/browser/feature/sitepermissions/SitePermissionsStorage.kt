@@ -6,7 +6,7 @@ package com.dev.browser.feature.sitepermissions
 
 import android.content.Context
 import androidx.annotation.VisibleForTesting
-import com.dev.browser.feature.sitepermissions.db.toSitePermissionsEntity
+import com.dev.browser.database.sitepermission.toSitePermissionsEntity
 import com.dev.browser.feature.sitepermissions.SitePermissions.Status
 import com.dev.browser.feature.sitepermissions.SitePermissions.Status.ALLOWED
 import com.dev.browser.feature.sitepermissions.SitePermissionsStorage.Permission.BLUETOOTH
@@ -15,7 +15,7 @@ import com.dev.browser.feature.sitepermissions.SitePermissionsStorage.Permission
 import com.dev.browser.feature.sitepermissions.SitePermissionsStorage.Permission.LOCAL_STORAGE
 import com.dev.browser.feature.sitepermissions.SitePermissionsStorage.Permission.LOCATION
 import com.dev.browser.feature.sitepermissions.SitePermissionsStorage.Permission.NOTIFICATION
-import com.dev.browser.feature.sitepermissions.db.SitePermissionsDatabase
+import com.dev.browser.database.BrowserDatabase
 
 /**
  * A storage implementation to save [SitePermissions].
@@ -26,7 +26,7 @@ class SitePermissionsStorage(
 ) {
     @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
     internal var databaseInitializer = {
-        SitePermissionsDatabase.get(context)
+        BrowserDatabase.get(context)
     }
 
     private val database by lazy { databaseInitializer() }

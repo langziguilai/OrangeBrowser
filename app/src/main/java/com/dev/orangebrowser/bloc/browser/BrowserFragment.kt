@@ -35,6 +35,9 @@ import com.dev.view.StatusBarUtil
 import kotlinx.android.synthetic.main.fragment_browser.*
 import java.util.*
 import javax.inject.Inject
+import android.widget.RelativeLayout
+
+
 
 
 class BrowserFragment : BaseFragment(), BackHandler, UserInteractionHandler {
@@ -140,9 +143,17 @@ class BrowserFragment : BaseFragment(), BackHandler, UserInteractionHandler {
         //将EngineView添加到上面去
         binding.webViewContainer.removeAllViews()
         val engineView = SystemEngineView(requireContext().applicationContext)
+        val params = RelativeLayout.LayoutParams(
+            RelativeLayout.LayoutParams.WRAP_CONTENT,
+            RelativeLayout.LayoutParams.WRAP_CONTENT
+        )
+        params.addRule(RelativeLayout.ALIGN_PARENT_LEFT, RelativeLayout.TRUE)
+        params.addRule(RelativeLayout.ALIGN_PARENT_TOP, RelativeLayout.TRUE)
+        params.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM, RelativeLayout.TRUE)
+        params.addRule(RelativeLayout.ALIGN_PARENT_RIGHT, RelativeLayout.TRUE)
         binding.webViewContainer.addView(
             engineView,
-            FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
+            params//FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT)
         )
         //get behavior
         (binding.webViewContainer.layoutParams as? CoordinatorLayout.LayoutParams)?.apply {

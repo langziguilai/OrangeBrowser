@@ -18,6 +18,7 @@ import androidx.annotation.VisibleForTesting
 import androidx.fragment.app.DialogFragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.dev.base.BaseTransparentFullScreenDialogFragment
 import com.dev.base.extension.onGlobalLayoutComplete
 import com.dev.browser.R
 import com.dev.browser.session.Session
@@ -33,7 +34,9 @@ private const val LONG_CLICK_Y = "long_click_y"
 /**
  * [DialogFragment] implementation to display the actual context menu dialog.
  */
-class ContextMenuFragment : DialogFragment() {
+class ContextMenuFragment : BaseTransparentFullScreenDialogFragment() {
+
+
     internal var feature: ContextMenuFeature? = null
 
     @VisibleForTesting
@@ -44,26 +47,12 @@ class ContextMenuFragment : DialogFragment() {
     @VisibleForTesting internal val longClickX: Int by lazy { arguments!!.getInt(LONG_CLICK_X) }
     @VisibleForTesting internal val longClickY: Int by lazy { arguments!!.getInt(LONG_CLICK_Y) }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setStyle(STYLE_NORMAL,R.style.Dialog_FullScreen)
+    override fun getLayoutId(): Int {
+        return R.layout.mozac_feature_contextmenu_dialog
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val view = inflater.inflate(R.layout.mozac_feature_contextmenu_dialog, null)
-        initDialogContentView(view,inflater)
-        return view
-    }
-
-    override fun onStart() {
-        super.onStart()
-        dialog?.window?.apply {
-            setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-            val params=this.attributes
-            params.dimAmount=0.0f
-            this.attributes=params
-        }
-
+    override fun initViewAndData(rootView: View, bundle: Bundle?) {
+        initDialogContentView(rootView, LayoutInflater.from(requireContext()))
     }
 
     var offSet:Int=-1

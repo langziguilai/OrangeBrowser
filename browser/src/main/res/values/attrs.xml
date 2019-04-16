@@ -11,4 +11,11 @@
         <attr name="findInPageResultCountTextSize" format="dimension"/>
         <attr name="findInPageButtonsTint" format="reference|color"/>
     </declare-styleable>
+    <declare-styleable name="BrowserAwesomeBar">
+        <attr name="awesomeBarTitleTextColor" format="reference|color" />
+        <attr name="awesomeBarDescriptionTextColor" format="reference|color" />
+        <attr name="awesomeBarChipTextColor" format="reference|color" />
+        <attr name="awesomeBarChipBackgroundColor" format="reference|color" />
+        <attr name="awesomeBarChipSpacing" format="dimension" />
+    </declare-styleable>
 </resources>

@@ -11,15 +11,9 @@ import com.dev.orangebrowser.extension.appComponent
 
 class SearchFragment : BaseFragment() {
 
+    val originalSessionId: String
+        get() = arguments?.getString(BrowserFragment.SESSION_ID) ?: ""
 
-    companion object {
-        val Tag="SearchFragment"
-        fun newInstance(sessionId:String) = SearchFragment().apply {
-            arguments = Bundle().apply {
-                putString(BrowserFragment.SESSION_ID, sessionId)
-            }
-        }
-    }
 
     lateinit var viewModel: SearchViewModel
 
@@ -46,5 +40,12 @@ class SearchFragment : BaseFragment() {
         viewModel = ViewModelProviders.of(this).get(SearchViewModel::class.java)
         // TODO: Use the ViewModel
     }
-
+    companion object {
+        val Tag="SearchFragment"
+        fun newInstance(sessionId:String) = SearchFragment().apply {
+            arguments = Bundle().apply {
+                putString(BrowserFragment.SESSION_ID, sessionId)
+            }
+        }
+    }
 }

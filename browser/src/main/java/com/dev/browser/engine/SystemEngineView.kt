@@ -319,6 +319,15 @@ class SystemEngineView @JvmOverloads constructor(
         }
     }
 
+    override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec)
+    }
+
+    override fun onLayout(changed: Boolean, left: Int, top: Int, right: Int, bottom: Int) {
+        if (childCount>0){
+            getChildAt(0).layout(0,0,right-left,bottom-top)
+        }
+    }
     @Suppress("ComplexMethod")
     private fun createWebChromeClient() = object : WebChromeClient() {
         override fun getVisitedHistory(callback: ValueCallback<Array<String>>) {

@@ -3,8 +3,10 @@ package com.dev.orangebrowser.view;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.View;
+import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import com.dev.browser.engine.SystemEngineView;
 import com.dev.browser.session.Session;
 import com.dev.orangebrowser.R;
 import com.dev.orangebrowser.bloc.browser.integration.helper.WebViewVisionHelper;
@@ -52,7 +54,8 @@ public class WebViewToggleBehavior extends CoordinatorLayout.Behavior<View> {
             if (topBarRef.get()!=null){
                 View dependency= topBarRef.get();
                 if (bottomBarRef.get()!=null){
-                    child.layout(0,dependency.getBottom(),child.getMeasuredWidth(),parent.getBottom()+bottomBarRef.get().getMeasuredHeight());
+                    int bottom=parent.getBottom()-bottomBarRef.get().getMeasuredHeight();
+                    child.layout(0,dependency.getBottom(),child.getMeasuredWidth(),bottom);
                 }else{
                     child.layout(0,dependency.getBottom(),child.getMeasuredWidth(),parent.getBottom());
                 }
@@ -96,4 +99,5 @@ public class WebViewToggleBehavior extends CoordinatorLayout.Behavior<View> {
     public void setHelper(WebViewVisionHelper helper) {
         this.helper = helper;
     }
+
 }
