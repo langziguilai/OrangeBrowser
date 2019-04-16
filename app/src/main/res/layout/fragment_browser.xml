@@ -70,7 +70,8 @@
                 <com.dev.view.IconfontTextView android:clickable="true" android:focusable="true"
                                                android:background="?android:attr/selectableItemBackgroundBorderless"
                                                android:id="@+id/forward" android:gravity="center"
-                                               android:layout_width="0dp" android:layout_weight="1" android:layout_height="42dp"
+                                               android:layout_width="0dp" android:layout_weight="1"
+                                               android:layout_height="42dp"
                                                android:textSize="@dimen/icon_text_size"
                                                android:text="@string/ic_right"/>
                 <com.dev.view.IconfontTextView android:id="@+id/home" android:gravity="center"
@@ -81,7 +82,8 @@
                 <FrameLayout android:clickable="true" android:focusable="true"
                              android:background="?android:attr/selectableItemBackgroundBorderless"
                              android:id="@+id/counter"
-                             android:gravity="center" android:layout_width="0dp" android:layout_weight="1" android:layout_height="42dp">
+                             android:gravity="center" android:layout_width="0dp" android:layout_weight="1"
+                             android:layout_height="42dp">
                     <View android:layout_height="16dp" android:layout_width="16dp"
                           app:borderColor="@{activityViewModel.theme.colorPrimary}"
                           app:borderWidth="@{1.3f}"
@@ -217,5 +219,10 @@
                     app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"/>
         </androidx.constraintlayout.widget.ConstraintLayout>
+        <com.dev.browser.feature.findinpage.view.FindInPageBar android:clickable="true" android:focusable="true" android:id="@+id/findInPage" android:visibility="gone"
+                                                               android:background="@color/colorWhite"
+                                                               android:layout_gravity="bottom"
+                                                               android:layout_width="match_parent"
+                                                               android:layout_height="44dp"/>
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

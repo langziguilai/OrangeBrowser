@@ -2,6 +2,7 @@ package com.dev.orangebrowser.bloc.browser
 
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.view.*
 import android.widget.FrameLayout
@@ -14,6 +15,8 @@ import com.dev.base.support.UserInteractionHandler
 import com.dev.base.support.ViewBoundFeatureWrapper
 import com.dev.browser.concept.Engine
 import com.dev.browser.engine.SystemEngineView
+import com.dev.browser.feature.downloads.DownloadsFeature
+import com.dev.browser.feature.prompts.PromptFeature
 import com.dev.browser.feature.session.*
 import com.dev.browser.feature.sitepermissions.SitePermissionsFeature
 import com.dev.browser.feature.tabs.TabsUseCases
@@ -36,17 +39,16 @@ import javax.inject.Inject
 
 class BrowserFragment : BaseFragment(), BackHandler, UserInteractionHandler {
     @Inject
-    lateinit var applicationContext:Context
+    lateinit var applicationContext: Context
     @Inject
-    lateinit var engine:Engine
+    lateinit var engine: Engine
     @Inject
     lateinit var sessionManager: SessionManager
     @Inject
     lateinit var sessionUseCases: SessionUseCases
     @Inject
     lateinit var tabsUseCases: TabsUseCases
-    //    @Inject
-//    lateinit var tabsUseCases: TabsUseCases
+
     lateinit var viewModel: BrowserViewModel
     lateinit var activityViewModel: MainViewModel
 
@@ -54,12 +56,12 @@ class BrowserFragment : BaseFragment(), BackHandler, UserInteractionHandler {
     private val thumbnailsFeature = ViewBoundFeatureWrapper<ThumbnailsFeature>()
     private val windowFeature = ViewBoundFeatureWrapper<WindowFeature>()
     private val contextMenuIntegration = ViewBoundFeatureWrapper<ContextMenuIntegration>()
-    private val sessionManagerListenerIntegration=ViewBoundFeatureWrapper<SessionManagerListenerIntegration>()
-//    private val downloadsFeature = ViewBoundFeatureWrapper<DownloadsFeature>()
-//    private val promptsFeature = ViewBoundFeatureWrapper<PromptFeature>()
+    private val sessionManagerListenerIntegration = ViewBoundFeatureWrapper<SessionManagerListenerIntegration>()
+    private val downloadsFeature = ViewBoundFeatureWrapper<DownloadsFeature>()
+    private val promptsFeature = ViewBoundFeatureWrapper<PromptFeature>()
     private val fullScreenFeature = ViewBoundFeatureWrapper<FullScreenFeature>()
-//    private val customTabsIntegration = ViewBoundFeatureWrapper<CustomTabsIntegration>()
-//    private val findInPageIntegration = ViewBoundFeatureWrapper<FindInPageIntegration>()
+    //    private val customTabsIntegration = ViewBoundFeatureWrapper<CustomTabsIntegration>()
+    private val findInPageIntegration = ViewBoundFeatureWrapper<FindInPageIntegration>()
     private val sitePermissionFeature = ViewBoundFeatureWrapper<SitePermissionsFeature>()
     private val pictureInPictureIntegration = ViewBoundFeatureWrapper<PictureInPictureIntegration>()
     private val topBarIntegration = ViewBoundFeatureWrapper<TopBarIntegration>()
@@ -83,11 +85,13 @@ class BrowserFragment : BaseFragment(), BackHandler, UserInteractionHandler {
     //
     val backHandlers = LinkedList<BackHandler>()
     //
-    lateinit var  fullScreenHelper:FullScreenHelper
+    lateinit var fullScreenHelper: FullScreenHelper
+
     //
     init {
         backHandlers.add(adaptToBackHandler(fullScreenFeature))
         backHandlers.add(adaptToBackHandler(sessionFeature))
+        backHandlers.add(adaptToBackHandler(findInPageIntegration))
     }
 
     private fun <T : LifecycleAwareFeature> adaptToBackHandler(wrapper: ViewBoundFeatureWrapper<T>): BackHandler {
@@ -129,14 +133,17 @@ class BrowserFragment : BaseFragment(), BackHandler, UserInteractionHandler {
 
     override fun initViewWithDataBinding(savedInstanceState: Bundle?) {
 
-        val session=sessionManager.findSessionById(sessionId) ?: sessionManager.selectedSessionOrThrow
+        val session = sessionManager.findSessionById(sessionId) ?: sessionManager.selectedSessionOrThrow
         val bottomPanelHelper = BottomPanelHelper(binding, this)
         val topPanelHelper = TopPanelHelper(binding, this, bottomPanelHelper)
-        val webViewVisionHelper=WebViewVisionHelper(binding)
+        val webViewVisionHelper = WebViewVisionHelper(binding)
         //将EngineView添加到上面去
         binding.webViewContainer.removeAllViews()
-        val engineView= SystemEngineView(requireContext().applicationContext)
-        binding.webViewContainer.addView(engineView,FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT))
+        val engineView = SystemEngineView(requireContext().applicationContext)
+        binding.webViewContainer.addView(
+            engineView,
+            FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
+        )
         //get behavior
         (binding.webViewContainer.layoutParams as? CoordinatorLayout.LayoutParams)?.apply {
             (this.behavior as? WebViewToggleBehavior)?.apply {
@@ -144,7 +151,7 @@ class BrowserFragment : BaseFragment(), BackHandler, UserInteractionHandler {
                 this.setHelper(webViewVisionHelper)
             }
         }
-        fullScreenHelper= FullScreenHelper(binding,requireActivity())
+        fullScreenHelper = FullScreenHelper(binding, requireActivity())
 
 
         bottomBarIntegration.set(
@@ -158,13 +165,15 @@ class BrowserFragment : BaseFragment(), BackHandler, UserInteractionHandler {
                 session = session
             ), owner = this, view = binding.root
         )
-        miniBottomBarIntegration.set(feature = MiniBottomBarIntegration(
-            binding=binding,
-            session = session,
-            sessionUseCases = sessionUseCases,
-            webViewVisionHelper = webViewVisionHelper,
-            fragment = this
-        ),owner = this,view=binding.root)
+        miniBottomBarIntegration.set(
+            feature = MiniBottomBarIntegration(
+                binding = binding,
+                session = session,
+                sessionUseCases = sessionUseCases,
+                webViewVisionHelper = webViewVisionHelper,
+                fragment = this
+            ), owner = this, view = binding.root
+        )
         topBarIntegration.set(
             feature = TopBarIntegration(
                 binding = binding,
@@ -185,12 +194,22 @@ class BrowserFragment : BaseFragment(), BackHandler, UserInteractionHandler {
                 session = session
             ), owner = this, view = binding.root
         )
+        val findInPageIntegrationFeature = FindInPageIntegration(
+            sessionManager = sessionManager,
+            engineView = engineView, view = findInPage
+        )
+        findInPageIntegration.set(
+            feature = findInPageIntegrationFeature,
+            owner = this,
+            view = binding.root
+        )
         topPanelMenuIntegration.set(
             feature = TopPanelMenuIntegration(
                 binding = binding,
                 fragment = this,
                 savedInstanceState = savedInstanceState,
-                topPanelHelper = topPanelHelper
+                topPanelHelper = topPanelHelper,
+                findInPageIntegration = findInPageIntegrationFeature
             ), owner = this, view = binding.root
         )
         webViewScrollHandlerIntegration.set(
@@ -201,24 +220,35 @@ class BrowserFragment : BaseFragment(), BackHandler, UserInteractionHandler {
             ), owner = this, view = binding.root
         )
         webViewLifeCycleIntegration.set(
-            WebViewLifeCycleIntegration(binding = binding, owner = this,engineView =engineView),
+            WebViewLifeCycleIntegration(binding = binding, owner = this, engineView = engineView),
             owner = this,
             view = binding.root
         )
         styleIntegration.set(
-            feature = StyleIntegration(binding=binding,fragment = this,session = session,sessionManager = sessionManager),
+            feature = StyleIntegration(
+                binding = binding,
+                fragment = this,
+                session = session,
+                sessionManager = sessionManager
+            ),
             owner = this,
             view = binding.root
         )
         //
         contextMenuIntegration.set(
-            feature = ContextMenuIntegration(requireContext(),fragmentManager!!,
-                sessionManager,tabsUseCases,web_view_container,engineView,sessionId),
+            feature = ContextMenuIntegration(
+                requireContext(), fragmentManager!!,
+                sessionManager, tabsUseCases, web_view_container, engineView, sessionId
+            ),
             owner = this,
             view = binding.root
         )
         sessionManagerListenerIntegration.set(
-            feature = SessionManagerListenerIntegration(session=session,activity = RouterActivity,sessionManager = sessionManager),
+            feature = SessionManagerListenerIntegration(
+                session = session,
+                activity = RouterActivity,
+                sessionManager = sessionManager
+            ),
             owner = this,
             view = binding.root
         )
@@ -246,7 +276,7 @@ class BrowserFragment : BaseFragment(), BackHandler, UserInteractionHandler {
         )
         //pictureInPicture
         pictureInPictureIntegration.set(
-            feature = PictureInPictureIntegration(sessionManager,requireActivity()),
+            feature = PictureInPictureIntegration(sessionManager, requireActivity()),
             owner = this,
             view = binding.root
         )
@@ -258,7 +288,8 @@ class BrowserFragment : BaseFragment(), BackHandler, UserInteractionHandler {
                 sessionId = sessionId, fullScreenChanged = ::fullScreenChanged
             ),
             owner = this,
-            view = binding.root)
+            view = binding.root
+        )
 
         sitePermissionFeature.set(
             feature = SitePermissionsFeature(
@@ -270,7 +301,28 @@ class BrowserFragment : BaseFragment(), BackHandler, UserInteractionHandler {
             owner = this,
             view = binding.root
         )
-
+        downloadsFeature.set(
+            feature = DownloadsFeature(
+                applicationContext = applicationContext,
+                sessionManager = sessionManager,
+                sessionId = sessionId,
+                fragmentManager = childFragmentManager,
+                onNeedToRequestPermissions = { permissions ->
+                    requestPermissions(permissions, REQUEST_CODE_DOWNLOAD_PERMISSIONS)
+                }),
+            owner = this,
+            view = binding.root
+        )
+        promptsFeature.set(
+            feature = PromptFeature(
+                fragment = this,
+                sessionManager = sessionManager,
+                fragmentManager = requireFragmentManager(),
+                onNeedToRequestPermissions = { permissions ->
+                    requestPermissions(permissions, REQUEST_CODE_PROMPT_PERMISSIONS)
+                }),
+            owner = this,
+            view = binding.root)
     }
 
     override fun initData(savedInstanceState: Bundle?) {
@@ -278,14 +330,10 @@ class BrowserFragment : BaseFragment(), BackHandler, UserInteractionHandler {
     }
 
 
-
-
-
-
     private fun fullScreenChanged(enabled: Boolean) {
-        val session=sessionManager.findSessionById(sessionId)
+        val session = sessionManager.findSessionById(sessionId)
         session?.apply {
-            fullScreenHelper.toggleFullScreen(session =this,fullScreen = enabled)
+            fullScreenHelper.toggleFullScreen(session = this, fullScreen = enabled)
         }
     }
 
@@ -320,23 +368,32 @@ class BrowserFragment : BaseFragment(), BackHandler, UserInteractionHandler {
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
         when (requestCode) {
-
+            REQUEST_CODE_DOWNLOAD_PERMISSIONS -> downloadsFeature.withFeature {
+                it.onPermissionsResult(permissions, grantResults)
+            }
+            REQUEST_CODE_PROMPT_PERMISSIONS -> promptsFeature.withFeature {
+                it.onPermissionsResult(permissions, grantResults)
+            }
             REQUEST_CODE_APP_PERMISSIONS -> sitePermissionFeature.withFeature {
                 it.onPermissionsResult(grantResults)
             }
         }
     }
-
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        promptsFeature.withFeature { it.onActivityResult(requestCode, resultCode, data) }
+    }
     override fun onDestroy() {
         binding.webViewContainer.removeAllViews()
         super.onDestroy()
     }
+
     override fun onDetach() {
         RouterActivity?.apply {
-            StatusBarUtil.setStatusBarColor(RouterActivity!!,activityViewModel.theme.value!!.colorPrimary)
+            StatusBarUtil.setStatusBarColor(RouterActivity!!, activityViewModel.theme.value!!.colorPrimary)
         }
         super.onDetach()
     }
+
     companion object {
         const val SESSION_ID = "session_id"
         private const val REQUEST_CODE_DOWNLOAD_PERMISSIONS = 1

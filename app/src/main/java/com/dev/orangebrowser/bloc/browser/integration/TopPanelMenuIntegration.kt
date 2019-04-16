@@ -16,7 +16,11 @@ import com.dev.view.GridView
 import com.dev.view.recyclerview.CustomBaseViewHolder
 import com.dev.view.recyclerview.adapter.base.BaseQuickAdapter
 
-class TopPanelMenuIntegration(var binding: FragmentBrowserBinding, var fragment: BrowserFragment, var savedInstanceState: Bundle?, var topPanelHelper: TopPanelHelper):
+class TopPanelMenuIntegration(var binding: FragmentBrowserBinding,
+                              var fragment: BrowserFragment,
+                              var savedInstanceState: Bundle?,
+                              var topPanelHelper: TopPanelHelper,
+                              var findInPageIntegration: FindInPageIntegration):
     LifecycleAwareFeature {
 
     init {
@@ -69,7 +73,9 @@ class TopPanelMenuIntegration(var binding: FragmentBrowserBinding, var fragment:
             }
             //TODO:页内查找
             R.string.ic_search->{
-
+                topPanelHelper.toggleTopPanel(Runnable {
+                    findInPageIntegration.launch()
+                })
             }
             //TODO:离线保存
             R.string.ic_save->{

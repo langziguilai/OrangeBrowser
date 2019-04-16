@@ -13,7 +13,7 @@
     <color name="themeColor6">#3073C0</color>
     <color name="themeColor7">#A68483</color>
     <color name="themeColor8">#393A3F</color>
-    <color name="colorAccent">#D81B60</color>
+    <color name="colorAccent">#2C6AD3</color>
     <color name="background">#80FFFFFF</color>
     <color name="ic_enabled">@color/colorPrimary</color>
     <color name="ic_not_enabled">@color/colorPrimaryDisable</color>
