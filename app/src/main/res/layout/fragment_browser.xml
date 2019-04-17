@@ -12,7 +12,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
         <!--web_view-->
-        <com.dev.orangebrowser.view.InterceptRelativeLayout
+        <com.dev.orangebrowser.view.InterceptMatchParentLayout
                 android:id="@+id/web_view_container"
                 android:clickable="true"
                 android:focusable="true"

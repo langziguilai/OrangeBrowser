@@ -3,10 +3,9 @@ package com.dev.orangebrowser.view
 import android.content.Context
 import android.util.AttributeSet
 import android.view.MotionEvent
-import android.widget.FrameLayout
-import androidx.core.view.children
+import com.dev.view.MatchParentLayout
 
-class InterceptRelativeLayout:FrameLayout {
+class InterceptMatchParentLayout:MatchParentLayout {
     constructor(context: Context):super(context)
     constructor(context: Context,attributeSet: AttributeSet):super(context,attributeSet)
     private var mOnTouchListener: OnTouchListener? = null
@@ -17,9 +16,5 @@ class InterceptRelativeLayout:FrameLayout {
     override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {
         mOnTouchListener?.onTouch(this, ev)
         return super.dispatchTouchEvent(ev)
-    }
-
-    override fun onLayout(changed: Boolean, left: Int, top: Int, right: Int, bottom: Int) {
-        this.children.first().layout(0,0,right-left,bottom-top)
     }
 }

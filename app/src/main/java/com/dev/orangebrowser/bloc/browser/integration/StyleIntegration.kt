@@ -52,7 +52,6 @@ class StyleIntegration(var binding: FragmentBrowserBinding,var fragment:BrowserF
                     }
                 }
             }
-
         }
     }
 
@@ -85,6 +84,9 @@ class StyleIntegration(var binding: FragmentBrowserBinding,var fragment:BrowserF
         binding.searchText.setHintTextColor(whiteColor)
         binding.topMenu.setTextColor(whiteColor)
         binding.progress.progressDrawable=fragment.context?.getDrawable(R.drawable.bg_progressbar_light)
+        binding.progress.animate().alpha(0f).setDuration(1000).withEndAction {
+            binding.progress.alpha=1.0f
+        }.start()
         val adapter=binding.topMenuPanel.adapter
         if (adapter is TopMenuPanelAdapter){
             adapter.color=R.color.colorWhite
@@ -99,6 +101,9 @@ class StyleIntegration(var binding: FragmentBrowserBinding,var fragment:BrowserF
         binding.searchText.setHintTextColor(blackColor)
         binding.topMenu.setTextColor(blackColor)
         binding.progress.progressDrawable=fragment.context?.getDrawable(R.drawable.bg_progressbar_dark)
+        binding.progress.animate().alpha(0f).setDuration(1000).withEndAction {
+            binding.progress.alpha=1.0f
+        }.start()
         val adapter=binding.topMenuPanel.adapter
         if (adapter is TopMenuPanelAdapter){
             adapter.color=R.color.colorBlack

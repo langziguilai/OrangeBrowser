@@ -96,14 +96,14 @@ open class PlacesHistoryStorage(context: Context) : HistoryStorage {
     //TODO:从其他地方获取，不用从记录中获取
     override fun getSuggestions(query: String, limit: Int): List<SearchResult> {
         require(limit >= 0) { "Limit must be a positive integer" }
-//        return historyDao.getVisitHistoryByQuery(query, limit = limit).map {
-//            SearchResult(it.url, it.url, 1, it.title)
-//        }
-        return listOf()
+        return historyDao.getVisitHistoryByQuery("%$query%", limit = limit).map {
+            SearchResult(it.url, it.url, 1, it.title)
+        }
+       // return listOf()
     }
 
     override fun getAutocompleteSuggestion(query: String): HistoryAutocompleteResult? {
-         val history = historyDao.getVisitHistoryByQueryOne(query) ?: return null
+         val history = historyDao.getVisitHistoryByQueryOne("%$query%") ?: return null
         val resultText = segmentAwareDomainMatch(query, arrayListOf(history.url))
         return resultText?.let {
             HistoryAutocompleteResult(

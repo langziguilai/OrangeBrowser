@@ -1,4 +1,4 @@
-package com.dev.orangebrowser.bloc.home
+package com.dev.orangebrowser.bloc.home.helper
 
 import android.os.Bundle
 import android.view.View
@@ -7,7 +7,9 @@ import android.widget.TextView
 import android.widget.Toast
 import com.dev.base.extension.*
 import com.dev.base.support.BackHandler
+import com.dev.browser.session.Session
 import com.dev.orangebrowser.R
+import com.dev.orangebrowser.bloc.home.HomeFragment
 import com.dev.orangebrowser.data.model.ActionItem
 import com.dev.orangebrowser.databinding.FragmentHomeBinding
 import com.dev.orangebrowser.extension.RouterActivity
@@ -18,19 +20,27 @@ import com.dev.view.recyclerview.CustomBaseViewHolder
 import com.dev.view.recyclerview.adapter.base.BaseQuickAdapter
 import es.dmoral.toasty.Toasty
 
-class BottomBarHelper(private var binding: FragmentHomeBinding, var fragment:HomeFragment, var savedInstanceState: Bundle?){
+class BottomBarHelper(private var binding: FragmentHomeBinding, var fragment: HomeFragment, var savedInstanceState: Bundle?){
     private lateinit var bottomPanelBackHandler: BackHandler
-    fun initView(){
+    init{
         initBottomBar(savedInstanceState = savedInstanceState)
     }
     private fun initBottomBar(savedInstanceState: Bundle?) {
         //设置back颜色
         binding.back.setTextColor(fragment.activityViewModel.theme.value!!.colorPrimaryDisable)
-        //TODO:设置forward颜色
+        //设置forward颜色
+        fragment.sessionManager.findSessionById(fragment.sessionId)?.apply {
+            if (this.url!= Session.INITIAL_URL){
+                binding.forward.setTextColor(fragment.activityViewModel.theme.value!!.colorPrimary)
+                binding.forward.isClickable=true
+            }else{
+                binding.forward.setTextColor(fragment.activityViewModel.theme.value!!.colorPrimaryDisable)
+                binding.forward.isClickable=false
+            }
+        }
 
-        //TODO:browser Forward
         binding.forward.setOnClickListener {
-
+             fragment.RouterActivity?.loadBrowserFragment(fragment.sessionId)
         }
         binding.search.setOnClickListener {
             fragment.RouterActivity?.loadSearchFragment(fragment.sessionId)
@@ -39,6 +49,8 @@ class BottomBarHelper(private var binding: FragmentHomeBinding, var fragment:Hom
         binding.counter.setOnClickListener {
             fragment.RouterActivity?.loadTabFragment(fragment.sessionId)
         }
+        //获取session数量
+        binding.counterNumber.text=fragment.sessionManager.size.toString()
         binding.menu.setOnClickListener {
             toggleBottomPanel()
         }
@@ -63,7 +75,6 @@ class BottomBarHelper(private var binding: FragmentHomeBinding, var fragment:Hom
             }
         }
     }
-
     private fun initBottomMenuGridView(bottomMenuGridView: GridView) {
         val adapter=object: BaseQuickAdapter<ActionItem, CustomBaseViewHolder>(R.layout.item_bottom_action_item,fragment.appData.bottomMenuActionItems){
             override fun convert(helper: CustomBaseViewHolder, item: ActionItem) {
@@ -83,7 +94,6 @@ class BottomBarHelper(private var binding: FragmentHomeBinding, var fragment:Hom
         }
         bottomMenuGridView.adapter=adapter
     }
-
     private fun onBottomMenuActionItemClick(view: View, actionItem: ActionItem) {
         when(actionItem.iconRes){
             //无图模式

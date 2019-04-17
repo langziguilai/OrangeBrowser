@@ -8,6 +8,8 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.dev.base.BaseActivity
 import com.dev.base.support.BackHandler
+import com.dev.browser.session.Session
+import com.dev.browser.session.SessionManager
 import com.dev.orangebrowser.R
 import com.dev.orangebrowser.bloc.bookmark.BookMarkFragment
 import com.dev.orangebrowser.bloc.browser.BrowserFragment
@@ -33,14 +35,17 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.util.*
+import javax.inject.Inject
 
 
 class MainActivity : BaseActivity() {
-
+    @Inject
+    lateinit var sessionManager: SessionManager
     lateinit var viewModel: MainViewModel
     lateinit var mOrientationDetector: OrientationDetector
     //是否可以自动旋转屏幕，默认可以
     var enableAutoOrientation: Boolean = true
+
     override fun onCreate(savedInstanceState: Bundle?) {
         //注入
         appComponent.inject(this)
@@ -48,7 +53,7 @@ class MainActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         //每隔1s，设置Orientation
         launch(Dispatchers.IO) {
-            while (true){
+            while (true) {
                 launch(Dispatchers.Main) {
                     if (enableAutoOrientation) {
                         if (requestedOrientation != mOrientationDetector.orientationType) {
@@ -77,6 +82,7 @@ class MainActivity : BaseActivity() {
             mOrientationDetector.disable()
         }
     }
+
     override fun getLayoutResId(): Int {
         return R.layout.activity_main
     }
@@ -100,34 +106,12 @@ class MainActivity : BaseActivity() {
                 quitSignal = it
             })
         }
-//        val fragment=supportFragmentManager.findFragmentById(R.id.fragment_container)
-//        if(fragment==null){
-//
-//        }
     }
 
     override fun initData(savedInstanceState: Bundle?) {
         if (savedInstanceState == null) {
             viewModel.loadAppData()
         }
-    }
-
-    override fun onConfigurationChanged(newConfig: Configuration) {
-        super.onConfigurationChanged(newConfig)
-//        val isOrientationEnable: Boolean = try {
-//            Settings.System.getInt(contentResolver,Settings.System.ACCELEROMETER_ROTATION)==1
-//        }catch (e:Exception){
-//            false
-//        }
-//        if (isOrientationEnable){
-//            if (newConfig.orientation==ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE){
-//                requestedOrientation=ActivityInfo.SCREEN_ORIENTATION_SENSOR
-//            }else if (newConfig.orientation==ActivityInfo.SCREEN_ORIENTATION_PORTRAIT){
-//                requestedOrientation=ActivityInfo.SCREEN_ORIENTATION_SENSOR
-//            }
-//        }else{
-//            requestedOrientation=ActivityInfo.SCREEN_ORIENTATION_NOSENSOR
-//        }
     }
 
     override fun onBackPressed() {
@@ -148,6 +132,19 @@ class MainActivity : BaseActivity() {
     //加载HomeFragment
     fun loadHomeFragment(sessionId: String) {
         supportFragmentManager.beginTransaction().replace(R.id.container, HomeFragment.newInstance(sessionId)).commit()
+    }
+
+    fun loadHomeOrBrowserFragment(sessionId: String) {
+        val session = sessionManager.findSessionById(sessionId)
+        if (session != null) {
+            if (session.screenNumber == Session.HOME_SCREEN) {
+                loadHomeFragment(sessionId)
+            } else {
+                loadBrowserFragment(sessionId)
+            }
+        }else{
+            loadHomeFragment(HomeFragment.NO_SESSION_ID)
+        }
     }
 
     //加载TabFragment

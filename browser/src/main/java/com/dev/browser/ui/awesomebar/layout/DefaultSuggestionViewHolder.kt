@@ -34,12 +34,9 @@ internal sealed class DefaultSuggestionViewHolder {
 
         override fun bind(suggestion: AwesomeBar.Suggestion, selectionListener: () -> Unit) {
             val title = if (suggestion.title.isNullOrEmpty()) suggestion.description else suggestion.title
-
             iconLoader.load(suggestion)
-
             titleView.text = title
             descriptionView.text = suggestion.description
-
             view.setOnClickListener {
                 suggestion.onSuggestionClicked?.invoke()
                 selectionListener.invoke()

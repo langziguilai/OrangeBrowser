@@ -78,7 +78,6 @@ class TabsUseCases(
             return session
         }
     }
-
     class AddNewPrivateTabUseCase internal constructor(
         private val sessionManager: SessionManager
     ) : SessionUseCases.LoadUrlUseCase {

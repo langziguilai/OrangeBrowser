@@ -16,7 +16,4 @@ class DatabaseModule {
             AppDatabase::class.java, "orange_browser_db1"
         ).build()
     }
-//    @Provides @Singleton fun provideFavoriteSiteDao(appDatabase: AppDatabase): FavoriteSiteDao {
-//        return appDatabase.favoriteSiteDao()
-//    }
 }

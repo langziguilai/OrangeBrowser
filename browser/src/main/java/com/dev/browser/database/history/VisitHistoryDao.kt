@@ -8,10 +8,10 @@ import androidx.room.*
 
 
 /**
- * Internal dao for accessing and modifying sitePermissions in the database.
+ * 访问历史记录Dao
  */
 @Dao
-internal interface VisitHistoryDao {
+interface VisitHistoryDao {
 
     @Insert
     fun insert(entity: VisitHistoryEntity): Long
@@ -27,9 +27,9 @@ internal interface VisitHistoryDao {
     fun getVisitHistoryByUri(uri:String): VisitHistoryEntity?
     @Query("SELECT * FROM visit_history WHERE url IN(:uris)")
     fun getVisitHistoryByUris(uris:List<String>): List<VisitHistoryEntity>
-    @Query("SELECT * FROM visit_history WHERE title like :query ORDER BY date LIMIT :limit ")
+    @Query("SELECT * FROM visit_history WHERE (title like :query) OR (url like :query) ORDER BY date LIMIT :limit ")
     fun getVisitHistoryByQuery(query:String,limit:Int): List<VisitHistoryEntity>
-    @Query("SELECT * FROM visit_history WHERE title like :query ORDER BY date LIMIT 1 ")
+    @Query("SELECT * FROM visit_history WHERE (title like :query) OR (url like :query) ORDER BY date LIMIT 1 ")
     fun getVisitHistoryByQueryOne(query:String): VisitHistoryEntity?
     @Delete
     fun deleteHistory(entity: VisitHistoryEntity)

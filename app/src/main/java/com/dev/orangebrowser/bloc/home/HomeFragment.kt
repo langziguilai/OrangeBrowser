@@ -5,40 +5,30 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.animation.AccelerateInterpolator
-import android.widget.TextView
-import android.widget.Toast
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
-import androidx.viewpager.widget.ViewPager
 import com.dev.base.BaseLazyFragment
-import com.dev.base.extension.*
 import com.dev.base.support.BackHandler
-import com.dev.base.support.LifecycleAwareFeature
+import com.dev.browser.feature.tabs.TabsUseCases
 import com.dev.browser.session.Session
 import com.dev.browser.session.SessionManager
 import com.dev.orangebrowser.R
 import com.dev.orangebrowser.bloc.browser.BrowserFragment
+import com.dev.orangebrowser.bloc.home.helper.BottomBarHelper
+import com.dev.orangebrowser.bloc.home.helper.TopBarHelper
 import com.dev.orangebrowser.bloc.host.MainViewModel
-import com.dev.orangebrowser.data.model.ActionItem
 import com.dev.orangebrowser.data.model.Site
 import com.dev.orangebrowser.databinding.FragmentHomeBinding
 import com.dev.orangebrowser.extension.RouterActivity
 import com.dev.orangebrowser.extension.appComponent
-import com.dev.orangebrowser.extension.appData
-import com.dev.util.DensityUtil
-import com.dev.view.GridView
-import com.dev.view.IconfontTextView
-import com.dev.view.recyclerview.CustomBaseViewHolder
-import com.dev.view.recyclerview.adapter.base.BaseQuickAdapter
 import com.evernote.android.state.State
-import es.dmoral.toasty.Toasty
 import java.util.*
 import javax.inject.Inject
 
 class HomeFragment : BaseLazyFragment(), BackHandler {
     @Inject
     lateinit var sessionManager: SessionManager
+    @Inject
+    lateinit var tabsUserCase:TabsUseCases
     //data
     lateinit var viewModel: HomeViewModel
     lateinit var activityViewModel:MainViewModel
@@ -51,8 +41,8 @@ class HomeFragment : BaseLazyFragment(), BackHandler {
     //
     lateinit var binding: FragmentHomeBinding
     //
-    val sessionId: String
-        get() = arguments?.getString(BrowserFragment.SESSION_ID) ?: ""
+    var sessionId: String = NO_SESSION_ID
+
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -70,7 +60,17 @@ class HomeFragment : BaseLazyFragment(), BackHandler {
         binding.activityViewModel=activityViewModel
         super.onActivityCreated(savedInstanceState)
     }
-
+    //找到或者新建一个Session
+    fun initSession(){
+        sessionId=arguments?.getString(BrowserFragment.SESSION_ID) ?: NO_SESSION_ID
+        //根据session ID查询，如果不存在，那么就新建
+        val session=sessionManager.findSessionById(sessionId)
+        if (session==null){
+            tabsUserCase.addTab.invoke(url = Session.INITIAL_URL,selectTab = true,startLoading = false)
+            sessionId=sessionManager.selectedSession!!.id
+            return
+        }
+    }
     //获取layoutResourceId
     override fun getLayoutResId(): Int {
         return R.layout.fragment_home
@@ -82,15 +82,13 @@ class HomeFragment : BaseLazyFragment(), BackHandler {
     }
 
     override fun initViewWithDataBinding(savedInstanceState: Bundle?) {
-        val bottomBarHelper=BottomBarHelper(binding,this,savedInstanceState)
-        val topBarHelper=TopBarHelper(binding,this,savedInstanceState,bottomBarHelper)
-        bottomBarHelper.initView()
-        topBarHelper.initView()
+        initSession()
+        val bottomBarHelper= BottomBarHelper(binding, this, savedInstanceState)
+        val topBarHelper=
+            TopBarHelper(binding, this, savedInstanceState, bottomBarHelper)
         initViewPager(savedInstanceState)
         binding.search.setOnClickListener {
-            val session = Session(initialUrl = "https://www.baidu.com")
-            sessionManager.add(session, selected = true)
-            RouterActivity?.loadBrowserFragment(session.id)
+            RouterActivity?.loadSearchFragment(sessionId)
         }
     }
 
@@ -104,9 +102,6 @@ class HomeFragment : BaseLazyFragment(), BackHandler {
 
     }
 
-    override fun onResume() {
-        super.onResume()
-    }
     //处理返回值
     override fun onBackPressed(): Boolean {
         for (backHandler in backHandlers){

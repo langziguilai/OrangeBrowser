@@ -23,6 +23,7 @@
             android:theme="@style/AppTheme.NoActionBar">
         <activity android:name=".bloc.host.MainActivity"
                   android:screenOrientation="portrait"
+                  android:windowSoftInputMode="adjustResize|stateAlwaysHidden"
                   android:configChanges="orientation|keyboardHidden|keyboard|screenSize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>

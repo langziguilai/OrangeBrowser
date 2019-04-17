@@ -38,6 +38,7 @@ import com.dev.browser.engine.window.SystemWindowRequest
 import com.dev.browser.support.DownloadUtils
 import com.dev.browser.support.ErrorType
 import com.dev.util.CommonUtil
+import com.dev.view.MatchParentLayout
 import kotlinx.coroutines.runBlocking
 import java.util.*
 
@@ -50,7 +51,7 @@ class SystemEngineView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
-) : FrameLayout(context, attrs, defStyleAttr), EngineView {
+) : MatchParentLayout(context, attrs, defStyleAttr), EngineView {
     init {
         //
         isClickable=true
@@ -316,16 +317,6 @@ class SystemEngineView @JvmOverloads constructor(
                     view.loadDataWithBaseURL(url ?: request.url.toString(), data, mimeType, encoding, null)
                 }
             }
-        }
-    }
-
-    override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
-        super.onMeasure(widthMeasureSpec, heightMeasureSpec)
-    }
-
-    override fun onLayout(changed: Boolean, left: Int, top: Int, right: Int, bottom: Int) {
-        if (childCount>0){
-            getChildAt(0).layout(0,0,right-left,bottom-top)
         }
     }
     @Suppress("ComplexMethod")

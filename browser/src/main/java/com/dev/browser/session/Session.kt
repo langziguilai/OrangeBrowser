@@ -5,6 +5,7 @@
 package com.dev.browser.session
 
 import android.graphics.Bitmap
+import android.os.Bundle
 import com.dev.browser.concept.HitResult
 import com.dev.browser.concept.media.Media
 import com.dev.browser.concept.permission.PermissionRequest
@@ -24,7 +25,7 @@ import kotlin.properties.Delegates
  */
 @Suppress("TooManyFunctions")
 class Session(
-    initialUrl: String,
+    initialUrl: String=INITIAL_URL,
     var private: Boolean = false,
     val source: Source = Source.NONE,
     val id: String = UUID.randomUUID().toString(),
@@ -33,9 +34,13 @@ class Session(
     var enterFullScreenMode: Boolean = false,
     var themeColorMap: HashMap<String, Int> = HashMap(),
     var isStatusBarDarkMode: Boolean = false,
+    var screenNumber:Int=HOME_SCREEN,//screenNumber默认为
     delegate: Observable<Observer> = ObserverRegistry()
 ) : Observable<Session.Observer> by delegate {
+    var homeScreenState:Bundle?=null  //保存HomeScreen的状态
     companion object {
+        const val HOME_SCREEN=1  //Home screen代表的值
+        const val INITIAL_URL="NO_EXIST_URL"  //不存在的URL，表示还未加载过
         const val NORMAL_SCREEN_MODE = 1  //正常模式
         const val SCROLL_FULL_SCREEN_MODE = 2  //滑动最大视野模式
         const val MAX_SCREEN_MODE = 3  //保持最大视野模式

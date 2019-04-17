@@ -56,27 +56,26 @@ class ThumbnailsFeature(
 
         override fun onLoadingStateChanged(session: Session, loading: Boolean) {
             if (!loading) {
-                requestScreenshot(session)
+                //requestScreenshot(session)
             }
         }
-
-//        override fun onProgress(session: Session, progress: Int) {
-//            if (progress==100){
-//
-//            }
-//        }
+        private var captured=false
+        override fun onProgress(session: Session, progress: Int) {
+            //在progress大于50%时，capture图片
+            if (progress>70){
+                if (!captured){
+                    requestScreenshot(session)
+                    captured=true
+                }
+            }else{
+                captured=false
+            }
+        }
     }
 
     private fun requestScreenshot(session: Session) {
         if (!isLowOnMemory()) {
             engineView.captureThumbnail {
-                //稍微延迟一点：等待初次渲染完成，但是如果用户开始的时候滑动太多
-//                launch(Dispatchers.IO) {
-//                    delay(200)
-//                    launch(Dispatchers.Main) {
-//                        session.thumbnail = it
-//                    }
-//                }
                 session.thumbnail = it
             }
         } else {

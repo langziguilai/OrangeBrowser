@@ -13,7 +13,7 @@ import com.dev.browser.feature.sitepermissions.SitePermissions
  * Internal entity representing a site permission as it gets saved to the database.
  */
 @Entity(tableName = "site_permissions")
-internal data class SitePermissionsEntity(
+data class SitePermissionsEntity(
 
     @PrimaryKey
     @ColumnInfo(name = "origin")

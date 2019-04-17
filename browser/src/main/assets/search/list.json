@@ -767,7 +767,7 @@
     "zh-CN": {
       "default": {
         "visibleDefaultEngines": [
-          "google", "baidu", "bing", "taobao", "wikipedia-zh-CN"
+          "bing","yandex-en", "baidu","taobao","yahoo","amazondotcom","google","duckduckgo","wikipedia-zh-CN"
         ]
       }
     },

@@ -153,7 +153,7 @@ class BrowserAwesomeBar @JvmOverloads constructor(
         providers.forEach { provider -> provider.onInputCancelled() }
     }
 
-    override fun setOnStopListener(listener: () -> Unit) {
+    override fun setAfterSuggestionClickedListener(listener: () -> Unit) {
         this.listener = listener
     }
 }

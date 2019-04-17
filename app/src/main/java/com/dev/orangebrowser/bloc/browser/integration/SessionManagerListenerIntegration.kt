@@ -33,7 +33,6 @@ class SessionManagerObserver(
     //添加的时候自动select，然后select的时候跳转
     override fun onSessionSelected(session: Session) {
         if (session.id!=originalSession.id){
-            //TODO:保存状态
             activity?.loadBrowserFragment(session.id)
         }
     }

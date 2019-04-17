@@ -11,7 +11,7 @@ import androidx.room.*
  * Internal dao for accessing and modifying sitePermissions in the database.
  */
 @Dao
-internal interface SitePermissionsDao {
+interface SitePermissionsDao {
 
     @Insert
     fun insert(entity: SitePermissionsEntity): Long

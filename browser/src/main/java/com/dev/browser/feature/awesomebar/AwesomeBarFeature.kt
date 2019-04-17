@@ -2,6 +2,7 @@ package com.dev.browser.feature.awesomebar
 
 
 import android.content.Context
+import com.dev.base.support.LifecycleAwareFeature
 import com.dev.browser.concept.awesomebar.AwesomeBar
 import com.dev.browser.concept.fetch.Client
 import com.dev.browser.concept.searchbar.SearchBar
@@ -23,8 +24,11 @@ class AwesomeBarFeature(
     private val awesomeBar: AwesomeBar,
     private val searchBar: SearchBar,
     private val onEditStart: (() -> Unit)? = null,
-    private val onEditComplete: (() -> Unit)? = null
-) {
+    private val onEditComplete: (() -> Unit)? = null,
+    private val afterSuggestionClicked:(()->Unit)? =null
+):LifecycleAwareFeature {
+
+
     init {
         searchBar.setOnEditListener(object : SearchBar.OnEditListener {
             override fun onTextChanged(text: String) = awesomeBar.onInputChanged(text)
@@ -40,8 +44,10 @@ class AwesomeBarFeature(
             }
         })
 
-        awesomeBar.setOnStopListener {
-            //TODO
+        //在点击Suggestion ViewHolder之后触发,即先添加session再选中session或直接选中session，然后我们通过
+        //sessionManager获取当前选中的Session，然后进行跳转
+        awesomeBar.setAfterSuggestionClickedListener{
+            afterSuggestionClicked?.invoke()
         }
     }
 
@@ -87,5 +93,12 @@ class AwesomeBarFeature(
     ): AwesomeBarFeature {
         awesomeBar.addProviders(ClipboardSuggestionProvider(context, loadUrlUseCase))
         return this
+    }
+    override fun start() {
+        //TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun stop() {
+        searchBar.setOnEditListener(null)
     }
 }

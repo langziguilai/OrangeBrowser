@@ -54,8 +54,7 @@
                                                    android:id="@+id/forward" android:gravity="center"
                                                    android:layout_width="0dp" android:layout_weight="1"
                                                    android:layout_height="42dp"
-                                                   android:textSize="@dimen/icon_text_size" android:text="@string/ic_right"
-                                                   android:textColor="@{activityViewModel.theme.colorPrimaryDisable}"/>
+                                                   android:textSize="@dimen/icon_text_size" android:text="@string/ic_right"/>
                     <com.dev.view.IconfontTextView android:id="@+id/search" android:gravity="center" android:layout_width="0dp" android:layout_weight="1"
                                                    android:layout_height="42dp" android:textSize="@dimen/icon_text_size"
                                                    android:text="@string/ic_search" android:textColor="@{activityViewModel.theme.colorPrimary}"/>

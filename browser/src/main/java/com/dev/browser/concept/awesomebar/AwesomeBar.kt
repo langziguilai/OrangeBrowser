@@ -60,7 +60,7 @@ interface AwesomeBar {
      * Adds a lambda to be invoked when the user has finished interacting with the awesome bar (e.g. selected a
      * suggestion).
      */
-    fun setOnStopListener(listener: () -> Unit)
+    fun setAfterSuggestionClickedListener(listener: () -> Unit)
 
     /**
      * A [Suggestion] to be displayed by an [AwesomeBar] implementation.

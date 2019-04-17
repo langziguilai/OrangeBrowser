@@ -93,5 +93,7 @@
     <string name="quit">退出</string>
     <string name="webview_not_available_hint">无可用页面</string>
     <string name="forbid_image">无图</string>
+    <string name="cancel">取消</string>
+    <string name="search">搜索</string>
 
 </resources>

@@ -4,7 +4,7 @@ interface SearchBar{
     /**
      * Registers the given listener to be invoked when the user edits the URL.
      */
-    fun setOnEditListener(listener: OnEditListener)
+    fun setOnEditListener(listener: OnEditListener?)
     /**
      * Listener to be invoked when the user edits the URL.
      */

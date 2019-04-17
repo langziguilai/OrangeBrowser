@@ -1,13 +1,16 @@
 package com.dev.orangebrowser.data.model
 
+import android.os.Bundle
 import com.dev.orangebrowser.R
 import java.util.*
+import kotlin.collections.HashMap
 
 //系统配置文件
 data class ApplicationData(var favorSites:List<Site>,
                            var themes:ThemeSources,
                            var bottomMenuActionItems:List<ActionItem> = getBottomMenuActionItems(),
-                           var topMenuActionItems:List<ActionItem> = getTopMenActionItems())
+                           var topMenuActionItems:List<ActionItem> = getTopMenActionItems(),
+                           var fragmentStateMap:HashMap<String,Bundle?> =HashMap())
 
 
 fun getBottomMenuActionItems():List<ActionItem>{

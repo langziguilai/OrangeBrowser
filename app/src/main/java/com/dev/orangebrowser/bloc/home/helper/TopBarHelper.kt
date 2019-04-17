@@ -1,4 +1,4 @@
-package com.dev.orangebrowser.bloc.home
+package com.dev.orangebrowser.bloc.home.helper
 
 import android.os.Bundle
 import android.view.animation.AccelerateInterpolator
@@ -6,6 +6,7 @@ import android.widget.Toast
 import com.dev.base.extension.*
 import com.dev.base.support.BackHandler
 import com.dev.orangebrowser.R
+import com.dev.orangebrowser.bloc.home.HomeFragment
 import com.dev.orangebrowser.data.model.ActionItem
 import com.dev.orangebrowser.databinding.FragmentHomeBinding
 import com.dev.orangebrowser.extension.RouterActivity
@@ -16,9 +17,9 @@ import com.dev.view.recyclerview.adapter.base.BaseQuickAdapter
 import es.dmoral.toasty.Toasty
 
 
-class TopBarHelper(var binding: FragmentHomeBinding, var fragment:HomeFragment, var savedInstanceState: Bundle?, var bottomBarHelper: BottomBarHelper){
+class TopBarHelper(var binding: FragmentHomeBinding, var fragment: HomeFragment, var savedInstanceState: Bundle?, var bottomBarHelper: BottomBarHelper){
     private lateinit var topPanelBackHandler: BackHandler
-    fun initView(){
+    init{
         initTopBar(savedInstanceState)
     }
     private fun initTopBar(savedInstanceState: Bundle?) {

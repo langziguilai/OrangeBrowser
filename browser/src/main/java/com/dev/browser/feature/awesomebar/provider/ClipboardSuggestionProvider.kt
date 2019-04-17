@@ -35,8 +35,14 @@ class ClipboardSuggestionProvider(
     override suspend fun onInputChanged(text: String): List<AwesomeBar.Suggestion> {
         val url = getTextFromClipboard(clipboardManager)?.let {
             findUrl(it)
-        } ?: return emptyList()
-
+        }?: return emptyList()
+        if (!text.isBlank()){
+            url.apply {
+                if (!contains(text)){
+                    return emptyList()
+                }
+            }
+        }
         return listOf(AwesomeBar.Suggestion(
             provider = this,
             id = url,
