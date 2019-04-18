@@ -95,8 +95,6 @@ class SearchFragment : BaseFragment(), SearchBar, BackHandler {
         return true
     }
 
-    private var inputText: String = ""
-
     override fun initViewWithDataBinding(savedInstanceState: Bundle?) {
 
         //设置跳转到本页面的时候就弹出键盘，并且光标闪烁
