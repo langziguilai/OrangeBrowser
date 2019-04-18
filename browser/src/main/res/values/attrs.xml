@@ -18,4 +18,7 @@
         <attr name="awesomeBarChipBackgroundColor" format="reference|color" />
         <attr name="awesomeBarChipSpacing" format="dimension" />
     </declare-styleable>
+    <declare-styleable name="InlineAutocompleteEditText">
+        <attr name="autocompleteBackgroundColor" format="color" />
+    </declare-styleable>
 </resources>

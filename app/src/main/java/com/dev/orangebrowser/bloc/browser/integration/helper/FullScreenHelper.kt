@@ -42,9 +42,9 @@ class FullScreenHelper(var binding:FragmentBrowserBinding,var activity: Activity
                StatusBarUtil.showStatusBar(activity)
                //隐藏StatusBar之后，其文字的颜色会变为默认颜色，我们需要修改其颜色
                if (session.isStatusBarDarkMode){
-                   StatusBarUtil.setDarkMode(activity)
+                   StatusBarUtil.setLightIcon(activity)
                }else{
-                   StatusBarUtil.setLightMode(activity)
+                   StatusBarUtil.setDarkIcon(activity)
                }
                //恢复默认位置
                binding.topBar.show()

@@ -30,12 +30,12 @@ class BottomBarHelper(private var binding: FragmentHomeBinding, var fragment: Ho
         binding.back.setTextColor(fragment.activityViewModel.theme.value!!.colorPrimaryDisable)
         //设置forward颜色
         fragment.sessionManager.findSessionById(fragment.sessionId)?.apply {
-            if (this.url!= Session.INITIAL_URL){
+            if (this.url!= Session.NO_EXIST_URL){
                 binding.forward.setTextColor(fragment.activityViewModel.theme.value!!.colorPrimary)
-                binding.forward.isClickable=true
+                binding.forward.isEnabled=true
             }else{
                 binding.forward.setTextColor(fragment.activityViewModel.theme.value!!.colorPrimaryDisable)
-                binding.forward.isClickable=false
+                binding.forward.isEnabled=false
             }
         }
 

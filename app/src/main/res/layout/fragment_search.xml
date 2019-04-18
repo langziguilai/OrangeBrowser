@@ -21,19 +21,28 @@
                           android:layout_width="0dp"
                           android:layout_weight="1"
                           android:layout_height="32dp">
-                <EditText android:id="@+id/search_text"
-                          android:background="@null"
-                          android:textCursorDrawable="@drawable/cursor_color"
-                          android:singleLine="true"
-                          android:focusable="true"
-                          android:inputType="text"
-                          android:layout_weight="1"
-                          android:layout_marginStart="12dp"
-                          android:layout_height="match_parent"
-                          android:layout_width="0dp"
-                          android:hint="@string/search_or_input" android:gravity="start|center_vertical"
-                          android:textColor="@color/colorWhite" android:textColorHint="@color/colorWhite"
-                          android:textSize="14sp"/>
+                <FrameLayout
+                        android:layout_marginStart="12dp" android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1">
+                    <TextView
+                            android:id="@+id/search_text_display"
+                            android:textSize="14sp"
+                            android:singleLine="true"
+                            android:focusable="true"
+                            android:hint="@string/search_or_input" android:gravity="start|center_vertical"
+                            android:textColor="@color/colorWhite" android:textColorHint="@color/colorWhite"
+                            android:layout_width="match_parent" android:layout_height="match_parent"/>
+                    <EditText android:id="@+id/search_text"
+                              android:background="@null"
+                              android:textCursorDrawable="@drawable/cursor_color"
+                              android:singleLine="true"
+                              android:focusable="true"
+                              android:inputType="text"
+                              android:textColor="@color/transparent"
+                              android:layout_height="match_parent"
+                              android:layout_width="match_parent"
+                              android:textSize="14sp"/>
+                </FrameLayout>
+
                 <com.dev.view.IconfontTextView
                         android:id="@+id/clear"
                         android:layout_marginStart="10dp"
@@ -52,6 +61,22 @@
                       android:gravity="center" android:layout_width="48dp"
                       android:layout_height="match_parent"
                       android:textSize="14sp" android:text="@string/cancel"
+                      android:textColor="@color/colorWhite"/>
+            <TextView android:id="@+id/go" android:clickable="true"
+                      android:background="?android:attr/selectableItemBackgroundBorderless"
+                      android:focusable="true"
+                      android:visibility="gone"
+                      android:gravity="center" android:layout_width="48dp"
+                      android:layout_height="match_parent"
+                      android:textSize="14sp" android:text="@string/go"
+                      android:textColor="@color/colorWhite"/>
+            <TextView android:id="@+id/search" android:clickable="true"
+                      android:background="?android:attr/selectableItemBackgroundBorderless"
+                      android:focusable="true"
+                      android:visibility="gone"
+                      android:gravity="center" android:layout_width="48dp"
+                      android:layout_height="match_parent"
+                      android:textSize="14sp" android:text="@string/search"
                       android:textColor="@color/colorWhite"/>
         </LinearLayout>
         <com.dev.browser.ui.awesomebar.BrowserAwesomeBar

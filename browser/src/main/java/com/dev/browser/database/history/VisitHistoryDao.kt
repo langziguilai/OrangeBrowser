@@ -18,7 +18,8 @@ interface VisitHistoryDao {
 
     @Update
     fun update(entity: VisitHistoryEntity)
-
+    @Query("UPDATE visit_history SET title=:title WHERE url=:url")
+    fun updateTitle(url:String,title:String)
     @Query("SELECT * FROM visit_history ORDER BY date DESC")
     fun getVisitHistoryList(): List<VisitHistoryEntity>
     @Query("SELECT * FROM visit_history WHERE date<=:end AND date>=:start ORDER BY date DESC")

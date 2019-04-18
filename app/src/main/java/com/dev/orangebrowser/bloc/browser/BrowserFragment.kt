@@ -5,7 +5,6 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.*
-import android.widget.FrameLayout
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.lifecycle.ViewModelProviders
 import com.dev.base.BaseFragment
@@ -20,12 +19,10 @@ import com.dev.browser.feature.prompts.PromptFeature
 import com.dev.browser.feature.session.*
 import com.dev.browser.feature.sitepermissions.SitePermissionsFeature
 import com.dev.browser.feature.tabs.TabsUseCases
-import com.dev.browser.session.Session
 import com.dev.browser.session.SessionManager
 import com.dev.orangebrowser.R
 import com.dev.orangebrowser.bloc.browser.integration.*
 import com.dev.orangebrowser.bloc.browser.integration.helper.*
-import com.dev.orangebrowser.bloc.home.HomeFragment
 import com.dev.orangebrowser.bloc.host.MainViewModel
 import com.dev.orangebrowser.databinding.FragmentBrowserBinding
 import com.dev.orangebrowser.extension.RouterActivity
@@ -36,8 +33,7 @@ import kotlinx.android.synthetic.main.fragment_browser.*
 import java.util.*
 import javax.inject.Inject
 import android.widget.RelativeLayout
-
-
+import com.dev.browser.session.Session
 
 
 class BrowserFragment : BaseFragment(), BackHandler, UserInteractionHandler {
@@ -135,7 +131,9 @@ class BrowserFragment : BaseFragment(), BackHandler, UserInteractionHandler {
     }
 
     override fun initViewWithDataBinding(savedInstanceState: Bundle?) {
-
+        sessionManager.findSessionById(sessionId)?.apply {
+            this.screenNumber= BROWSER_SCREEN_NUM
+        }
         val session = sessionManager.findSessionById(sessionId) ?: sessionManager.selectedSessionOrThrow
         val bottomPanelHelper = BottomPanelHelper(binding, this)
         val topPanelHelper = TopPanelHelper(binding, this, bottomPanelHelper)
@@ -400,13 +398,15 @@ class BrowserFragment : BaseFragment(), BackHandler, UserInteractionHandler {
 
     override fun onDetach() {
         RouterActivity?.apply {
-            StatusBarUtil.setStatusBarColor(RouterActivity!!, activityViewModel.theme.value!!.colorPrimary)
+            //恢复StatusBar的颜色
+            StatusBarUtil.setStatusBarBackGroundColorAndIconColor(RouterActivity!!,activityViewModel.theme.value!!.colorPrimary )
         }
         super.onDetach()
     }
 
     companion object {
         const val SESSION_ID = "session_id"
+        private const val BROWSER_SCREEN_NUM= Session.HOME_SCREEN+1
         private const val REQUEST_CODE_DOWNLOAD_PERMISSIONS = 1
         private const val REQUEST_CODE_PROMPT_PERMISSIONS = 2
         private const val REQUEST_CODE_APP_PERMISSIONS = 3

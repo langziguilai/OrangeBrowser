@@ -5,6 +5,9 @@ import com.dev.browser.concept.Engine
 import com.dev.browser.concept.fetch.Client
 import com.dev.browser.concept.history.HistoryTrackingDelegate
 import com.dev.browser.concept.storage.HistoryStorage
+import com.dev.browser.domain.autocomplete.CustomDomainsProvider
+import com.dev.browser.domain.autocomplete.DomainAutocompleteProvider
+import com.dev.browser.domain.autocomplete.ShippedDomainsProvider
 import com.dev.browser.engine.SystemEngine
 import com.dev.browser.feature.search.SearchUseCases
 import com.dev.browser.feature.session.HistoryDelegate
@@ -68,5 +71,21 @@ class BrowserModule {
     @Singleton
     fun provideHistoryTrackingDelegate(historyStorage: HistoryStorage): HistoryTrackingDelegate {
         return HistoryDelegate(historyStorage)
+    }
+    //自定义搜索域名建议：可以添加，删除
+    @Provides
+    @Singleton
+    fun provideCustomDomainsProvider(context: Context): CustomDomainsProvider {
+       return CustomDomainsProvider().apply {
+           this.initialize(context)
+       }
+    }
+    //默认搜索域名建议
+    @Provides
+    @Singleton
+    fun provideShippedDomainsProvider(context: Context): ShippedDomainsProvider {
+        return ShippedDomainsProvider().apply {
+            this.initialize(context)
+        }
     }
 }

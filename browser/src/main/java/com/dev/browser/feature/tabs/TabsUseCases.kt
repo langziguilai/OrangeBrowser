@@ -78,6 +78,36 @@ class TabsUseCases(
             return session
         }
     }
+    class AddNewTabUseCaseWithoutUrl internal constructor(
+        private val sessionManager: SessionManager
+    )  {
+
+        /**
+         * Adds a new tab and loads the provided URL.
+         *
+         * @param url The URL to be loaded in the new tab.
+         */
+        fun invoke() {
+            this.invoke( true, null)
+        }
+
+        /**
+         * Adds a new tab and loads the provided URL.
+         *
+         * @param url The URL to be loaded in the new tab.
+         * @param selectTab True (default) if the new tab should be selected immediately.
+         * @param startLoading True (default) if the new tab should start loading immediately.
+         * @param parent the parent session to use for the newly created session.
+         */
+        fun invoke(
+            selectTab: Boolean = true,
+            parent: Session? = null
+        ): Session {
+            val session = Session(private = false, source = Source.NEW_TAB)
+            sessionManager.add(session, selected = selectTab, parent = parent)
+            return session
+        }
+    }
     class AddNewPrivateTabUseCase internal constructor(
         private val sessionManager: SessionManager
     ) : SessionUseCases.LoadUrlUseCase {
@@ -142,6 +172,7 @@ class TabsUseCases(
     val selectTab: SelectTabUseCase by lazy { SelectTabUseCase(sessionManager) }
     val removeTab: RemoveTabUseCase by lazy { RemoveTabUseCase(sessionManager) }
     val addTab: AddNewTabUseCase by lazy { AddNewTabUseCase(sessionManager) }
+    val addTabWithoutUrl: AddNewTabUseCaseWithoutUrl by lazy { AddNewTabUseCaseWithoutUrl(sessionManager) }
     val addPrivateTab: AddNewPrivateTabUseCase by lazy { AddNewPrivateTabUseCase(sessionManager) }
     val removeAllTabs: RemoveAllTabsUseCase by lazy { RemoveAllTabsUseCase(sessionManager) }
     val removeAllTabsOfType: RemoveAllTabsOfTypeUseCase by lazy {

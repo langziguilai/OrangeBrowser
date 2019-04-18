@@ -25,7 +25,7 @@ import kotlin.properties.Delegates
  */
 @Suppress("TooManyFunctions")
 class Session(
-    initialUrl: String=INITIAL_URL,
+    initialUrl: String?=NO_EXIST_URL,
     var private: Boolean = false,
     val source: Source = Source.NONE,
     val id: String = UUID.randomUUID().toString(),
@@ -40,7 +40,7 @@ class Session(
     var homeScreenState:Bundle?=null  //保存HomeScreen的状态
     companion object {
         const val HOME_SCREEN=1  //Home screen代表的值
-        const val INITIAL_URL="NO_EXIST_URL"  //不存在的URL，表示还未加载过
+        const val NO_EXIST_URL=""  //不存在的URL，表示还未加载过
         const val NORMAL_SCREEN_MODE = 1  //正常模式
         const val SCROLL_FULL_SCREEN_MODE = 2  //滑动最大视野模式
         const val MAX_SCREEN_MODE = 3  //保持最大视野模式
@@ -161,7 +161,7 @@ class Session(
     /**
      * The currently loading or loaded URL.
      */
-    var url: String by Delegates.observable(initialUrl) { _, old, new ->
+    var url: String by Delegates.observable(initialUrl ?: "") { _, old, new ->
         notifyObservers(old, new) {
             onUrlChanged(this@Session, new)
         }
@@ -191,7 +191,9 @@ class Session(
      * Navigation state, true if there's an history item to go back to, otherwise false.
      */
     var canGoBack: Boolean by Delegates.observable(false) { _, old, new ->
-        notifyObservers(old, new) { onNavigationStateChanged(this@Session, new, canGoForward) }
+        notifyObservers(old, new) {
+            onNavigationStateChanged(this@Session, new, canGoForward)
+        }
     }
 
     /**

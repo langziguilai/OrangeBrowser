@@ -18,6 +18,7 @@ import com.dev.browser.concept.EngineSessionState
 import com.dev.browser.concept.Settings
 import com.dev.browser.concept.history.HistoryTrackingDelegate
 import com.dev.browser.concept.request.RequestInterceptor
+import com.dev.browser.session.Session
 import com.dev.browser.support.ErrorType
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -63,9 +64,10 @@ class SystemEngineSession(
 
     /**
      * See [EngineSession.loadUrl]
+     * 此方法会再session link的时候加载一次，我们需要忽略空的，并忽略非初始化的值，才加载
      */
     override fun loadUrl(url: String) {
-        if (!url.isEmpty()) {
+        if (!url.isEmpty() && url!= Session.NO_EXIST_URL) {
             currentUrl = url
             webView.loadUrl(url, additionalHeaders)
         }

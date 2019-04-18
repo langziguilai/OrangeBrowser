@@ -20,6 +20,7 @@ import com.dev.orangebrowser.data.model.Site
 import com.dev.orangebrowser.databinding.FragmentHomeBinding
 import com.dev.orangebrowser.extension.RouterActivity
 import com.dev.orangebrowser.extension.appComponent
+import com.dev.view.StatusBarUtil
 import com.evernote.android.state.State
 import java.util.*
 import javax.inject.Inject
@@ -61,12 +62,12 @@ class HomeFragment : BaseLazyFragment(), BackHandler {
         super.onActivityCreated(savedInstanceState)
     }
     //找到或者新建一个Session
-    fun initSession(){
+    private fun initSession(){
         sessionId=arguments?.getString(BrowserFragment.SESSION_ID) ?: NO_SESSION_ID
-        //根据session ID查询，如果不存在，那么就新建
+        //根据session ID查询，如果不存在，那么就新建,但是不加载url
         val session=sessionManager.findSessionById(sessionId)
         if (session==null){
-            tabsUserCase.addTab.invoke(url = Session.INITIAL_URL,selectTab = true,startLoading = false)
+            tabsUserCase.addTabWithoutUrl.invoke(selectTab = true)
             sessionId=sessionManager.selectedSession!!.id
             return
         }
@@ -83,6 +84,7 @@ class HomeFragment : BaseLazyFragment(), BackHandler {
 
     override fun initViewWithDataBinding(savedInstanceState: Bundle?) {
         initSession()
+        StatusBarUtil.setLightIcon(requireActivity())
         val bottomBarHelper= BottomBarHelper(binding, this, savedInstanceState)
         val topBarHelper=
             TopBarHelper(binding, this, savedInstanceState, bottomBarHelper)
@@ -113,7 +115,7 @@ class HomeFragment : BaseLazyFragment(), BackHandler {
     }
 
     companion object {
-        val Tag = "HomeFragment"
+        const val Tag = "HomeFragment"
         const val NO_SESSION_ID="NO_SESSION_ID"
         fun newInstance(sessionId:String):HomeFragment = HomeFragment().apply {
             arguments = Bundle().apply {

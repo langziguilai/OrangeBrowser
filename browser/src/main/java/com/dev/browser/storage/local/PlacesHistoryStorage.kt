@@ -21,47 +21,25 @@ import kotlinx.coroutines.withContext
  */
 open class PlacesHistoryStorage(context: Context) : HistoryStorage {
     private val scope by lazy { CoroutineScope(Dispatchers.IO) }
-    private val historyDao by lazy { BrowserDatabase.get(context).historyDao() }
+    private val historyDao by lazy { BrowserDatabase.get(context.applicationContext).historyDao() }
 
     override suspend fun recordVisit(uri: String, visitType: VisitType) {
         withContext(scope.coroutineContext) {
-            val existHistoryEntity = historyDao.getVisitHistoryByUri(uri)
-            if (existHistoryEntity==null){
-                historyDao.insert(
-                    VisitHistoryEntity(
-                        url = uri,
-                        title = "",
-                        date = System.currentTimeMillis(),
-                        visitType = visitType.type
-                    )
+            historyDao.insert(
+                VisitHistoryEntity(
+                    url = uri,
+                    title = "",
+                    date = System.currentTimeMillis(),
+                    visitType = visitType.type
                 )
-                return@withContext
-            }
-            if(existHistoryEntity.visitType==VisitType.NO_EXIST.type){
-                    existHistoryEntity.visitType=visitType.type
-                    historyDao.update(existHistoryEntity)
-             }
+            )
         }
     }
 
     override suspend fun recordObservation(uri: String, observation: PageObservation) {
         // NB: visitType 'UPDATE_PLACE' means "record meta information about this URL".
         withContext(scope.coroutineContext) {
-            val existHistoryEntity = historyDao.getVisitHistoryByUri(uri)
-            if (existHistoryEntity != null) {
-                existHistoryEntity.title = observation.title ?: ""
-                historyDao.update(existHistoryEntity)
-            }else{
-                historyDao.insert(
-                    VisitHistoryEntity(
-                        url = uri,
-                        title = "",
-                        date = System.currentTimeMillis(),
-                        visitType = VisitType.NO_EXIST.type
-                    )
-                )
-            }
-
+            historyDao.updateTitle(url = uri,title=observation.title ?: "")
         }
     }
 

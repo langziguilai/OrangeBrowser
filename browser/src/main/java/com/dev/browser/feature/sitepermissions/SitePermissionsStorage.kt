@@ -26,7 +26,7 @@ class SitePermissionsStorage(
 ) {
     @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
     internal var databaseInitializer = {
-        BrowserDatabase.get(context)
+        BrowserDatabase.get(context.applicationContext)
     }
 
     private val database by lazy { databaseInitializer() }

@@ -8,6 +8,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
+import com.dev.util.ColorKitUtil;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -15,7 +16,7 @@ import java.lang.reflect.Method;
 public class StatusBarUtil {
     //黑色字体
     @TargetApi(Build.VERSION_CODES.M)
-    public static void setLightMode(Activity activity) {
+    public static void setDarkIcon(Activity activity) {
         setMIUIStatusBarDarkIcon(activity, true);
         setMeizuStatusBarDarkIcon(activity, true);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -28,7 +29,7 @@ public class StatusBarUtil {
     }
     //白色字体
     @TargetApi(Build.VERSION_CODES.M)
-    public static void setDarkMode(Activity activity) {
+    public static void setLightIcon(Activity activity) {
         setMIUIStatusBarDarkIcon(activity, false);
         setMeizuStatusBarDarkIcon(activity, false);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -105,7 +106,21 @@ public class StatusBarUtil {
         }
     }
 
-    public static void setStatusBarColor(@NonNull Activity activity, @ColorInt int color) {
+    //设置StatusBar背景颜色和Icon的颜色
+    public static void setStatusBarBackGroundColorAndIconColor(@NonNull Activity activity, @ColorInt int color) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            activity.getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            activity.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+            activity.getWindow().setStatusBarColor(color);
+        }
+        if(ColorKitUtil.isBackGroundLightMode(color)){
+            setDarkIcon(activity);
+        }else{
+            setLightIcon(activity);
+        }
+    }
+    //设置StatusBar背景颜色
+    public static void setStatusBarBackGroundColor(@NonNull Activity activity, @ColorInt int color) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             activity.getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
             activity.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);

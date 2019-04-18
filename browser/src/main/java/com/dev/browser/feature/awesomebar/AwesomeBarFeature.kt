@@ -7,6 +7,8 @@ import com.dev.browser.concept.awesomebar.AwesomeBar
 import com.dev.browser.concept.fetch.Client
 import com.dev.browser.concept.searchbar.SearchBar
 import com.dev.browser.concept.storage.HistoryStorage
+import com.dev.browser.domain.autocomplete.CustomDomainsProvider
+import com.dev.browser.domain.autocomplete.DomainAutocompleteProvider
 import com.dev.browser.feature.awesomebar.provider.ClipboardSuggestionProvider
 import com.dev.browser.feature.awesomebar.provider.HistoryStorageSuggestionProvider
 import com.dev.browser.feature.awesomebar.provider.SearchSuggestionProvider
@@ -86,7 +88,9 @@ class AwesomeBarFeature(
         awesomeBar.addProviders(HistoryStorageSuggestionProvider(historyStorage, loadUrlUseCase))
         return this
     }
-
+    /**
+     * Add a [AwesomeBar.SuggestionProvider] for clipboard to the [AwesomeBar].
+     */
     fun addClipboardProvider(
         context: Context,
         loadUrlUseCase: SessionUseCases.LoadUrlUseCase
@@ -94,6 +98,7 @@ class AwesomeBarFeature(
         awesomeBar.addProviders(ClipboardSuggestionProvider(context, loadUrlUseCase))
         return this
     }
+
     override fun start() {
         //TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }

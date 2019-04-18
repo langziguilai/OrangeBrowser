@@ -13,7 +13,9 @@ import androidx.room.PrimaryKey
  */
 @Entity(tableName = "visit_history")
 data class VisitHistoryEntity(
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = true)
+    @ColumnInfo(name = "id")
+    var id:Long=0,
     @ColumnInfo(name = "url")
     var url: String,
 

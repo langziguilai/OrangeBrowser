@@ -6,7 +6,6 @@ import android.graphics.Canvas
 import android.graphics.drawable.ColorDrawable
 import android.view.View
 import androidx.annotation.ColorInt
-import androidx.core.graphics.ColorUtils
 import com.dev.base.support.LifecycleAwareFeature
 import com.dev.browser.engine.SystemEngineSession
 import com.dev.browser.session.Session
@@ -14,6 +13,7 @@ import com.dev.browser.session.SessionManager
 import com.dev.orangebrowser.R
 import com.dev.orangebrowser.bloc.browser.BrowserFragment
 import com.dev.orangebrowser.databinding.FragmentBrowserBinding
+import com.dev.util.ColorKitUtil
 import com.dev.util.CommonUtil
 import com.dev.view.StatusBarUtil
 
@@ -56,20 +56,15 @@ class StyleIntegration(var binding: FragmentBrowserBinding,var fragment:BrowserF
     }
 
     private fun updateStyle(@ColorInt color:Int){
-        val hsl= FloatArray(3)
-        //获取明度和饱和度
-        ColorUtils.colorToHSL(color,hsl)
-        //1:set backgroundColor
+
         binding.topBar.background=ColorDrawable(color)
         binding.topMenuPanel.background=ColorDrawable(color)
-        StatusBarUtil.setStatusBarColor(fragment.requireActivity(),color)
-        //2:set text Color
-        val saturation=hsl[1]  //饱和度：范围 [0...1]
-        val lightness=hsl[2]   //明度:范围  [0...1]
-        setTextColor(saturation,lightness)
+        StatusBarUtil.setStatusBarBackGroundColorAndIconColor(fragment.requireActivity(),color)
+        setTextColor(color)
     }
-    private fun setTextColor(saturation:Float,lightness:Float){
-        if (saturation<0.1f && lightness>0.9){
+    private fun setTextColor(color:Int){
+        //如果时亮色背景，就设置字体颜色为暗色
+        if (ColorKitUtil.isBackGroundLightMode(color)){
             setTextDarkMode()
         }else{
             setTextLightMode()
@@ -78,7 +73,6 @@ class StyleIntegration(var binding: FragmentBrowserBinding,var fragment:BrowserF
 
     private fun setTextLightMode(){
         session.isStatusBarDarkMode=true
-        StatusBarUtil.setDarkMode(fragment.requireActivity())
         val whiteColor=fragment.resources.getColor(R.color.colorWhite)
         binding.searchText.setTextColor(whiteColor)
         binding.searchText.setHintTextColor(whiteColor)
@@ -95,7 +89,6 @@ class StyleIntegration(var binding: FragmentBrowserBinding,var fragment:BrowserF
     }
     private fun setTextDarkMode(){
         session.isStatusBarDarkMode=false
-        StatusBarUtil.setLightMode(fragment.requireActivity())
         val blackColor=fragment.resources.getColor(R.color.colorBlack)
         binding.searchText.setTextColor(blackColor)
         binding.searchText.setHintTextColor(blackColor)

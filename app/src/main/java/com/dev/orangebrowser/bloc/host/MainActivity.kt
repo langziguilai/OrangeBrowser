@@ -1,7 +1,6 @@
 package com.dev.orangebrowser.bloc.host
 
 
-import android.content.res.Configuration
 import android.os.Bundle
 import android.widget.Toast
 import androidx.lifecycle.Observer
@@ -34,7 +33,6 @@ import es.dmoral.toasty.Toasty
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import java.util.*
 import javax.inject.Inject
 
 
@@ -100,7 +98,7 @@ class MainActivity : BaseActivity() {
                 })
             })
             viewModel.theme.observe(this, Observer {
-                StatusBarUtil.setStatusBarColor(this, it.colorPrimaryDark)
+                StatusBarUtil.setStatusBarBackGroundColorAndIconColor(this, it.colorPrimaryDark)
             })
             viewModel.quitSignalClear.observe(this, Observer {
                 quitSignal = it
