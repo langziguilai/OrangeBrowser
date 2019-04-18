@@ -21,27 +21,18 @@
                           android:layout_width="0dp"
                           android:layout_weight="1"
                           android:layout_height="32dp">
-                <FrameLayout
-                        android:layout_marginStart="12dp" android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1">
-                    <TextView
-                            android:id="@+id/search_text_display"
-                            android:textSize="14sp"
-                            android:singleLine="true"
-                            android:focusable="true"
-                            android:hint="@string/search_or_input" android:gravity="start|center_vertical"
-                            android:textColor="@color/colorWhite" android:textColorHint="@color/colorWhite"
-                            android:layout_width="match_parent" android:layout_height="match_parent"/>
-                    <EditText android:id="@+id/search_text"
-                              android:background="@null"
-                              android:textCursorDrawable="@drawable/cursor_color"
-                              android:singleLine="true"
-                              android:focusable="true"
-                              android:inputType="text"
-                              android:textColor="@color/transparent"
-                              android:layout_height="match_parent"
-                              android:layout_width="match_parent"
-                              android:textSize="14sp"/>
-                </FrameLayout>
+                <com.dev.browser.ui.inlineautocomplete.InlineAutocompleteEditText
+                        android:id="@+id/search_text"
+                        android:background="@null"
+                        android:textCursorDrawable="@drawable/cursor_color"
+                        android:singleLine="true"
+                        android:focusable="true"
+                        android:inputType="text"
+                        android:textSize="14sp"
+                        android:hint="@string/search_or_input" android:gravity="start|center_vertical"
+                        android:textColor="@color/colorWhite" android:textColorHint="@color/colorWhite"
+                        android:layout_marginStart="12dp" android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1"/>
+
 
                 <com.dev.view.IconfontTextView
                         android:id="@+id/clear"
