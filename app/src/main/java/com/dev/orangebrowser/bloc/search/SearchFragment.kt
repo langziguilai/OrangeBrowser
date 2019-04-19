@@ -11,6 +11,7 @@ import android.view.inputmethod.InputMethodManager
 import androidx.lifecycle.ViewModelProviders
 import com.dev.base.BaseFragment
 import com.dev.base.extension.hide
+import com.dev.base.extension.hideKeyboard
 import com.dev.base.extension.show
 import com.dev.base.extension.updateIme
 import com.dev.base.support.BackHandler
@@ -104,14 +105,21 @@ class SearchFragment : BaseFragment(), SearchBar, BackHandler {
         val inputManager = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         inputManager.showSoftInput(binding.searchText, 0)
         sessionManager.findSessionById(originalSessionId)?.apply {
-            binding.searchText.applyAutocompleteResult(
-                InlineAutocompleteEditText.AutocompleteResult(text = this.url, source = "", totalItems = 1)
-            )
-            binding.searchText.imeOptions=EditorInfo.IME_ACTION_GO
-            binding.searchText.inputType= EditorInfo.TYPE_CLASS_TEXT
-            binding.go.show()
-            binding.search.hide()
-            binding.cancel.hide()
+            if (this.url.isBlank()){
+                binding.searchText.updateIme(EditorInfo.IME_ACTION_DONE)
+                binding.go.hide()
+                binding.search.hide()
+                binding.cancel.show()
+            }else{
+                binding.searchText.applyAutocompleteResult(
+                    InlineAutocompleteEditText.AutocompleteResult(text = this.url, source = "", totalItems = 1)
+                )
+                binding.searchText.updateIme(EditorInfo.IME_ACTION_GO)
+                binding.go.show()
+                binding.search.hide()
+                binding.cancel.hide()
+            }
+
         }
         toggleClearIcon()
         binding.clear.setOnClickListener {
@@ -308,6 +316,10 @@ class SearchFragment : BaseFragment(), SearchBar, BackHandler {
         return true
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        binding.searchText.hideKeyboard()
+    }
     companion object {
         val Tag = "SearchFragment"
         fun newInstance(sessionId: String) = SearchFragment().apply {

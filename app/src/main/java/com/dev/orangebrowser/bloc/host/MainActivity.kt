@@ -128,6 +128,10 @@ class MainActivity : BaseActivity() {
         sessionManager.onLowMemory()
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        //隐藏键盘
+    }
     //加载浏览器页面
     fun loadBrowserFragment(sessionId: String) {
         supportFragmentManager.beginTransaction().replace(R.id.container, BrowserFragment.newInstance(sessionId))
