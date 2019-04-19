@@ -652,24 +652,51 @@ class SystemEngineView @JvmOverloads constructor(
         val thumbnail = if (webView == null) {
             null
         } else {
-            //TODO:压缩
-            loadBitmapFromView(webView)
+            if (webView.width>0 && webView.height>0){
+                loadFullBitmapFromView(webView)
+            }else{
+                null
+            }
         }
         onFinish(thumbnail)
     }
 
-    private fun loadBitmapFromView(v: View): Bitmap {
-        val fullSizeBitmap = Bitmap.createBitmap(v.width, v.height, Bitmap.Config.ARGB_8888)
+    override fun captureThemeBitmap(onFinish: (Bitmap?) -> Unit) {
+        val webView = session?.webView
+
+        val thumbnail = if (webView == null) {
+            null
+        } else {
+            if (webView.width>0 && webView.height>0){
+                loadThemeBitmapFromView(webView)
+            }else{
+                null
+            }
+        }
+        onFinish(thumbnail)
+    }
+    //
+    private fun loadThemeBitmapFromView(v: View): Bitmap {
+        val defaultThemeBitmapWidth=20
+        val defaultThemeBitmapHeight=20
+        //截取右上角指定长度和宽度的内容
+        val fullSizeBitmap = Bitmap.createBitmap(defaultThemeBitmapWidth, defaultThemeBitmapHeight, Bitmap.Config.ARGB_8888)
         val c = Canvas(fullSizeBitmap)
         v.layout(v.left, v.top, v.right, v.bottom)
         v.draw(c)
-
+        return fullSizeBitmap
+    }
+    //截图
+    private fun loadFullBitmapFromView(v: View): Bitmap {
         val density=v.context.resources.displayMetrics.density
+        val fullSizeBitmap = Bitmap.createBitmap(v.width, v.height, Bitmap.Config.RGB_565)
+        val c = Canvas(fullSizeBitmap)
+        v.layout(v.left, v.top, v.right, v.bottom)
+        v.draw(c)
         val sampleBitmap = CommonUtil.getResizedBitmap(fullSizeBitmap,v.height/density,v.width/density)
         fullSizeBitmap?.recycle()
         return sampleBitmap
     }
-
     private fun resetJSAlertAbuseState() {
         jsAlertCount = 0
         shouldShowMoreDialogs = true

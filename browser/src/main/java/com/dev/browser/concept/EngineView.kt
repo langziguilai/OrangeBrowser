@@ -73,9 +73,11 @@ interface EngineView {
 
     /**
      * Request a screenshot of the visible portion of the web page currently being rendered.
-     * @param onFinish A callback to inform that process of capturing a thumbnail has finished.
+     * @param onFinish A callback to inform that process of capturing a themeThumbnail has finished.
      */
     fun captureThumbnail(onFinish: (Bitmap?) -> Unit)
+
+    fun captureThemeBitmap(onFinish: (Bitmap?) -> Unit)
 }
 
 /**

@@ -63,6 +63,8 @@
     <string name="ic_download">&#xe7f0;</string>
     <string name="ic_close">&#xe7fd;</string>
     <string name="ic_lock_fill">&#xe86a;</string>
+    <string name="ic_circle_plus">&#xe532;</string>
+    <string name="ic_arrow_left">&#xe7f0;</string>
 
 
     <string name="search_or_input">搜索或输入网址</string>

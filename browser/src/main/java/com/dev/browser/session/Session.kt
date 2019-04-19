@@ -35,6 +35,8 @@ class Session(
     var themeColorMap: HashMap<String, Int> = HashMap(),
     var isStatusBarDarkMode: Boolean = false,
     var screenNumber:Int=HOME_SCREEN,//screenNumber默认为
+    var thumbnailPath:String ="", //将thumbnail保存起来
+    var themeColor:Int?=null,  //主题颜色
     delegate: Observable<Observer> = ObserverRegistry()
 ) : Observable<Session.Observer> by delegate {
     var homeScreenState:Bundle?=null  //保存HomeScreen的状态
@@ -79,7 +81,7 @@ class Session(
         fun onFindResult(session: Session, result: FindResult) = Unit
         fun onDesktopModeChanged(session: Session, enabled: Boolean) = Unit
         fun onFullScreenChanged(session: Session, enabled: Boolean) = Unit
-        fun onThumbnailChanged(session: Session, bitmap: Bitmap?) = Unit
+        fun onThemeBitmapCaptureChanged(session: Session, bitmap: Bitmap?) = Unit
         fun onContentPermissionRequested(session: Session, permissionRequest: PermissionRequest): Boolean = false
         fun onAppPermissionRequested(session: Session, permissionRequest: PermissionRequest): Boolean = false
         fun onPromptRequested(session: Session, promptRequest: PromptRequest): Boolean = false
@@ -297,10 +299,10 @@ class Session(
     }
 
     /**
-     * The target of the latest thumbnail.
+     * The target of the latest themeThumbnail.//仅仅用于主题颜色，不用于保存
      */
-    var thumbnail: Bitmap? by Delegates.observable<Bitmap?>(null) { _, _, new ->
-        notifyObservers { onThumbnailChanged(this@Session, new) }
+    var themeThumbnail: Bitmap? by Delegates.observable<Bitmap?>(null) { _, _, new ->
+        notifyObservers { onThemeBitmapCaptureChanged(this@Session, new) }
     }
 
     /**

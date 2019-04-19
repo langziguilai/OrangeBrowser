@@ -22,6 +22,7 @@ class SessionManager(
     val defaultSession: (() -> Session)? = null,
     delegate: Observable<Observer> = ObserverRegistry()
 ) : Observable<SessionManager.Observer> by delegate {
+
     private val values = mutableListOf<Session>()
 
     @GuardedBy("values")
@@ -468,17 +469,17 @@ class SessionManager(
     /**
      * Informs this [SessionManager] that the OS is in low memory condition so it
      * can reduce its allocated objects.
+     * 在低内存时，保存截图到文件
      */
     fun onLowMemory() {
         // Removing the all the thumbnails except for the selected session to
         // reduce memory consumption.
         sessions.forEach {
             if (it != selectedSession) {
-                it.thumbnail = null
+                it.themeThumbnail = null
             }
         }
     }
-
     companion object {
         const val NO_SELECTION = -1
     }

@@ -18,16 +18,16 @@ import kotlin.coroutines.CoroutineContext
 /**
  * Feature implementation for automatically taking thumbnails of sites.
  * The feature will take a screenshot when the page finishes loading,
- * and will add it to the [Session.thumbnail] property.
+ * and will add it to the [Session.themeThumbnail] property.
  *
  * If the OS is under low memory conditions, the screenshot will be not taken.
  * Ideally, this should be used in conjunction with [SessionManager.onLowMemory] to allow
- * free up some [Session.thumbnail] from memory.
+ * free up some [Session.themeThumbnail] from memory.
  */
 class ThumbnailsFeature(
     private val context: Context,
     private val engineView: EngineView,
-    sessionManager: SessionManager
+    private val sessionManager: SessionManager
 ) : LifecycleAwareFeature, CoroutineScope {
     private val job = SupervisorJob()
     override val coroutineContext: CoroutineContext
@@ -56,15 +56,15 @@ class ThumbnailsFeature(
 
         override fun onLoadingStateChanged(session: Session, loading: Boolean) {
             if (!loading) {
-                //requestScreenshot(session)
+                //requestThemeBitmapScreenshot(session)
             }
         }
         private var captured=false
         override fun onProgress(session: Session, progress: Int) {
-            //在progress大于50%时，capture图片
+            //在progress大于70%时，capture图片
             if (progress>70){
                 if (!captured){
-                    requestScreenshot(session)
+                    requestThemeBitmapScreenshot(session)
                     captured=true
                 }
             }else{
@@ -73,13 +73,14 @@ class ThumbnailsFeature(
         }
     }
 
-    private fun requestScreenshot(session: Session) {
+    //请求获取themeBitmap截图，此截图在用后就可以删除了
+    private fun requestThemeBitmapScreenshot(session: Session) {
         if (!isLowOnMemory()) {
             engineView.captureThumbnail {
-                session.thumbnail = it
+                session.themeThumbnail = it
             }
         } else {
-            session.thumbnail = null
+            session.themeThumbnail = null
         }
     }
 

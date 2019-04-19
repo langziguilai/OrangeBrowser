@@ -59,7 +59,7 @@ class SearchFragment : BaseFragment(), SearchBar, BackHandler {
     lateinit var customDomainsProvider: CustomDomainsProvider
     @Inject
     lateinit var defaultDomainsProvider: ShippedDomainsProvider
-    val originalSessionId: String
+    private val originalSessionId: String
         get() = arguments?.getString(BrowserFragment.SESSION_ID) ?: ""
 
 
@@ -166,7 +166,7 @@ class SearchFragment : BaseFragment(), SearchBar, BackHandler {
                     )
                     return
                 }
-                val customSuggestion = defaultDomainsProvider.getAutocompleteSuggestion(it)
+                val customSuggestion = customDomainsProvider.getAutocompleteSuggestion(it)
                 if (customSuggestion != null) {
                     binding.searchText.applyAutocompleteResult(
                         InlineAutocompleteEditText.AutocompleteResult(

@@ -22,19 +22,18 @@ class StyleIntegration(var binding: FragmentBrowserBinding,var fragment:BrowserF
     LifecycleAwareFeature {
     private var sessionObserver: Session.Observer
     init{
-        if (session.thumbnail!=null){
+        if (session.themeColor!=null){
             if (session.themeColorMap.containsKey(session.url)){
                 updateStyle(session.themeColorMap[session.url]!!)
             }else{
-                val color=session.thumbnail!!.getPixel(5,5)
-                updateStyle(color)
+                updateStyle(session.themeColor!!)
             }
         }else{
             val color=fragment.activityViewModel.theme.value!!.colorPrimary
             updateStyle(color)
         }
         sessionObserver=object:Session.Observer{
-            override fun onThumbnailChanged(session: Session, bitmap: Bitmap?) {
+            override fun onThemeBitmapCaptureChanged(session: Session, bitmap: Bitmap?) {
                 bitmap?.apply {
                     val engineSession= sessionManager.getOrCreateEngineSession(session) as SystemEngineSession
                     val dy=engineSession.webView.scrollY
@@ -43,11 +42,13 @@ class StyleIntegration(var binding: FragmentBrowserBinding,var fragment:BrowserF
                         if (session.themeColorMap.containsKey(session.url)){
                             updateStyle(session.themeColorMap[session.url]!!)
                         }else{
-                            bitmap?.apply {
+                            bitmap.apply {
                                 val color=bitmap.getPixel(5,5)
                                 updateStyle(color)
                                 session.themeColorMap[session.url]=color
                             }
+                            bitmap.recycle()  //回收，在使用之后就没有作用了，不用保留
+                            session.themeThumbnail=null
                         }
                     }
                 }

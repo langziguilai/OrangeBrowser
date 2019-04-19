@@ -105,7 +105,7 @@ internal class EngineObserver(val session: Session) : EngineSession.Observer {
     }
 
     override fun onThumbnailChange(bitmap: Bitmap?) {
-        session.thumbnail = bitmap
+        session.themeThumbnail = bitmap
     }
 
     override fun onContentPermissionRequest(permissionRequest: PermissionRequest) {
