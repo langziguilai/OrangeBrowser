@@ -24,6 +24,7 @@ import android.webkit.WebView.HitTestResult.*
 import android.widget.FrameLayout
 import androidx.annotation.VisibleForTesting
 import androidx.annotation.VisibleForTesting.PRIVATE
+import com.dev.base.extension.capture
 import com.dev.browser.R
 import com.dev.browser.concept.EngineSession
 import com.dev.browser.concept.EngineSession.TrackingProtectionPolicy
@@ -652,11 +653,8 @@ class SystemEngineView @JvmOverloads constructor(
         val thumbnail = if (webView == null) {
             null
         } else {
-            if (webView.width>0 && webView.height>0){
-                loadFullBitmapFromView(webView)
-            }else{
-                null
-            }
+            webView.capture()
+
         }
         onFinish(thumbnail)
     }
@@ -686,17 +684,17 @@ class SystemEngineView @JvmOverloads constructor(
         v.draw(c)
         return fullSizeBitmap
     }
-    //截图
-    private fun loadFullBitmapFromView(v: View): Bitmap {
-        val density=v.context.resources.displayMetrics.density
-        val fullSizeBitmap = Bitmap.createBitmap(v.width, v.height, Bitmap.Config.RGB_565)
-        val c = Canvas(fullSizeBitmap)
-        v.layout(v.left, v.top, v.right, v.bottom)
-        v.draw(c)
-        val sampleBitmap = CommonUtil.getResizedBitmap(fullSizeBitmap,v.height/density,v.width/density)
-        fullSizeBitmap?.recycle()
-        return sampleBitmap
-    }
+//    //截图
+//    private fun loadFullBitmapFromView(v: View): Bitmap {
+//        val density=v.context.resources.displayMetrics.density
+//        val fullSizeBitmap = Bitmap.createBitmap(v.width, v.height, Bitmap.Config.RGB_565)
+//        val c = Canvas(fullSizeBitmap)
+//        v.layout(v.left, v.top, v.right, v.bottom)
+//        v.draw(c)
+//        val sampleBitmap = CommonUtil.getResizedBitmap(fullSizeBitmap,v.height/density,v.width/density)
+//        fullSizeBitmap?.recycle()
+//        return sampleBitmap
+//    }
     private fun resetJSAlertAbuseState() {
         jsAlertCount = 0
         shouldShowMoreDialogs = true

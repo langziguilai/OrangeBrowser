@@ -8,13 +8,16 @@ import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProviders
 import com.dev.base.BaseLazyFragment
 import com.dev.base.support.BackHandler
+import com.dev.base.support.ViewBoundFeatureWrapper
 import com.dev.browser.feature.tabs.TabsUseCases
 import com.dev.browser.session.Session
 import com.dev.browser.session.SessionManager
 import com.dev.orangebrowser.R
 import com.dev.orangebrowser.bloc.browser.BrowserFragment
+import com.dev.orangebrowser.bloc.browser.integration.ContextMenuIntegration
 import com.dev.orangebrowser.bloc.home.helper.BottomBarHelper
 import com.dev.orangebrowser.bloc.home.helper.TopBarHelper
+import com.dev.orangebrowser.bloc.home.intergration.ThumbnailIntergration
 import com.dev.orangebrowser.bloc.host.MainViewModel
 import com.dev.orangebrowser.data.model.Site
 import com.dev.orangebrowser.databinding.FragmentHomeBinding
@@ -35,6 +38,8 @@ class HomeFragment : BaseLazyFragment(), BackHandler {
     lateinit var activityViewModel:MainViewModel
     @State
     lateinit var favorSites: ArrayList<Site>
+
+    val thumbnailIntergration= ViewBoundFeatureWrapper<ThumbnailIntergration>()
 
     //
     val backHandlers =LinkedList<BackHandler>()
@@ -86,12 +91,13 @@ class HomeFragment : BaseLazyFragment(), BackHandler {
         initSession()
         StatusBarUtil.setLightIcon(requireActivity())
         val bottomBarHelper= BottomBarHelper(binding, this, savedInstanceState)
-        val topBarHelper=
             TopBarHelper(binding, this, savedInstanceState, bottomBarHelper)
         initViewPager(savedInstanceState)
-        binding.search.setOnClickListener {
-            RouterActivity?.loadSearchFragment(sessionId)
-        }
+        thumbnailIntergration.set(
+            feature = ThumbnailIntergration(context=requireContext(),view=binding.viewpager,sessionId = sessionId,sessionManager = sessionManager),
+            owner = this,
+            view = binding.root
+        )
     }
 
     //初始化ViewPager

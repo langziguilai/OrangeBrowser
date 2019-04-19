@@ -177,6 +177,13 @@ class SearchFragment : BaseFragment(), SearchBar, BackHandler {
                     )
                     return
                 }
+                binding.searchText.applyAutocompleteResult(
+                    InlineAutocompleteEditText.AutocompleteResult(
+                        text = it,
+                        source = it,
+                        totalItems = 0
+                    )
+                )
                 return
             }
 

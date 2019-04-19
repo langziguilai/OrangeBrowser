@@ -5,7 +5,13 @@ import android.content.Context;
 import android.content.ContextWrapper;
 import android.graphics.Bitmap;
 import android.graphics.Matrix;
+import android.os.Environment;
+import android.util.Log;
 import androidx.annotation.Nullable;
+
+import java.io.File;
+import java.io.IOError;
+import java.io.IOException;
 
 public class CommonUtil {
     @Nullable
@@ -27,11 +33,11 @@ public class CommonUtil {
 
         int height = bm.getHeight();
 
-        float scaleWidth =  newWidth / width;
+        float scaleWidth = newWidth / width;
 
-        float scaleHeight =  newHeight / height;
+        float scaleHeight = newHeight / height;
 
-       // CREATE A MATRIX FOR THE MANIPULATION
+        // CREATE A MATRIX FOR THE MANIPULATION
 
         Matrix matrix = new Matrix();
 
@@ -39,9 +45,21 @@ public class CommonUtil {
 
         matrix.postScale(scaleWidth, scaleHeight);
 
-       // RECREATE THE NEW BITMAP
+        // RECREATE THE NEW BITMAP
 
         return Bitmap.createBitmap(bm, 0, 0, width, height, matrix, false);
 
     }
+
+    public static File getOrCreateDir(String dirname) throws Exception {
+        String externalDirectory = Environment.getExternalStorageDirectory().getPath();
+        File file= new File(externalDirectory+File.separator+dirname);
+        if (!file.exists()){
+           if(!file.mkdir()){
+               throw new IOException("create directory failed!!!");
+           }
+        }
+        return file;
+    }
 }
+

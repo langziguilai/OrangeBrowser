@@ -52,7 +52,8 @@ class BrowserFragment : BaseFragment(), BackHandler, UserInteractionHandler {
     lateinit var activityViewModel: MainViewModel
 
     private val sessionFeature = ViewBoundFeatureWrapper<SessionFeature>()
-    private val thumbnailsFeature = ViewBoundFeatureWrapper<ThumbnailsFeature>()
+    private val themeBitmapCaptureFeature = ViewBoundFeatureWrapper<ThemeBitmapCaptureFeature>()
+    private val thumbnailFeature = ViewBoundFeatureWrapper<ThumbnailFeature>()
     private val windowFeature = ViewBoundFeatureWrapper<WindowFeature>()
     private val contextMenuIntegration = ViewBoundFeatureWrapper<ContextMenuIntegration>()
     private val sessionManagerListenerIntegration = ViewBoundFeatureWrapper<SessionManagerListenerIntegration>()
@@ -132,7 +133,7 @@ class BrowserFragment : BaseFragment(), BackHandler, UserInteractionHandler {
 
     override fun initViewWithDataBinding(savedInstanceState: Bundle?) {
         sessionManager.findSessionById(sessionId)?.apply {
-            this.screenNumber= BROWSER_SCREEN_NUM
+            this.screenNumber = BROWSER_SCREEN_NUM
         }
         val session = sessionManager.findSessionById(sessionId) ?: sessionManager.selectedSessionOrThrow
         val bottomPanelHelper = BottomPanelHelper(binding, this)
@@ -269,12 +270,16 @@ class BrowserFragment : BaseFragment(), BackHandler, UserInteractionHandler {
                 session.id
             ), owner = this, view = binding.root
         )
-        thumbnailsFeature.set(
-            feature = ThumbnailsFeature(requireContext(), engineView, sessionManager),
+        themeBitmapCaptureFeature.set(
+            feature = ThemeBitmapCaptureFeature(requireContext(), engineView, sessionManager),
             owner = this,
             view = binding.root
         )
-
+        thumbnailFeature.set(
+            feature = ThumbnailFeature(requireContext(), sessionId, sessionManager, engineView),
+            owner = this,
+            view = binding.root
+        )
         windowFeature.set(
             feature = WindowFeature(
                 engine = engine,
@@ -331,7 +336,8 @@ class BrowserFragment : BaseFragment(), BackHandler, UserInteractionHandler {
                     requestPermissions(permissions, REQUEST_CODE_PROMPT_PERMISSIONS)
                 }),
             owner = this,
-            view = binding.root)
+            view = binding.root
+        )
     }
 
     override fun initData(savedInstanceState: Bundle?) {
@@ -388,9 +394,11 @@ class BrowserFragment : BaseFragment(), BackHandler, UserInteractionHandler {
             }
         }
     }
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         promptsFeature.withFeature { it.onActivityResult(requestCode, resultCode, data) }
     }
+
     override fun onDestroy() {
         binding.webViewContainer.removeAllViews()
         super.onDestroy()
@@ -399,14 +407,17 @@ class BrowserFragment : BaseFragment(), BackHandler, UserInteractionHandler {
     override fun onDetach() {
         RouterActivity?.apply {
             //恢复StatusBar的颜色
-            StatusBarUtil.setStatusBarBackGroundColorAndIconColor(RouterActivity!!,activityViewModel.theme.value!!.colorPrimary )
+            StatusBarUtil.setStatusBarBackGroundColorAndIconColor(
+                RouterActivity!!,
+                activityViewModel.theme.value!!.colorPrimary
+            )
         }
         super.onDetach()
     }
 
     companion object {
         const val SESSION_ID = "session_id"
-        private const val BROWSER_SCREEN_NUM= Session.HOME_SCREEN+1
+        private const val BROWSER_SCREEN_NUM = Session.HOME_SCREEN + 1
         private const val REQUEST_CODE_DOWNLOAD_PERMISSIONS = 1
         private const val REQUEST_CODE_PROMPT_PERMISSIONS = 2
         private const val REQUEST_CODE_APP_PERMISSIONS = 3

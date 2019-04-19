@@ -1,6 +1,8 @@
 package com.dev.base.extension
 
 import android.content.Context
+import android.graphics.Bitmap
+import android.graphics.Canvas
 import android.os.Handler
 import android.os.Looper
 import android.view.View
@@ -10,6 +12,7 @@ import android.view.animation.AccelerateDecelerateInterpolator
 import android.view.animation.AccelerateInterpolator
 import android.view.animation.OvershootInterpolator
 import android.view.inputmethod.InputMethodManager
+import com.dev.util.CommonUtil
 import java.lang.ref.WeakReference
 
 const val FAST_ANIMATION=100L
@@ -112,7 +115,20 @@ fun ViewGroup.forEach(action: (View) -> Unit) {
         action(getChildAt(index))
     }
 }
-
+//截图
+fun View.capture(config:Bitmap.Config= Bitmap.Config.RGB_565):Bitmap?{
+    val v=this
+    if (v.width<=0 || v.height<=0)
+        return null
+    val density=v.context.resources.displayMetrics.density
+    val fullSizeBitmap = Bitmap.createBitmap(v.width, v.height,config)
+    val c = Canvas(fullSizeBitmap)
+    v.layout(v.left, v.top, v.right, v.bottom)
+    v.draw(c)
+    val sampleBitmap = CommonUtil.getResizedBitmap(fullSizeBitmap,v.height/density,v.width/density)
+    fullSizeBitmap?.recycle()
+    return sampleBitmap
+}
 /**
  * Tries to focus this view and show the soft input window for it.
  *

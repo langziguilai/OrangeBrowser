@@ -24,7 +24,7 @@ import kotlin.coroutines.CoroutineContext
  * Ideally, this should be used in conjunction with [SessionManager.onLowMemory] to allow
  * free up some [Session.themeThumbnail] from memory.
  */
-class ThumbnailsFeature(
+class ThemeBitmapCaptureFeature(
     private val context: Context,
     private val engineView: EngineView,
     private val sessionManager: SessionManager
@@ -33,7 +33,7 @@ class ThumbnailsFeature(
     override val coroutineContext: CoroutineContext
         get() = Dispatchers.Main + job
 
-    private val observer = ThumbnailsFeatureRequestObserver(sessionManager)
+    private val observer = ThemeBitmapCaptureFeatureRequestObserver(sessionManager)
 
     /**
      * Starts observing the selected session to listen for when a session finish loading.
@@ -50,7 +50,7 @@ class ThumbnailsFeature(
         coroutineContext.cancelChildren()
     }
 
-    internal inner class ThumbnailsFeatureRequestObserver(
+    internal inner class ThemeBitmapCaptureFeatureRequestObserver(
         sessionManager: SessionManager
     ) : SelectionAwareSessionObserver(sessionManager) {
 
