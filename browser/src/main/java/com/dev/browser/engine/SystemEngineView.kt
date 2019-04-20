@@ -7,7 +7,6 @@ package com.dev.browser.engine
 import android.annotation.TargetApi
 import android.content.Context
 import android.graphics.Bitmap
-import android.graphics.Canvas
 import android.graphics.Point
 import android.net.Uri
 import android.net.http.SslError
@@ -38,7 +37,6 @@ import com.dev.browser.engine.permission.SystemPermissionRequest
 import com.dev.browser.engine.window.SystemWindowRequest
 import com.dev.browser.support.DownloadUtils
 import com.dev.browser.support.ErrorType
-import com.dev.util.CommonUtil
 import com.dev.view.MatchParentLayout
 import kotlinx.coroutines.runBlocking
 import java.util.*
@@ -178,6 +176,10 @@ class SystemEngineView @JvmOverloads constructor(
 
     internal fun initWebView(webView: WebView): WebView {
         webView.tag = "mozac_system_engine_webview"
+        //隐藏垂直滚动条
+        webView.isVerticalScrollBarEnabled=false
+        //隐藏水平滚动条
+        webView.isHorizontalScrollBarEnabled=false
         webView.webViewClient = createWebViewClient()
         webView.webChromeClient = createWebChromeClient()
         webView.setDownloadListener(createDownloadListener())
@@ -210,7 +212,7 @@ class SystemEngineView @JvmOverloads constructor(
             url?.let {
                 val cert = view?.certificate
                 session?.internalNotifyObservers {
-                    onLocationChange(it)
+                    onLocationChange(it)//:结束的时候不再更新url
                     onNavigationStateChange(view.canGoBack(), view.canGoForward())
                     onLoadingStateChange(false)
                     onSecurityChange(
@@ -348,7 +350,9 @@ class SystemEngineView @JvmOverloads constructor(
                 }
             }
             session?.internalNotifyObservers {
-                onTitleChange(titleOrEmpty)
+                if (titleOrEmpty.isNotBlank()){
+                    onTitleChange(titleOrEmpty)
+                }
                 onNavigationStateChange(view.canGoBack(), view.canGoForward())
             }
         }
@@ -648,53 +652,10 @@ class SystemEngineView @JvmOverloads constructor(
     override fun canScrollVerticallyDown() = session?.webView?.canScrollVertically(1) ?: false
 
     override fun captureThumbnail(onFinish: (Bitmap?) -> Unit) {
-        val webView = session?.webView
 
-        val thumbnail = if (webView == null) {
-            null
-        } else {
-            webView.capture()
-
-        }
+        val thumbnail = session?.webView?.capture()
         onFinish(thumbnail)
     }
-
-    override fun captureThemeBitmap(onFinish: (Bitmap?) -> Unit) {
-        val webView = session?.webView
-
-        val thumbnail = if (webView == null) {
-            null
-        } else {
-            if (webView.width>0 && webView.height>0){
-                loadThemeBitmapFromView(webView)
-            }else{
-                null
-            }
-        }
-        onFinish(thumbnail)
-    }
-    //
-    private fun loadThemeBitmapFromView(v: View): Bitmap {
-        val defaultThemeBitmapWidth=20
-        val defaultThemeBitmapHeight=20
-        //截取右上角指定长度和宽度的内容
-        val fullSizeBitmap = Bitmap.createBitmap(defaultThemeBitmapWidth, defaultThemeBitmapHeight, Bitmap.Config.ARGB_8888)
-        val c = Canvas(fullSizeBitmap)
-        v.layout(v.left, v.top, v.right, v.bottom)
-        v.draw(c)
-        return fullSizeBitmap
-    }
-//    //截图
-//    private fun loadFullBitmapFromView(v: View): Bitmap {
-//        val density=v.context.resources.displayMetrics.density
-//        val fullSizeBitmap = Bitmap.createBitmap(v.width, v.height, Bitmap.Config.RGB_565)
-//        val c = Canvas(fullSizeBitmap)
-//        v.layout(v.left, v.top, v.right, v.bottom)
-//        v.draw(c)
-//        val sampleBitmap = CommonUtil.getResizedBitmap(fullSizeBitmap,v.height/density,v.width/density)
-//        fullSizeBitmap?.recycle()
-//        return sampleBitmap
-//    }
     private fun resetJSAlertAbuseState() {
         jsAlertCount = 0
         shouldShowMoreDialogs = true

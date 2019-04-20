@@ -5,7 +5,7 @@
 package com.dev.browser.session
 
 import android.graphics.Bitmap
-import android.os.Bundle
+import androidx.fragment.app.Fragment
 import com.dev.browser.concept.HitResult
 import com.dev.browser.concept.media.Media
 import com.dev.browser.concept.permission.PermissionRequest
@@ -35,12 +35,13 @@ class Session(
     var themeColorMap: HashMap<String, Int> = HashMap(),
     var isStatusBarDarkMode: Boolean = false,
     var screenNumber:Int=HOME_SCREEN,//screenNumber默认为
-    var thumbnailPath:String ="", //将thumbnail保存起来
-    var themeColor:Int?=null,  //主题颜色
+    var thumbnailPath:String? =null, //将thumbnail保存起来
+    var tmpThumbnail:Bitmap?=null,
     delegate: Observable<Observer> = ObserverRegistry()
 ) : Observable<Session.Observer> by delegate {
-    var homeScreenState:Bundle?=null  //保存HomeScreen的状态
+    var homeScreenState:Fragment.SavedState?=null  //保存HomeScreen的状态
     companion object {
+        const val THUMBNAIL_DIR="thumbnail"
         const val HOME_SCREEN=1  //Home screen代表的值
         const val NO_EXIST_URL=""  //不存在的URL，表示还未加载过
         const val NORMAL_SCREEN_MODE = 1  //正常模式
@@ -81,7 +82,7 @@ class Session(
         fun onFindResult(session: Session, result: FindResult) = Unit
         fun onDesktopModeChanged(session: Session, enabled: Boolean) = Unit
         fun onFullScreenChanged(session: Session, enabled: Boolean) = Unit
-        fun onThemeBitmapCaptureChanged(session: Session, bitmap: Bitmap?) = Unit
+        fun onThumbnailCapture(session: Session, bitmap: Bitmap?) = Unit
         fun onContentPermissionRequested(session: Session, permissionRequest: PermissionRequest): Boolean = false
         fun onAppPermissionRequested(session: Session, permissionRequest: PermissionRequest): Boolean = false
         fun onPromptRequested(session: Session, promptRequest: PromptRequest): Boolean = false
@@ -171,7 +172,7 @@ class Session(
     /**
      * The title of the currently displayed website changed.
      */
-    var title: String by Delegates.observable("") { _, old, new ->
+    var title: String by Delegates.observable("首页") { _, old, new ->
         notifyObservers(old, new) { onTitleChanged(this@Session, new) }
     }
 
@@ -299,10 +300,10 @@ class Session(
     }
 
     /**
-     * The target of the latest themeThumbnail.//仅仅用于主题颜色，不用于保存
+     * The target of the latest thumbnail.//仅仅用于主题颜色，不用于保存
      */
-    var themeThumbnail: Bitmap? by Delegates.observable<Bitmap?>(null) { _, _, new ->
-        notifyObservers { onThemeBitmapCaptureChanged(this@Session, new) }
+    var thumbnail: Bitmap? by Delegates.observable<Bitmap?>(null) { _, _, new ->
+        notifyObservers { onThumbnailCapture(this@Session, new) }
     }
 
     /**

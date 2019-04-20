@@ -119,7 +119,16 @@ class HomeFragment : BaseLazyFragment(), BackHandler {
         }
         return false
     }
-
+    //暂停的时候，保存fragment状态,以便恢复
+    override fun onPause() {
+        sessionManager.findSessionById(sessionId)?.apply {
+            val session=this
+            fragmentManager?.saveFragmentInstanceState(this@HomeFragment)?.apply {
+                session.homeScreenState=this
+            }
+        }
+        super.onPause()
+    }
     companion object {
         const val Tag = "HomeFragment"
         const val NO_SESSION_ID="NO_SESSION_ID"

@@ -12,6 +12,7 @@ data class Theme(
     var colorPrimaryDark: Int,
     var colorPrimaryActive: Int,
     var colorPrimaryDisable: Int,
+    var colorBackground:Int,
     var colorAccent: Int
 ) {
 
@@ -21,7 +22,8 @@ data class Theme(
             colorAccent = this.colorAccent,
             colorPrimaryDark = this.colorPrimaryDark,
             colorPrimaryActive = this.colorPrimaryActive,
-            colorPrimaryDisable = this.colorPrimaryDisable
+            colorPrimaryDisable = this.colorPrimaryDisable,
+            colorBackground = this.colorBackground
         )
     }
     companion object {
@@ -31,7 +33,9 @@ data class Theme(
                 colorPrimaryDark = context.resources.getColor(R.color.colorPrimaryDark),
                 colorAccent = context.resources.getColor(R.color.colorAccent),
                 colorPrimaryActive = context.resources.getColor(R.color.colorPrimaryActive),
-                colorPrimaryDisable = context.resources.getColor(R.color.colorPrimaryDisable))
+                colorPrimaryDisable = context.resources.getColor(R.color.colorPrimaryDisable),
+                colorBackground = context.resources.getColor(R.color.colorBackground)
+                )
         }
     }
 }
@@ -43,7 +47,8 @@ data class ThemeSource(
     var colorPrimaryDark: String,
     var colorAccent: String,
     var colorPrimaryActive: String,
-    var colorPrimaryDisable: String
+    var colorPrimaryDisable: String,
+    var colorBackground: String
 ) : Parcelable {
     //转换为Theme
     fun toTheme(): Theme {
@@ -52,13 +57,15 @@ data class ThemeSource(
             colorPrimaryDark = Color.parseColor(colorPrimaryDark),
             colorPrimaryActive = Color.parseColor(colorPrimaryActive),
             colorPrimaryDisable = Color.parseColor(colorPrimaryDisable),
-            colorAccent = Color.parseColor(colorAccent)
+            colorAccent = Color.parseColor(colorAccent),
+            colorBackground = Color.parseColor(colorBackground)
         )
     }
 
     constructor(source: Parcel) : this(
         source.readString(),
         1 == source.readInt(),
+        source.readString(),
         source.readString(),
         source.readString(),
         source.readString(),
@@ -76,6 +83,7 @@ data class ThemeSource(
         writeString(colorPrimaryActive)
         writeString(colorPrimaryDisable)
         writeString(colorAccent)
+        writeString(colorBackground)
     }
 
     companion object {

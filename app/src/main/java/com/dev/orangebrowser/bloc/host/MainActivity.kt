@@ -1,6 +1,7 @@
 package com.dev.orangebrowser.bloc.host
 
 
+import android.Manifest
 import android.os.Bundle
 import android.widget.Toast
 import androidx.lifecycle.Observer
@@ -33,10 +34,13 @@ import es.dmoral.toasty.Toasty
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import permissions.dispatcher.*
 import javax.inject.Inject
 
-
+@RuntimePermissions
 class MainActivity : BaseActivity() {
+
+
     @Inject
     lateinit var sessionManager: SessionManager
     lateinit var viewModel: MainViewModel
@@ -62,8 +66,6 @@ class MainActivity : BaseActivity() {
                 delay(1000)
             }
         }
-
-
         mOrientationDetector = OrientationDetector(30, contentResolver, this)
     }
 
@@ -94,7 +96,8 @@ class MainActivity : BaseActivity() {
                     Toasty.error(this, failure.error, Toast.LENGTH_SHORT).show()
                 }, fun(data) {
                     myApplication.initApplicationData(data)
-                    loadHomeFragment("")
+                    //loadFirstInFragment()
+                    loadFirstInFragmentWithPermissionCheck()
                 })
             })
             viewModel.theme.observe(this, Observer {
@@ -106,6 +109,56 @@ class MainActivity : BaseActivity() {
         }
     }
 
+    @NeedsPermission(
+        Manifest.permission.CAMERA,
+        Manifest.permission.WRITE_EXTERNAL_STORAGE,
+        Manifest.permission.READ_EXTERNAL_STORAGE,
+        Manifest.permission.ACCESS_COARSE_LOCATION,
+        Manifest.permission.ACCESS_FINE_LOCATION,
+        Manifest.permission.RECORD_AUDIO
+    )
+    fun loadFirstInFragment() {
+        loadHomeFragment("")
+    }
+
+    @OnShowRationale(
+        Manifest.permission.CAMERA,
+        Manifest.permission.WRITE_EXTERNAL_STORAGE,
+        Manifest.permission.READ_EXTERNAL_STORAGE,
+        Manifest.permission.ACCESS_COARSE_LOCATION,
+        Manifest.permission.ACCESS_FINE_LOCATION,
+        Manifest.permission.RECORD_AUDIO)
+    fun showRationale(request: PermissionRequest) {
+        //showRationaleDialog(R.string.permission_camera_rationale, request)
+        Toast.makeText(this,"showRationale", Toast.LENGTH_SHORT).show()
+    }
+
+    @OnPermissionDenied(
+        Manifest.permission.CAMERA,
+        Manifest.permission.WRITE_EXTERNAL_STORAGE,
+        Manifest.permission.READ_EXTERNAL_STORAGE,
+        Manifest.permission.ACCESS_COARSE_LOCATION,
+        Manifest.permission.ACCESS_FINE_LOCATION,
+        Manifest.permission.RECORD_AUDIO)
+    fun onDenied() {
+        Toast.makeText(this,"onDenied", Toast.LENGTH_SHORT).show()
+    }
+
+    @OnNeverAskAgain(
+        Manifest.permission.CAMERA,
+        Manifest.permission.WRITE_EXTERNAL_STORAGE,
+        Manifest.permission.READ_EXTERNAL_STORAGE,
+        Manifest.permission.ACCESS_COARSE_LOCATION,
+        Manifest.permission.ACCESS_FINE_LOCATION,
+        Manifest.permission.RECORD_AUDIO)
+    fun onNeverAskAgain() {
+        Toast.makeText(this, "onNeverAskAgain", Toast.LENGTH_SHORT).show()
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        onRequestPermissionsResult(requestCode, grantResults)
+    }
     override fun initData(savedInstanceState: Bundle?) {
         if (savedInstanceState == null) {
             viewModel.loadAppData()
@@ -128,10 +181,6 @@ class MainActivity : BaseActivity() {
         sessionManager.onLowMemory()
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        //隐藏键盘
-    }
     //加载浏览器页面
     fun loadBrowserFragment(sessionId: String) {
         supportFragmentManager.beginTransaction().replace(R.id.container, BrowserFragment.newInstance(sessionId))
@@ -140,7 +189,12 @@ class MainActivity : BaseActivity() {
 
     //加载HomeFragment
     fun loadHomeFragment(sessionId: String) {
-        supportFragmentManager.beginTransaction().replace(R.id.container, HomeFragment.newInstance(sessionId)).commit()
+        //跳转的时候恢复状态
+        val fragment = HomeFragment.newInstance(sessionId)
+        sessionManager.findSessionById(sessionId)?.apply {
+            fragment.setInitialSavedState(this.homeScreenState)
+        }
+        supportFragmentManager.beginTransaction().replace(R.id.container, fragment).commit()
     }
 
     fun loadHomeOrBrowserFragment(sessionId: String) {
@@ -151,14 +205,14 @@ class MainActivity : BaseActivity() {
             } else {
                 loadBrowserFragment(sessionId)
             }
-        }else{
+        } else {
             loadHomeFragment(HomeFragment.NO_SESSION_ID)
         }
     }
 
     //加载TabFragment
-    fun loadTabFragment(sessionId: String) {
-        supportFragmentManager.beginTransaction().replace(R.id.container, TabFragment.newInstance(sessionId)).commit()
+    fun loadTabFragment(sessionId: String,ratio:Float) {
+        supportFragmentManager.beginTransaction().replace(R.id.container, TabFragment.newInstance(sessionId,ratio)).commit()
     }
 
     //

@@ -11,6 +11,7 @@ import com.dev.browser.concept.EngineSessionState
 import com.dev.browser.session.engine.EngineObserver
 import com.dev.browser.support.Observable
 import com.dev.browser.support.ObserverRegistry
+import java.util.*
 import kotlin.math.max
 
 /**
@@ -125,8 +126,14 @@ class SessionManager(
      * Returns a list of all active sessions (including CustomTab sessions).
      */
     val all: List<Session>
-        get() = synchronized(values) { values.toList() }
+        get() = synchronized(values) { LinkedList(values.toList()) }
 
+    fun getSessionIndex(sessionId:String):Int{
+        val session= findSessionById(sessionId) ?: return 0
+        val index=values.indexOf(session)
+        if (index<0) return 0
+        return index
+    }
     /**
      * Adds the provided session.
      */
@@ -408,6 +415,7 @@ class SessionManager(
      * Removes all sessions but CustomTab sessions.
      */
     fun removeSessions() = synchronized(values) {
+        notifyObservers { beforeAllSessionsRemoved(sessions) }
         sessions.forEach {
             unlink(it)
             values.remove(it)
@@ -476,7 +484,7 @@ class SessionManager(
         // reduce memory consumption.
         sessions.forEach {
             if (it != selectedSession) {
-                it.themeThumbnail = null
+                it.thumbnail = null
             }
         }
     }
@@ -517,6 +525,8 @@ class SessionManager(
          * session has been removed by calling <code>remove()</code> on the <code>SessionManager</code>.
          */
         fun onAllSessionsRemoved() = Unit
+
+        fun beforeAllSessionsRemoved(sessions:List<Session>) =Unit
     }
 
     data class Snapshot(

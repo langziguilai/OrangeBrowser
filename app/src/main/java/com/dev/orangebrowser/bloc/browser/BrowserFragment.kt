@@ -52,7 +52,6 @@ class BrowserFragment : BaseFragment(), BackHandler, UserInteractionHandler {
     lateinit var activityViewModel: MainViewModel
 
     private val sessionFeature = ViewBoundFeatureWrapper<SessionFeature>()
-    private val themeBitmapCaptureFeature = ViewBoundFeatureWrapper<ThemeBitmapCaptureFeature>()
     private val thumbnailFeature = ViewBoundFeatureWrapper<ThumbnailFeature>()
     private val windowFeature = ViewBoundFeatureWrapper<WindowFeature>()
     private val contextMenuIntegration = ViewBoundFeatureWrapper<ContextMenuIntegration>()
@@ -270,16 +269,12 @@ class BrowserFragment : BaseFragment(), BackHandler, UserInteractionHandler {
                 session.id
             ), owner = this, view = binding.root
         )
-        themeBitmapCaptureFeature.set(
-            feature = ThemeBitmapCaptureFeature(requireContext(), engineView, sessionManager),
-            owner = this,
-            view = binding.root
-        )
         thumbnailFeature.set(
-            feature = ThumbnailFeature(requireContext(), sessionId, sessionManager, engineView),
+            feature = ThumbnailFeature(requireContext(), engineView, sessionManager),
             owner = this,
             view = binding.root
         )
+
         windowFeature.set(
             feature = WindowFeature(
                 engine = engine,

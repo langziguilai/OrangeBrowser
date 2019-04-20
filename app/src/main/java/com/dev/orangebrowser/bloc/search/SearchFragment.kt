@@ -228,10 +228,10 @@ class SearchFragment : BaseFragment(), SearchBar, BackHandler {
                     searchUseCases.defaultSearch,//点击后，新增一个Session
                     client
                 )
-                addSessionProvider(
-                    sessionManager,
-                    tabsUseCases.selectTab
-                ) //点击后，选中session
+//                addSessionProvider(
+//                    sessionManager,
+//                    tabsUseCases.selectTab
+//                ) //点击后，选中session
                 addHistoryProvider(
                     historyStorage,
                     sessionUseCases.loadUrl

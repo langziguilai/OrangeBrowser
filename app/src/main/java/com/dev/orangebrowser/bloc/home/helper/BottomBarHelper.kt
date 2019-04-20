@@ -47,7 +47,8 @@ class BottomBarHelper(private var binding: FragmentHomeBinding, var fragment: Ho
         }
         //跳转到TabFragment
         binding.counter.setOnClickListener {
-            fragment.RouterActivity?.loadTabFragment(fragment.sessionId)
+            val ratio=(binding.viewpager.height.toFloat())/(binding.viewpager.width.toFloat())
+            fragment.RouterActivity?.loadTabFragment(fragment.sessionId,ratio)
         }
         //获取session数量
         binding.counterNumber.text=fragment.sessionManager.size.toString()

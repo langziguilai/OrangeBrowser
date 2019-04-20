@@ -7,16 +7,40 @@
         <variable name="activityViewModel" type="com.dev.orangebrowser.bloc.host.MainViewModel"/>
     </data>
     <androidx.constraintlayout.widget.ConstraintLayout
+            android:background="@{activityViewModel.theme.colorBackground}"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             tools:context=".bloc.tabs.TabFragment">
-        <TextView android:id="@+id/title" android:layout_width="match_parent" android:layout_height="44dp"
-                  app:layout_constraintTop_toTopOf="parent" app:layout_constraintStart_toStartOf="parent"
+        <TextView android:id="@+id/title"
+                  android:layout_width="match_parent"
+                  android:layout_height="44dp"
+                  android:gravity="center"
+                  android:textColor="@color/colorWhite"
+                  android:textSize="18sp"
+                  android:textStyle="bold"
+                  android:maxLength="15"
+                  android:singleLine="true"
+                  android:ellipsize="end"
+                  android:background="@{activityViewModel.theme.colorPrimary}"
+                  app:layout_constraintTop_toTopOf="parent"
+                  app:layout_constraintStart_toStartOf="parent"
                   app:layout_constraintEnd_toEndOf="parent"/>
-        <androidx.viewpager2.widget.ViewPager2 android:id="@+id/viewpager" android:layout_width="match_parent"
-                                               android:layout_height="match_parent"
-                                               app:layout_constraintBottom_toTopOf="@+id/bottom_bar"
-                                               app:layout_constraintTop_toBottomOf="@+id/title"/>
+        <FrameLayout android:layout_width="0dp" android:layout_height="0dp"
+                     app:layout_constraintStart_toStartOf="parent"
+                     app:layout_constraintEnd_toEndOf="parent"
+                     app:layout_constraintBottom_toTopOf="@+id/bottom_bar"
+                     app:layout_constraintTop_toBottomOf="@+id/title">
+            <androidx.recyclerview.widget.RecyclerView
+                    android:layout_gravity="center"
+                    android:clipChildren="false"
+                    android:clipToPadding="false"
+                    android:id="@+id/viewpager"
+                    android:paddingStart="46dp"
+                    android:paddingEnd="46dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="400dp"/>
+        </FrameLayout>
+
         <FrameLayout android:id="@+id/bottom_bar" android:layout_width="match_parent" android:layout_height="50dp"
                      app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintStart_toStartOf="parent"
                      app:layout_constraintEnd_toEndOf="parent">
@@ -25,17 +49,28 @@
                 <com.dev.view.IconfontTextView android:id="@+id/clear" android:gravity="center"
                                                android:clickable="true"
                                                android:focusable="true"
+                                               android:textSize="18sp"
+                                               android:textStyle="bold"
+                                               android:background="?android:attr/selectableItemBackgroundBorderless"
                                                android:text="@string/ic_close" android:textColor="@color/colorWhite"
                                                android:layout_width="80dp" android:layout_height="match_parent"/>
                 <com.dev.view.IconfontTextView android:id="@+id/add" android:gravity="center"
                                                android:clickable="true"
                                                android:focusable="true"
-                                               android:text="@string/ic_circle_plus" android:textColor="@color/colorWhite"
+                                               android:background="?android:attr/selectableItemBackgroundBorderless"
+                                               android:text="@string/ic_circle_plus"
+                                               android:textSize="18sp"
+                                               android:textStyle="bold"
+                                               android:textColor="@color/colorWhite"
                                                android:layout_width="80dp" android:layout_height="match_parent"/>
                 <com.dev.view.IconfontTextView android:id="@+id/back" android:gravity="center"
                                                android:clickable="true"
                                                android:focusable="true"
-                                               android:text="@string/ic_arrow_left" android:textColor="@color/colorWhite"
+                                               android:background="?android:attr/selectableItemBackgroundBorderless"
+                                               android:text="@string/ic_arrow_left"
+                                               android:textSize="18sp"
+                                               android:textStyle="bold"
+                                               android:textColor="@color/colorWhite"
                                                android:layout_width="80dp" android:layout_height="match_parent"/>
             </LinearLayout>
         </FrameLayout>

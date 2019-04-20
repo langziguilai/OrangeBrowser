@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             android:orientation="vertical"
+             android:background="?android:attr/selectableItemBackgroundBorderless"
+             android:layout_marginStart="8dp"
+             android:layout_marginEnd="8dp"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent">
+    <ImageView android:id="@+id/thumbnail" android:layout_width="match_parent" android:layout_gravity="top|center_horizontal" android:background="@color/colorWhite" android:layout_height="match_parent"/>
+    <FrameLayout android:layout_width="match_parent" android:layout_height="36dp" android:id="@+id/bottom_bar"
+                 android:layout_gravity="bottom">
+        <com.dev.view.IconfontTextView android:id="@+id/close"
+                                       android:layout_width="28dp"
+                                       android:layout_height="28dp"
+                                       android:gravity="center"
+                                       android:textSize="14sp"
+                                       android:clickable="true"
+                                       android:focusable="true"
+                                       android:layout_gravity="end|center_vertical"
+                                       android:text="@string/ic_close"
+                                       android:textColor="@color/colorWhite"/>
+        <TextView android:layout_width="180dp"
+                  android:id="@+id/title"
+                  android:singleLine="true"
+                  android:maxLength="15"
+                  android:ellipsize="end"
+                  android:layout_height="match_parent"
+                  android:layout_gravity="center"
+                  android:gravity="center" android:textSize="14sp"
+                  android:textColor="@color/colorWhite"/>
+    </FrameLayout>
+</FrameLayout>

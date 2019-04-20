@@ -1,6 +1,9 @@
 package com.dev.view.recyclerview
 
+import android.graphics.Bitmap
 import android.graphics.drawable.ColorDrawable
+import android.net.Uri
+import android.os.Environment
 import android.view.View
 import android.widget.ImageView
 import androidx.annotation.IdRes
@@ -15,6 +18,7 @@ import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.bumptech.glide.request.RequestOptions
 import com.dev.view.R
 import com.dev.view.recyclerview.adapter.base.BaseViewHolder
+import java.io.File
 import java.util.*
 
 fun getGlideUrlWithReferer(url:String, referer: String): GlideUrl {
@@ -51,6 +55,18 @@ open class CustomBaseViewHolder(view: View): BaseViewHolder(view){
             .placeholder(ColorDrawable(view.context.resources.getColor(R.color.color_7A7A7A)))
             .transition(DrawableTransitionOptions().crossFade(500))
             .apply(mRequestOptions).into(view)
+        return this
+    }
+    fun loadLocalImage(@IdRes viewId: Int, path:String): CustomBaseViewHolder {
+        val view = getView<ImageView>(viewId)
+        val mRequestOptions = RequestOptions.centerCropTransform()
+        val imagePath=Environment.getExternalStorageDirectory().path+path
+        Glide.with(view.context).load(File(imagePath))
+            .apply(mRequestOptions).into(view)
+        return this
+    }
+    fun loadBitmapToImageView(@IdRes viewId:Int,bitmap: Bitmap):CustomBaseViewHolder{
+        getView<ImageView>(viewId).setImageBitmap(bitmap)
         return this
     }
     fun loadResImage(@IdRes viewId: Int, resId:Int): CustomBaseViewHolder {

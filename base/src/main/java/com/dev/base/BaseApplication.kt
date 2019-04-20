@@ -19,6 +19,7 @@ abstract class BaseApplication : Application() {
         this.initializeStetho()
         val t2=System.currentTimeMillis()
         Log.d(this.javaClass.simpleName,"Application OnCreate take ${t2-t1} ms")
+        initialize()
     }
 
     abstract fun injectMembers()
@@ -37,4 +38,5 @@ abstract class BaseApplication : Application() {
             LeakCanary.install(this)
         }
     }
+    open fun initialize(){}
 }

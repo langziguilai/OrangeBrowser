@@ -1,12 +1,102 @@
 [
-  {"name":"深灰","active":false,"colorPrimary":"#6B7A99","colorPrimaryDark":"#6B7A99","colorAccent":"#D81B60","colorPrimaryActive":"#4CAF50","colorPrimaryDisable":"#806B7A99"},
-  {"name":"蔚紫","active":true,"colorPrimary":"#7189C5","colorPrimaryDark":"#7189C5","colorAccent":"#D81B60","colorPrimaryActive":"#4CAF50","colorPrimaryDisable":"#807189C5"},
-  {"name":"姹紫","active":false,"colorPrimary":"#937CCC","colorPrimaryDark":"#937CCC","colorAccent":"#D81B60","colorPrimaryActive":"#4CAF50","colorPrimaryDisable":"#80937CCC"},
-  {"name":"嫣红","active":false,"colorPrimary":"#FD7A99","colorPrimaryDark":"#FD7A99","colorAccent":"#D81B60","colorPrimaryActive":"#4CAF50","colorPrimaryDisable":"#80FD7A99"},
-  {"name":"大红","active":false,"colorPrimary":"#E55051","colorPrimaryDark":"#E55051","colorAccent":"#D81B60","colorPrimaryActive":"#4CAF50","colorPrimaryDisable":"#80E55051"},
-  {"name":"墨绿","active":false,"colorPrimary":"#0AA183","colorPrimaryDark":"#0AA183","colorAccent":"#D81B60","colorPrimaryActive":"#4CAF50","colorPrimaryDisable":"#800AA183"},
-  {"name":"香兰","active":false,"colorPrimary":"#3073C0","colorPrimaryDark":"#3073C0","colorAccent":"#D81B60","colorPrimaryActive":"#4CAF50","colorPrimaryDisable":"#803073C0"},
-  {"name":"咖啡","active":false,"colorPrimary":"#A68483","colorPrimaryDark":"#A68483","colorAccent":"#D81B60","colorPrimaryActive":"#4CAF50","colorPrimaryDisable":"#80A68483"},
-  {"name":"嘿黑","active":false,"colorPrimary":"#393A3F","colorPrimaryDark":"#393A3F","colorAccent":"#D81B60","colorPrimaryActive":"#4CAF50","colorPrimaryDisable":"#80393A3F"},
-  {"name":"纯白","active":false,"colorPrimary":"#FEFEFE","colorPrimaryDark":"#FEFEFE","colorAccent":"#D81B60","colorPrimaryActive":"#4CAF50","colorPrimaryDisable":"#80FEFEFE"}
+  {
+    "name": "深灰",
+    "active": false,
+    "colorPrimary": "#6B7A99",
+    "colorPrimaryDark": "#6B7A99",
+    "colorAccent": "#D81B60",
+    "colorPrimaryActive": "#4CAF50",
+    "colorPrimaryDisable": "#806B7A99",
+    "colorBackground": "#40495B"
+  },
+  {
+    "name": "蔚紫",
+    "active": true,
+    "colorPrimary": "#7189C5",
+    "colorPrimaryDark": "#7189C5",
+    "colorAccent": "#D81B60",
+    "colorPrimaryActive": "#4CAF50",
+    "colorPrimaryDisable": "#807189C5",
+    "colorBackground": "#445276"
+  },
+  {
+    "name": "姹紫",
+    "active": false,
+    "colorPrimary": "#937CCC",
+    "colorPrimaryDark": "#937CCC",
+    "colorAccent": "#D81B60",
+    "colorPrimaryActive": "#4CAF50",
+    "colorPrimaryDisable": "#80937CCC",
+    "colorBackground": "#584B7B"
+  },
+  {
+    "name": "嫣红",
+    "active": false,
+    "colorPrimary": "#FD7A99",
+    "colorPrimaryDark": "#FD7A99",
+    "colorAccent": "#D81B60",
+    "colorPrimaryActive": "#4CAF50",
+    "colorPrimaryDisable": "#80FD7A99",
+    "colorBackground": "#98495C"
+  },
+  {
+    "name": "大红",
+    "active": false,
+    "colorPrimary": "#E55051",
+    "colorPrimaryDark": "#E55051",
+    "colorAccent": "#D81B60",
+    "colorPrimaryActive": "#4CAF50",
+    "colorPrimaryDisable": "#80E55051",
+    "colorBackground": "#8A3030"
+  },
+  {
+    "name": "墨绿",
+    "active": false,
+    "colorPrimary": "#0AA183",
+    "colorPrimaryDark": "#0AA183",
+    "colorAccent": "#D81B60",
+    "colorPrimaryActive": "#4CAF50",
+    "colorPrimaryDisable": "#800AA183",
+    "colorBackground": "#06614F"
+  },
+  {
+    "name": "香兰",
+    "active": false,
+    "colorPrimary": "#3073C0",
+    "colorPrimaryDark": "#3073C0",
+    "colorAccent": "#D81B60",
+    "colorPrimaryActive": "#4CAF50",
+    "colorPrimaryDisable": "#803073C0",
+    "colorBackground": "#1C4573"
+  },
+  {
+    "name": "咖啡",
+    "active": false,
+    "colorPrimary": "#A68483",
+    "colorPrimaryDark": "#A68483",
+    "colorAccent": "#D81B60",
+    "colorPrimaryActive": "#4CAF50",
+    "colorPrimaryDisable": "#80A68483",
+    "colorBackground": "#644F4F"
+  },
+  {
+    "name": "嘿黑",
+    "active": false,
+    "colorPrimary": "#393A3F",
+    "colorPrimaryDark": "#393A3F",
+    "colorAccent": "#D81B60",
+    "colorPrimaryActive": "#4CAF50",
+    "colorPrimaryDisable": "#80393A3F",
+    "colorBackground": "#222225"
+  },
+  {
+    "name": "纯白",
+    "active": false,
+    "colorPrimary": "#FEFEFE",
+    "colorPrimaryDark": "#FEFEFE",
+    "colorAccent": "#D81B60",
+    "colorPrimaryActive": "#4CAF50",
+    "colorPrimaryDisable": "#80FEFEFE",
+    "colorBackground": "#404040"
+  }
 ]

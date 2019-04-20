@@ -18,37 +18,37 @@ import com.dev.util.CommonUtil
 import com.dev.view.StatusBarUtil
 
 //根据webview的头部来更新显示的头部
-class StyleIntegration(var binding: FragmentBrowserBinding,var fragment:BrowserFragment,var sessionManager:SessionManager, var session: Session):
+class StyleIntegration(
+    var binding: FragmentBrowserBinding,
+    var fragment: BrowserFragment,
+    var sessionManager: SessionManager,
+    var session: Session
+) :
     LifecycleAwareFeature {
     private var sessionObserver: Session.Observer
-    init{
-        if (session.themeColor!=null){
-            if (session.themeColorMap.containsKey(session.url)){
-                updateStyle(session.themeColorMap[session.url]!!)
-            }else{
-                updateStyle(session.themeColor!!)
-            }
-        }else{
-            val color=fragment.activityViewModel.theme.value!!.colorPrimary
+
+    init {
+        if (session.themeColorMap.containsKey(session.url)) {
+            updateStyle(session.themeColorMap[session.url]!!)
+        } else {
+            val color = fragment.activityViewModel.theme.value!!.colorPrimary
             updateStyle(color)
         }
-        sessionObserver=object:Session.Observer{
-            override fun onThemeBitmapCaptureChanged(session: Session, bitmap: Bitmap?) {
+        sessionObserver = object : Session.Observer {
+            override fun onThumbnailCapture(session: Session, bitmap: Bitmap?) {
                 bitmap?.apply {
-                    val engineSession= sessionManager.getOrCreateEngineSession(session) as SystemEngineSession
-                    val dy=engineSession.webView.scrollY
+                    val engineSession = sessionManager.getOrCreateEngineSession(session) as SystemEngineSession
+                    val dy = engineSession.webView.scrollY
                     //在尚未滑动的时候，可以通过截图来获取颜色，否则，不改变style
-                    if (dy==0){
-                        if (session.themeColorMap.containsKey(session.url)){
+                    if (dy == 0) {
+                        if (session.themeColorMap.containsKey(session.url)) {
                             updateStyle(session.themeColorMap[session.url]!!)
-                        }else{
+                        } else {
                             bitmap.apply {
-                                val color=bitmap.getPixel(5,5)
+                                val color = bitmap.getPixel(5, 5)
                                 updateStyle(color)
-                                session.themeColorMap[session.url]=color
+                                session.themeColorMap[session.url] = color
                             }
-                            bitmap.recycle()  //回收，在使用之后就没有作用了，不用保留
-                            session.themeThumbnail=null
                         }
                     }
                 }
@@ -56,65 +56,69 @@ class StyleIntegration(var binding: FragmentBrowserBinding,var fragment:BrowserF
         }
     }
 
-    private fun updateStyle(@ColorInt color:Int){
+    private fun updateStyle(@ColorInt color: Int) {
 
-        binding.topBar.background=ColorDrawable(color)
-        binding.topMenuPanel.background=ColorDrawable(color)
-        StatusBarUtil.setStatusBarBackGroundColorAndIconColor(fragment.requireActivity(),color)
+        binding.topBar.background = ColorDrawable(color)
+        binding.topMenuPanel.background = ColorDrawable(color)
+        StatusBarUtil.setStatusBarBackGroundColorAndIconColor(fragment.requireActivity(), color)
         setTextColor(color)
     }
-    private fun setTextColor(color:Int){
+
+    private fun setTextColor(color: Int) {
         //如果时亮色背景，就设置字体颜色为暗色
-        if (ColorKitUtil.isBackGroundLightMode(color)){
+        if (ColorKitUtil.isBackGroundLightMode(color)) {
             setTextDarkMode()
-        }else{
+        } else {
             setTextLightMode()
         }
     }
 
-    private fun setTextLightMode(){
-        session.isStatusBarDarkMode=true
-        val whiteColor=fragment.resources.getColor(R.color.colorWhite)
+    private fun setTextLightMode() {
+        session.isStatusBarDarkMode = true
+        val whiteColor = fragment.resources.getColor(R.color.colorWhite)
         binding.searchText.setTextColor(whiteColor)
         binding.searchText.setHintTextColor(whiteColor)
         binding.topMenu.setTextColor(whiteColor)
-        binding.progress.progressDrawable=fragment.context?.getDrawable(R.drawable.bg_progressbar_light)
+        binding.progress.progressDrawable = fragment.context?.getDrawable(R.drawable.bg_progressbar_light)
         binding.progress.animate().alpha(0f).setDuration(1000).withEndAction {
-            binding.progress.alpha=1.0f
+            binding.progress.alpha = 1.0f
         }.start()
-        val adapter=binding.topMenuPanel.adapter
-        if (adapter is TopMenuPanelAdapter){
-            adapter.color=R.color.colorWhite
+        val adapter = binding.topMenuPanel.adapter
+        if (adapter is TopMenuPanelAdapter) {
+            adapter.color = R.color.colorWhite
             adapter.notifyDataSetChanged()
         }
     }
-    private fun setTextDarkMode(){
-        session.isStatusBarDarkMode=false
-        val blackColor=fragment.resources.getColor(R.color.colorBlack)
+
+    private fun setTextDarkMode() {
+        session.isStatusBarDarkMode = false
+        val blackColor = fragment.resources.getColor(R.color.colorBlack)
         binding.searchText.setTextColor(blackColor)
         binding.searchText.setHintTextColor(blackColor)
         binding.topMenu.setTextColor(blackColor)
-        binding.progress.progressDrawable=fragment.context?.getDrawable(R.drawable.bg_progressbar_dark)
+        binding.progress.progressDrawable = fragment.context?.getDrawable(R.drawable.bg_progressbar_dark)
         binding.progress.animate().alpha(0f).setDuration(1000).withEndAction {
-            binding.progress.alpha=1.0f
+            binding.progress.alpha = 1.0f
         }.start()
-        val adapter=binding.topMenuPanel.adapter
-        if (adapter is TopMenuPanelAdapter){
-            adapter.color=R.color.colorBlack
+        val adapter = binding.topMenuPanel.adapter
+        if (adapter is TopMenuPanelAdapter) {
+            adapter.color = R.color.colorBlack
             adapter.notifyDataSetChanged()
         }
     }
+
     private fun loadBitmapFromView(v: View): Bitmap {
         val fullSizeBitmap = Bitmap.createBitmap(v.width, v.height, Bitmap.Config.ARGB_8888)
         val c = Canvas(fullSizeBitmap)
         v.layout(v.left, v.top, v.right, v.bottom)
         v.draw(c)
 
-        val density=v.context.resources.displayMetrics.density
-        val sampleBitmap = CommonUtil.getResizedBitmap(fullSizeBitmap,v.height/density,v.width/density)
+        val density = v.context.resources.displayMetrics.density
+        val sampleBitmap = CommonUtil.getResizedBitmap(fullSizeBitmap, v.height / density, v.width / density)
         fullSizeBitmap?.recycle()
         return sampleBitmap
     }
+
     override fun start() {
         session.register(sessionObserver)
     }

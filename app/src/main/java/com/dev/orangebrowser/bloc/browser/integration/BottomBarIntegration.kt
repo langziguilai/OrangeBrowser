@@ -1,6 +1,9 @@
 package com.dev.orangebrowser.bloc.browser.integration
 
+import android.graphics.Bitmap
 import android.os.Bundle
+import android.util.Log
+import com.dev.base.extension.capture
 import com.dev.base.support.LifecycleAwareFeature
 import com.dev.browser.feature.session.SessionUseCases
 import com.dev.browser.session.Session
@@ -9,6 +12,11 @@ import com.dev.orangebrowser.bloc.browser.BrowserFragment
 import com.dev.orangebrowser.bloc.browser.integration.helper.BottomPanelHelper
 import com.dev.orangebrowser.databinding.FragmentBrowserBinding
 import com.dev.orangebrowser.extension.RouterActivity
+import com.dev.util.FileUtil
+import kotlinx.coroutines.*
+import java.io.File
+import java.io.FileOutputStream
+import kotlin.coroutines.CoroutineContext
 
 class BottomBarIntegration(private var binding: FragmentBrowserBinding,
                            var fragment: BrowserFragment,
@@ -17,7 +25,11 @@ class BottomBarIntegration(private var binding: FragmentBrowserBinding,
                            var sessionUseCases: SessionUseCases,
                            var sessionManager: SessionManager,
                            var session:Session):
-    LifecycleAwareFeature {
+    LifecycleAwareFeature,CoroutineScope {
+    private val job= SupervisorJob()
+    override val coroutineContext: CoroutineContext
+        get() = Dispatchers.Main+job
+
     lateinit var sessionObserver:Session.Observer
     lateinit var sessionManagerObserver:SessionManager.Observer
     init{
@@ -45,7 +57,36 @@ class BottomBarIntegration(private var binding: FragmentBrowserBinding,
         }
         //跳转到TabFragment
         binding.counter.setOnClickListener {
-            fragment.RouterActivity?.loadTabFragment(fragment.sessionId)
+            session.visionMode=Session.NORMAL_SCREEN_MODE
+            binding.fragmentContainer.requestLayout()
+            //capture thumbnail
+            binding.webViewContainer.capture()?.apply {
+                val bitmap = this
+                session.tmpThumbnail=bitmap
+                session.thumbnailPath=null
+                launch(Dispatchers.IO) {
+                    try {
+                        //TODO:压缩
+                        val fileName = "${session.id}.webp"
+                        val file = File(FileUtil.getOrCreateDir(Session.THUMBNAIL_DIR), fileName)
+                        bitmap.compress(Bitmap.CompressFormat.WEBP, 80, FileOutputStream(file))
+                        //主线程内更新
+                        launch(Dispatchers.Main) {
+                            session.thumbnailPath = File.separator + Session.THUMBNAIL_DIR + File.separator + fileName
+                            session.tmpThumbnail=null
+                        }
+                    } catch (e: Exception) {
+                        Log.e("save thumbnail fail", e.message)
+                    } finally {
+                        coroutineContext.cancelChildren()
+                    }
+                }
+            }
+            //等待一段事件后跳转
+            binding.fragmentContainer.postDelayed({
+                val ratio=(binding.webViewContainer.height.toFloat())/(binding.webViewContainer.width.toFloat())
+                fragment.RouterActivity?.loadTabFragment(fragment.sessionId,ratio)
+            },50)
         }
         binding.menu.setOnClickListener {
             bottomPanelHelper.toggleBottomPanel()

@@ -7,13 +7,12 @@ import android.view.View
 import com.dev.base.extension.capture
 import com.dev.base.extension.isOSOnLowMemory
 import com.dev.base.support.LifecycleAwareFeature
-import com.dev.browser.feature.session.ThumbnailFeature
+import com.dev.browser.session.Session
 import com.dev.browser.session.SessionManager
-import com.dev.util.CommonUtil
+import com.dev.util.FileUtil
 import kotlinx.coroutines.*
 import java.io.File
 import java.io.FileOutputStream
-import java.io.IOException
 import kotlin.coroutines.CoroutineContext
 
 class ThumbnailIntergration(var context: Context, var view: View, var sessionId: String, var sessionManager: SessionManager) :
@@ -29,20 +28,26 @@ class ThumbnailIntergration(var context: Context, var view: View, var sessionId:
 
     override fun stop() {
         if (!context.isOSOnLowMemory()){
-            view.capture()?.apply {
-                val bitmap = this
-                launch(Dispatchers.IO) {
-                    try {
-                        val fileName = "$sessionId.webp"
-                        val file = File(CommonUtil.getOrCreateDir(ThumbnailFeature.THUMBNAIL_DIR), fileName)
-                        bitmap.compress(Bitmap.CompressFormat.WEBP, 80, FileOutputStream(file))
-                        sessionManager.findSessionById(sessionId)?.apply {
-                            this.thumbnailPath = File.separator + ThumbnailFeature.THUMBNAIL_DIR + File.separator + fileName
+            sessionManager.findSessionById(sessionId)?.apply{
+                val session=this
+                view.capture()?.apply {
+                    val bitmap = this
+                    session.tmpThumbnail=bitmap
+                    session.thumbnailPath=null
+                    launch(Dispatchers.IO) {
+                        try {
+                            val fileName = "$sessionId.webp"
+                            val file = File(FileUtil.getOrCreateDir(Session.THUMBNAIL_DIR), fileName)
+                            bitmap.compress(Bitmap.CompressFormat.WEBP, 80, FileOutputStream(file))
+                            launch(Dispatchers.Main) {
+                                session.thumbnailPath = File.separator + Session.THUMBNAIL_DIR + File.separator + fileName
+                                session.tmpThumbnail=null
+                            }
+                        } catch (e: Exception) {
+                            Log.e("save thumbnail fail", e.message)
+                        } finally {
+                            coroutineContext.cancelChildren()
                         }
-                    } catch (e: Exception) {
-                        Log.e("save thumbnail fail", e.message)
-                    } finally {
-                        coroutineContext.cancelChildren()
                     }
                 }
             }

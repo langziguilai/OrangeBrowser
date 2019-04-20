@@ -116,7 +116,7 @@ fun ViewGroup.forEach(action: (View) -> Unit) {
     }
 }
 //截图
-fun View.capture(config:Bitmap.Config= Bitmap.Config.RGB_565):Bitmap?{
+fun View.capture(config:Bitmap.Config= Bitmap.Config.ARGB_8888):Bitmap?{
     val v=this
     if (v.width<=0 || v.height<=0)
         return null
@@ -125,9 +125,19 @@ fun View.capture(config:Bitmap.Config= Bitmap.Config.RGB_565):Bitmap?{
     val c = Canvas(fullSizeBitmap)
     v.layout(v.left, v.top, v.right, v.bottom)
     v.draw(c)
-    val sampleBitmap = CommonUtil.getResizedBitmap(fullSizeBitmap,v.height/density,v.width/density)
-    fullSizeBitmap?.recycle()
-    return sampleBitmap
+//    val sampleBitmap = CommonUtil.getResizedBitmap(fullSizeBitmap,v.height/density,v.width/density)
+//    fullSizeBitmap?.recycle()
+    return fullSizeBitmap
+}
+fun View.capture(config: Bitmap.Config=Bitmap.Config.ARGB_8888,width:Int,height:Int):Bitmap?{
+    val v=this
+    if (v.width<=0 || v.height<=0)
+        return null
+    val fullSizeBitmap = Bitmap.createBitmap(width, height,config)
+    val c = Canvas(fullSizeBitmap)
+    v.layout(v.left, v.top, v.right, v.bottom)
+    v.draw(c)
+    return fullSizeBitmap
 }
 /**
  * Tries to focus this view and show the soft input window for it.

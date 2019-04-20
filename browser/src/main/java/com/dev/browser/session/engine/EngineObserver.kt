@@ -22,7 +22,7 @@ internal class EngineObserver(val session: Session) : EngineSession.Observer {
     override fun onLocationChange(url: String) {
         session.url = url
         session.searchTerms = ""
-        session.title = ""
+        //session.title = ""
 
         //当contentPermissionRequest不为空时，并且url不相同的时候清空request
         session.contentPermissionRequest.value?.apply {
@@ -105,7 +105,7 @@ internal class EngineObserver(val session: Session) : EngineSession.Observer {
     }
 
     override fun onThumbnailChange(bitmap: Bitmap?) {
-        session.themeThumbnail = bitmap
+        session.thumbnail = bitmap
     }
 
     override fun onContentPermissionRequest(permissionRequest: PermissionRequest) {

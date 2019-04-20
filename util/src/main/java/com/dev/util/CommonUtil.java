@@ -50,16 +50,5 @@ public class CommonUtil {
         return Bitmap.createBitmap(bm, 0, 0, width, height, matrix, false);
 
     }
-
-    public static File getOrCreateDir(String dirname) throws Exception {
-        String externalDirectory = Environment.getExternalStorageDirectory().getPath();
-        File file= new File(externalDirectory+File.separator+dirname);
-        if (!file.exists()){
-           if(!file.mkdir()){
-               throw new IOException("create directory failed!!!");
-           }
-        }
-        return file;
-    }
 }
 

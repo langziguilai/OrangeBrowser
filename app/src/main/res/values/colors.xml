@@ -5,6 +5,7 @@
     <color name="colorPrimaryActive">#4CAF50</color>
     <color name="colorPrimaryDark">#6B7A99</color>
     <color name="themeColorDefault">#6A7998</color>
+    <color name="colorBackground">#303444</color>
     <color name="themeColor1">#7189C5</color>
     <color name="themeColor2">#937CCC</color>
     <color name="themeColor3">#FD7A99</color>
