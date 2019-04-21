@@ -2,7 +2,6 @@ package com.dev.orangebrowser.bloc.tabs
 
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import androidx.recyclerview.widget.RecyclerView
@@ -21,6 +20,7 @@ class TabAdapter(var sessions:LinkedList<Session>,
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TabViewHolder {
        val view=  LayoutInflater.from(parent.context).inflate(R.layout.item_tab_display_item,null)
         val container=view.findViewById<FrameLayout>(R.id.container)
+        //此处必须设置容器指定的大小
         (container.layoutParams as FrameLayout.LayoutParams).apply {
             val params=this
             params.height=cardHeight
