@@ -548,7 +548,16 @@ public abstract class BaseQuickAdapter<T, K extends BaseViewHolder> extends Recy
         compatibilityDataSizeChanged(0);
         notifyItemRangeChanged(internalPosition, mData.size() - internalPosition);
     }
-
+    public void removeAtPosition(int position){
+        mData.remove(position);
+        int internalPosition = position + getHeaderLayoutCount();
+        notifyItemRemoved(internalPosition);
+        compatibilityDataSizeChanged(0);
+        //notifyItemRangeChanged(internalPosition, mData.size() - internalPosition);
+    }
+    public void removeDataAtPosition(int position){
+        mData.remove(position);
+    }
     /**
      * change data
      */

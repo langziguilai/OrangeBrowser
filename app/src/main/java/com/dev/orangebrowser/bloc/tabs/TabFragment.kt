@@ -1,6 +1,7 @@
 package com.dev.orangebrowser.bloc.tabs
 
 import android.content.Context
+import android.graphics.pdf.PdfRenderer
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -22,11 +23,8 @@ import com.dev.orangebrowser.databinding.FragmentTabBinding
 import com.dev.orangebrowser.extension.RouterActivity
 import com.dev.orangebrowser.extension.appComponent
 import com.dev.util.DensityUtil
-import com.dev.view.recyclerview.CustomBaseViewHolder
-import com.dev.view.recyclerview.adapter.base.BaseQuickAdapter
-import kotlinx.android.synthetic.main.mozac_feature_choice_dialogs.*
+import java.util.*
 import javax.inject.Inject
-
 
 
 class TabFragment : BaseFragment() {
@@ -81,91 +79,97 @@ class TabFragment : BaseFragment() {
             RouterActivity?.loadHomeOrBrowserFragment(sessionId)
         }
     }
-    private fun initViewPager(){
-        val cardHeight=(DensityUtil.dip2px(requireContext(),252f)*arguments!!.getFloat(RATIO)).toInt()
-        //更新高度
-//        (binding.viewpager.layoutParams as? FrameLayout.LayoutParams)?.apply {
-//                 val params=this
-//                 params.height=(DensityUtil.dip2px(requireContext(),252f)*arguments!!.getFloat(RATIO)).toInt()
-//                 binding.viewpager.layoutParams=params
-//        }
 
-        val currentIndex= sessionManager.getSessionIndex(sessionId)
-        val adapter =
-            object : BaseQuickAdapter<Session, CustomBaseViewHolder>(R.layout.item_tab_display_item, sessionManager.all) {
-                override fun convert(helper: CustomBaseViewHolder, item: Session) {
-                    helper.getView<FrameLayout>(R.id.container)?.apply {
-                        val view=this
-                        (this.layoutParams as? FrameLayout.LayoutParams)?.apply {
-                            val params=this
-                            params.height=cardHeight
-                            view.layoutParams=params
-                        }
-                    }
-                    if (item.tmpThumbnail!=null){
-                        helper.loadBitmapToImageView(R.id.thumbnail,item.tmpThumbnail!!)
-                    }else if (item.thumbnailPath!=null){
-                        helper.loadLocalImage(R.id.thumbnail, item.thumbnailPath!!)
-                    }
-                    helper.getView<View>(R.id.bottom_bar)
-                        .setBackgroundColor(activityViewModel.theme.value!!.colorPrimary)
-                    if (item.title.isNotBlank()) {
-                        helper.setText(R.id.title, item.title)
-                    } else {
-                        helper.setText(R.id.title, item.url)
-                    }
-                    helper.addOnClickListener(R.id.close)
-                }
-            }
-        adapter.setHasStableIds(true)
-        adapter.setOnItemChildClickListener { _, view, position ->
-            if (view.id == R.id.close) {
-                sessionManager.findSessionById(sessionManager.all[position].id)?.apply {
-                    sessionManager.remove(session = this)
-                    adapter.remove(position)
-                    if (sessionManager.size==0){
-                        RouterActivity?.loadHomeFragment(HomeFragment.NO_SESSION_ID)
-                    }
-                }
-            }
+    lateinit var data: LinkedList<Session>
+    private fun initViewPager() {
+        //更新高度
+        val cardHeight = (DensityUtil.dip2px(requireContext(), 252f) * arguments!!.getFloat(RATIO)).toInt()
+        val cardWidth=DensityUtil.dip2px(requireContext(), 252f)
+        data = sessionManager.all
+        val currentIndex = sessionManager.getSessionIndex(sessionId)
+        (binding.viewpager.layoutParams as? FrameLayout.LayoutParams)?.apply {
+            val params=this
+            params.height=cardHeight
+            binding.viewpager.layoutParams=params
         }
-        adapter.setOnItemClickListener { _, _, position ->
-            val session=sessionManager.all[position]
-            sessionManager.select(session)
-            RouterActivity?.loadHomeOrBrowserFragment(session.id)
-        }
-        binding.viewpager.adapter = adapter
-        binding.viewpager.layoutManager=LinearLayoutManager(requireContext(),RecyclerView.HORIZONTAL,false)
-        val helper=PagerSnapHelper()
-        helper.attachToRecyclerView(binding.viewpager)
+        val layoutManager=LinearLayoutManager(requireContext(),RecyclerView.HORIZONTAL,false)
+        binding.viewpager.layoutManager=layoutManager
+        var adapter: TabAdapter?
+        adapter =TabAdapter(
+            cardHeight= cardHeight,
+            cardWidth= cardWidth,
+            sessions = data,
+            activityViewModel = activityViewModel,
+            onSelect = fun(session:Session){
+                RouterActivity?.loadHomeOrBrowserFragment(session.id)
+            },
+            onClose = fun(session:Session){
+                sessionManager.remove(session)
+                if (sessionManager.size==0){
+                    RouterActivity?.loadHomeFragment(HomeFragment.NO_SESSION_ID)
+                    return
+                }
+                binding.viewpager.postDelayed({
+                    updateTitle(layoutManager)
+                },50)
+            }
+        )
+        PagerSnapHelper().attachToRecyclerView(binding.viewpager)
+        ItemTouchHelper(SwipeUpItemTouchHelperCallback(fun(position:Int){
+               if (sessionManager.size<=1){
+                   sessionManager.removeSessions()
+                   RouterActivity?.loadHomeFragment(HomeFragment.NO_SESSION_ID)
+                   return
+               }
+               val session=adapter.deleteItem(position)
+               sessionManager.remove(session)
+               binding.viewpager.postDelayed({
+                   updateTitle(layoutManager)
+               },50)
+        })).attachToRecyclerView(binding.viewpager)
+        binding.viewpager.adapter=adapter
+
         binding.viewpager.addOnScrollListener(object:RecyclerView.OnScrollListener(){
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                 if (newState==RecyclerView.SCROLL_STATE_IDLE){
-                  helper.findSnapView(binding.viewpager.layoutManager)?.apply {
-                      val view=this
-                      binding.viewpager.layoutManager?.getPosition(view)?.apply {
-                          updateTitle(this)
-                      }
-                  }
+                    val position=layoutManager.findFirstCompletelyVisibleItemPosition()
+                    if (position>=0){
+                        updateTitle(position)
+                    }
                 }
             }
         })
-        binding.viewpager.scrollToPosition(currentIndex)
-        //
-        ItemTouchHelper(SwipeUpItemTouchHelperCallback(object:ItemTouchHelperAdapter{
-            override fun onItemDismiss(position: Int) {
-                sessionManager.remove(sessionManager.all[position])
-                binding.viewpager.adapter?.notifyItemRemoved(position)
-            }
-        })).attachToRecyclerView(binding.viewpager)
+        binding.back.setOnClickListener {
+            RouterActivity?.loadHomeOrBrowserFragment(sessionId)
+        }
+        binding.clear.setOnClickListener {
+            sessionManager.removeSessions()
+            RouterActivity?.loadHomeFragment(HomeFragment.NO_SESSION_ID)
+        }
+        binding.add.setOnClickListener {
+            RouterActivity?.loadHomeFragment(HomeFragment.NO_SESSION_ID)
+        }
         updateTitle(currentIndex)
+        binding.viewpager.scrollToPosition(currentIndex)
+    }
+    private fun updateTitle(layoutManager:LinearLayoutManager){
+         val index= layoutManager.findFirstCompletelyVisibleItemPosition()
+         if (index>=0){
+             if (data[index].title.isNotBlank()) {
+                 binding.title.text = data[index].title
+             } else {
+                 binding.title.text = data[index].url
+             }
+         }
     }
 
-    private fun updateTitle(index:Int){
-        if (sessionManager.all[index].title.isNotBlank()) {
-            binding.title.text = sessionManager.all[index].title
-        } else {
-            binding.title.text = sessionManager.all[index].url
+    private fun updateTitle(index: Int) {
+        if (index>=0){
+            if (data[index].title.isNotBlank()) {
+                binding.title.text = data[index].title
+            } else {
+                binding.title.text = data[index].url
+            }
         }
     }
 
@@ -176,22 +180,24 @@ class TabFragment : BaseFragment() {
 
     companion object {
         const val Tag = "TabFragment"
-        const val RATIO="RATIO"
-        fun newInstance(sessionId: String,ratio:Float) = TabFragment().apply {
+        const val RATIO = "RATIO"
+        fun newInstance(sessionId: String, ratio: Float) = TabFragment().apply {
             arguments = Bundle().apply {
                 putString(BrowserFragment.SESSION_ID, sessionId)
                 putFloat(RATIO, ratio)
             }
         }
     }
+
 }
 
 interface ItemTouchHelperAdapter {
     fun onItemDismiss(position: Int)
 }
-class SwipeUpItemTouchHelperCallback(var adapter:ItemTouchHelperAdapter):ItemTouchHelper.Callback(){
+
+class SwipeUpItemTouchHelperCallback(var onSwipe: (position:Int)->Unit) : ItemTouchHelper.Callback() {
     override fun getMovementFlags(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder): Int {
-       return  makeMovementFlags(0,ItemTouchHelper.UP)
+        return makeMovementFlags(0, ItemTouchHelper.UP)
     }
 
     override fun onMove(
@@ -203,6 +209,6 @@ class SwipeUpItemTouchHelperCallback(var adapter:ItemTouchHelperAdapter):ItemTou
     }
 
     override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-        adapter.onItemDismiss(viewHolder.adapterPosition)
+        onSwipe(viewHolder.adapterPosition)
     }
 }

@@ -125,7 +125,7 @@ class SessionManager(
     /**
      * Returns a list of all active sessions (including CustomTab sessions).
      */
-    val all: List<Session>
+    val all: LinkedList<Session>
         get() = synchronized(values) { LinkedList(values.toList()) }
 
     fun getSessionIndex(sessionId:String):Int{
