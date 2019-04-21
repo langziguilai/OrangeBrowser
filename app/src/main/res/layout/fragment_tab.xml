@@ -38,7 +38,7 @@
                     android:paddingStart="46dp"
                     android:paddingEnd="46dp"
                     android:layout_width="match_parent"
-                    android:layout_height="400dp"/>
+                    android:layout_height="match_parent"/>
         </FrameLayout>
 
         <FrameLayout android:id="@+id/bottom_bar" android:layout_width="match_parent" android:layout_height="50dp"

@@ -212,7 +212,7 @@ class SystemEngineView @JvmOverloads constructor(
             url?.let {
                 val cert = view?.certificate
                 session?.internalNotifyObservers {
-                    onLocationChange(it)//:结束的时候不再更新url
+                    onLocationChange(it)
                     onNavigationStateChange(view.canGoBack(), view.canGoForward())
                     onLoadingStateChange(false)
                     onSecurityChange(
@@ -336,6 +336,10 @@ class SystemEngineView @JvmOverloads constructor(
 
         override fun onProgressChanged(view: WebView?, newProgress: Int) {
             session?.internalNotifyObservers { onProgress(newProgress) }
+            //这里这样做是因为：onPageFinished不一定会调用，所以通过progress来判断
+            if (newProgress>90){
+                session?.internalNotifyObservers { onNavigationStateChange(view?.canGoBack(),view?.canGoForward()) }
+            }
         }
 
         override fun onReceivedTitle(view: WebView, title: String?) {

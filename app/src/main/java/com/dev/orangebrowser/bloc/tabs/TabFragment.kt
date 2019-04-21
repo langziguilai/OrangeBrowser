@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.RecyclerView
@@ -25,6 +26,8 @@ import com.dev.view.recyclerview.CustomBaseViewHolder
 import com.dev.view.recyclerview.adapter.base.BaseQuickAdapter
 import kotlinx.android.synthetic.main.mozac_feature_choice_dialogs.*
 import javax.inject.Inject
+
+
 
 class TabFragment : BaseFragment() {
     @Inject
@@ -79,17 +82,26 @@ class TabFragment : BaseFragment() {
         }
     }
     private fun initViewPager(){
+        val cardHeight=(DensityUtil.dip2px(requireContext(),252f)*arguments!!.getFloat(RATIO)).toInt()
         //更新高度
-        (binding.viewpager.layoutParams as? FrameLayout.LayoutParams)?.apply {
-                 val params=this
-                 params.height=(DensityUtil.dip2px(requireContext(),252f)*arguments!!.getFloat(RATIO)).toInt()
-                 binding.viewpager.layoutParams=params
-        }
+//        (binding.viewpager.layoutParams as? FrameLayout.LayoutParams)?.apply {
+//                 val params=this
+//                 params.height=(DensityUtil.dip2px(requireContext(),252f)*arguments!!.getFloat(RATIO)).toInt()
+//                 binding.viewpager.layoutParams=params
+//        }
 
         val currentIndex= sessionManager.getSessionIndex(sessionId)
         val adapter =
             object : BaseQuickAdapter<Session, CustomBaseViewHolder>(R.layout.item_tab_display_item, sessionManager.all) {
                 override fun convert(helper: CustomBaseViewHolder, item: Session) {
+                    helper.getView<FrameLayout>(R.id.container)?.apply {
+                        val view=this
+                        (this.layoutParams as? FrameLayout.LayoutParams)?.apply {
+                            val params=this
+                            params.height=cardHeight
+                            view.layoutParams=params
+                        }
+                    }
                     if (item.tmpThumbnail!=null){
                         helper.loadBitmapToImageView(R.id.thumbnail,item.tmpThumbnail!!)
                     }else if (item.thumbnailPath!=null){
@@ -139,6 +151,13 @@ class TabFragment : BaseFragment() {
             }
         })
         binding.viewpager.scrollToPosition(currentIndex)
+        //
+        ItemTouchHelper(SwipeUpItemTouchHelperCallback(object:ItemTouchHelperAdapter{
+            override fun onItemDismiss(position: Int) {
+                sessionManager.remove(sessionManager.all[position])
+                binding.viewpager.adapter?.notifyItemRemoved(position)
+            }
+        })).attachToRecyclerView(binding.viewpager)
         updateTitle(currentIndex)
     }
 
@@ -164,5 +183,26 @@ class TabFragment : BaseFragment() {
                 putFloat(RATIO, ratio)
             }
         }
+    }
+}
+
+interface ItemTouchHelperAdapter {
+    fun onItemDismiss(position: Int)
+}
+class SwipeUpItemTouchHelperCallback(var adapter:ItemTouchHelperAdapter):ItemTouchHelper.Callback(){
+    override fun getMovementFlags(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder): Int {
+       return  makeMovementFlags(0,ItemTouchHelper.UP)
+    }
+
+    override fun onMove(
+        recyclerView: RecyclerView,
+        viewHolder: RecyclerView.ViewHolder,
+        target: RecyclerView.ViewHolder
+    ): Boolean {
+        return false
+    }
+
+    override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+        adapter.onItemDismiss(viewHolder.adapterPosition)
     }
 }
