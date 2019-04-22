@@ -48,14 +48,11 @@ class ViewPagerIntegration(
                 fragment.exitAnimate(Runnable {
                     fragment.RouterActivity?.loadHomeOrBrowserFragment(session.id)
                 })
-
             },
             onClose = fun(session: Session) {
                 sessionManager.remove(session)
                 if (sessionManager.size == 0) {
-                    fragment.exitAnimate(Runnable {
-                        fragment.RouterActivity?.loadHomeFragment(HomeFragment.NO_SESSION_ID)
-                    })
+                    fragment.RouterActivity?.loadHomeFragment(HomeFragment.NO_SESSION_ID)
                     return
                 }
                 binding.viewpager.postDelayed({
@@ -67,9 +64,7 @@ class ViewPagerIntegration(
         ItemTouchHelper(SwipeUpItemTouchHelperCallback(fun(position: Int) {
             if (sessionManager.size <= 1) {
                 sessionManager.removeSessions()
-                fragment.exitAnimate(Runnable {
-                    fragment.RouterActivity?.loadHomeFragment(HomeFragment.NO_SESSION_ID)
-                })
+                fragment.RouterActivity?.loadHomeFragment(HomeFragment.NO_SESSION_ID)
                 return
             }
             val session = adapter.deleteItem(position)
@@ -90,16 +85,7 @@ class ViewPagerIntegration(
                 }
             }
         })
-        binding.back.setOnClickListener {
-            fragment.RouterActivity?.loadHomeOrBrowserFragment(fragment.sessionId)
-        }
-        binding.clear.setOnClickListener {
-            sessionManager.removeSessions()
-            fragment.RouterActivity?.loadHomeFragment(HomeFragment.NO_SESSION_ID)
-        }
-        binding.add.setOnClickListener {
-            fragment.RouterActivity?.loadHomeFragment(HomeFragment.NO_SESSION_ID)
-        }
+
         updateTitle(currentIndex)
         binding.viewpager.scrollToPosition(currentIndex)
     }

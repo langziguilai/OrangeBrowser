@@ -15,9 +15,7 @@ class BottomBarIntegration(var binding: FragmentTabBinding,var sessionManager: S
         //清空
         binding.clear.setOnClickListener {
             sessionManager.removeSessions()
-            fragment.exitAnimate(runnable = Runnable {
-                fragment.RouterActivity?.loadHomeOrBrowserFragment(HomeFragment.NO_SESSION_ID)
-            })
+            fragment.RouterActivity?.loadHomeOrBrowserFragment(HomeFragment.NO_SESSION_ID)
         }
         //新增
         binding.add.setOnClickListener {

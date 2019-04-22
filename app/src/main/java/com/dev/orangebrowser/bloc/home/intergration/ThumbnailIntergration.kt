@@ -13,6 +13,8 @@ import com.dev.util.FileUtil
 import kotlinx.coroutines.*
 import java.io.File
 import java.io.FileOutputStream
+import java.lang.ref.SoftReference
+import java.lang.ref.WeakReference
 import kotlin.coroutines.CoroutineContext
 
 class ThumbnailIntergration(var context: Context, var view: View, var sessionId: String, var sessionManager: SessionManager) :
@@ -32,7 +34,7 @@ class ThumbnailIntergration(var context: Context, var view: View, var sessionId:
                 val session=this
                 view.capture()?.apply {
                     val bitmap = this
-                    session.tmpThumbnail=bitmap
+                    session.tmpThumbnail= SoftReference(bitmap)
                     launch(Dispatchers.IO) {
                         try {
                             val fileName = "$sessionId.webp"
@@ -40,7 +42,6 @@ class ThumbnailIntergration(var context: Context, var view: View, var sessionId:
                             bitmap.compress(Bitmap.CompressFormat.WEBP, 80, FileOutputStream(file))
                             launch(Dispatchers.Main) {
                                 session.thumbnailPath = File.separator + Session.THUMBNAIL_DIR + File.separator + fileName
-                                session.tmpThumbnail=null
                             }
                         } catch (e: Exception) {
                             Log.e("save thumbnail fail", e.message)

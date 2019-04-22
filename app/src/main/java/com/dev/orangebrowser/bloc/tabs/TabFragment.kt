@@ -100,7 +100,7 @@ class TabFragment : BaseFragment() {
         }
     }
 
-    fun enterAnimate(runnable: Runnable){
+    private fun enterAnimate(runnable: Runnable){
         topBarIntegration.hide()
         titleIntegration.show()
         bottomBarAnimateIntegration.hide()
@@ -110,12 +110,16 @@ class TabFragment : BaseFragment() {
     }
     fun exitAnimate(runnable: Runnable){
         val selectSession=viewPagerIntegration.getCurrentSession()
+        //设置为选定
+        sessionManager.select(selectSession)
         thumbnailPlaceHolderIntegration.setImage(selectSession)
         topBarIntegration.setSearchText(selectSession)
         topBarIntegration.show(selectSession)
         titleIntegration.hide()
         bottomBarAnimateIntegration.show()
         bottomBarIntegration.hide()
+        //加载bitmap到session
+        thumbnailPlaceHolderIntegration.loadLocalImageToSelectSession(requireContext(),selectSession)
         thumbnailPlaceHolderIntegration.show(runnable)
     }
     override fun initData(savedInstanceState: Bundle?) {

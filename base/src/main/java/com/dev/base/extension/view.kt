@@ -13,6 +13,7 @@ import android.view.ViewTreeObserver
 import android.view.animation.AccelerateDecelerateInterpolator
 import android.view.inputmethod.InputMethodManager
 import androidx.core.animation.doOnEnd
+import com.dev.util.CommonUtil
 import java.lang.ref.WeakReference
 
 const val FAST_ANIMATION = 200L
@@ -65,8 +66,8 @@ fun View.capture(config: Bitmap.Config = Bitmap.Config.ARGB_8888): Bitmap? {
     val c = Canvas(fullSizeBitmap)
     v.layout(v.left, v.top, v.right, v.bottom)
     v.draw(c)
-//    val sampleBitmap = CommonUtil.getResizedBitmap(fullSizeBitmap,v.height/density,v.width/density)
-//    fullSizeBitmap?.recycle()
+    //val sampleBitmap = CommonUtil.getResizedBitmap(fullSizeBitmap,(v.height / density).toInt(), (v.width / density).toInt())
+   // fullSizeBitmap?.recycle()
     return fullSizeBitmap
 }
 

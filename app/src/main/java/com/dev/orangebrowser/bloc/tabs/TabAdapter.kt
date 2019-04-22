@@ -11,23 +11,25 @@ import com.dev.orangebrowser.bloc.host.MainViewModel
 import com.dev.view.extension.loadLocalImage
 import java.util.*
 
-class TabAdapter(var sessions:LinkedList<Session>,
-                 var cardWidth:Int,
-                 var cardHeight:Int,
-                 var activityViewModel:MainViewModel,
-                 var onSelect:(session:Session)->Unit,
-                 var onClose:(session:Session)->Unit):RecyclerView.Adapter<TabViewHolder>(){
+class TabAdapter(
+    var sessions: LinkedList<Session>,
+    var cardWidth: Int,
+    var cardHeight: Int,
+    var activityViewModel: MainViewModel,
+    var onSelect: (session: Session) -> Unit,
+    var onClose: (session: Session) -> Unit
+) : RecyclerView.Adapter<TabViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TabViewHolder {
-       val view=  LayoutInflater.from(parent.context).inflate(R.layout.item_tab_display_item,null)
-        val container=view.findViewById<FrameLayout>(R.id.container)
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_tab_display_item, null)
+        val container = view.findViewById<FrameLayout>(R.id.container)
         //此处必须设置容器指定的大小
         (container.layoutParams as FrameLayout.LayoutParams).apply {
-            val params=this
-            params.height=cardHeight
-            params.width=cardWidth
-            container.layoutParams=params
+            val params = this
+            params.height = cardHeight
+            params.width = cardWidth
+            container.layoutParams = params
         }
-       return TabViewHolder(view)
+        return TabViewHolder(view)
     }
 
     override fun getItemCount(): Int {
@@ -35,16 +37,16 @@ class TabAdapter(var sessions:LinkedList<Session>,
     }
 
     override fun onBindViewHolder(holder: TabViewHolder, position: Int) {
-        val session=sessions[position]
-        if (session.tmpThumbnail!=null){
-            holder.thumbnail.setImageBitmap(session.tmpThumbnail)
-        }else if (session.thumbnailPath!=null){
+        val session = sessions[position]
+        if (session.tmpThumbnail != null && session.tmpThumbnail!!.get() != null) {
+            holder.thumbnail.setImageBitmap(session.tmpThumbnail!!.get())
+        } else if (session.thumbnailPath != null) {
             holder.thumbnail.loadLocalImage(session.thumbnailPath!!)
         }
-        if (session.title.isNotBlank()){
-            holder.title.text=session.title
-        }else if (session.url.isNotBlank()){
-            holder.title.text=session.url
+        if (session.title.isNotBlank()) {
+            holder.title.text = session.title
+        } else if (session.url.isNotBlank()) {
+            holder.title.text = session.url
         }
         holder.bottomBar.setBackgroundColor(activityViewModel.theme.value!!.colorPrimary)
         holder.container.setOnClickListener {
@@ -56,8 +58,9 @@ class TabAdapter(var sessions:LinkedList<Session>,
             notifyItemRemoved(position)
         }
     }
-    fun deleteItem(position:Int):Session{
-        val session=sessions.removeAt(position)
+
+    fun deleteItem(position: Int): Session {
+        val session = sessions.removeAt(position)
         notifyItemRemoved(position)
         return session
     }

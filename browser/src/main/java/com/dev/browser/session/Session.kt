@@ -17,6 +17,8 @@ import com.dev.browser.session.tab.CustomTabConfig
 import com.dev.browser.support.Consumable
 import com.dev.browser.support.Observable
 import com.dev.browser.support.ObserverRegistry
+import java.lang.ref.SoftReference
+import java.lang.ref.WeakReference
 import java.util.UUID
 import kotlin.properties.Delegates
 
@@ -36,7 +38,7 @@ class Session(
     var isStatusBarDarkMode: Boolean = false,
     var screenNumber:Int=HOME_SCREEN,//screenNumber默认为
     var thumbnailPath:String? =null, //将thumbnail保存起来
-    var tmpThumbnail:Bitmap?=null,
+    var tmpThumbnail:SoftReference<Bitmap>?=null,
     delegate: Observable<Observer> = ObserverRegistry()
 ) : Observable<Session.Observer> by delegate {
     var homeScreenState:Fragment.SavedState?=null  //保存HomeScreen的状态

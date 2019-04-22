@@ -16,6 +16,8 @@ import com.dev.util.FileUtil
 import kotlinx.coroutines.*
 import java.io.File
 import java.io.FileOutputStream
+import java.lang.ref.SoftReference
+import java.lang.ref.WeakReference
 import kotlin.coroutines.CoroutineContext
 
 class BottomBarIntegration(private var binding: FragmentBrowserBinding,
@@ -63,7 +65,7 @@ class BottomBarIntegration(private var binding: FragmentBrowserBinding,
             //capture thumbnail
             binding.webViewContainer.capture()?.apply {
                 val bitmap = this
-                session.tmpThumbnail=bitmap
+                session.tmpThumbnail= SoftReference(bitmap)
                 launch(Dispatchers.IO) {
                     try {
                         //TODO:压缩
@@ -73,7 +75,6 @@ class BottomBarIntegration(private var binding: FragmentBrowserBinding,
                         //主线程内更新
                         launch(Dispatchers.Main) {
                             session.thumbnailPath = File.separator + Session.THUMBNAIL_DIR + File.separator + fileName
-                            session.tmpThumbnail=null
                         }
                     } catch (e: Exception) {
                         Log.e("save thumbnail fail", e.message)

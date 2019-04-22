@@ -106,19 +106,6 @@ class StyleIntegration(
             adapter.notifyDataSetChanged()
         }
     }
-
-    private fun loadBitmapFromView(v: View): Bitmap {
-        val fullSizeBitmap = Bitmap.createBitmap(v.width, v.height, Bitmap.Config.ARGB_8888)
-        val c = Canvas(fullSizeBitmap)
-        v.layout(v.left, v.top, v.right, v.bottom)
-        v.draw(c)
-
-        val density = v.context.resources.displayMetrics.density
-        val sampleBitmap = CommonUtil.getResizedBitmap(fullSizeBitmap, v.height / density, v.width / density)
-        fullSizeBitmap?.recycle()
-        return sampleBitmap
-    }
-
     override fun start() {
         session.register(sessionObserver)
     }
