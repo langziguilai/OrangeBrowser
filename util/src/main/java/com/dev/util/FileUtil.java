@@ -1,5 +1,6 @@
 package com.dev.util;
 
+import android.content.Context;
 import android.os.Environment;
 
 import java.io.File;
@@ -67,9 +68,10 @@ public class FileUtil {
             return false;
         }
     }
-    public static File getOrCreateDir(String dirname) throws Exception {
-        String externalDirectory = Environment.getExternalStorageDirectory().getPath();
-        File file= new File(externalDirectory+File.separator+dirname+File.separator);
+    public static File getOrCreateDir(Context context, String dirname) throws Exception {
+
+        String dirPath = context.getFilesDir().getPath();
+        File file= new File(dirPath+File.separator+dirname+File.separator);
         if (!file.exists()){
             file.mkdir();
         }

@@ -12,6 +12,7 @@ import com.dev.orangebrowser.databinding.FragmentHomeBinding
 import com.dev.orangebrowser.extension.RouterActivity
 import com.dev.orangebrowser.extension.appData
 import com.dev.view.GridView
+import com.dev.view.StatusBarUtil
 import com.dev.view.recyclerview.CustomBaseViewHolder
 import com.dev.view.recyclerview.adapter.base.BaseQuickAdapter
 import es.dmoral.toasty.Toasty
@@ -52,8 +53,8 @@ class TopBarHelper(var binding: FragmentHomeBinding, var fragment: HomeFragment,
                 toggleTopPanel()
                 return true
             }
-
         }
+        StatusBarUtil.setStatusBarBackGroundColorAndIconColor(fragment.requireActivity(),fragment.activityViewModel.theme.value!!.colorPrimary)
     }
 
     private fun initTopMenuGridView(topMenuPanel: GridView) {

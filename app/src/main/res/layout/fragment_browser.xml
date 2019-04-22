@@ -18,7 +18,8 @@
                 android:focusable="true"
                 app:layout_behavior="com.dev.orangebrowser.view.WebViewToggleBehavior"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
+                android:layout_height="match_parent">
+        </com.dev.orangebrowser.view.InterceptMatchParentLayout>
         <FrameLayout android:id="@+id/mini_bottom_bar" android:visibility="gone" android:layout_gravity="bottom"
                      android:layout_width="match_parent" android:layout_height="52dp">
             <ProgressBar

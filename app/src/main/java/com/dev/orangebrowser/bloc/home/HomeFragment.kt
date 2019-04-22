@@ -76,6 +76,7 @@ class HomeFragment : BaseLazyFragment(), BackHandler {
             sessionId=sessionManager.selectedSession!!.id
             return
         }
+        session.screenNumber=Session.HOME_SCREEN
     }
     //获取layoutResourceId
     override fun getLayoutResId(): Int {

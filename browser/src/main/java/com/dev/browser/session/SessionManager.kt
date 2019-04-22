@@ -485,6 +485,7 @@ class SessionManager(
         sessions.forEach {
             if (it != selectedSession) {
                 it.thumbnail = null
+                it.tmpThumbnail =null
             }
         }
     }

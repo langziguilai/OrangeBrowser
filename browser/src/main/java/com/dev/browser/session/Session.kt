@@ -41,6 +41,7 @@ class Session(
 ) : Observable<Session.Observer> by delegate {
     var homeScreenState:Fragment.SavedState?=null  //保存HomeScreen的状态
     companion object {
+        const val HOME_TITLE="首页"
         const val THUMBNAIL_DIR="thumbnail"
         const val HOME_SCREEN=1  //Home screen代表的值
         const val NO_EXIST_URL=""  //不存在的URL，表示还未加载过
@@ -172,7 +173,7 @@ class Session(
     /**
      * The title of the currently displayed website changed.
      */
-    var title: String by Delegates.observable("首页") { _, old, new ->
+    var title: String by Delegates.observable(HOME_TITLE) { _, old, new ->
         notifyObservers(old, new) { onTitleChanged(this@Session, new) }
     }
 

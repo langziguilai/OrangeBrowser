@@ -1,7 +1,6 @@
 package com.dev.view.extension
 
 import android.graphics.Bitmap
-import android.os.Environment
 import android.widget.ImageView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
@@ -9,7 +8,7 @@ import java.io.File
 
 fun ImageView.loadLocalImage(path:String){
     val mRequestOptions = RequestOptions.centerCropTransform()
-    val imagePath= Environment.getExternalStorageDirectory().path+path
+    val imagePath= this.context.filesDir.path+path
     Glide.with(context).load(File(imagePath))
         .apply(mRequestOptions).into(this)
 }

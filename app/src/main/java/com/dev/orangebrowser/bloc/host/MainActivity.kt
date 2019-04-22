@@ -177,8 +177,8 @@ class MainActivity : BaseActivity() {
 
     //在低内存时，保存截图到文件
     override fun onLowMemory() {
-        super.onLowMemory()
         sessionManager.onLowMemory()
+        super.onLowMemory()
     }
 
     //加载浏览器页面

@@ -29,13 +29,7 @@ class TopBarIntegration(
     }
 
     private fun initTopBar(savedInstanceState: Bundle?) {
-        //优先设置为title，其次为url
-        if (!session.title.isEmpty()) {
-            binding.searchText.text = session.title
-        } else if (!session.url.isEmpty()) {
-            binding.searchText.text = session.url
-        }
-
+        setTopBarInitialState(savedInstanceState)
         binding.searchText.setOnClickListener {
             if (!binding.overLayerTopPanel.isHidden()) {
                 topPanelHelper.toggleTopPanel(Runnable {
@@ -54,20 +48,7 @@ class TopBarIntegration(
         binding.stopIcon.setOnClickListener {
             sessionUseCases.stopLoading.invoke(session)
         }
-        if (session.securityInfo.secure){
-            binding.securityIcon.show()
-        }else{
-            binding.securityIcon.hide()
-        }
-        if(session.loading){
-            binding.reloadIcon.hide()
-            binding.stopIcon.show()
-            binding.progress.show()
-        } else {
-            binding.reloadIcon.show()
-            binding.stopIcon.hide()
-            binding.progress.hide()
-        }
+
         sessionObserver = object : Session.Observer {
             //加载改变
             override fun onLoadingStateChanged(session: Session, loading: Boolean) {
@@ -113,6 +94,28 @@ class TopBarIntegration(
         }
     }
 
+    private fun setTopBarInitialState(savedInstanceState:Bundle?){
+        //优先设置为title，其次为url
+        if (session.title.isNotEmpty() && session.title!=Session.HOME_TITLE) {
+            binding.searchText.text = session.title
+        } else if (session.url.isNotEmpty()) {
+            binding.searchText.text = session.url
+        }
+        if (session.securityInfo.secure){
+            binding.securityIcon.show()
+        }else{
+            binding.securityIcon.hide()
+        }
+        if(session.loading){
+            binding.reloadIcon.hide()
+            binding.stopIcon.show()
+            binding.progress.show()
+        } else {
+            binding.reloadIcon.show()
+            binding.stopIcon.hide()
+            binding.progress.hide()
+        }
+    }
 
     override fun start() {
         session.register(sessionObserver)

@@ -33,11 +33,10 @@ class ThumbnailIntergration(var context: Context, var view: View, var sessionId:
                 view.capture()?.apply {
                     val bitmap = this
                     session.tmpThumbnail=bitmap
-                    session.thumbnailPath=null
                     launch(Dispatchers.IO) {
                         try {
                             val fileName = "$sessionId.webp"
-                            val file = File(FileUtil.getOrCreateDir(Session.THUMBNAIL_DIR), fileName)
+                            val file = File(FileUtil.getOrCreateDir(context,Session.THUMBNAIL_DIR), fileName)
                             bitmap.compress(Bitmap.CompressFormat.WEBP, 80, FileOutputStream(file))
                             launch(Dispatchers.Main) {
                                 session.thumbnailPath = File.separator + Session.THUMBNAIL_DIR + File.separator + fileName

@@ -5,6 +5,8 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.*
+import android.widget.FrameLayout
+import android.widget.ImageView
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.lifecycle.ViewModelProviders
 import com.dev.base.BaseFragment
@@ -34,6 +36,9 @@ import java.util.*
 import javax.inject.Inject
 import android.widget.RelativeLayout
 import com.dev.browser.session.Session
+import com.dev.orangebrowser.bloc.tabs.integration.ThumbnailPlaceHolderIntegration
+import com.dev.view.extension.loadBitmap
+import com.dev.view.extension.loadLocalImage
 
 
 class BrowserFragment : BaseFragment(), BackHandler, UserInteractionHandler {
@@ -153,6 +158,7 @@ class BrowserFragment : BaseFragment(), BackHandler, UserInteractionHandler {
             engineView,
             params//FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT)
         )
+
         //get behavior
         (binding.webViewContainer.layoutParams as? CoordinatorLayout.LayoutParams)?.apply {
             (this.behavior as? WebViewToggleBehavior)?.apply {
@@ -333,6 +339,7 @@ class BrowserFragment : BaseFragment(), BackHandler, UserInteractionHandler {
             owner = this,
             view = binding.root
         )
+        WebViewBlinkFixIntegration(binding=binding,fragment = this,session = session)
     }
 
     override fun initData(savedInstanceState: Bundle?) {

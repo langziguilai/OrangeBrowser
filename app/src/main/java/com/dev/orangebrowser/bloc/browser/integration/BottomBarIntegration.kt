@@ -37,16 +37,17 @@ class BottomBarIntegration(private var binding: FragmentBrowserBinding,
     }
     private fun initBottomBar(savedInstanceState: Bundle?) {
         //后退
-        binding.back.setOnClickListener {
-            fragment.onBackPressed()
-        }
-        //设置forward颜色
-        if (session.canGoForward){
-            binding.forward.setTextColor(fragment.activityViewModel.theme.value!!.colorPrimary)
-        }else{
-            binding.forward.setTextColor(fragment.activityViewModel.theme.value!!.colorPrimaryDisable)
-        }
-        binding.counterNumber.text=sessionManager.size.toString()
+//        binding.back.setOnClickListener {
+//            fragment.onBackPressed()
+//        }
+//        //设置forward颜色
+//        if (session.canGoForward){
+//            binding.forward.setTextColor(fragment.activityViewModel.theme.value!!.colorPrimary)
+//        }else{
+//            binding.forward.setTextColor(fragment.activityViewModel.theme.value!!.colorPrimaryDisable)
+//        }
+//        binding.counterNumber.text=sessionManager.size.toString()
+        setBottomBarInitialState(savedInstanceState)
         binding.forward.setOnClickListener {
              if (session.canGoForward){
                  sessionUseCases.goForward.invoke(session)
@@ -63,12 +64,11 @@ class BottomBarIntegration(private var binding: FragmentBrowserBinding,
             binding.webViewContainer.capture()?.apply {
                 val bitmap = this
                 session.tmpThumbnail=bitmap
-                session.thumbnailPath=null
                 launch(Dispatchers.IO) {
                     try {
                         //TODO:压缩
                         val fileName = "${session.id}.webp"
-                        val file = File(FileUtil.getOrCreateDir(Session.THUMBNAIL_DIR), fileName)
+                        val file = File(FileUtil.getOrCreateDir(fragment.requireContext(),Session.THUMBNAIL_DIR), fileName)
                         bitmap.compress(Bitmap.CompressFormat.WEBP, 80, FileOutputStream(file))
                         //主线程内更新
                         launch(Dispatchers.Main) {
@@ -114,7 +114,20 @@ class BottomBarIntegration(private var binding: FragmentBrowserBinding,
             }
         }
     }
-
+    //设置初始化状态
+    private fun setBottomBarInitialState(savedInstanceState: Bundle?){
+        //后退
+        binding.back.setOnClickListener {
+            fragment.onBackPressed()
+        }
+        //设置forward颜色
+        if (session.canGoForward){
+            binding.forward.setTextColor(fragment.activityViewModel.theme.value!!.colorPrimary)
+        }else{
+            binding.forward.setTextColor(fragment.activityViewModel.theme.value!!.colorPrimaryDisable)
+        }
+        binding.counterNumber.text=sessionManager.size.toString()
+    }
 
 
     override fun start() {
