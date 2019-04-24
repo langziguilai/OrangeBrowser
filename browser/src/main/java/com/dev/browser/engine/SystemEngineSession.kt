@@ -67,7 +67,7 @@ class SystemEngineSession(
      * 此方法会再session link的时候加载一次，我们需要忽略空的，并忽略非初始化的值，才加载
      */
     override fun loadUrl(url: String) {
-        if (!url.isEmpty() && url!= Session.NO_EXIST_URL) {
+        if (!url.isEmpty() && url!= Session.NO_EXIST_URL && url!="about:blank") {
             currentUrl = url
             webView.loadUrl(url, additionalHeaders)
         }
@@ -200,6 +200,10 @@ class SystemEngineSession(
      */
     override fun findNext(forward: Boolean) {
         webView.findNext(forward)
+    }
+
+    override fun getUrl(): String {
+        return webView.url
     }
 
     /**

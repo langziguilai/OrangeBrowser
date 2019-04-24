@@ -50,7 +50,30 @@ class BottomBarAnimateIntegration(
         }
         binding.counterNumber.text = sessionManager.size.toString()
     }
-
+    private fun setTopBarBySession(session:Session){
+        //后退
+        if (session.screenNumber == Session.HOME_SCREEN) {
+            binding.back.setTextColor(fragment.activityViewModel.theme.value!!.colorPrimaryDisable)
+            //当url存在的时候
+            if (session.url.isNotBlank() && session.url != Session.NO_EXIST_URL) {
+                binding.forward.setTextColor(fragment.activityViewModel.theme.value!!.colorPrimary)
+            } else {
+                binding.forward.setTextColor(fragment.activityViewModel.theme.value!!.colorPrimaryDisable)
+            }
+            binding.search.visibility= View.VISIBLE
+            binding.home.visibility=View.GONE
+        } else {
+            binding.back.setTextColor(fragment.activityViewModel.theme.value!!.colorPrimary)
+            if (session.canGoForward) {
+                binding.forward.setTextColor(fragment.activityViewModel.theme.value!!.colorPrimary)
+            } else {
+                binding.forward.setTextColor(fragment.activityViewModel.theme.value!!.colorPrimaryDisable)
+            }
+            binding.search.visibility= View.GONE
+            binding.home.visibility=View.VISIBLE
+        }
+        binding.counterNumber.text = sessionManager.size.toString()
+    }
     //隐藏
     fun hide() {
         binding.bottomBarAnimate.onGlobalLayoutComplete {
@@ -58,7 +81,8 @@ class BottomBarAnimateIntegration(
         }
     }
 
-    fun show() {
+    fun show(session:Session) {
+        setTopBarBySession(session)
         binding.bottomBarAnimate.animate().alpha(1f).translationY(0f).setInterpolator(DEFAULT_INTERPOLATOR).setDuration(NORMAL_ANIMATION).start()
     }
 }

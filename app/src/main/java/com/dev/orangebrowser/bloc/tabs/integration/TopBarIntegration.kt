@@ -25,16 +25,36 @@ class TopBarIntegration(
     private fun initTopBar(savedInstanceState: Bundle?) {
         setTopBarInitialState(savedInstanceState)
     }
-    fun setSearchText(session:Session){
-        if (session.title.isNotBlank()){
-            if (session.title==Session.HOME_TITLE){
-                binding.searchText.text=""
-            }else{
-                binding.searchText.text=session.title
-            }
+    fun setTopbarBySession(session:Session){
+        //优先设置为title，其次为url
+        if(session.screenNumber!=Session.HOME_SCREEN){
+            if (session.title.isNotBlank()){
+                if (session.title==Session.HOME_TITLE){
+                    binding.searchText.text=""
+                }else{
+                    binding.searchText.text=session.title
+                }
 
-        }else if (session.url.isNotBlank()){
-            binding.searchText.text=session.url
+            }else if (session.url.isNotBlank()){
+                binding.searchText.text=session.url
+            }
+        }else{
+            binding.searchText.text=""
+        }
+
+        if (session.securityInfo.secure){
+            binding.securityIcon.show()
+        }else{
+            binding.securityIcon.hide()
+        }
+        if(session.loading){
+            binding.reloadIcon.hide()
+            binding.stopIcon.show()
+            binding.progress.show()
+        } else {
+            binding.reloadIcon.show()
+            binding.stopIcon.hide()
+            binding.progress.hide()
         }
     }
     private fun setTopBarInitialState(savedInstanceState:Bundle?){
@@ -88,6 +108,7 @@ class TopBarIntegration(
     }
     //显示
     fun show(session:Session){
+        setTopbarBySession(session)
         val color=session.themeColorMap[session.url] ?: fragment.activityViewModel.theme.value!!.colorPrimary
         updateTextColor(color)
         updateTopBarBackGround(color)

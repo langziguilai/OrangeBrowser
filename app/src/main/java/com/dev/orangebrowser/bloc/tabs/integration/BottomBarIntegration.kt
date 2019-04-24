@@ -19,9 +19,7 @@ class BottomBarIntegration(var binding: FragmentTabBinding,var sessionManager: S
         }
         //新增
         binding.add.setOnClickListener {
-            fragment.exitAnimate(runnable = Runnable {
-                fragment.RouterActivity?.loadHomeFragment(HomeFragment.NO_SESSION_ID)
-            })
+            fragment.RouterActivity?.loadHomeFragment(HomeFragment.NO_SESSION_ID)
         }
         //返回
         binding.goBack.setOnClickListener {

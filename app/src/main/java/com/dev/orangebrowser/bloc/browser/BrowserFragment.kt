@@ -262,7 +262,9 @@ class BrowserFragment : BaseFragment(), BackHandler, UserInteractionHandler {
             feature = SessionManagerListenerIntegration(
                 session = session,
                 activity = RouterActivity,
-                sessionManager = sessionManager
+                sessionManager = sessionManager,
+                binding = binding,
+                fragment = this
             ),
             owner = this,
             view = binding.root

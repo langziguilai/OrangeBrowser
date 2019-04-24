@@ -39,15 +39,14 @@ class TabAdapter(
 
     override fun onBindViewHolder(holder: TabViewHolder, position: Int) {
         val session = sessions[position]
-        Log.i("onBindViewHolder","session id: "+session.id)
         if (session.tmpThumbnail != null && session.tmpThumbnail!!.get() != null) {
             holder.thumbnail.setImageBitmap(session.tmpThumbnail!!.get())
-            Log.i("onBindViewHolder","session id: "+session.id+" holder.tmpThumbnail.setImageBitmap(session.tmpThumbnail!!.get())")
+            Log.d("onBindViewHolder","session id: "+session.id+" holder.tmpThumbnail.setImageBitmap(session.tmpThumbnail!!.get())")
         } else if (session.thumbnailPath != null) {
             holder.thumbnail.loadLocalImage(session.thumbnailPath!!)
-            Log.i("onBindViewHolder","session id: "+session.id+" holder.thumbnail.loadLocalImage(session.thumbnailPath!!)")
+            Log.d("onBindViewHolder","session id: "+session.id+" holder.thumbnail.loadLocalImage(session.thumbnailPath!!)")
         }else{
-            Log.i("onBindViewHolder","session id: "+session.id+" holder.thumbnail not set")
+            Log.d("onBindViewHolder","session id: "+session.id+" holder.thumbnail not set")
         }
         if (session.title.isNotBlank()) {
             holder.title.text = session.title

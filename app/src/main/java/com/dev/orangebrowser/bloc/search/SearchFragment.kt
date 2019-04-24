@@ -228,10 +228,10 @@ class SearchFragment : BaseFragment(), SearchBar, BackHandler {
                     searchUseCases.defaultSearch,//点击后，新增一个Session
                     client
                 )
-//                addSessionProvider(
-//                    sessionManager,
-//                    tabsUseCases.selectTab
-//                ) //点击后，选中session
+                addSessionProvider(
+                    sessionManager,
+                    tabsUseCases.selectTab
+                ) //点击后，选中session
                 addHistoryProvider(
                     historyStorage,
                     sessionUseCases.loadUrl
@@ -318,6 +318,7 @@ class SearchFragment : BaseFragment(), SearchBar, BackHandler {
 
     override fun onDestroy() {
         super.onDestroy()
+        binding.searchText.updateIme(EditorInfo.IME_ACTION_GO)
         binding.searchText.hideKeyboard()
     }
     companion object {

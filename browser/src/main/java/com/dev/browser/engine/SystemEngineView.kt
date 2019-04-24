@@ -193,12 +193,16 @@ class SystemEngineView @JvmOverloads constructor(
             // TODO private browsing not supported for SystemEngine
             // https://github.com/mozilla-mobile/android-components/issues/649
             runBlocking {
-                session?.settings?.historyTrackingDelegate?.onVisited(url, isReload)
+                if (url!="about:blank"){
+                    session?.settings?.historyTrackingDelegate?.onVisited(url, isReload)
+                }
             }
         }
 
         override fun onPageStarted(view: WebView, url: String?, favicon: Bitmap?) {
             url?.let {
+                if (it=="about:blank")
+                    return
                 session?.currentUrl = url
                 session?.internalNotifyObservers {
                     onLoadingStateChange(true)
@@ -210,6 +214,8 @@ class SystemEngineView @JvmOverloads constructor(
         }
         override fun onPageFinished(view: WebView, url: String?) {
             url?.let {
+                if (it=="about:blank")
+                    return
                 val cert = view?.certificate
                 session?.internalNotifyObservers {
                     onLocationChange(it)

@@ -60,7 +60,8 @@ class SearchUseCases(
             } ?: searchEngineManager.getDefaultSearchEngine(context).buildSearchUrl(searchTerms)
 
             val searchSession = session ?: onNoSession.invoke(searchUrl)
-
+            searchSession.url=searchUrl
+            searchSession.loading=true
             searchSession.searchTerms = searchTerms
 
             sessionManager.getOrCreateEngineSession(searchSession).loadUrl(searchUrl)
@@ -105,7 +106,8 @@ class SearchUseCases(
 
             val session = Session(searchUrl, private, source)
             session.searchTerms = searchTerms
-
+            session.url=searchUrl
+            session.loading=true
             sessionManager.add(session, selected)
             sessionManager.getOrCreateEngineSession(session).loadUrl(searchUrl)
         }

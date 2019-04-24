@@ -30,5 +30,5 @@ interface WindowRequest {
     /**
      * Starts the window request.
      */
-    fun start()
+    fun start(callback:Runnable?=null)
 }

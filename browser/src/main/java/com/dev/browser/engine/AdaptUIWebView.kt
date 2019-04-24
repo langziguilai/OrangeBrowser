@@ -11,17 +11,17 @@ open class AdaptUIWebView : WebView {
 
     constructor(context: Context) : super(context) {
         mApplicationContext = context.applicationContext
-        DensityUtil.setCustomDensity(mApplicationContext!!)
+        DensityUtil.resetDensity(mApplicationContext!!)
     }
 
     constructor(context: Context, attrs: AttributeSet) : super(context, attrs) {
         mApplicationContext = context.applicationContext
-        DensityUtil.setCustomDensity(mApplicationContext!!)
+        DensityUtil.resetDensity(mApplicationContext!!)
     }
 
     constructor(context: Context, attrs: AttributeSet, defStyleAttr: Int) : super(context, attrs, defStyleAttr) {
         mApplicationContext = context.applicationContext
-        DensityUtil.setCustomDensity(mApplicationContext!!)
+        DensityUtil.resetDensity(mApplicationContext!!)
     }
 
 
@@ -32,11 +32,11 @@ open class AdaptUIWebView : WebView {
         defStyleRes
     ) {
         mApplicationContext = context.applicationContext
-        DensityUtil.setCustomDensity(mApplicationContext!!)
+        DensityUtil.resetDensity(mApplicationContext!!)
     }
 
     override fun setOverScrollMode(mode: Int) {
         super.setOverScrollMode(mode)
-        //DensityUtil.setCustomDensity(mApplicationContext.getApplicationContext());
+        //DensityUtil.resetDensity(mApplicationContext.getApplicationContext());
     }
 }

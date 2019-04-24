@@ -25,9 +25,11 @@ class WindowFeature(private val engine: Engine, private val sessionManager: Sess
             val newSession = Session(windowRequest.url, session.private)
             val newEngineSession = engine.createSession(session.private)
             windowRequest.prepare(newEngineSession)
-
-            sessionManager.add(newSession, true, newEngineSession, parent = session)
-            windowRequest.start()
+            windowRequest.start(Runnable {
+                newSession.url=newEngineSession.getUrl()
+                newSession.loading=true
+                sessionManager.add(newSession, true, newEngineSession, parent = session)
+            })
             //windowFeatureListener?.onOpenWindow(newSession)
             return true
         }

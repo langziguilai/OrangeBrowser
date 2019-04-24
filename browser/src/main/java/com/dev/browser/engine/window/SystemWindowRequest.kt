@@ -5,7 +5,10 @@
 package com.dev.browser.engine.window
 
 import android.os.Message
+import android.webkit.WebChromeClient
+import android.webkit.WebResourceRequest
 import android.webkit.WebView
+import android.webkit.WebViewClient
 import com.dev.browser.concept.EngineSession
 import com.dev.browser.concept.window.WindowRequest
 import com.dev.browser.engine.SystemEngineSession
@@ -21,13 +24,13 @@ import com.dev.browser.engine.SystemEngineSession
  */
 class SystemWindowRequest(
     private val webView: WebView,
-    private val newWebView: WebView? = null,
+    val newWebView: WebView? = null,
     val openAsDialog: Boolean = false,
     val triggeredByUser: Boolean = false,
     private val resultMsg: Message? = null
 ) : WindowRequest {
 
-    override val url: String = ""
+    override val url: String = newWebView?.url ?: ""
 
     override fun prepare(engineSession: EngineSession) {
         newWebView?.let {
@@ -35,12 +38,20 @@ class SystemWindowRequest(
         }
     }
 
-    override fun start() {
+    override fun start(callback:Runnable?) {
         val message = resultMsg
         val transport = message?.obj as? WebView.WebViewTransport
         transport?.let {
             it.webView = newWebView
             message.sendToTarget()
+            //此时可以获取url了
+            val webViewClient= object:WebViewClient(){
+                override fun shouldOverrideUrlLoading(view: WebView?, request: WebResourceRequest?): Boolean {
+                    callback?.run()
+                    return false
+                }
+            }
+            it.webView.webViewClient=webViewClient
         }
     }
 }

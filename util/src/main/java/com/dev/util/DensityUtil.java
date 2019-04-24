@@ -24,7 +24,7 @@ public class DensityUtil {
     }
     private static float sNoncompatDensity;
     private static float sNoncompatScaledDensity;
-    public static void setCustomDensity(Activity activity,final Application application){
+    public static void resetDensity(Activity activity, final Application application){
         final DisplayMetrics appDisplayMetrics=application.getResources().getDisplayMetrics();
         if (sNoncompatDensity==0){
             sNoncompatDensity=appDisplayMetrics.density;
@@ -56,7 +56,7 @@ public class DensityUtil {
         activityDisplayMetricvs.scaledDensity=targetScaledDensity;
         activityDisplayMetricvs.densityDpi=targetDensityDpi;
     }
-    public static void setCustomDensity(final Context applicationContext){
+    public static void resetDensity(final Context applicationContext){
         final DisplayMetrics appDisplayMetrics=applicationContext.getResources().getDisplayMetrics();
         if (sNoncompatDensity==0){
             sNoncompatDensity=appDisplayMetrics.density;

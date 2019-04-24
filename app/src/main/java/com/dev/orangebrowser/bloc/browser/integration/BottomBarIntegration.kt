@@ -12,6 +12,8 @@ import com.dev.orangebrowser.bloc.browser.BrowserFragment
 import com.dev.orangebrowser.bloc.browser.integration.helper.BottomPanelHelper
 import com.dev.orangebrowser.databinding.FragmentBrowserBinding
 import com.dev.orangebrowser.extension.RouterActivity
+import com.dev.orangebrowser.extension.application
+import com.dev.util.DensityUtil
 import com.dev.util.FileUtil
 import kotlinx.coroutines.*
 import java.io.File

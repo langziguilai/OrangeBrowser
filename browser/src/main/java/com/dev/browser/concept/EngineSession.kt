@@ -167,6 +167,7 @@ abstract class EngineSession(
      */
     abstract fun reload()
 
+    abstract fun getUrl():String
     /**
      * Navigates back in the history of this session.
      */

@@ -2,6 +2,7 @@ package com.dev.orangebrowser.bloc.tabs
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -68,6 +69,8 @@ class TabFragment : BaseFragment() {
         //更新高度
          cardHeight = (DensityUtil.dip2px(requireContext(), 252f) * arguments!!.getFloat(TabFragment.RATIO)).toInt()
          cardWidth= DensityUtil.dip2px(requireContext(), 252f)
+         Log.d("cardHeight",""+cardHeight+"px")
+         Log.d("cardWidth",""+cardWidth+"px")
         val session = sessionManager.findSessionById(sessionId)
         session?.apply {
             topBarIntegration = TopBarIntegration(
@@ -113,16 +116,15 @@ class TabFragment : BaseFragment() {
         //选定session
         sessionManager.select(selectSession)
         thumbnailPlaceHolderIntegration.setImage(selectSession)
-        topBarIntegration.setSearchText(selectSession)
         topBarIntegration.show(selectSession)
         titleIntegration.hide()
-        bottomBarAnimateIntegration.show()
+        bottomBarAnimateIntegration.show(selectSession)
         bottomBarIntegration.hide()
         //加载bitmap到session
         thumbnailPlaceHolderIntegration.show(runnable,selectSession)
     }
     override fun initData(savedInstanceState: Bundle?) {
-        //TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+
     }
 
     companion object {
