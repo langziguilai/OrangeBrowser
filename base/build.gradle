@@ -44,6 +44,7 @@ dependencies {
     //
     implementation 'com.evernote:android-state:1.4.1'
     kapt 'com.evernote:android-state-processor:1.4.1'
+
     //
     //dagger
     implementation 'com.google.dagger:dagger:2.21'

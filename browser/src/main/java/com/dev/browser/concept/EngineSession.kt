@@ -251,4 +251,7 @@ abstract class EngineSession(
      */
     @CallSuper
     open fun close() = delegate.unregisterObservers()
+
+//  是否启用adblock
+    abstract fun enableAdblock(enableAdBlock:Boolean=false)
 }

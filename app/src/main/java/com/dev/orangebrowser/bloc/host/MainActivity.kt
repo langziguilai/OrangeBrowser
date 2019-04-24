@@ -34,6 +34,7 @@ import es.dmoral.toasty.Toasty
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import org.adblockplus.libadblockplus.android.settings.AdblockHelper
 import permissions.dispatcher.*
 import javax.inject.Inject
 
@@ -97,6 +98,11 @@ class MainActivity : BaseActivity() {
                 }, fun(data) {
                     myApplication.initApplicationData(data)
                     //loadFirstInFragment()
+                    //未加载完成
+                    while (!AdblockHelper.get().isInit){
+
+                    }
+                    AdblockHelper.get().provider.retain(true);
                     loadFirstInFragmentWithPermissionCheck()
                 })
             })
@@ -109,6 +115,10 @@ class MainActivity : BaseActivity() {
         }
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        AdblockHelper.get().provider.release()
+    }
     @NeedsPermission(
         Manifest.permission.CAMERA,
         Manifest.permission.WRITE_EXTERNAL_STORAGE,

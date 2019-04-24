@@ -49,6 +49,7 @@ class SystemEngineSession(
     @Volatile internal var webFontsEnabled = true
     @Volatile internal var currentUrl = ""
     @Volatile internal var fullScreenCallback: WebChromeClient.CustomViewCallback? = null
+    @Volatile internal var abBlockOn: Boolean=true
 
     // This is public for FFTV which needs access to the WebView instance. We can mark it internal once
     // https://github.com/mozilla-mobile/android-components/issues/1616 is resolved.
@@ -336,6 +337,10 @@ class SystemEngineSession(
         if (reload) {
             webView.reload()
         }
+    }
+
+    override fun enableAdblock(enableAdBlock: Boolean) {
+       abBlockOn=enableAdBlock
     }
 
     override fun forbidLoadingImage(enable: Boolean, reload: Boolean) {

@@ -15,7 +15,9 @@ android {
         versionName "1.0"
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-
+        ndk{
+            abiFilters "armeabi-v7a"
+        }
     }
 
     buildTypes {
@@ -48,6 +50,9 @@ dependencies {
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
     implementation 'com.squareup.okhttp3:okhttp:3.13.1'
     implementation 'com.squareup.okhttp3:okhttp-urlconnection:3.13.1'
+    //adblock
+    implementation 'org.adblockplus:adblock-android:3.0'
+    implementation 'org.adblockplus:adblock-android-settings:3.0'
     implementation project(':util')
     implementation project(path: ':base')
     implementation project(':view')
