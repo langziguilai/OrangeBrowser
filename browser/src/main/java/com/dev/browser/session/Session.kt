@@ -37,11 +37,15 @@ class Session(
     var themeColorMap: HashMap<String, Int> = HashMap(),
     var isStatusBarDarkMode: Boolean = false,
     var screenNumber:Int=HOME_SCREEN,//screenNumber默认为
-    var thumbnailPath:String? =null, //将thumbnail保存起来
     var tmpThumbnail:SoftReference<Bitmap>?=null,
     delegate: Observable<Observer> = ObserverRegistry()
 ) : Observable<Session.Observer> by delegate {
     var homeScreenState:Fragment.SavedState?=null  //保存HomeScreen的状态
+    var thumbnailPath:String?=null  //将thumbnail保存起来
+    @Synchronized get()= field
+    @Synchronized set(value) {
+         field=value
+    }
     companion object {
         const val HOME_TITLE="首页"
         const val THUMBNAIL_DIR="thumbnail"

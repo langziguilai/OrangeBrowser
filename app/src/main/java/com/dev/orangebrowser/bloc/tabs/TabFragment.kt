@@ -110,7 +110,7 @@ class TabFragment : BaseFragment() {
     }
     fun exitAnimate(runnable: Runnable){
         val selectSession=viewPagerIntegration.getCurrentSession()
-        //设置为选定
+        //选定session
         sessionManager.select(selectSession)
         thumbnailPlaceHolderIntegration.setImage(selectSession)
         topBarIntegration.setSearchText(selectSession)
@@ -119,8 +119,7 @@ class TabFragment : BaseFragment() {
         bottomBarAnimateIntegration.show()
         bottomBarIntegration.hide()
         //加载bitmap到session
-        thumbnailPlaceHolderIntegration.loadLocalImageToSelectSession(requireContext(),selectSession)
-        thumbnailPlaceHolderIntegration.show(runnable)
+        thumbnailPlaceHolderIntegration.show(runnable,selectSession)
     }
     override fun initData(savedInstanceState: Bundle?) {
         //TODO("not implemented") //To change body of created functions use File | Settings | File Templates.

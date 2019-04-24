@@ -38,7 +38,7 @@ class ViewPagerIntegration(
         }
         layoutManager = LinearLayoutManager(fragment.requireContext(), RecyclerView.HORIZONTAL, false)
         binding.viewpager.layoutManager = layoutManager
-        var adapter: TabAdapter?
+        val adapter: TabAdapter?
         adapter = TabAdapter(
             cardHeight = fragment.cardHeight,
             cardWidth = fragment.cardWidth,

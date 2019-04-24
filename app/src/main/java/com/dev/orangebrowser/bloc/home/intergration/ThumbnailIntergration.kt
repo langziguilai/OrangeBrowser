@@ -17,7 +17,12 @@ import java.lang.ref.SoftReference
 import java.lang.ref.WeakReference
 import kotlin.coroutines.CoroutineContext
 
-class ThumbnailIntergration(var context: Context, var view: View, var sessionId: String, var sessionManager: SessionManager) :
+class ThumbnailIntergration(
+    var context: Context,
+    var view: View,
+    var sessionId: String,
+    var sessionManager: SessionManager
+) :
     LifecycleAwareFeature,
     CoroutineScope {
     private val job = SupervisorJob()
@@ -29,20 +34,18 @@ class ThumbnailIntergration(var context: Context, var view: View, var sessionId:
     }
 
     override fun stop() {
-        if (!context.isOSOnLowMemory()){
-            sessionManager.findSessionById(sessionId)?.apply{
-                val session=this
+        if (!context.isOSOnLowMemory()) {
+            sessionManager.findSessionById(sessionId)?.apply {
+                val session = this
                 view.capture()?.apply {
                     val bitmap = this
-                    session.tmpThumbnail= SoftReference(bitmap)
+                    session.tmpThumbnail = SoftReference(bitmap)
                     launch(Dispatchers.IO) {
                         try {
                             val fileName = "$sessionId.webp"
-                            val file = File(FileUtil.getOrCreateDir(context,Session.THUMBNAIL_DIR), fileName)
+                            val file = File(FileUtil.getOrCreateDir(context, Session.THUMBNAIL_DIR), fileName)
                             bitmap.compress(Bitmap.CompressFormat.WEBP, 80, FileOutputStream(file))
-                            launch(Dispatchers.Main) {
-                                session.thumbnailPath = File.separator + Session.THUMBNAIL_DIR + File.separator + fileName
-                            }
+                            session.thumbnailPath = File.separator + Session.THUMBNAIL_DIR + File.separator + fileName
                         } catch (e: Exception) {
                             Log.e("save thumbnail fail", e.message)
                         } finally {

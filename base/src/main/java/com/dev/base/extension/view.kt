@@ -15,6 +15,10 @@ import android.view.inputmethod.InputMethodManager
 import androidx.core.animation.doOnEnd
 import com.dev.util.CommonUtil
 import java.lang.ref.WeakReference
+import android.opengl.ETC1.getHeight
+import android.opengl.ETC1.getWidth
+
+
 
 const val FAST_ANIMATION = 200L
 const val NORMAL_ANIMATION = 300L
@@ -36,7 +40,16 @@ fun View.hide() {
 fun View.show() {
     this.visibility = View.VISIBLE
 }
-
+fun View.getBitmap():Bitmap{
+    val b = Bitmap.createBitmap(
+        this.width,
+        this.height,
+        Bitmap.Config.ARGB_8888
+    )
+    val c = Canvas(b)
+    this.draw(c)
+    return b
+}
 //在layout之后调用：可以获取View的Height,Width等等属性
 fun View.onGlobalLayoutComplete(callback: (View) -> Unit) {
     var listener: ViewTreeObserver.OnGlobalLayoutListener? = null

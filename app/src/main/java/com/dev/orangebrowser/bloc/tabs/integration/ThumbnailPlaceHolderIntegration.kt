@@ -6,10 +6,7 @@ import android.graphics.BitmapFactory
 import android.util.Log
 import android.view.View
 import android.view.animation.LinearInterpolator
-import com.dev.base.extension.DEFAULT_INTERPOLATOR
-import com.dev.base.extension.NORMAL_ANIMATION
-import com.dev.base.extension.hide
-import com.dev.base.extension.onGlobalLayoutComplete
+import com.dev.base.extension.*
 import com.dev.browser.session.Session
 import com.dev.orangebrowser.bloc.tabs.TabFragment
 import com.dev.orangebrowser.databinding.FragmentTabBinding
@@ -22,11 +19,7 @@ import java.lang.ref.SoftReference
 import java.lang.ref.WeakReference
 import kotlin.coroutines.CoroutineContext
 
-class ThumbnailPlaceHolderIntegration(var binding: FragmentTabBinding, session: Session, val fragment: TabFragment) :
-    CoroutineScope {
-    private val job = SupervisorJob()
-    override val coroutineContext: CoroutineContext
-        get() = Dispatchers.Main + job
+class ThumbnailPlaceHolderIntegration(var binding: FragmentTabBinding, session: Session, val fragment: TabFragment){
 
     init {
         if (session.tmpThumbnail != null) {
@@ -46,13 +39,15 @@ class ThumbnailPlaceHolderIntegration(var binding: FragmentTabBinding, session: 
         }
     }
 
-    fun show(runnable: Runnable) {
+    fun show(runnable: Runnable,selectSession: Session) {
         val it = binding.thumbnailPlaceHolder
-        it.visibility = View.VISIBLE
+        it.show()
         it.animate().setDuration(NORMAL_ANIMATION)
             .scaleX(1f)
             .scaleY(1f)
             .setInterpolator(DEFAULT_INTERPOLATOR).withEndAction {
+                //保存起来，因为它可能被回收掉了
+                selectSession.tmpThumbnail= SoftReference(it.getBitmap())
                 runnable.run()
             }.start()
     }
@@ -69,26 +64,10 @@ class ThumbnailPlaceHolderIntegration(var binding: FragmentTabBinding, session: 
                 .withEndAction {
                     it.scaleX = targetScale
                     it.scaleY = targetScale
-                    it.visibility = View.GONE
+                    it.hide()
                     runnable.run()
                 }.start()
         }
     }
 
-    fun loadLocalImageToSelectSession(context: Context, selectSession: Session) {
-        if ((selectSession.tmpThumbnail == null || selectSession.tmpThumbnail!!.get() == null) && selectSession.thumbnailPath != null) {
-            val t1 = System.currentTimeMillis()
-            launch(Dispatchers.IO) {
-                val imagePath = context.filesDir.path + selectSession.thumbnailPath
-                val bitmap = BitmapFactory.decodeFile(imagePath)
-                launch(Dispatchers.Main) {
-                    selectSession.tmpThumbnail = SoftReference(bitmap)
-                    val t2 = System.currentTimeMillis()
-                    Log.i("load local image cost :", " " + (t2 - t1) + " ms")
-                    coroutineContext.cancelChildren()
-                }
-            }
-
-        }
-    }
 }
