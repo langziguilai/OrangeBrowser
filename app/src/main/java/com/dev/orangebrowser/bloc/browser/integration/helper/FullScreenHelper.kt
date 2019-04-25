@@ -2,7 +2,6 @@ package com.dev.orangebrowser.bloc.browser.integration.helper
 
 import android.app.Activity
 import android.content.pm.ActivityInfo
-import android.view.View
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import com.dev.base.extension.enterToImmersiveMode
 import com.dev.base.extension.exitImmersiveModeIfNeeded
@@ -11,7 +10,7 @@ import com.dev.base.extension.show
 import com.dev.browser.session.Session
 import com.dev.orangebrowser.bloc.host.MainActivity
 import com.dev.orangebrowser.databinding.FragmentBrowserBinding
-import com.dev.orangebrowser.view.WebViewToggleBehavior
+import com.dev.orangebrowser.bloc.browser.view.WebViewToggleBehavior
 import com.dev.view.StatusBarUtil
 
 class FullScreenHelper(var binding:FragmentBrowserBinding,var activity: Activity){

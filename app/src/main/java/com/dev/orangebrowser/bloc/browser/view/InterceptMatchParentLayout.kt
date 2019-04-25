@@ -1,4 +1,4 @@
-package com.dev.orangebrowser.view
+package com.dev.orangebrowser.bloc.browser.view
 
 import android.content.Context
 import android.util.AttributeSet

@@ -5,8 +5,6 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.*
-import android.widget.FrameLayout
-import android.widget.ImageView
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.lifecycle.ViewModelProviders
 import com.dev.base.BaseFragment
@@ -29,16 +27,13 @@ import com.dev.orangebrowser.bloc.host.MainViewModel
 import com.dev.orangebrowser.databinding.FragmentBrowserBinding
 import com.dev.orangebrowser.extension.RouterActivity
 import com.dev.orangebrowser.extension.appComponent
-import com.dev.orangebrowser.view.WebViewToggleBehavior
+import com.dev.orangebrowser.bloc.browser.view.WebViewToggleBehavior
 import com.dev.view.StatusBarUtil
 import kotlinx.android.synthetic.main.fragment_browser.*
 import java.util.*
 import javax.inject.Inject
 import android.widget.RelativeLayout
 import com.dev.browser.session.Session
-import com.dev.orangebrowser.bloc.tabs.integration.ThumbnailPlaceHolderIntegration
-import com.dev.view.extension.loadBitmap
-import com.dev.view.extension.loadLocalImage
 
 
 class BrowserFragment : BaseFragment(), BackHandler, UserInteractionHandler {

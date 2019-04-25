@@ -1,16 +1,13 @@
-package com.dev.orangebrowser.view;
+package com.dev.orangebrowser.bloc.browser.view;
 
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.View;
-import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
-import com.dev.browser.engine.SystemEngineView;
 import com.dev.browser.session.Session;
 import com.dev.orangebrowser.R;
 import com.dev.orangebrowser.bloc.browser.integration.helper.WebViewVisionHelper;
-import com.dev.util.DensityUtil;
 
 import java.lang.ref.WeakReference;
 

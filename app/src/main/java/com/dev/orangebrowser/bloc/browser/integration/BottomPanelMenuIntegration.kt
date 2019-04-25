@@ -2,11 +2,9 @@ package com.dev.orangebrowser.bloc.browser.integration
 
 import android.os.Bundle
 import android.view.View
-import android.view.ViewGroup
 import android.widget.TextView
 import android.widget.Toast
 import androidx.coordinatorlayout.widget.CoordinatorLayout
-import androidx.core.view.children
 import com.dev.base.extension.onGlobalLayoutComplete
 import com.dev.base.support.LifecycleAwareFeature
 import com.dev.browser.feature.session.SessionUseCases
@@ -18,7 +16,7 @@ import com.dev.orangebrowser.data.model.ActionItem
 import com.dev.orangebrowser.databinding.FragmentBrowserBinding
 import com.dev.orangebrowser.extension.RouterActivity
 import com.dev.orangebrowser.extension.appData
-import com.dev.orangebrowser.view.WebViewToggleBehavior
+import com.dev.orangebrowser.bloc.browser.view.WebViewToggleBehavior
 import com.dev.util.DensityUtil
 import com.dev.view.GridView
 import com.dev.view.recyclerview.CustomBaseViewHolder
