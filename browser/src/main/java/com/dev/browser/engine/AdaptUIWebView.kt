@@ -3,10 +3,11 @@ package com.dev.browser.engine
 import android.content.Context
 import android.util.AttributeSet
 import android.webkit.WebView
+import com.dev.browser.adblock.AdblockWebView
 import com.dev.util.DensityUtil
 
 //使用application的context，防止内存泄漏
-open class AdaptUIWebView : WebView {
+open class AdaptUIWebView : AdblockWebView {
     private var mApplicationContext: Context? = null
 
     constructor(context: Context) : super(context) {
@@ -25,15 +26,15 @@ open class AdaptUIWebView : WebView {
     }
 
 
-    constructor(context: Context, attrs: AttributeSet, defStyleAttr: Int, defStyleRes: Int) : super(
-        context,
-        attrs,
-        defStyleAttr,
-        defStyleRes
-    ) {
-        mApplicationContext = context.applicationContext
-        DensityUtil.resetDensity(mApplicationContext!!)
-    }
+//    constructor(context: Context, attrs: AttributeSet, defStyleAttr: Int, defStyleRes: Int) : super(
+//        context,
+//        attrs,
+//        defStyleAttr,
+//        defStyleRes
+//    ) {
+//        mApplicationContext = context.applicationContext
+//        DensityUtil.resetDensity(mApplicationContext!!)
+//    }
 
     override fun setOverScrollMode(mode: Int) {
         super.setOverScrollMode(mode)

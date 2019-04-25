@@ -566,6 +566,9 @@ public class AdblockWebView extends WebView {
         protected WebResourceResponse shouldInterceptRequest(
                 WebView webview, String url, boolean isMainFrame,
                 boolean isXmlHttpRequest, String[] referrerChainArray) {
+            if (provider==null){
+                return null;
+            }
             synchronized (provider.getEngineLock()) {
                 // if dispose() was invoke, but the page is still loading then just let it go
                 if (provider.getCounter() == 0) {
@@ -682,8 +685,8 @@ public class AdblockWebView extends WebView {
     }
 
     private class ElemHideThread extends Thread {
-        private String selectorsString;
-        private String emuSelectorsString;
+        private String selectorsString=EMPTY_ELEMHIDE_ARRAY_STRING;
+        private String emuSelectorsString=EMPTY_ELEMHIDE_ARRAY_STRING;
         private CountDownLatch finishedLatch;
         private AtomicBoolean isFinished;
         private AtomicBoolean isCancelled;
@@ -696,6 +699,8 @@ public class AdblockWebView extends WebView {
 
         @Override
         public void run() {
+            if (provider==null)
+                return;
             synchronized (provider.getEngineLock()) {
                 try {
                     if (provider.getCounter() == 0) {
@@ -743,8 +748,8 @@ public class AdblockWebView extends WebView {
 
                             d("Finished requesting elemhide selectors, got " + selectors.size() + " in " + this);
                             selectorsString = Utils.stringListToJsonArray(selectors);
-
-                            // elemhideemu
+//
+//                            // elemhideemu
 //                            d("Requesting elemhideemu selectors from AdblockEngine for " + url + " in " + this);
 //                            List<FilterEngine.EmulationSelector> emuSelectors = provider
 //                                    .getEngine()

@@ -36,7 +36,7 @@ class SystemEngine(
     override fun createSession(private: Boolean): EngineSession {
         if (private) {
             // TODO Implement private browsing: https://github.com/mozilla-mobile/android-components/issues/649
-            throw UnsupportedOperationException("Private browsing is not supported in ${this::class.java.simpleName}")
+            //throw UnsupportedOperationException("Private browsing is not supported in ${this::class.java.simpleName}")
         }
         return SystemEngineSession(context, defaultSettings)
     }

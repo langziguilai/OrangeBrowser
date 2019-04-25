@@ -2,7 +2,10 @@ package com.dev.orangebrowser.bloc.browser.integration.helper
 
 import android.app.Activity
 import android.content.pm.ActivityInfo
+import android.view.View
 import androidx.coordinatorlayout.widget.CoordinatorLayout
+import com.dev.base.extension.enterToImmersiveMode
+import com.dev.base.extension.exitImmersiveModeIfNeeded
 import com.dev.base.extension.hide
 import com.dev.base.extension.show
 import com.dev.browser.session.Session
@@ -38,6 +41,8 @@ class FullScreenHelper(var binding:FragmentBrowserBinding,var activity: Activity
                if (activity.resources.configuration.orientation==ActivityInfo.SCREEN_ORIENTATION_PORTRAIT){
                    activity.requestedOrientation= ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
                }
+               //隐藏下部导航栏
+               activity.enterToImmersiveMode()
            }else{ //退出全局视野
                StatusBarUtil.showStatusBar(activity)
                //隐藏StatusBar之后，其文字的颜色会变为默认颜色，我们需要修改其颜色
@@ -62,6 +67,8 @@ class FullScreenHelper(var binding:FragmentBrowserBinding,var activity: Activity
                if (activity.resources.configuration.orientation!=ActivityInfo.SCREEN_ORIENTATION_PORTRAIT){
                    activity.requestedOrientation= ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
                }
+               //退出全屏模式
+               activity.exitImmersiveModeIfNeeded()
            }
     }
 }

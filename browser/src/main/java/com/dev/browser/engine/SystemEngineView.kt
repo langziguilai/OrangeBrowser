@@ -44,7 +44,7 @@ import kotlinx.coroutines.runBlocking
 import org.adblockplus.libadblockplus.FilterEngine
 import org.adblockplus.libadblockplus.android.AdblockEngine
 import org.adblockplus.libadblockplus.android.AdblockEngineProvider
-import org.adblockplus.libadblockplus.android.settings.AdblockHelper
+//import org.adblockplus.libadblockplus.android.settings.AdblockHelper
 import java.util.*
 
 
@@ -238,115 +238,115 @@ class SystemEngineView @JvmOverloads constructor(
                 }
             }
         }
-        var provider:AdblockEngineProvider=AdblockHelper.get().provider
-        var contentTypeDetector= RegexContentTypeDetector()
-        private val url2Referrer = Collections.synchronizedMap(HashMap<String, String>())
-        private fun shouldInterceptRequest(
-            webview: WebView, url: String, isMainFrame: Boolean,
-            isXmlHttpRequest: Boolean, referrerChainArray: Array<String>
-        ): WebResourceResponse? {
-            synchronized(provider.getEngineLock()) {
-                // if dispose() was invoke, but the page is still loading then just let it go
-                if (provider.getCounter() == 0) {
-                    Log.d("Adblock","FilterEngine already disposed, allow loading")
-
-                    // allow loading by returning null
-                    return null
-                } else {
-                    provider.waitForReady()
-                }
-
-                if (isMainFrame) {
-                    // never blocking main frame requests, just subrequests
-                    Log.d("Adblock","$url is main frame, allow loading")
-
-                    // allow loading by returning null
-                    return null
-                }
-
-                // whitelisted
-                if (provider.getEngine().isDomainWhitelisted(url, referrerChainArray)) {
-                    Log.d("Adblock","$url domain is whitelisted, allow loading")
-
-                    // allow loading by returning null
-                    return null
-                }
-
-                if (provider.getEngine().isDocumentWhitelisted(url, referrerChainArray)) {
-                    Log.d("Adblock","$url document is whitelisted, allow loading")
-
-                    // allow loading by returning null
-                    return null
-                }
-
-                // determine the content
-                var contentType: FilterEngine.ContentType?
-                if (isXmlHttpRequest) {
-                    contentType = FilterEngine.ContentType.XMLHTTPREQUEST
-                } else {
-                    contentType = contentTypeDetector.detect(url)
-                    if (contentType == null) {
-                        contentType = FilterEngine.ContentType.OTHER
-                    }
-                }
-
-                // check if we should block
-                if (provider.engine.matches(url, contentType, referrerChainArray)) {
-                    Log.d("Adblock","Blocked loading $url")
-
-                    // if we should block, return empty response which results in 'errorLoading' callback
-                    return WebResourceResponse("text/plain", "UTF-8", null)
-                }
-
-                Log.d("Adblock","Allowed loading $url")
-
-                // continue by returning null
-                return null
-            }
-        }
+       // var provider:AdblockEngineProvider=AdblockHelper.get().provider
+//        var contentTypeDetector= RegexContentTypeDetector()
+//        private val url2Referrer = Collections.synchronizedMap(HashMap<String, String>())
+//        private fun shouldInterceptRequest(
+//            webview: WebView, url: String, isMainFrame: Boolean,
+//            isXmlHttpRequest: Boolean, referrerChainArray: Array<String>
+//        ): WebResourceResponse? {
+//            synchronized(provider.getEngineLock()) {
+//                // if dispose() was invoke, but the page is still loading then just let it go
+//                if (provider.getCounter() == 0) {
+//                    Log.d("Adblock","FilterEngine already disposed, allow loading")
+//
+//                    // allow loading by returning null
+//                    return null
+//                } else {
+//                    provider.waitForReady()
+//                }
+//
+//                if (isMainFrame) {
+//                    // never blocking main frame requests, just subrequests
+//                    Log.d("Adblock","$url is main frame, allow loading")
+//
+//                    // allow loading by returning null
+//                    return null
+//                }
+//
+//                // whitelisted
+//                if (provider.getEngine().isDomainWhitelisted(url, referrerChainArray)) {
+//                    Log.d("Adblock","$url domain is whitelisted, allow loading")
+//
+//                    // allow loading by returning null
+//                    return null
+//                }
+//
+//                if (provider.getEngine().isDocumentWhitelisted(url, referrerChainArray)) {
+//                    Log.d("Adblock","$url document is whitelisted, allow loading")
+//
+//                    // allow loading by returning null
+//                    return null
+//                }
+//
+//                // determine the content
+//                var contentType: FilterEngine.ContentType?
+//                if (isXmlHttpRequest) {
+//                    contentType = FilterEngine.ContentType.XMLHTTPREQUEST
+//                } else {
+//                    contentType = contentTypeDetector.detect(url)
+//                    if (contentType == null) {
+//                        contentType = FilterEngine.ContentType.OTHER
+//                    }
+//                }
+//
+//                // check if we should block
+//                if (provider.engine.matches(url, contentType, referrerChainArray)) {
+//                    Log.d("Adblock","Blocked loading $url")
+//
+//                    // if we should block, return empty response which results in 'errorLoading' callback
+//                    return WebResourceResponse("text/plain", "UTF-8", null)
+//                }
+//
+//                Log.d("Adblock","Allowed loading $url")
+//
+//                // continue by returning null
+//                return null
+//            }
+//        }
         @Suppress("ReturnCount", "NestedBlockDepth")
         override fun shouldInterceptRequest(view: WebView, request: WebResourceRequest): WebResourceResponse? {
             if (session?.webFontsEnabled == false && UrlMatcher.isWebFont(request.url)) {
                 return WebResourceResponse(null, null, null)
             }
-            session?.abBlockOn?.let{
-                //如果需要拦击
-                if (it){
-                    val url = request.url.toString()
-                    val isXmlHttpRequest =
-                        request.requestHeaders.containsKey(HEADER_REQUESTED_WITH) && HEADER_REQUESTED_WITH_XMLHTTPREQUEST == request.requestHeaders[HEADER_REQUESTED_WITH]
-
-                    val referrer = request.requestHeaders[HEADER_REFERRER]
-                    if (referrer != null) {
-                        Log.d("Adblock","Header referrer for $url is $referrer")
-                        if (url != referrer) {
-                            url2Referrer[url] = referrer
-                        } else {
-                            Log.d("Adblock","Header referrer value is the same as url, skipping url2Referrer.put()")
-                        }
-                    } else {
-                        Log.d("Adblock","No referrer header for $url")
-                    }
-                    // reconstruct frames hierarchy
-                    val referrers = ArrayList<String>()
-                    var parentUrl: String? = url
-                    while (parentUrl != null) {
-                        if (referrers.contains(parentUrl)) {
-                            Log.d("Adblock","Detected referrer loop, finished creating referrers list")
-                            break
-                        }
-                        referrers.add(parentUrl)
-                        parentUrl= url2Referrer[parentUrl]
-                    }
-                   val result= shouldInterceptRequest(
-                        view, url, request.isForMainFrame,
-                        isXmlHttpRequest, referrers.toTypedArray()
-                    )
-                   if(result!=null){
-                       return result
-                   }
-                }
-            }
+//            session?.abBlockOn?.let{
+//                //如果需要拦击
+//                if (it){
+//                    val url = request.url.toString()
+//                    val isXmlHttpRequest =
+//                        request.requestHeaders.containsKey(HEADER_REQUESTED_WITH) && HEADER_REQUESTED_WITH_XMLHTTPREQUEST == request.requestHeaders[HEADER_REQUESTED_WITH]
+//
+//                    val referrer = request.requestHeaders[HEADER_REFERRER]
+//                    if (referrer != null) {
+//                        Log.d("Adblock","Header referrer for $url is $referrer")
+//                        if (url != referrer) {
+//                            url2Referrer[url] = referrer
+//                        } else {
+//                            Log.d("Adblock","Header referrer value is the same as url, skipping url2Referrer.put()")
+//                        }
+//                    } else {
+//                        Log.d("Adblock","No referrer header for $url")
+//                    }
+//                    // reconstruct frames hierarchy
+//                    val referrers = ArrayList<String>()
+//                    var parentUrl: String? = url
+//                    while (parentUrl != null) {
+//                        if (referrers.contains(parentUrl)) {
+//                            Log.d("Adblock","Detected referrer loop, finished creating referrers list")
+//                            break
+//                        }
+//                        referrers.add(parentUrl)
+//                        parentUrl= url2Referrer[parentUrl]
+//                    }
+//                   val result= shouldInterceptRequest(
+//                        view, url, request.isForMainFrame,
+//                        isXmlHttpRequest, referrers.toTypedArray()
+//                    )
+//                   if(result!=null){
+//                       return result
+//                   }
+//                }
+//            }
             session?.trackingProtectionPolicy?.let {
                 val resourceUri = request.url
                 val scheme = resourceUri.scheme
