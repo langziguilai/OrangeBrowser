@@ -92,6 +92,10 @@ class ViewPagerIntegration(
 
     private fun updateTitle(layoutManager: LinearLayoutManager) {
         val index = layoutManager.findFirstCompletelyVisibleItemPosition()
+        if (data[index].screenNumber==Session.HOME_SCREEN){
+            binding.title.text=Session.HOME_TITLE
+            return
+        }
         if (index >= 0) {
             if (data[index].title.isNotBlank()) {
                 binding.title.text = data[index].title
@@ -102,6 +106,10 @@ class ViewPagerIntegration(
     }
 
     private fun updateTitle(index: Int) {
+        if (data[index].screenNumber==Session.HOME_SCREEN){
+            binding.title.text=Session.HOME_TITLE
+            return
+        }
         if (index >= 0) {
             if (data[index].title.isNotBlank()) {
                 binding.title.text = data[index].title

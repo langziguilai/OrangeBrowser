@@ -225,7 +225,7 @@ class SearchFragment : BaseFragment(), SearchBar, BackHandler {
             ).apply {
                 addSearchProvider(
                     getSearchEngine(),
-                    searchUseCases.defaultSearch,//点击后，新增一个Session
+                    searchUseCases.defaultSearch,//跳转页面
                     client
                 )
                 addSessionProvider(
@@ -235,11 +235,11 @@ class SearchFragment : BaseFragment(), SearchBar, BackHandler {
                 addHistoryProvider(
                     historyStorage,
                     sessionUseCases.loadUrl
-                )  //点击后，新增一个Session
+                )  //点击后，//跳转页面
                 addClipboardProvider(
                     requireContext(),
                     sessionUseCases.loadUrl
-                ) //点击后，新增一个Session
+                ) //点击后，//跳转页面
             }
         )
     }

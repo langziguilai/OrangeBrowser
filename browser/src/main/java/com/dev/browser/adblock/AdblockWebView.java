@@ -858,8 +858,8 @@ public class AdblockWebView extends WebView {
         try {
             if (injectJs == null) {
                 StringBuffer sb = new StringBuffer();
-                sb.append(readScriptFile("inject.js").replace(HIDE_TOKEN, readScriptFile("css.js")));
-                sb.append(readEmuScriptFile("elemhideemu.jst"));
+                sb.append(readScriptFile("adblock/inject.js").replace(HIDE_TOKEN, readScriptFile("adblock/css.js")));
+                sb.append(readEmuScriptFile("adblock/elemhideemu.jst"));
                 injectJs = sb.toString();
             }
         } catch (IOException e) {

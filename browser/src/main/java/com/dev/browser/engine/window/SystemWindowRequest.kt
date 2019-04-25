@@ -50,6 +50,11 @@ class SystemWindowRequest(
                     callback?.run()
                     return false
                 }
+
+                override fun shouldOverrideUrlLoading(view: WebView?, url: String?): Boolean {
+                    callback?.run()
+                    return false
+                }
             }
             it.webView.webViewClient=webViewClient
         }

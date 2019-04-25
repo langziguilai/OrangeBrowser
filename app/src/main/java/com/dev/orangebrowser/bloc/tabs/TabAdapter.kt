@@ -48,11 +48,16 @@ class TabAdapter(
         }else{
             Log.d("onBindViewHolder","session id: "+session.id+" holder.thumbnail not set")
         }
-        if (session.title.isNotBlank()) {
-            holder.title.text = session.title
-        } else if (session.url.isNotBlank()) {
-            holder.title.text = session.url
+        if (session.screenNumber==Session.HOME_SCREEN){
+            holder.title.text=Session.HOME_TITLE
+        }else{
+            if (session.title.isNotBlank()) {
+                holder.title.text = session.title
+            } else if (session.url.isNotBlank()) {
+                holder.title.text = session.url
+            }
         }
+
         holder.bottomBar.setBackgroundColor(activityViewModel.theme.value!!.colorPrimary)
         holder.container.setOnClickListener {
             onSelect(session)

@@ -4,6 +4,7 @@
 
 package com.dev.browser.engine
 
+//import org.adblockplus.libadblockplus.android.settings.AdblockHelper
 import android.annotation.TargetApi
 import android.content.Context
 import android.graphics.Bitmap
@@ -14,7 +15,6 @@ import android.os.Build
 import android.os.Handler
 import android.os.Message
 import android.util.AttributeSet
-import android.util.Log
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewConfiguration
@@ -26,7 +26,6 @@ import androidx.annotation.VisibleForTesting
 import androidx.annotation.VisibleForTesting.PRIVATE
 import com.dev.base.extension.capture
 import com.dev.browser.R
-import com.dev.browser.adblock.RegexContentTypeDetector
 import com.dev.browser.concept.EngineSession
 import com.dev.browser.concept.EngineSession.TrackingProtectionPolicy
 import com.dev.browser.concept.EngineView
@@ -41,10 +40,6 @@ import com.dev.browser.support.DownloadUtils
 import com.dev.browser.support.ErrorType
 import com.dev.view.MatchParentLayout
 import kotlinx.coroutines.runBlocking
-import org.adblockplus.libadblockplus.FilterEngine
-import org.adblockplus.libadblockplus.android.AdblockEngine
-import org.adblockplus.libadblockplus.android.AdblockEngineProvider
-//import org.adblockplus.libadblockplus.android.settings.AdblockHelper
 import java.util.*
 
 
@@ -198,6 +193,15 @@ class SystemEngineView @JvmOverloads constructor(
 
     @Suppress("ComplexMethod", "NestedBlockDepth")
     private fun createWebViewClient() = object : WebViewClient() {
+
+        override fun shouldOverrideUrlLoading(view: WebView?, request: WebResourceRequest?): Boolean {
+            session?.currentUrl = request?.url.toString()
+            session?.internalNotifyObservers {
+                onLoadingStateChange(true)
+                onLocationChange(request?.url.toString())
+            }
+            return super.shouldOverrideUrlLoading(view, request)
+        }
         override fun doUpdateVisitedHistory(view: WebView, url: String, isReload: Boolean) {
             // TODO private browsing not supported for SystemEngine
             // https://github.com/mozilla-mobile/android-components/issues/649

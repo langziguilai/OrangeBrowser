@@ -55,8 +55,10 @@ class SessionUseCases(
          */
         fun invoke(url: String, session: Session? = sessionManager.selectedSession) {
             val loadSession = session ?: onNoSession.invoke(url)
-            loadSession.url=url
-            loadSession.loading=true
+            loadSession.notifyObservers {
+                this.onLoadingStateChanged(loadSession,loading = true)
+                this.onUrlChanged(loadSession,url = url)
+            }
             sessionManager.getOrCreateEngineSession(loadSession).loadUrl(url)
         }
     }
