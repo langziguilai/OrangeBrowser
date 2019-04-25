@@ -65,8 +65,8 @@ class WebViewOnTouchListener(var listener: OnWebViewScrollDirectionListener,var 
 
     override fun onTouch(v: View, event: MotionEvent): Boolean {
         val action = event.actionMasked
-        //正在加载时，不允许滑动
-        if (!session.loading){
+//        //正在加载时，不允许滑动
+//        if (!session.loading){
             when (action) {
                 MotionEvent.ACTION_DOWN -> {
                     initialY = event.y
@@ -99,7 +99,7 @@ class WebViewOnTouchListener(var listener: OnWebViewScrollDirectionListener,var 
                 MotionEvent.ACTION_MOVE -> {
                     mLastY = event.y
                 }
-            }
+            //}
         }
 
         return false
