@@ -19,3 +19,14 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+# 保留所有的本地native方法不被混淆
+-keepclasseswithmembernames class * {
+    native <methods>;
+}
+# 使javascript的调用接口保留
+-keepattributes *Annotation*
+-keepattributes *JavascriptInterface*
+-keepclassmembers class com.dev.browser.adblock.AdblockWebView {
+   public String getElemhideSelectors();
+   public String getElemhideEmulationSelectors();
+}
