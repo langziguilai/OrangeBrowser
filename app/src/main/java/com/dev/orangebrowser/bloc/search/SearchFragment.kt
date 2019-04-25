@@ -97,13 +97,13 @@ class SearchFragment : BaseFragment(), SearchBar, BackHandler {
     }
 
     override fun initViewWithDataBinding(savedInstanceState: Bundle?) {
-
         //设置跳转到本页面的时候就弹出键盘，并且光标闪烁
         binding.searchText.isFocusable = true
         binding.searchText.isFocusableInTouchMode = true
         binding.searchText.requestFocus()
         val inputManager = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         inputManager.showSoftInput(binding.searchText, 0)
+
         sessionManager.findSessionById(originalSessionId)?.apply {
             if (this.url.isBlank()){
                 binding.searchText.updateIme(EditorInfo.IME_ACTION_DONE)
@@ -316,11 +316,16 @@ class SearchFragment : BaseFragment(), SearchBar, BackHandler {
         return true
     }
 
+    override fun onPause() {
+        super.onPause()
+        //再此处隐藏，不然，界面会跳动
+        binding.searchText.hideKeyboard()
+    }
     override fun onDestroy() {
         super.onDestroy()
         binding.searchText.updateIme(EditorInfo.IME_ACTION_GO)
-        binding.searchText.hideKeyboard()
     }
+
     companion object {
         val Tag = "SearchFragment"
         fun newInstance(sessionId: String) = SearchFragment().apply {

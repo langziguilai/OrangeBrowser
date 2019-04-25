@@ -36,8 +36,4 @@ open class AdaptUIWebView : AdblockWebView {
 //        DensityUtil.resetDensity(mApplicationContext!!)
 //    }
 
-    override fun setOverScrollMode(mode: Int) {
-        super.setOverScrollMode(mode)
-        //DensityUtil.resetDensity(mApplicationContext.getApplicationContext());
-    }
 }
