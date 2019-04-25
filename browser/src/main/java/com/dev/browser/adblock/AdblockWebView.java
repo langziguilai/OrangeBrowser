@@ -664,8 +664,17 @@ public class AdblockWebView extends WebView {
                 referrers.add(parentUrl);
             }
 
-            return shouldInterceptRequest(view, url, request.isForMainFrame(),
+            WebResourceResponse result= shouldInterceptRequest(view, url, request.isForMainFrame(),
                     isXmlHttpRequest, referrers.toArray(new String[referrers.size()]));
+
+            if (result!=null){
+                return result;
+            }
+            if (extWebViewClient != null) {
+               return extWebViewClient.shouldInterceptRequest(view, request);
+            } else {
+               return super.shouldInterceptRequest(view, request);
+            }
         }
     }
 
