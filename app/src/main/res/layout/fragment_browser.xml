@@ -152,6 +152,16 @@
                 android:paddingBottom="15dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
+        <ProgressBar
+                android:id="@+id/progress_for_fullscreen"
+                style="@android:style/Widget.ProgressBar.Horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="1.5dp"
+                android:max="100"
+                android:visibility="gone"
+                android:progressDrawable="@drawable/bg_progressbar_dark"
+                app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
         <!--顶部工具栏-->
         <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/top_bar"

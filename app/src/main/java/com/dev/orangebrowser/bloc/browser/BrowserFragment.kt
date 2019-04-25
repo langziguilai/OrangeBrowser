@@ -76,6 +76,7 @@ class BrowserFragment : BaseFragment(), BackHandler, UserInteractionHandler {
     private val webViewScrollHandlerIntegration = ViewBoundFeatureWrapper<WebViewScrollHandlerIntegration>()
     private val webViewLifeCycleIntegration = ViewBoundFeatureWrapper<WebViewLifeCycleIntegration>()
     private val styleIntegration = ViewBoundFeatureWrapper<StyleIntegration>()
+    private val fullScreenProgressIntegration = ViewBoundFeatureWrapper<FullScreenProgressIntegration>()
 
     private val backButtonHandler: List<ViewBoundFeatureWrapper<*>> = listOf(
 //        fullScreenFeature,
@@ -342,6 +343,11 @@ class BrowserFragment : BaseFragment(), BackHandler, UserInteractionHandler {
             view = binding.root
         )
         WebViewBlinkFixIntegration(binding=binding,fragment = this,session = session)
+        fullScreenProgressIntegration.set(
+            feature = FullScreenProgressIntegration(binding=binding,session = session),
+            owner = this,
+            view = binding.root
+        )
     }
 
     override fun initData(savedInstanceState: Bundle?) {
