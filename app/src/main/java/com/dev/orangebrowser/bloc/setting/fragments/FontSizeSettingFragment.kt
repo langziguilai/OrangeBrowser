@@ -10,38 +10,34 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.dev.base.BaseFragment
 import com.dev.base.support.BackHandler
-import com.dev.browser.search.SearchEngineManager
 import com.dev.orangebrowser.R
 import com.dev.orangebrowser.bloc.host.MainViewModel
 import com.dev.orangebrowser.bloc.setting.adapter.Adapter
 import com.dev.orangebrowser.bloc.setting.viewholder.*
 import com.dev.orangebrowser.bloc.setting.viewholder.base.Action
-import com.dev.orangebrowser.databinding.FragmentSearchEngineSettingBinding
+import com.dev.orangebrowser.databinding.FragmentFontSizeSettingBinding
 import com.dev.orangebrowser.extension.*
 import java.util.*
-import javax.inject.Inject
 
-class SearchEngineSettingFragment : BaseFragment(), BackHandler {
+class FontSizeSettingFragment : BaseFragment(), BackHandler {
 
 
     companion object {
-        const val Tag = "SearchEngineSettingFragment"
-        fun newInstance() = SearchEngineSettingFragment()
+        const val Tag = "FontSizeSettingFragment"
+        fun newInstance() = FontSizeSettingFragment()
     }
 
-    @Inject
-    lateinit var searchEngineManager: SearchEngineManager
     lateinit var activityViewModel: MainViewModel
-    lateinit var binding: FragmentSearchEngineSettingBinding
+    lateinit var binding: FragmentFontSizeSettingBinding
     override fun onBackPressed(): Boolean {
-        RouterActivity?.loadSettingFragment()
+        RouterActivity?.loadGeneralSettinglFragment()
         return true
 
     }
 
     //获取layoutResourceId
     override fun getLayoutResId(): Int {
-        return R.layout.fragment_search_engine_setting
+        return R.layout.fragment_font_size_setting
     }
 
     override fun useDataBinding(): Boolean {
@@ -55,7 +51,7 @@ class SearchEngineSettingFragment : BaseFragment(), BackHandler {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        binding = FragmentSearchEngineSettingBinding.bind(super.onCreateView(inflater, container, savedInstanceState))
+        binding = FragmentFontSizeSettingBinding.bind(super.onCreateView(inflater, container, savedInstanceState))
         return binding.root
     }
 
@@ -97,44 +93,41 @@ class SearchEngineSettingFragment : BaseFragment(), BackHandler {
         val index=dataList.indexOf(data)
         if (index>=0){
             data.value=true
+            setSpString(R.string.pref_setting_font_size_title,data.title)
             binding.recyclerView.adapter?.notifyItemChanged(index)
         }
     }
 
     //TODO:添加Action
     private fun getData(): List<Any> {
-        val engineSelected = getSpString(R.string.pref_setting_search_engine_id)
+        val fontSize = getSpString(R.string.pref_setting_font_size_title,getString(R.string.font_size_middle))
         val list = LinkedList<Any>()
         list.add(DividerItem(height = 24, background = getColor(R.color.color_F8F8F8)))
-        searchEngineManager.getSearchEngines(requireContext()).forEachIndexed { index, it ->
-            var value = false
-            if (engineSelected == it.identifier) {
-                value = true
+        list.add(TickItem(title = getString(R.string.font_size_super_small), action = object : Action<TickItem> {
+            override fun invoke(data: TickItem) {
+                onSelect(data)
             }
-
-            list.add(TickItem(title = it.name, action = object : Action<TickItem> {
-                override fun invoke(data: TickItem) {
-                    setSpString(R.string.pref_setting_search_engine_id, it.identifier)
-                    setSpString(R.string.pref_setting_search_engine_name, it.name)
-                    onSelect(data)
-                }
-            }, value = value))
-        }
-
-        list.add(DividerItem(height = 24, background = getColor(R.color.color_F8F8F8)))
-
-//TODO：开始自定义搜索引擎
-//        list.add(
-//            TileItem(
-//                title = getString(R.string.custom_search_engine),
-//                tip = "",
-//                icon = getString(R.string.ic_right),
-//                action = object : Action<TileItem> {
-//                    override fun invoke(data: TileItem) {
-//
-//                    }
-//                })
-//        )
+        }, value = fontSize==getString(R.string.font_size_super_small)))
+        list.add(TickItem(title = getString(R.string.font_size_small), action = object : Action<TickItem> {
+            override fun invoke(data: TickItem) {
+                onSelect(data)
+            }
+        }, value = fontSize==getString(R.string.font_size_small)))
+        list.add(TickItem(title = getString(R.string.font_size_middle), action = object : Action<TickItem> {
+            override fun invoke(data: TickItem) {
+                onSelect(data)
+            }
+        }, value = fontSize==getString(R.string.font_size_middle)))
+        list.add(TickItem(title = getString(R.string.font_size_large), action = object : Action<TickItem> {
+            override fun invoke(data: TickItem) {
+                onSelect(data)
+            }
+        }, value = fontSize==getString(R.string.font_size_large)))
+        list.add(TickItem(title = getString(R.string.font_size_super_large), action = object : Action<TickItem> {
+            override fun invoke(data: TickItem) {
+                onSelect(data)
+            }
+        }, value = fontSize==getString(R.string.font_size_super_large)))
         return list
     }
 }

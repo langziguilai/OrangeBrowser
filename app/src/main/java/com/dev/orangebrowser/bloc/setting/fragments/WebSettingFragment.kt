@@ -89,7 +89,7 @@ class WebSettingFragment : BaseFragment(), BackHandler {
                 icon = getString(R.string.ic_right),
                 action = object : Action<TileItem> {
                     override fun invoke(data: TileItem) {
-                        //TODO:
+                        RouterActivity?.loadUaSettingFragment()
                     }
                 })
         )
@@ -138,7 +138,7 @@ class WebSettingFragment : BaseFragment(), BackHandler {
                 icon = getString(R.string.ic_right),
                 action = object : Action<TileItem> {
                     override fun invoke(data: TileItem) {
-                        //TODO:
+                        RouterActivity?.loadOpenAppSettingFragment()
                     }
                 })
         )

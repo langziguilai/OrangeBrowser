@@ -340,6 +340,41 @@ class MainActivity : BaseActivity() {
         supportFragmentManager.beginTransaction().replace(R.id.container, DownloadSettingFragment.newInstance())
             .commit()
     }
+    //地址栏展示设置界面
+    fun loadAddressBarSettingFragment() {
+        supportFragmentManager.beginTransaction().replace(R.id.container, AddressBarSettingFragment.newInstance())
+            .commit()
+    }
+    //视野模式设置界面
+    fun loadVisionModeSettingFragment() {
+        supportFragmentManager.beginTransaction().replace(R.id.container, VisionModeSettingFragment.newInstance())
+            .commit()
+    }
+    //字体大小设置界面
+    fun loadFontSizeSettingFragment() {
+        supportFragmentManager.beginTransaction().replace(R.id.container, FontSizeSettingFragment.newInstance())
+            .commit()
+    }
+    //语言设置界面
+    fun loadLanguageSettingFragment() {
+        supportFragmentManager.beginTransaction().replace(R.id.container, LanguageSettingFragment.newInstance())
+            .commit()
+    }
+    //色彩风格设置界面
+    fun loadColorStyleSettingFragment() {
+        supportFragmentManager.beginTransaction().replace(R.id.container, ColorStyleSettingFragment.newInstance())
+            .commit()
+    }
+    //UA设置界面
+    fun loadUaSettingFragment() {
+        supportFragmentManager.beginTransaction().replace(R.id.container, UaSettingFragment.newInstance())
+            .commit()
+    }
+    //打开应用设置界面
+    fun loadOpenAppSettingFragment() {
+        supportFragmentManager.beginTransaction().replace(R.id.container, OpenAppSettingFragment.newInstance())
+            .commit()
+    }
     var quitSignal: Boolean = false
     //双击退出
     fun quit() {

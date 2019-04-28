@@ -90,7 +90,7 @@ class CacheSettingFragment : BaseFragment(), BackHandler {
         val list = LinkedList<Any>()
         list.add(DividerItem(height = 24, background = getColor(R.color.color_F8F8F8)))
 
-        list.add(CheckboxItem(title = getString(R.string.paeg_cache), action = object : Action<Boolean> {
+        list.add(CheckboxItem(title = getString(R.string.page_cache), action = object : Action<Boolean> {
             override fun invoke(data: Boolean) {
                 needClearPageCache = data
             }

@@ -131,23 +131,37 @@
     <string name="address_bar_show_item">地址栏显示</string>
     <string name="view_mode">视野模式</string>
     <string name="address_bar_show_title">显示标题</string>
-    <string name="auto_view_mode">自动视野</string>
+    <string name="auto_vision_mode">自动视野</string>
     <string name="fullscreen">全屏</string>
     <string name="record_search_history">搜索记录</string>
     <string name="show_clipboard_when_search">搜索时显示剪贴板</string>
     <string name="theme_and_style">显示与风格</string>
     <string name="color_style">色彩风格</string>
     <string name="colorful">彩色</string>
+    <string name="no_color">褪色</string>
+    <string name="color_pure_black">醇黑</string>
+    <string name="color_dye_ink">染墨</string>
+    <string name="color_art">艺术</string>
     <string name="immerse_browse_style">沉浸式浏览效果</string>
     <string name="add_shadow_to_white_status_bar">为白色状态栏加阴影</string>
     <string name="add_shadow_to_white_navigation_bar">为白色导航栏加阴影</string>
     <string name="language_and_font">语言与字体</string>
     <string name="font_size">字体大小</string>
+    <string name="font_size_super_small">特小号</string>
+    <string name="font_size_small">小号</string>
     <string name="font_size_middle">中号</string>
+    <string name="font_size_large">大号</string>
+    <string name="font_size_super_large">特大号</string>
     <string name="language">语言</string>
     <string name="language_follow_system">跟随系统</string>
+    <string name="language_chinese">中文(简体)</string>
+    <string name="language_english">English</string>
     <string name="ua_setting">UA设置</string>
     <string name="ua_android">Android</string>
+    <string name="ua_iphone">iPhone</string>
+    <string name="ua_iPad">iPad</string>
+    <string name="ua_pc">电脑</string>
+    <string name="ua_wap">wap</string>
     <string name="secure_and_privacy">安全与隐私</string>
     <string name="refuse_track">拒绝跟踪</string>
     <string name="hide_device_info">隐藏设备信息</string>
@@ -156,10 +170,12 @@
     <string name="intercept_alert">拦截弹出窗口</string>
     <string name="intercept_open_app">拦截打开外部应用</string>
     <string name="give_tip">选择提示</string>
+    <string name="not_intercept">不拦截</string>
+    <string name="intercept_all">拦截所有</string>
     <string name="keep_last_page">保存最后浏览的网页</string>
     <string name="super_cache">超级缓存</string>
     <string name="super_cache_tip">开启草鸡缓存后，网页将优先加载缓存内容，可能导致网页刷新不及时，请谨慎开启</string>
-    <string name="paeg_cache">网页缓存</string>
+    <string name="page_cache">网页缓存</string>
     <string name="form_cache">表单缓存</string>
     <string name="browser_history">浏览历史</string>
     <string name="cookies">Cookies</string>
@@ -195,5 +211,30 @@
     <string name="system_download_manager">系统下载器</string>
     <string name="download_path">下载位置</string>
     <string name="default_download_path">/Download/</string>
+    <string name="show_domain">显示域名</string>
+    <string name="show_title">显示标题</string>
+    <string name="show_address">显示网址</string>
+    <string name="normal_vision_mode">标准视野</string>
+    <string name="max_vision_mode">最大视野</string>
+    <string name="custom_ua">自定义UA</string>
+    <string name="user_agent_android">Mozilla/5.0 (Linux; Android 8.0; Pixel 2 Build/OPD3.170816.012) AppleWebKit/537.36
+        (KHTML, like Gecko) Chrome/74.0.3729.108 Mobile Safari/537.36
+    </string>
+    <string name="user_agent_iphone">Mozilla/5.0 (iPhone; CPU iPhone OS 11_0 like Mac OS X) AppleWebKit/604.1.38 (KHTML,
+        like Gecko) Version/11.0 Mobile/15A372 Safari/604.1
+    </string>
+    <string name="user_agent_iPad">Mozilla/5.0 (iPad; CPU OS 11_0 like Mac OS X) AppleWebKit/604.1.34 (KHTML, like
+        Gecko) Version/11.0 Mobile/15A5341f Safari/604.1
+    </string>
+    <string name="user_agent_pc">Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko)
+        Chrome/74.0.3729.108 Safari/537.36
+    </string>
+    <string name="user_agent_wap">Mozilla/5.0 (Windows; U; Windows NT 6.1; en-US; rv:1.9.2.28) Gecko/20120306
+        Nokia-WAP-Toolkit/2.0
+    </string>
+    <string name="choose_directory">选择文件夹</string>
+    <string name="rule_detail">规则详情</string>
+    <string name="custom_rule_detail">自定义规则详情</string>
+    <string name="choose_file">选择文件</string>
 
 </resources>

@@ -10,38 +10,34 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.dev.base.BaseFragment
 import com.dev.base.support.BackHandler
-import com.dev.browser.search.SearchEngineManager
 import com.dev.orangebrowser.R
 import com.dev.orangebrowser.bloc.host.MainViewModel
 import com.dev.orangebrowser.bloc.setting.adapter.Adapter
 import com.dev.orangebrowser.bloc.setting.viewholder.*
 import com.dev.orangebrowser.bloc.setting.viewholder.base.Action
-import com.dev.orangebrowser.databinding.FragmentSearchEngineSettingBinding
+import com.dev.orangebrowser.databinding.FragmentUaSettingBinding
 import com.dev.orangebrowser.extension.*
 import java.util.*
-import javax.inject.Inject
 
-class SearchEngineSettingFragment : BaseFragment(), BackHandler {
+class UaSettingFragment : BaseFragment(), BackHandler {
 
 
     companion object {
-        const val Tag = "SearchEngineSettingFragment"
-        fun newInstance() = SearchEngineSettingFragment()
+        const val Tag = "UaSettingFragment"
+        fun newInstance() = UaSettingFragment()
     }
 
-    @Inject
-    lateinit var searchEngineManager: SearchEngineManager
     lateinit var activityViewModel: MainViewModel
-    lateinit var binding: FragmentSearchEngineSettingBinding
+    lateinit var binding: FragmentUaSettingBinding
     override fun onBackPressed(): Boolean {
-        RouterActivity?.loadSettingFragment()
+        RouterActivity?.loadWebSettinglFragment()
         return true
 
     }
 
     //获取layoutResourceId
     override fun getLayoutResId(): Int {
-        return R.layout.fragment_search_engine_setting
+        return R.layout.fragment_ua_setting
     }
 
     override fun useDataBinding(): Boolean {
@@ -55,7 +51,7 @@ class SearchEngineSettingFragment : BaseFragment(), BackHandler {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        binding = FragmentSearchEngineSettingBinding.bind(super.onCreateView(inflater, container, savedInstanceState))
+        binding = FragmentUaSettingBinding.bind(super.onCreateView(inflater, container, savedInstanceState))
         return binding.root
     }
 
@@ -97,44 +93,59 @@ class SearchEngineSettingFragment : BaseFragment(), BackHandler {
         val index=dataList.indexOf(data)
         if (index>=0){
             data.value=true
+            save(data.title)
             binding.recyclerView.adapter?.notifyItemChanged(index)
         }
     }
-
-    //TODO:添加Action
-    private fun getData(): List<Any> {
-        val engineSelected = getSpString(R.string.pref_setting_search_engine_id)
-        val list = LinkedList<Any>()
-        list.add(DividerItem(height = 24, background = getColor(R.color.color_F8F8F8)))
-        searchEngineManager.getSearchEngines(requireContext()).forEachIndexed { index, it ->
-            var value = false
-            if (engineSelected == it.identifier) {
-                value = true
-            }
-
-            list.add(TickItem(title = it.name, action = object : Action<TickItem> {
-                override fun invoke(data: TickItem) {
-                    setSpString(R.string.pref_setting_search_engine_id, it.identifier)
-                    setSpString(R.string.pref_setting_search_engine_name, it.name)
-                    onSelect(data)
-                }
-            }, value = value))
+    private fun save(title:String){
+        setSpString(R.string.pref_setting_ua_title,title)
+        if (title==getString(R.string.ua_android)){
+            setSpString(R.string.pref_setting_ua,getString(R.string.user_agent_android))
+        }
+        if (title==getString(R.string.ua_iphone)){
+            setSpString(R.string.pref_setting_ua,getString(R.string.user_agent_iphone))
+        }
+        if (title==getString(R.string.ua_iPad)){
+            setSpString(R.string.pref_setting_ua,getString(R.string.user_agent_iPad))
         }
 
-        list.add(DividerItem(height = 24, background = getColor(R.color.color_F8F8F8)))
+        if (title==getString(R.string.ua_wap)){
+            setSpString(R.string.pref_setting_ua,getString(R.string.user_agent_wap))
+        }
+        if (title==getString(R.string.ua_pc)){
+            setSpString(R.string.pref_setting_ua,getString(R.string.user_agent_pc))
+        }
+    }
 
-//TODO：开始自定义搜索引擎
-//        list.add(
-//            TileItem(
-//                title = getString(R.string.custom_search_engine),
-//                tip = "",
-//                icon = getString(R.string.ic_right),
-//                action = object : Action<TileItem> {
-//                    override fun invoke(data: TileItem) {
-//
-//                    }
-//                })
-//        )
+    private fun getData(): List<Any> {
+        val userAgent = getSpString(R.string.pref_setting_ua_title,getString(R.string.ua_android))
+        val list = LinkedList<Any>()
+        list.add(DividerItem(height = 24, background = getColor(R.color.color_F8F8F8)))
+        list.add(TickItem(title = getString(R.string.ua_android), action = object : Action<TickItem> {
+            override fun invoke(data: TickItem) {
+                onSelect(data)
+            }
+        }, value = userAgent==getString(R.string.ua_android)))
+        list.add(TickItem(title = getString(R.string.ua_iphone), action = object : Action<TickItem> {
+            override fun invoke(data: TickItem) {
+                onSelect(data)
+            }
+        }, value = userAgent==getString(R.string.ua_iphone)))
+        list.add(TickItem(title = getString(R.string.ua_iPad), action = object : Action<TickItem> {
+            override fun invoke(data: TickItem) {
+                onSelect(data)
+            }
+        }, value = userAgent==getString(R.string.ua_iPad)))
+        list.add(TickItem(title = getString(R.string.ua_pc), action = object : Action<TickItem> {
+            override fun invoke(data: TickItem) {
+                onSelect(data)
+            }
+        }, value = userAgent==getString(R.string.ua_pc)))
+        list.add(TickItem(title = getString(R.string.ua_wap), action = object : Action<TickItem> {
+            override fun invoke(data: TickItem) {
+                onSelect(data)
+            }
+        }, value = userAgent==getString(R.string.ua_wap)))
         return list
     }
 }

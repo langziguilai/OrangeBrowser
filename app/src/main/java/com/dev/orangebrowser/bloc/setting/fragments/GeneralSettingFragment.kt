@@ -20,6 +20,7 @@ import com.dev.orangebrowser.bloc.setting.viewholder.base.Action
 import com.dev.orangebrowser.databinding.FragmentGeneralSettingBinding
 import com.dev.orangebrowser.databinding.FragmentMainSettingBinding
 import com.dev.orangebrowser.extension.*
+import okhttp3.Route
 import java.util.*
 import javax.inject.Inject
 
@@ -97,11 +98,11 @@ class GeneralSettingFragment : BaseFragment(), BackHandler {
                 icon = getString(R.string.ic_right),
                 action = object : Action<TileItem> {
                     override fun invoke(data: TileItem) {
-                        //TODO:
+                        RouterActivity?.loadAddressBarSettingFragment()
                     }
                 })
         )
-        val viewMode = getString(R.string.auto_view_mode)
+        val viewMode = getString(R.string.normal_vision_mode)
         list.add(
             TileItem(
                 title = getString(R.string.view_mode),
@@ -109,7 +110,7 @@ class GeneralSettingFragment : BaseFragment(), BackHandler {
                 icon = getString(R.string.ic_right),
                 action = object : Action<TileItem> {
                     override fun invoke(data: TileItem) {
-                        //TODO
+                        RouterActivity?.loadVisionModeSettingFragment()
                     }
                 })
         )
@@ -143,7 +144,7 @@ class GeneralSettingFragment : BaseFragment(), BackHandler {
                 icon = getString(R.string.ic_right),
                 action = object : Action<TileItem> {
                     override fun invoke(data: TileItem) {
-                        //TODO
+                       RouterActivity?.loadColorStyleSettingFragment()
                     }
                 })
         )
@@ -189,7 +190,7 @@ class GeneralSettingFragment : BaseFragment(), BackHandler {
                 icon = getString(R.string.ic_right),
                 action = object : Action<TileItem> {
                     override fun invoke(data: TileItem) {
-                        //TODO
+                       RouterActivity?.loadFontSizeSettingFragment()
                     }
                 })
         )
@@ -200,7 +201,7 @@ class GeneralSettingFragment : BaseFragment(), BackHandler {
                 icon = getString(R.string.ic_right),
                 action = object : Action<TileItem> {
                     override fun invoke(data: TileItem) {
-                        //TODO
+                        RouterActivity?.loadLanguageSettingFragment()
                     }
                 })
         )

@@ -6,7 +6,7 @@
                                                    android:layout_height="48dp"
                                                    android:clickable="true"
                                                    android:focusable="true"
-                                                   android:background="@color/colorWhite">
+                                                   android:background="@drawable/ripple_white_bg">
     <TextView android:textSize="16sp" android:textColor="#6C6C6C" tools:text="云同步"
               app:layout_constraintTop_toTopOf="parent"
               app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintStart_toStartOf="parent"

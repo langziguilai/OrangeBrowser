@@ -12,7 +12,6 @@
     <string name="pref_setting_address_bar_show_title">pref_setting_address_bar_show_title</string>
     <string name="pref_setting_address_bar_show_id">pref_setting_address_bar_show_id</string>
     <string name="pref_setting_view_mode_title">pref_setting_view_mode_title</string>
-    <string name="pref_setting_view_mode_id">pref_setting_view_mode_id</string>
     <string name="pref_setting_full_screen">pref_setting_full_screen</string>
     <string name="pref_setting_record_search_history">pref_setting_record_search_history</string>
     <string name="pref_setting_show_clipboard_when_search">pref_setting_show_clipboard_when_search</string>
@@ -21,18 +20,15 @@
     <string name="pref_setting_add_shadow_to_white_status_bar">pref_setting_add_shadow_to_white_status_bar</string>
     <string name="pref_setting_add_shadow_to_white_navigation_bar">pref_setting_add_shadow_to_white_navigation_bar</string>
     <string name="pref_setting_font_size_title">pref_setting_font_size_title</string>
-    <string name="pref_setting_font_size_id">pref_setting_font_size_id</string>
-    <string name="pref_setting_language_id">pref_setting_language_id</string>
     <string name="pref_setting_language_title">pref_setting_language_title</string>
     <string name="pref_setting_ua_title">pref_setting_ua_title</string>
-    <string name="pref_setting_ua_id">pref_setting_ua_id</string>
+    <string name="pref_setting_ua">pref_setting_ua</string>
     <string name="pref_setting_refuse_track">pref_setting_refuse_track</string>
     <string name="pref_setting_need_hide_device_info">pref_setting_need_hide_device_info</string>
     <string name="pref_setting_need_show_https_icon">pref_setting_need_show_https_icon</string>
     <string name="pref_setting_need_show_no_secure_https_icon">pref_setting_need_show_no_secure_https_icon</string>
     <string name="pref_setting_need_intercept_alert">pref_setting_need_intercept_alert</string>
     <string name="pref_setting_need_intercept_open_app_title">pref_setting_need_intercept_open_app_title</string>
-    <string name="pref_setting_need_intercept_open_app_id">pref_setting_need_intercept_open_app_id</string>
     <string name="pref_setting_need_keep_last_page">pref_setting_need_keep_last_page</string>
     <string name="pref_setting_need_use_super_cache">pref_setting_need_use_super_cache</string>
     <string name="pref_setting_enable_lib_scan">pref_setting_enable_lib_scan</string>
@@ -61,4 +57,5 @@
     <string name="pref_setting_enable_auto_install_download_app">pref_setting_enable_auto_install_download_app</string>
     <string name="pref_setting_download_manager_title">pref_setting_download_manager_title</string>
     <string name="pref_setting_download_path">pref_setting_download_path</string>
+    <string name="pref_setting_show_address_bar">pref_setting_show_address_bar</string>
 </resources>

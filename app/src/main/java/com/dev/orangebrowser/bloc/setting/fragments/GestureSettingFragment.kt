@@ -90,7 +90,7 @@ class GestureSettingFragment : BaseFragment(), BackHandler {
                 setSpBool(R.string.pref_setting_enable_page_pull_to_fresh, data)
             }
         }, value = getSpBool(R.string.pref_setting_enable_page_pull_to_fresh, true)))
-        val add = list.add(SwitchItem(title = getString(R.string.edge_forward_back), action = object : Action<Boolean> {
+        list.add(SwitchItem(title = getString(R.string.edge_forward_back), action = object : Action<Boolean> {
             override fun invoke(data: Boolean) {
                 setSpBool(R.string.pref_setting_enable_edge_forward_back, data)
             }
@@ -116,7 +116,7 @@ class GestureSettingFragment : BaseFragment(), BackHandler {
             TileItem(
                 title = getString(R.string.forward_button_long_press_shortcut),
                 tip = "",
-                icon = getString(R.string.pref_setting_forward_button_shortcut_title),
+                icon = getString(R.string.ic_right),
                 action = object : Action<TileItem> {
                     override fun invoke(data: TileItem) {
                         //TODO
