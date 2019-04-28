@@ -135,7 +135,9 @@ class BrowserFragment : BaseFragment(), BackHandler, UserInteractionHandler {
         sessionManager.findSessionById(sessionId)?.apply {
             this.screenNumber = BROWSER_SCREEN_NUM
         }
-        val session = sessionManager.findSessionById(sessionId) ?: sessionManager.selectedSessionOrThrow
+        var session = sessionManager.findSessionById(sessionId) ?: sessionManager.selectedSessionOrThrow
+        //选中session
+        sessionManager.select(session)
         val bottomPanelHelper = BottomPanelHelper(binding, this)
         val topPanelHelper = TopPanelHelper(binding, this, bottomPanelHelper)
         val webViewVisionHelper = WebViewVisionHelper(binding)

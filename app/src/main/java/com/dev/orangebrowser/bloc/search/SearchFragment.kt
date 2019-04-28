@@ -37,6 +37,7 @@ import com.dev.orangebrowser.bloc.host.MainViewModel
 import com.dev.orangebrowser.databinding.FragmentSearchBinding
 import com.dev.orangebrowser.extension.RouterActivity
 import com.dev.orangebrowser.extension.appComponent
+import com.dev.orangebrowser.extension.getSpString
 import javax.inject.Inject
 
 class SearchFragment : BaseFragment(), SearchBar, BackHandler {
@@ -246,7 +247,8 @@ class SearchFragment : BaseFragment(), SearchBar, BackHandler {
 
     //获取搜索引擎
     private fun getSearchEngine(): SearchEngine {
-        return searchEngineManager.getDefaultSearchEngine(requireContext())
+        val searchEngine=searchEngineManager.getDefaultSearchEngine(requireContext(),getSpString(R.string.pref_setting_search_engine_name,""))
+        return searchEngine
     }
 
     private fun updateViewByInput(input: String) {

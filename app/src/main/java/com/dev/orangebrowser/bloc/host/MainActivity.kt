@@ -24,6 +24,7 @@ import com.dev.orangebrowser.bloc.resource.ResourceFragment
 import com.dev.orangebrowser.bloc.scan.ScanFragment
 import com.dev.orangebrowser.bloc.search.SearchFragment
 import com.dev.orangebrowser.bloc.setting.SettingFragment
+import com.dev.orangebrowser.bloc.setting.fragments.*
 import com.dev.orangebrowser.bloc.sourcecode.SourceCodeFragment
 import com.dev.orangebrowser.bloc.tabs.TabFragment
 import com.dev.orangebrowser.bloc.theme.ThemeFragment
@@ -227,8 +228,7 @@ class MainActivity : BaseActivity() {
 
     //
     fun loadNewsFragment() {
-        supportFragmentManager.beginTransaction().replace(R.id.container, NewsFragment.newInstance())
-            .addToBackStack(null).commit()
+        supportFragmentManager.beginTransaction().replace(R.id.container, NewsFragment.newInstance()).commit()
     }
 
     //加载搜索页面
@@ -295,7 +295,31 @@ class MainActivity : BaseActivity() {
         supportFragmentManager.beginTransaction().replace(R.id.container, ResourceFragment.newInstance(sessionId))
             .commit()
     }
-
+    //Account界面
+    fun loadAccountFragment() {
+        supportFragmentManager.beginTransaction().replace(R.id.container, AccountFragment.newInstance())
+            .commit()
+    }
+    //通用设置界面
+    fun loadGeneralSettinglFragment() {
+        supportFragmentManager.beginTransaction().replace(R.id.container, GeneralSettingFragment.newInstance())
+            .commit()
+    }
+    //网页设置界面
+    fun loadWebSettinglFragment() {
+        supportFragmentManager.beginTransaction().replace(R.id.container, WebSettingFragment.newInstance())
+            .commit()
+    }
+    //网页设置界面
+    fun loadCacheSettinglFragment() {
+        supportFragmentManager.beginTransaction().replace(R.id.container, CacheSettingFragment.newInstance())
+            .commit()
+    }
+    //搜索引擎设置界面
+    fun loadSearchEngineSettingFragment() {
+        supportFragmentManager.beginTransaction().replace(R.id.container, SearchEngineSettingFragment.newInstance())
+            .commit()
+    }
     var quitSignal: Boolean = false
     //双击退出
     fun quit() {

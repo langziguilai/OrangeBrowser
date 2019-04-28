@@ -48,7 +48,7 @@ class FindInPageIntegration(
     }
 
     companion object {
-        // This is a workaround to let the menu item find this integration and active "Find in Page" mode. That's a bit
+        // This is a workaround to let the menu parentView find this integration and active "Find in Page" mode. That's a bit
         // ridiculous and there's no need that we create the toolbar menu items at app start time. Instead the
         // ToolbarIntegration should create them and get the FindInPageIntegration injected as a dependency if the
         // menu items need them.

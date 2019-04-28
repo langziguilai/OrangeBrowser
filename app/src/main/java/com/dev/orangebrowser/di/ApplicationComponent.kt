@@ -16,6 +16,7 @@ import com.dev.orangebrowser.bloc.resource.ResourceFragment
 import com.dev.orangebrowser.bloc.scan.ScanFragment
 import com.dev.orangebrowser.bloc.search.SearchFragment
 import com.dev.orangebrowser.bloc.setting.SettingFragment
+import com.dev.orangebrowser.bloc.setting.fragments.*
 import com.dev.orangebrowser.bloc.sourcecode.SourceCodeFragment
 import com.dev.orangebrowser.bloc.tabs.TabFragment
 import com.dev.orangebrowser.bloc.theme.ThemeFragment
@@ -46,4 +47,9 @@ interface ApplicationComponent {
     fun inject(imageModeModeFragment: ImageModeModeFragment)
     fun inject(sourceCodeFragment: SourceCodeFragment)
     fun inject(resourceFragment: ResourceFragment)
+    fun inject(accountFragment: AccountFragment)
+    fun inject(generalFragment: GeneralSettingFragment)
+    fun inject(webSettingFragment: WebSettingFragment)
+    fun inject(cacheSettingFragment: CacheSettingFragment)
+    fun inject(searchEngineSettingFragment: SearchEngineSettingFragment)
 }

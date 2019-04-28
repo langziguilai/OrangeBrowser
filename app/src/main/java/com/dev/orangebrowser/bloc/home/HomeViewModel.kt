@@ -10,10 +10,10 @@ class HomeViewModel @Inject constructor(var context: Context) : CoroutineViewMod
 //    fun loadCategoryList()=launch(Dispatchers.IO){
 //        try {
 //            val inputStream=context.assets.open("site_category.json")
-//            val data=
+//            val dataList=
 //                Gson().fromJson<List<SiteCategory>>(InputStreamReader(inputStream), object : TypeToken<List<SiteCategory>>(){}.type)
 //            launch (Dispatchers.Main ){
-//                categoryList.setValue(data)
+//                categoryList.setValue(dataList)
 //            }
 //        }catch (e: IOException){
 //            launch (Dispatchers.Main ){

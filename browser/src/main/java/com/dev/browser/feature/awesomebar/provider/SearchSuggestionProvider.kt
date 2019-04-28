@@ -97,7 +97,7 @@ class SearchSuggestionProvider(
                 },
                 score = Int.MAX_VALUE - index,
                 onSuggestionClicked = {
-                    searchUseCase.invoke(item)
+                    searchUseCase.invoke(item,searchEngine)
                 }
             ))
         }
@@ -127,7 +127,7 @@ class SearchSuggestionProvider(
                 searchEngine.icon
             },
             onChipClicked = { chip ->
-                searchUseCase.invoke(chip.title)
+                searchUseCase.invoke(chip.title,searchEngine)
             }
         ))
     }

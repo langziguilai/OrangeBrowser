@@ -7,7 +7,7 @@ import com.dev.browser.adblock.AdblockWebView
 import com.dev.util.DensityUtil
 
 //使用application的context，防止内存泄漏
-open class AdaptUIWebView : AdblockWebView {
+open class AdaptUIWebView : WebView {
     private var mApplicationContext: Context? = null
 
     constructor(context: Context) : super(context) {

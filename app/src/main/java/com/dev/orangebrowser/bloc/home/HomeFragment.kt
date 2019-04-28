@@ -33,7 +33,7 @@ class HomeFragment : BaseLazyFragment(), BackHandler {
     lateinit var sessionManager: SessionManager
     @Inject
     lateinit var tabsUserCase:TabsUseCases
-    //data
+    //dataList
     lateinit var viewModel: HomeViewModel
     lateinit var activityViewModel:MainViewModel
     @State
@@ -74,9 +74,13 @@ class HomeFragment : BaseLazyFragment(), BackHandler {
         if (session==null){
             tabsUserCase.addTabWithoutUrl.invoke(selectTab = true)
             sessionId=sessionManager.selectedSession!!.id
-            return
+        }else{
+            //选中session
+            sessionManager.select(session)
+            //更新
+            session.screenNumber=Session.HOME_SCREEN
         }
-        session.screenNumber=Session.HOME_SCREEN
+
     }
     //获取layoutResourceId
     override fun getLayoutResId(): Int {

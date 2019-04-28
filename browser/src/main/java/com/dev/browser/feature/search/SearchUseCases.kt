@@ -60,10 +60,11 @@ class SearchUseCases(
             } ?: searchEngineManager.getDefaultSearchEngine(context).buildSearchUrl(searchTerms)
 
             val searchSession = session ?: onNoSession.invoke(searchUrl)
-            searchSession.notifyObservers {
-                this.onLoadingStateChanged(searchSession,loading = true)
-                this.onUrlChanged(searchSession,url = searchUrl)
-            }
+            searchSession.url=searchUrl
+            searchSession.title=""
+            searchSession.securityInfo= Session.SecurityInfo(secure = false)
+            searchSession.loading=true
+            searchSession.progress=0
             searchSession.searchTerms = searchTerms
 
             sessionManager.getOrCreateEngineSession(searchSession).loadUrl(searchUrl)
