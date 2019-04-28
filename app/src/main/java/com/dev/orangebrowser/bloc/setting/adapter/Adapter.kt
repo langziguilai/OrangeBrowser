@@ -19,6 +19,7 @@ class Adapter<T:Any>(private var dataList: List<T>) : RecyclerView.Adapter<BaseV
         addHelper(TileViewHolderHelper())
         addHelper(CheckboxViewHolderHelper())
         addHelper(TickViewHolderHelper())
+        addHelper(AdblockStatusViewHolderHelper())
     }
 
 

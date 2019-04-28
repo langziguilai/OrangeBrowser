@@ -169,5 +169,31 @@
     <string name="start_clean">开始清理</string>
     <string name="search_engine_baidu">百度</string>
     <string name="custom_search_engine">自定义搜索</string>
+    <string name="sky_net_tip">天网恢恢，疏而不漏。对于超多广告的野生网站，开启天网将进入强力广告过滤模式。可能造成误伤，如非必要请勿开启。</string>
+    <string name="import_bookmarks">导入书签</string>
+    <string name="auto_video_detect">自动嗅探视频</string>
+    <string name="site_recommend">资源推荐</string>
+    <string name="site_recommend_tip">为您推荐精彩网站和内容</string>
+    <string name="double_click_blank_to_flip">双击网页空白处翻页</string>
+    <string name="page_pull_to_fresh">网页边缘下拉刷新</string>
+    <string name="edge_forward_back">边缘滑动前进后退</string>
+    <string name="control_bar">控制栏</string>
+    <string name="show_page_count">显示窗口数量</string>
+    <string name="forward_button_long_press_shortcut">前进按钮快捷菜单</string>
+    <string name="forward_button_long_press_tip">你也可以长按前进按钮来选择快捷菜单</string>
+    <string name="ad_block_status">已拦截页面广告0条</string>
+    <string name="show_tip_when_block_ad">拦截时显示提示</string>
+    <string name="default_ad_block_rule">默认规则</string>
+    <string name="magic_browser_rules">Magic Browser Rules</string>
+    <string name="ab_block_status">已拦截?条</string>
+    <string name="my_ad_block_rules">我的规则</string>
+    <string name="white_list_sites">白名单网站</string>
+    <string name="add_white_list_sites_you_not_block">添加你不希望拦截的网站的域名</string>
+    <string name="help">帮助</string>
+    <string name="auto_install_download_app">自动安装下载应用</string>
+    <string name="download_manager">下载器</string>
+    <string name="system_download_manager">系统下载器</string>
+    <string name="download_path">下载位置</string>
+    <string name="default_download_path">/Download/</string>
 
 </resources>

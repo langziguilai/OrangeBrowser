@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                                                   android:layout_width="match_parent"
+                                                   android:layout_height="225dp"
+                                                   android:clickable="true"
+                                                   android:focusable="true"
+                                                   xmlns:app="http://schemas.android.com/apk/res-auto"
+                                                   xmlns:tools="http://schemas.android.com/tools">
+    <ImageView android:id="@+id/cover"
+               android:src="@drawable/ic_radar"
+    app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+               android:layout_marginTop="20dp"
+               android:layout_width="150dp"
+               android:layout_height="150dp"/>
+    <TextView android:textSize="22sp" android:textColor="@color/colorWhite" tools:text="20条" app:layout_constraintTop_toTopOf="@+id/cover"
+              app:layout_constraintBottom_toBottomOf="@+id/cover" app:layout_constraintStart_toStartOf="@+id/cover" app:layout_constraintEnd_toEndOf="@+id/cover"
+              android:id="@+id/ad_block_count" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+    <TextView app:layout_constraintEnd_toStartOf="@id/status" android:textSize="14sp"
+              android:textColor="@color/color_6C6C6C" tools:text="已拦截页面广告20条"
+              app:layout_constraintBottom_toBottomOf="parent"
+              app:layout_constraintStart_toStartOf="parent"
+              android:gravity="center"
+              app:layout_constraintEnd_toEndOf="parent"
+              android:id="@+id/status" android:layout_width="match_parent"
+              android:layout_height="50dp"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

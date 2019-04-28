@@ -115,19 +115,19 @@ class SettingFragment : BaseFragment(),BackHandler {
         }
         list.add(TileItem(title=getString(R.string.ad_block),tip=adBlockTip,icon = getString(R.string.ic_right),action = object:Action<TileItem>{
             override fun invoke(data: TileItem) {
-
+                       RouterActivity?.loadAdBlockSettinglFragment()
             }
         }))
         //
         list.add(DividerItem(height=24,background =getColor(R.color.color_F8F8F8)))
         list.add(TileItem(title=getString(R.string.library),tip=getString(R.string.custom_config),icon = getString(R.string.ic_right),action = object:Action<TileItem>{
             override fun invoke(data: TileItem) {
-
+                   RouterActivity?.loadLibrarySettinglFragment()
             }
         }))
         list.add(TileItem(title=getString(R.string.action_and_gesture),tip="",icon = getString(R.string.ic_right),action = object:Action<TileItem>{
             override fun invoke(data: TileItem) {
-
+                  RouterActivity?.loadGestureSettinglFragment()
             }
         }))
         //
@@ -143,33 +143,29 @@ class SettingFragment : BaseFragment(),BackHandler {
                  RouterActivity?.loadSearchEngineSettingFragment()
             }
         }))
-        list.add(DividerItem(height=24,background =getColor(R.color.color_F8F8F8)))
+
         list.add(TileItem(title=getString(R.string.download_setting),tip="",icon = getString(R.string.ic_right),action = object:Action<TileItem>{
             override fun invoke(data: TileItem) {
-
+                RouterActivity?.loadDownloadSettingFragment()
             }
         }))
+        list.add(DividerItem(height=24,background =getColor(R.color.color_F8F8F8)))
         var author: String
         getSpString(R.string.pref_setting_software_author,"").apply {
             author=this
         }
-        list.add(TileItem(title=getString(R.string.support_author),tip=author,icon = getString(R.string.ic_right),action = object:Action<TileItem>{
-            override fun invoke(data: TileItem) {
-
-            }
-        }))
         var version: String
         getSpString(R.string.pref_setting_software_version,"").apply {
             version=this
         }
         list.add(TileItem(title=getString(R.string.check_update),tip=version,icon = getString(R.string.ic_right),action = object:Action<TileItem>{
             override fun invoke(data: TileItem) {
-
+                  //TODO
             }
         }))
         list.add(TileItem(title=getString(R.string.about_us),tip="",icon = getString(R.string.ic_right),action = object:Action<TileItem>{
             override fun invoke(data: TileItem) {
-
+                     //TODO
             }
         }))
         return list

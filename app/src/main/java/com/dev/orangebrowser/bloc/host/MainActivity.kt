@@ -310,14 +310,34 @@ class MainActivity : BaseActivity() {
         supportFragmentManager.beginTransaction().replace(R.id.container, WebSettingFragment.newInstance())
             .commit()
     }
-    //网页设置界面
+    //缓存设置界面
     fun loadCacheSettinglFragment() {
         supportFragmentManager.beginTransaction().replace(R.id.container, CacheSettingFragment.newInstance())
+            .commit()
+    }
+    //广告拦截设置界面
+    fun loadAdBlockSettinglFragment() {
+        supportFragmentManager.beginTransaction().replace(R.id.container, AdBlockSettingFragment.newInstance())
+            .commit()
+    }
+    //实验室功能设置界面
+    fun loadLibrarySettinglFragment() {
+        supportFragmentManager.beginTransaction().replace(R.id.container, LibrarySettingFragment.newInstance())
+            .commit()
+    }
+    //手势设置界面
+    fun loadGestureSettinglFragment() {
+        supportFragmentManager.beginTransaction().replace(R.id.container, GestureSettingFragment.newInstance())
             .commit()
     }
     //搜索引擎设置界面
     fun loadSearchEngineSettingFragment() {
         supportFragmentManager.beginTransaction().replace(R.id.container, SearchEngineSettingFragment.newInstance())
+            .commit()
+    }
+    //搜索引擎设置界面
+    fun loadDownloadSettingFragment() {
+        supportFragmentManager.beginTransaction().replace(R.id.container, DownloadSettingFragment.newInstance())
             .commit()
     }
     var quitSignal: Boolean = false

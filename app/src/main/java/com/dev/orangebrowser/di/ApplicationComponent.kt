@@ -52,4 +52,8 @@ interface ApplicationComponent {
     fun inject(webSettingFragment: WebSettingFragment)
     fun inject(cacheSettingFragment: CacheSettingFragment)
     fun inject(searchEngineSettingFragment: SearchEngineSettingFragment)
+    fun inject(librarySettingFragment: LibrarySettingFragment)
+    fun inject(gestureSettingFragment: GestureSettingFragment)
+    fun inject(adBlockSettingFragment: AdBlockSettingFragment)
+    fun inject(downloadSettingFragment: DownloadSettingFragment)
 }
