@@ -12,6 +12,7 @@ import com.dev.browser.session.Session
 import com.dev.orangebrowser.R
 import com.dev.orangebrowser.bloc.browser.BrowserFragment
 import com.dev.orangebrowser.bloc.browser.integration.helper.BottomPanelHelper
+import com.dev.orangebrowser.bloc.browser.integration.helper.redirect
 import com.dev.orangebrowser.data.model.ActionItem
 import com.dev.orangebrowser.databinding.FragmentBrowserBinding
 import com.dev.orangebrowser.extension.RouterActivity
@@ -179,20 +180,26 @@ class BottomPanelMenuIntegration(
             //发现
             R.string.ic_found -> {
                 bottomPanelHelper.toggleBottomPanel(Runnable {
-                    fragment.RouterActivity?.loadFoundFragment()
+                    redirect(binding=binding,session = session,runnable = Runnable {
+                        fragment.RouterActivity?.loadFoundFragment()
+                    })
                 })
             }
             //历史
             R.string.ic_history -> {
                 bottomPanelHelper.toggleBottomPanel(Runnable {
-                    fragment.RouterActivity?.loadHistoryFragment()
+                    redirect(binding=binding,session = session,runnable = Runnable {
+                        fragment.RouterActivity?.loadHistoryFragment()
+                    })
                 })
 
             }
             //书签
             R.string.ic_bookmark -> {
                 bottomPanelHelper.toggleBottomPanel(Runnable {
-                    fragment.RouterActivity?.loadBookMarkFragment()
+                    redirect(binding=binding,session = session,runnable = Runnable {
+                        fragment.RouterActivity?.loadBookMarkFragment()
+                    })
                 })
 
             }
@@ -204,21 +211,27 @@ class BottomPanelMenuIntegration(
             //主题
             R.string.ic_theme -> {
                 bottomPanelHelper.toggleBottomPanel(Runnable {
-                    fragment.RouterActivity?.loadThemeFragment()
+                    redirect(binding=binding,session = session,runnable = Runnable {
+                        fragment.RouterActivity?.loadThemeFragment()
+                    })
                 })
 
             }
             //下载
             R.string.ic_download -> {
                 bottomPanelHelper.toggleBottomPanel(Runnable {
-                    fragment.RouterActivity?.loadDownloadFragment()
+                    redirect(binding=binding,session = session,runnable = Runnable {
+                        fragment.RouterActivity?.loadDownloadFragment()
+                    })
                 })
 
             }
             //设置
             R.string.ic_setting -> {
                 bottomPanelHelper.toggleBottomPanel(Runnable {
-                    fragment.RouterActivity?.loadSettingFragment()
+                    redirect(binding=binding,session = session,runnable = Runnable {
+                        fragment.RouterActivity?.loadSettingFragment()
+                    })
                 })
 
             }

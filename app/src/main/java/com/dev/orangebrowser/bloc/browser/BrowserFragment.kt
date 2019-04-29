@@ -34,6 +34,7 @@ import java.util.*
 import javax.inject.Inject
 import android.widget.RelativeLayout
 import com.dev.browser.session.Session
+import com.dev.orangebrowser.extension.appData
 
 
 class BrowserFragment : BaseFragment(), BackHandler, UserInteractionHandler {
@@ -105,7 +106,8 @@ class BrowserFragment : BaseFragment(), BackHandler, UserInteractionHandler {
     //
     val sessionId: String
         get() = arguments?.getString(SESSION_ID) ?: ""
-
+    val session:Session
+        get() = sessionManager.findSessionById(sessionId)!!
     override fun onAttach(context: Context) {
         super.onAttach(context)
         appComponent.inject(this)
@@ -136,6 +138,8 @@ class BrowserFragment : BaseFragment(), BackHandler, UserInteractionHandler {
             this.screenNumber = BROWSER_SCREEN_NUM
         }
         var session = sessionManager.findSessionById(sessionId) ?: sessionManager.selectedSessionOrThrow
+        //重新加载的时候还原为正常模式
+        session.visionMode=Session.NORMAL_SCREEN_MODE
         //选中session
         sessionManager.select(session)
         val bottomPanelHelper = BottomPanelHelper(binding, this)
@@ -371,8 +375,10 @@ class BrowserFragment : BaseFragment(), BackHandler, UserInteractionHandler {
                 return true
             }
         }
+        redirect(binding=binding,session = session,runnable = Runnable {
+            RouterActivity?.loadHomeFragment(sessionId)
+        })
 
-        RouterActivity?.loadHomeFragment(sessionId)
         return true
     }
 
@@ -412,6 +418,7 @@ class BrowserFragment : BaseFragment(), BackHandler, UserInteractionHandler {
         promptsFeature.withFeature { it.onActivityResult(requestCode, resultCode, data) }
     }
 
+
     override fun onDestroy() {
         binding.webViewContainer.removeAllViews()
         super.onDestroy()
@@ -425,6 +432,10 @@ class BrowserFragment : BaseFragment(), BackHandler, UserInteractionHandler {
                 activityViewModel.theme.value!!.colorPrimary
             )
         }
+        //清除全局视野模式的active标志
+        appData.bottomMenuActionItems.find {
+            it.id==R.string.ic_normal_screen
+        }?.active=false
         super.onDetach()
     }
 

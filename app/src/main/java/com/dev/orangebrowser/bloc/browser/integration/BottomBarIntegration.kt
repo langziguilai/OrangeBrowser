@@ -63,39 +63,16 @@ class BottomBarIntegration(
             }
         }
         binding.home.setOnClickListener {
-
-            fragment.RouterActivity?.loadHomeFragment(fragment.sessionId)
-
-
+            redirect(binding=binding,session = session,runnable = Runnable {
+                fragment.RouterActivity?.loadHomeFragment(fragment.sessionId)
+            })
         }
         //跳转到TabFragment
         binding.counter.setOnClickListener {
-            session.visionMode = Session.NORMAL_SCREEN_MODE
-            binding.fragmentContainer.requestLayout()
-//            //capture thumbnail
-//            binding.webViewContainer.capture()?.apply {
-//                val bitmap = this
-//                session.tmpThumbnail = SoftReference(bitmap)
-//                launch(Dispatchers.IO) {
-//                    try {
-//                        //TODO:压缩
-//                        val fileName = "${session.id}.webp"
-//                        val file =
-//                            File(FileUtil.getOrCreateDir(fragment.requireContext(), Session.THUMBNAIL_DIR), fileName)
-//                        bitmap.compress(Bitmap.CompressFormat.WEBP, 80, FileOutputStream(file))
-//                        session.thumbnailPath = File.separator + Session.THUMBNAIL_DIR + File.separator + fileName
-//                    } catch (e: Exception) {
-//                        Log.e("save thumbnail fail", e.message)
-//                    } finally {
-//                        coroutineContext.cancelChildren()
-//                    }
-//                }
-//            }
-            //等待一段事件后跳转
-            binding.fragmentContainer.postDelayed({
+            redirect(binding=binding,session = session,runnable = Runnable {
                 val ratio = (binding.webViewContainer.height.toFloat()) / (binding.webViewContainer.width.toFloat())
                 fragment.RouterActivity?.loadTabFragment(fragment.sessionId, ratio)
-            }, 50)
+            })
         }
         binding.menu.setOnClickListener {
             bottomPanelHelper.toggleBottomPanel()

@@ -8,6 +8,7 @@ import com.dev.base.support.LifecycleAwareFeature
 import com.dev.orangebrowser.R
 import com.dev.orangebrowser.bloc.browser.BrowserFragment
 import com.dev.orangebrowser.bloc.browser.integration.helper.TopPanelHelper
+import com.dev.orangebrowser.bloc.browser.integration.helper.redirect
 import com.dev.orangebrowser.data.model.ActionItem
 import com.dev.orangebrowser.databinding.FragmentBrowserBinding
 import com.dev.orangebrowser.extension.RouterActivity
@@ -52,7 +53,9 @@ class TopPanelMenuIntegration(var binding: FragmentBrowserBinding,
             //扫码
             R.string.ic_scan->{
                 topPanelHelper.toggleTopPanel(Runnable {
-                    fragment.RouterActivity?.loadScanFragment()
+                    redirect(binding=binding,session = fragment.session,runnable = Runnable {
+                        fragment.RouterActivity?.loadScanFragment()
+                    })
                 })
             }
             //TODO:分享
@@ -61,11 +64,16 @@ class TopPanelMenuIntegration(var binding: FragmentBrowserBinding,
             }
             //阅读模式
             R.string.ic_read->{
-                fragment.RouterActivity?.loadReadModeFragment(fragment.sessionId)
+
+                redirect(binding=binding,session = fragment.session,runnable = Runnable {
+                    fragment.RouterActivity?.loadReadModeFragment(fragment.sessionId)
+                })
             }
             //看图模式
             R.string.ic_image->{
-                fragment.RouterActivity?.loadImageModeFragment(fragment.sessionId)
+                redirect(binding=binding,session = fragment.session,runnable = Runnable {
+                    fragment.RouterActivity?.loadImageModeFragment(fragment.sessionId)
+                })
             }
             //TODO:标记广告
             R.string.ic_ad_mark->{
@@ -87,11 +95,15 @@ class TopPanelMenuIntegration(var binding: FragmentBrowserBinding,
             }
             //源码
             R.string.ic_code->{
-                fragment.RouterActivity?.loadSourceCodeFragment(fragment.sessionId)
+                redirect(binding=binding,session = fragment.session,runnable = Runnable {
+                    fragment.RouterActivity?.loadSourceCodeFragment(fragment.sessionId)
+                })
             }
             //资源嗅探
             R.string.ic_resources_fang->{
-                fragment.RouterActivity?.loadResourceFragment(fragment.sessionId)
+                redirect(binding=binding,session = fragment.session,runnable = Runnable {
+                    fragment.RouterActivity?.loadResourceFragment(fragment.sessionId)
+                })
             }
             //TODO:添加到主页
             R.string.ic_store->{

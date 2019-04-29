@@ -9,6 +9,7 @@ import com.dev.browser.feature.session.SessionUseCases
 import com.dev.browser.session.Session
 import com.dev.orangebrowser.bloc.browser.BrowserFragment
 import com.dev.orangebrowser.bloc.browser.integration.helper.TopPanelHelper
+import com.dev.orangebrowser.bloc.browser.integration.helper.redirect
 import com.dev.orangebrowser.databinding.FragmentBrowserBinding
 import com.dev.orangebrowser.extension.RouterActivity
 
@@ -33,10 +34,14 @@ class TopBarIntegration(
         binding.searchText.setOnClickListener {
             if (!binding.overLayerTopPanel.isHidden()) {
                 topPanelHelper.toggleTopPanel(Runnable {
-                    fragment.RouterActivity?.loadSearchFragment(fragment.sessionId)
+                    redirect(binding=binding,session = session,runnable = Runnable {
+                        fragment.RouterActivity?.loadSearchFragment(fragment.sessionId)
+                    })
                 })
             } else {
-                fragment.RouterActivity?.loadSearchFragment(fragment.sessionId)
+                redirect(binding=binding,session = session,runnable = Runnable {
+                    fragment.RouterActivity?.loadSearchFragment(fragment.sessionId)
+                })
             }
         }
         binding.topMenu.setOnClickListener {

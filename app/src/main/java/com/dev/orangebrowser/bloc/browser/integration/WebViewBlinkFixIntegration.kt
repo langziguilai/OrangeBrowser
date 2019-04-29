@@ -5,6 +5,7 @@ import android.widget.ImageView
 import com.dev.browser.session.Session
 import com.dev.orangebrowser.bloc.browser.BrowserFragment
 import com.dev.orangebrowser.databinding.FragmentBrowserBinding
+import com.dev.orangebrowser.view.ScaleTopImageView
 
 class WebViewBlinkFixIntegration(binding: FragmentBrowserBinding,fragment:BrowserFragment,session:Session){
     init {
