@@ -100,7 +100,7 @@ class MainActivity : BaseActivity() {
                     myApplication.initApplicationData(data)
                     //loadFirstInFragment()
                     //未加载完成
-                    while (!AdblockHelper.get().isInit){
+                    while (!AdblockHelper.get().isInit) {
 
                     }
                     AdblockHelper.get().provider.retain(true);
@@ -120,6 +120,7 @@ class MainActivity : BaseActivity() {
         super.onDestroy()
         AdblockHelper.get().provider.release()
     }
+
     @NeedsPermission(
         Manifest.permission.CAMERA,
         Manifest.permission.WRITE_EXTERNAL_STORAGE,
@@ -138,10 +139,11 @@ class MainActivity : BaseActivity() {
         Manifest.permission.READ_EXTERNAL_STORAGE,
         Manifest.permission.ACCESS_COARSE_LOCATION,
         Manifest.permission.ACCESS_FINE_LOCATION,
-        Manifest.permission.RECORD_AUDIO)
+        Manifest.permission.RECORD_AUDIO
+    )
     fun showRationale(request: PermissionRequest) {
         //showRationaleDialog(R.string.permission_camera_rationale, request)
-        Toast.makeText(this,"showRationale", Toast.LENGTH_SHORT).show()
+        Toast.makeText(this, "showRationale", Toast.LENGTH_SHORT).show()
     }
 
     @OnPermissionDenied(
@@ -150,9 +152,10 @@ class MainActivity : BaseActivity() {
         Manifest.permission.READ_EXTERNAL_STORAGE,
         Manifest.permission.ACCESS_COARSE_LOCATION,
         Manifest.permission.ACCESS_FINE_LOCATION,
-        Manifest.permission.RECORD_AUDIO)
+        Manifest.permission.RECORD_AUDIO
+    )
     fun onDenied() {
-        Toast.makeText(this,"onDenied", Toast.LENGTH_SHORT).show()
+        Toast.makeText(this, "onDenied", Toast.LENGTH_SHORT).show()
     }
 
     @OnNeverAskAgain(
@@ -161,7 +164,8 @@ class MainActivity : BaseActivity() {
         Manifest.permission.READ_EXTERNAL_STORAGE,
         Manifest.permission.ACCESS_COARSE_LOCATION,
         Manifest.permission.ACCESS_FINE_LOCATION,
-        Manifest.permission.RECORD_AUDIO)
+        Manifest.permission.RECORD_AUDIO
+    )
     fun onNeverAskAgain() {
         Toast.makeText(this, "onNeverAskAgain", Toast.LENGTH_SHORT).show()
     }
@@ -170,6 +174,7 @@ class MainActivity : BaseActivity() {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         onRequestPermissionsResult(requestCode, grantResults)
     }
+
     override fun initData(savedInstanceState: Bundle?) {
         if (savedInstanceState == null) {
             viewModel.loadAppData()
@@ -177,7 +182,8 @@ class MainActivity : BaseActivity() {
     }
 
     override fun onBackPressed() {
-        supportFragmentManager.fragments.forEach {
+        //这里倒序是因为：默认结构不是栈，是列表，我们要首先处理栈顶的fragment,再依次向下处理
+        supportFragmentManager.fragments.asReversed().forEach {
             if (it is BackHandler && it.onBackPressed()) {
                 return
             }
@@ -222,8 +228,9 @@ class MainActivity : BaseActivity() {
     }
 
     //加载TabFragment
-    fun loadTabFragment(sessionId: String,ratio:Float) {
-        supportFragmentManager.beginTransaction().replace(R.id.container, TabFragment.newInstance(sessionId,ratio)).commit()
+    fun loadTabFragment(sessionId: String, ratio: Float) {
+        supportFragmentManager.beginTransaction().replace(R.id.container, TabFragment.newInstance(sessionId, ratio))
+            .commit()
     }
 
     //
@@ -295,86 +302,102 @@ class MainActivity : BaseActivity() {
         supportFragmentManager.beginTransaction().replace(R.id.container, ResourceFragment.newInstance(sessionId))
             .commit()
     }
+
     //Account界面
     fun loadAccountFragment() {
-        supportFragmentManager.beginTransaction().replace(R.id.container, AccountFragment.newInstance())
-            .commit()
+        supportFragmentManager.beginTransaction().replace(R.id.container, AccountFragment.newInstance()).commit()
     }
+
     //通用设置界面
     fun loadGeneralSettinglFragment() {
-        supportFragmentManager.beginTransaction().replace(R.id.container, GeneralSettingFragment.newInstance())
-            .commit()
+        supportFragmentManager.beginTransaction().replace(R.id.container, GeneralSettingFragment.newInstance()).commit()
     }
+
     //网页设置界面
     fun loadWebSettinglFragment() {
-        supportFragmentManager.beginTransaction().replace(R.id.container, WebSettingFragment.newInstance())
-            .commit()
+        supportFragmentManager.beginTransaction().replace(R.id.container, WebSettingFragment.newInstance()).commit()
     }
+
     //缓存设置界面
     fun loadCacheSettinglFragment() {
         supportFragmentManager.beginTransaction().replace(R.id.container, CacheSettingFragment.newInstance())
             .commit()
     }
+
     //广告拦截设置界面
     fun loadAdBlockSettinglFragment() {
-        supportFragmentManager.beginTransaction().replace(R.id.container, AdBlockSettingFragment.newInstance())
-            .commit()
+        supportFragmentManager.beginTransaction().replace(R.id.container, AdBlockSettingFragment.newInstance()).commit()
     }
+
     //实验室功能设置界面
     fun loadLibrarySettinglFragment() {
-        supportFragmentManager.beginTransaction().replace(R.id.container, LibrarySettingFragment.newInstance())
-            .commit()
+        supportFragmentManager.beginTransaction().replace(R.id.container, LibrarySettingFragment.newInstance()).commit()
     }
+
     //手势设置界面
     fun loadGestureSettinglFragment() {
-        supportFragmentManager.beginTransaction().replace(R.id.container, GestureSettingFragment.newInstance())
-            .commit()
+        supportFragmentManager.beginTransaction().replace(R.id.container, GestureSettingFragment.newInstance()).commit()
     }
+
     //搜索引擎设置界面
     fun loadSearchEngineSettingFragment() {
         supportFragmentManager.beginTransaction().replace(R.id.container, SearchEngineSettingFragment.newInstance())
             .commit()
     }
+
     //搜索引擎设置界面
     fun loadDownloadSettingFragment() {
         supportFragmentManager.beginTransaction().replace(R.id.container, DownloadSettingFragment.newInstance())
             .commit()
     }
+
     //地址栏展示设置界面
     fun loadAddressBarSettingFragment() {
         supportFragmentManager.beginTransaction().replace(R.id.container, AddressBarSettingFragment.newInstance())
             .commit()
     }
+
     //视野模式设置界面
     fun loadVisionModeSettingFragment() {
         supportFragmentManager.beginTransaction().replace(R.id.container, VisionModeSettingFragment.newInstance())
             .commit()
     }
+
     //字体大小设置界面
     fun loadFontSizeSettingFragment() {
         supportFragmentManager.beginTransaction().replace(R.id.container, FontSizeSettingFragment.newInstance())
             .commit()
     }
+
     //语言设置界面
     fun loadLanguageSettingFragment() {
         supportFragmentManager.beginTransaction().replace(R.id.container, LanguageSettingFragment.newInstance())
             .commit()
     }
+
     //色彩风格设置界面
     fun loadColorStyleSettingFragment() {
         supportFragmentManager.beginTransaction().replace(R.id.container, ColorStyleSettingFragment.newInstance())
             .commit()
     }
+
     //UA设置界面
     fun loadUaSettingFragment() {
-        supportFragmentManager.beginTransaction().replace(R.id.container, UaSettingFragment.newInstance())
-            .commit()
+        supportFragmentManager.beginTransaction().replace(R.id.container, UaSettingFragment.newInstance()).commit()
     }
+
     //打开应用设置界面
     fun loadOpenAppSettingFragment() {
-        supportFragmentManager.beginTransaction().replace(R.id.container, OpenAppSettingFragment.newInstance())
+        supportFragmentManager.beginTransaction().replace(R.id.container, OpenAppSettingFragment.newInstance()).commit()
+    }
+
+    //拦截记录设置界面
+    fun loadAdBlockRecordSettingFragment() {
+
+        supportFragmentManager.beginTransaction().replace(R.id.container, AdBlockRecordSettingFragment.newInstance())
             .commit()
     }
+
     var quitSignal: Boolean = false
     //双击退出
     fun quit() {

@@ -34,7 +34,7 @@ class SearchEngineSettingFragment : BaseFragment(), BackHandler {
     lateinit var activityViewModel: MainViewModel
     lateinit var binding: FragmentSearchEngineSettingBinding
     override fun onBackPressed(): Boolean {
-        RouterActivity?.loadSettingFragment()
+       RouterActivity?.loadSettingFragment()
         return true
 
     }

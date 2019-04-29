@@ -3,6 +3,7 @@ package com.dev.orangebrowser.di
 import android.content.Context
 import androidx.room.Room
 import com.dev.orangebrowser.data.AppDatabase
+import com.dev.orangebrowser.data.dao.AdBlockRecordDao
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton
@@ -15,5 +16,8 @@ class DatabaseModule {
             applicationContext,
             AppDatabase::class.java, "orange_browser_db1"
         ).build()
+    }
+    @Provides @Singleton fun provideAdBlockRecordDao(database: AppDatabase): AdBlockRecordDao {
+        return  database.getAdBlockRecordDao()
     }
 }

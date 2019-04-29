@@ -30,7 +30,7 @@ class LanguageSettingFragment : BaseFragment(), BackHandler {
     lateinit var activityViewModel: MainViewModel
     lateinit var binding: FragmentLanguageSettingBinding
     override fun onBackPressed(): Boolean {
-        RouterActivity?.loadGeneralSettinglFragment()
+       RouterActivity?.loadGeneralSettinglFragment()
         return true
 
     }

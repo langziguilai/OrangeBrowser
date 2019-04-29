@@ -54,7 +54,8 @@ class AddressBarSettingFragment : BaseFragment(), BackHandler {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        binding = FragmentAddressBarShowItemSettingBinding.bind(super.onCreateView(inflater, container, savedInstanceState))
+        binding =
+            FragmentAddressBarShowItemSettingBinding.bind(super.onCreateView(inflater, container, savedInstanceState))
         return binding.root
     }
 
@@ -79,48 +80,48 @@ class AddressBarSettingFragment : BaseFragment(), BackHandler {
         binding.recyclerView.adapter = adapter
     }
 
-    private fun onSelect(data:TickItem) {
-        var selectedIndex=-1
+    private fun onSelect(data: TickItem) {
+        var selectedIndex = -1
         dataList.forEach {
             (it as? TickItem)?.apply {
-                if (it.value){
-                    selectedIndex=dataList.indexOf(it)
-                    it.value=false
+                if (it.value) {
+                    selectedIndex = dataList.indexOf(it)
+                    it.value = false
                 }
             }
         }
-        if (selectedIndex>=0){
+        if (selectedIndex >= 0) {
             binding.recyclerView.adapter?.notifyItemChanged(selectedIndex)
         }
 
-        val index=dataList.indexOf(data)
-        if (index>=0){
-            setSpString(R.string.pref_setting_address_bar_show_title,data.title)
-            data.value=true
+        val index = dataList.indexOf(data)
+        if (index >= 0) {
+            setSpString(R.string.pref_setting_address_bar_show_title, data.title)
+            data.value = true
             binding.recyclerView.adapter?.notifyItemChanged(index)
         }
     }
 
     //TODO:添加Action
     private fun getData(): List<Any> {
-        val showAddressBar = getSpString(R.string.pref_setting_show_address_bar,getString(R.string.show_title))
+        val showAddressBar = getSpString(R.string.pref_setting_show_address_bar, getString(R.string.show_title))
         val list = LinkedList<Any>()
         list.add(DividerItem(height = 24, background = getColor(R.color.color_F8F8F8)))
         list.add(TickItem(title = getString(R.string.show_domain), action = object : Action<TickItem> {
             override fun invoke(data: TickItem) {
                 onSelect(data)
             }
-        }, value = showAddressBar==getString(R.string.show_domain)))
+        }, value = showAddressBar == getString(R.string.show_domain)))
         list.add(TickItem(title = getString(R.string.show_title), action = object : Action<TickItem> {
             override fun invoke(data: TickItem) {
                 onSelect(data)
             }
-        }, value = showAddressBar==getString(R.string.show_title)))
+        }, value = showAddressBar == getString(R.string.show_title)))
         list.add(TickItem(title = getString(R.string.show_address), action = object : Action<TickItem> {
             override fun invoke(data: TickItem) {
                 onSelect(data)
             }
-        }, value = showAddressBar==getString(R.string.show_address)))
+        }, value = showAddressBar == getString(R.string.show_address)))
         return list
     }
 }

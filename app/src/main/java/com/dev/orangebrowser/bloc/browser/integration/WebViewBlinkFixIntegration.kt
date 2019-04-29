@@ -24,7 +24,7 @@ class WebViewBlinkFixIntegration(binding: FragmentBrowserBinding,fragment:Browse
                 //用完清理
                 imageView.postDelayed({
                     binding.webViewContainer.removeView(imageView)
-                },300)
+                },100)
             }
         }
         if (session.tmpThumbnail!=null && session.tmpThumbnail!!.get()!=null){

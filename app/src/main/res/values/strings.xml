@@ -236,5 +236,6 @@
     <string name="rule_detail">规则详情</string>
     <string name="custom_rule_detail">自定义规则详情</string>
     <string name="choose_file">选择文件</string>
+    <string name="ab_block_match_count">[匹配规则] 命中次数:</string>
 
 </resources>

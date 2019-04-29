@@ -31,7 +31,7 @@ class OpenAppSettingFragment : BaseFragment(), BackHandler {
     lateinit var activityViewModel: MainViewModel
     lateinit var binding: FragmentOpenAppSettingBinding
     override fun onBackPressed(): Boolean {
-        RouterActivity?.loadWebSettinglFragment()
+       RouterActivity?.loadWebSettinglFragment()
         return true
 
     }

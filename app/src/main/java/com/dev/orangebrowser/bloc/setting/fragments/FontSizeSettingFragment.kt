@@ -30,7 +30,7 @@ class FontSizeSettingFragment : BaseFragment(), BackHandler {
     lateinit var activityViewModel: MainViewModel
     lateinit var binding: FragmentFontSizeSettingBinding
     override fun onBackPressed(): Boolean {
-        RouterActivity?.loadGeneralSettinglFragment()
+       RouterActivity?.loadGeneralSettinglFragment()
         return true
 
     }

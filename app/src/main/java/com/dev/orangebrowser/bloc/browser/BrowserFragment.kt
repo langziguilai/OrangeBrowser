@@ -72,7 +72,7 @@ class BrowserFragment : BaseFragment(), BackHandler, UserInteractionHandler {
     private val webViewLifeCycleIntegration = ViewBoundFeatureWrapper<WebViewLifeCycleIntegration>()
     private val styleIntegration = ViewBoundFeatureWrapper<StyleIntegration>()
     private val fullScreenProgressIntegration = ViewBoundFeatureWrapper<FullScreenProgressIntegration>()
-
+    val thumbnailIntergration= ViewBoundFeatureWrapper<ThumbnailIntergration>()
     private val backButtonHandler: List<ViewBoundFeatureWrapper<*>> = listOf(
 //        fullScreenFeature,
 //        findInPageIntegration,
@@ -345,6 +345,11 @@ class BrowserFragment : BaseFragment(), BackHandler, UserInteractionHandler {
             owner = this,
             view = binding.root
         )
+        thumbnailIntergration.set(
+            feature = ThumbnailIntergration(context=requireContext(),view=binding.webViewContainer,sessionId = sessionId,sessionManager = sessionManager),
+            owner = this,
+            view = binding.root
+        )
     }
 
     override fun initData(savedInstanceState: Bundle?) {
@@ -366,6 +371,7 @@ class BrowserFragment : BaseFragment(), BackHandler, UserInteractionHandler {
                 return true
             }
         }
+
         RouterActivity?.loadHomeFragment(sessionId)
         return true
     }

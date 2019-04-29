@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.dev.base.BaseFragment
 import com.dev.base.support.BackHandler
 import com.dev.orangebrowser.R
+import com.dev.orangebrowser.bloc.host.MainActivity
 import com.dev.orangebrowser.bloc.host.MainViewModel
 import com.dev.orangebrowser.bloc.setting.adapter.Adapter
 import com.dev.orangebrowser.bloc.setting.viewholder.*
@@ -109,11 +110,11 @@ class AdBlockSettingFragment : BaseFragment(), BackHandler {
         list.add(
             TileItem(
                 title = getString(R.string.magic_browser_rules),
-                tip = getString(R.string.ab_block_status).replace("?",adBlockCount.toString()),
+                tip = getString(R.string.ab_block_status).replace("?", adBlockCount.toString()),
                 icon = getString(R.string.ic_right),
                 action = object : Action<TileItem> {
                     override fun invoke(data: TileItem) {
-                        //TODO
+                        RouterActivity?.loadAdBlockRecordSettingFragment()
                     }
                 })
         )

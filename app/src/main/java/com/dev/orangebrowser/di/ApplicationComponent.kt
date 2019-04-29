@@ -63,4 +63,5 @@ interface ApplicationComponent {
     fun inject(colorStyleSettingFragment: ColorStyleSettingFragment)
     fun inject(uaSettingFragment: UaSettingFragment)
     fun inject(openAppSettingFragment: OpenAppSettingFragment)
+    fun inject(adBlockRecordSettingFragment: AdBlockRecordSettingFragment)
 }
