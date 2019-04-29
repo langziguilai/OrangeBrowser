@@ -3,7 +3,6 @@ package com.dev.browser.engine
 import android.content.Context
 import android.util.AttributeSet
 import android.webkit.WebView
-import com.dev.browser.adblock.AdblockWebView
 import com.dev.util.DensityUtil
 
 //使用application的context，防止内存泄漏

@@ -13,7 +13,6 @@ import android.webkit.WebStorage
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import android.webkit.WebViewDatabase
-import com.dev.browser.adblock.AdblockWebView
 import com.dev.browser.concept.EngineSession
 import com.dev.browser.concept.EngineSessionState
 import com.dev.browser.concept.Settings
@@ -340,11 +339,9 @@ class SystemEngineSession(
         }
     }
 
-    //启用拦截
+    //TODO:启用拦截
     override fun enableAdblock(enableAdBlock: Boolean) {
-       if (webView is AdblockWebView){
-           (webView as AdblockWebView).isAdblockEnabled=enableAdBlock
-       }
+
     }
 
     override fun forbidLoadingImage(enable: Boolean, reload: Boolean) {

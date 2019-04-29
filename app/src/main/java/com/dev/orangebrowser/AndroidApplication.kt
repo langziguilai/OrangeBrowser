@@ -12,7 +12,6 @@ import com.dev.orangebrowser.di.DaggerApplicationComponent
 import com.dev.orangebrowser.di.DatabaseModule
 import com.dev.util.FileUtil
 import kotlinx.coroutines.*
-import org.adblockplus.libadblockplus.android.settings.AdblockHelper
 import java.lang.Exception
 import javax.inject.Inject
 import kotlin.coroutines.CoroutineContext
@@ -73,8 +72,6 @@ class AndroidApplication:BaseApplication(),CoroutineScope {
             }
         }
         sessionManager.register(sessionClearObserver)
-        //初始化adblock
-        AdblockHelper.get().init(this, filesDir.absolutePath, true, AdblockHelper.PREFERENCE_NAME);
     }
 
     override fun onTerminate() {
