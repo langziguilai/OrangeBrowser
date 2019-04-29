@@ -79,6 +79,8 @@ class StyleIntegration(
         binding.searchText.setTextColor(whiteColor)
         binding.searchText.setHintTextColor(whiteColor)
         binding.topMenu.setTextColor(whiteColor)
+        binding.stopIcon.setTextColor(whiteColor)
+        binding.reloadIcon.setTextColor(whiteColor)
         binding.progress.progressDrawable = fragment.context?.getDrawable(R.drawable.bg_progressbar_light)
         binding.progress.animate().alpha(0f).setDuration(1000).withEndAction {
             binding.progress.alpha = 1.0f
@@ -95,6 +97,8 @@ class StyleIntegration(
         val blackColor = fragment.resources.getColor(R.color.colorBlack)
         binding.searchText.setTextColor(blackColor)
         binding.searchText.setHintTextColor(blackColor)
+        binding.stopIcon.setTextColor(blackColor)
+        binding.reloadIcon.setTextColor(blackColor)
         binding.topMenu.setTextColor(blackColor)
         binding.progress.progressDrawable = fragment.context?.getDrawable(R.drawable.bg_progressbar_dark)
         binding.progress.animate().alpha(0f).setDuration(1000).withEndAction {

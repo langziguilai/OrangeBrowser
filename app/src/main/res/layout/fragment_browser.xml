@@ -187,6 +187,7 @@
                           android:paddingEnd="6dp"
                           android:layout_weight="1"
                           android:maxLines="1"
+                          android:ellipsize="end"
                           android:layout_width="0dp" android:layout_height="32dp"
                           android:layout_gravity="center_vertical"
                           android:hint="@string/search_or_input" android:gravity="start|center_vertical"
