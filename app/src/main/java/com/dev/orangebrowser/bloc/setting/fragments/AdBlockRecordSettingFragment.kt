@@ -44,7 +44,7 @@ class AdBlockRecordSettingFragment : BaseFragment(), BackHandler {
 
     //TODO:获取layoutResourceId
     override fun getLayoutResId(): Int {
-        return 0
+        return R.layout.fragment_ab_block_record_setting
     }
 
     override fun useDataBinding(): Boolean {

@@ -376,7 +376,11 @@ class BrowserFragment : BaseFragment(), BackHandler, UserInteractionHandler {
             }
         }
         redirect(binding=binding,session = session,runnable = Runnable {
-            RouterActivity?.loadHomeFragment(sessionId)
+            if (session.parentId!=null){
+                sessionManager.remove(session,true)
+            }else{
+                RouterActivity?.loadHomeFragment(sessionId)
+            }
         })
 
         return true

@@ -61,7 +61,11 @@ class SessionManagerObserver(
     override fun onSessionRemoved(session: Session) {
         //删除本次的session
         if (originalSession.id == session.id) {
-            activity?.loadHomeFragment(HomeFragment.NO_SESSION_ID)
+            if (session.parentId!=null){
+                activity?.loadHomeOrBrowserFragment(session.parentId!!)
+            }else{
+                activity?.loadHomeFragment(HomeFragment.NO_SESSION_ID)
+            }
         }
     }
 }
