@@ -2,7 +2,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-package com.dev.browser.engine.matcher
+package com.dev.browser.engine.system.matcher
 
 /**
  * A String wrapper utility that allows for efficient string reversal. We
@@ -54,7 +54,11 @@ abstract class ReversibleString private constructor(
         }
 
         override fun substring(startIndex: Int): ReversibleString {
-            return ForwardString(string, offsetStart + startIndex, offsetEnd)
+            return ForwardString(
+                string,
+                offsetStart + startIndex,
+                offsetEnd
+            )
         }
     }
 
@@ -71,7 +75,11 @@ abstract class ReversibleString private constructor(
         }
 
         override fun substring(startIndex: Int): ReversibleString {
-            return ReverseString(string, offsetStart, offsetEnd - startIndex)
+            return ReverseString(
+                string,
+                offsetStart,
+                offsetEnd - startIndex
+            )
         }
     }
 

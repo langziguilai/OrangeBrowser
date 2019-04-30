@@ -6,9 +6,8 @@ import com.dev.browser.concept.fetch.Client
 import com.dev.browser.concept.history.HistoryTrackingDelegate
 import com.dev.browser.concept.storage.HistoryStorage
 import com.dev.browser.domain.autocomplete.CustomDomainsProvider
-import com.dev.browser.domain.autocomplete.DomainAutocompleteProvider
 import com.dev.browser.domain.autocomplete.ShippedDomainsProvider
-import com.dev.browser.engine.SystemEngine
+import com.dev.browser.engine.system.SystemEngine
 import com.dev.browser.feature.search.SearchUseCases
 import com.dev.browser.feature.session.HistoryDelegate
 import com.dev.browser.feature.session.SessionUseCases

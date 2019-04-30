@@ -13,7 +13,7 @@ import com.dev.base.support.LifecycleAwareFeature
 import com.dev.base.support.UserInteractionHandler
 import com.dev.base.support.ViewBoundFeatureWrapper
 import com.dev.browser.concept.Engine
-import com.dev.browser.engine.SystemEngineView
+import com.dev.browser.engine.system.SystemEngineView
 import com.dev.browser.feature.downloads.DownloadsFeature
 import com.dev.browser.feature.prompts.PromptFeature
 import com.dev.browser.feature.session.*

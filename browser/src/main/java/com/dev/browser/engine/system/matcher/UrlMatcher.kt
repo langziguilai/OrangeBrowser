@@ -2,7 +2,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-package com.dev.browser.engine.matcher
+package com.dev.browser.engine.system.matcher
 
 import android.content.Context
 import android.net.Uri
@@ -146,7 +146,12 @@ class UrlMatcher {
         private val ignoredCategories = setOf("Legacy Disconnect", "Legacy Content")
         private val disconnectMoved = setOf("Facebook", "Twitter")
         private val webfontExtensions = arrayOf(".woff2", ".woff", ".eot", ".ttf", ".otf")
-        private val supportedCategories = setOf(ADVERTISING, ANALYTICS, SOCIAL, CONTENT)
+        private val supportedCategories = setOf(
+            ADVERTISING,
+            ANALYTICS,
+            SOCIAL,
+            CONTENT
+        )
 
         /**
          * Creates a new matcher instance for the provided URL lists.
@@ -165,7 +170,12 @@ class UrlMatcher {
             val blackListReader = InputStreamReader(context.resources.openRawResource(blackListFile), UTF_8)
             val whiteListReader = InputStreamReader(context.resources.openRawResource(whiteListFile), UTF_8)
             val overrideReaders = overrides?.map { InputStreamReader(context.resources.openRawResource(it), UTF_8) }
-            return createMatcher(blackListReader, overrideReaders, whiteListReader, enabledCategories)
+            return createMatcher(
+                blackListReader,
+                overrideReaders,
+                whiteListReader,
+                enabledCategories
+            )
         }
 
         /**
@@ -184,18 +194,31 @@ class UrlMatcher {
             val categoryMap = HashMap<String, Trie>()
 
             JsonReader(black).use {
-                jsonReader -> loadCategories(jsonReader, categoryMap)
+                jsonReader ->
+                loadCategories(jsonReader, categoryMap)
             }
 
             overrides?.forEach {
                 JsonReader(it).use {
-                    jsonReader -> loadCategories(jsonReader, categoryMap, true)
+                    jsonReader ->
+                    loadCategories(
+                        jsonReader,
+                        categoryMap,
+                        true
+                    )
                 }
             }
 
             var whiteList: WhiteList? = null
-            JsonReader(white).use { jsonReader -> whiteList = WhiteList.fromJson(jsonReader) }
-            return UrlMatcher(enabledCategories, supportedCategories, categoryMap, whiteList)
+            JsonReader(white).use { jsonReader -> whiteList =
+                WhiteList.fromJson(jsonReader)
+            }
+            return UrlMatcher(
+                enabledCategories,
+                supportedCategories,
+                categoryMap,
+                whiteList
+            )
         }
 
         /**
@@ -219,7 +242,11 @@ class UrlMatcher {
             while (reader.hasNext()) {
                 val name = reader.nextName()
                 if (name == "categories") {
-                    extractCategories(reader, categoryMap, override)
+                    extractCategories(
+                        reader,
+                        categoryMap,
+                        override
+                    )
                 } else {
                     reader.skipValue()
                 }
@@ -240,7 +267,10 @@ class UrlMatcher {
                     ignoredCategories.contains(categoryName) -> reader.skipValue()
                     categoryName == DISCONNECT -> {
                         extractCategory(reader) { url, owner ->
-                            if (disconnectMoved.contains(owner)) socialOverrides.add(url)
+                            if (disconnectMoved.contains(
+                                    owner
+                                )
+                            ) socialOverrides.add(url)
                         }
                     }
                     else -> {
@@ -257,7 +287,11 @@ class UrlMatcher {
                                 throw IllegalStateException("Cannot add override items to nonexistent category")
                             }
                         }
-                        extractCategory(reader) { url, _ -> categoryTrie.put(url.reverse()) }
+                        extractCategory(reader) { url, _ ->
+                            categoryTrie.put(
+                                url.reverse()
+                            )
+                        }
                     }
                 }
             }

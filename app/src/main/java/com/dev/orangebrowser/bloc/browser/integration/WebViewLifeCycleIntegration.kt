@@ -4,8 +4,6 @@ import androidx.lifecycle.LifecycleOwner
 import com.dev.base.support.LifecycleAwareFeature
 import com.dev.browser.concept.EngineView
 import com.dev.browser.concept.EngineViewLifecycleObserver
-import com.dev.browser.engine.SystemEngineView
-import com.dev.orangebrowser.bloc.browser.BrowserFragment
 import com.dev.orangebrowser.databinding.FragmentBrowserBinding
 
 //绑定EngineView到LifecycleOwner，防止内存泄漏

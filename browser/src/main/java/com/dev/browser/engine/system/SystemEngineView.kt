@@ -2,7 +2,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-package com.dev.browser.engine
+package com.dev.browser.engine.system
 
 //import org.adblockplus.libadblockplus.android.settings.AdblockHelper
 import android.annotation.TargetApi
@@ -15,6 +15,7 @@ import android.os.Build
 import android.os.Handler
 import android.os.Message
 import android.util.AttributeSet
+import android.util.Log
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewConfiguration
@@ -32,10 +33,10 @@ import com.dev.browser.concept.EngineView
 import com.dev.browser.concept.HitResult
 import com.dev.browser.concept.prompt.PromptRequest
 import com.dev.browser.concept.request.RequestInterceptor.InterceptionResponse
-import com.dev.browser.engine.matcher.UrlMatcher
-import com.dev.browser.engine.permission.SystemGeolocationRequest
-import com.dev.browser.engine.permission.SystemPermissionRequest
-import com.dev.browser.engine.window.SystemWindowRequest
+import com.dev.browser.engine.system.matcher.UrlMatcher
+import com.dev.browser.engine.system.permission.SystemGeolocationRequest
+import com.dev.browser.engine.system.permission.SystemPermissionRequest
+import com.dev.browser.engine.system.window.SystemWindowRequest
 import com.dev.browser.support.DownloadUtils
 import com.dev.browser.support.ErrorType
 import com.dev.view.MatchParentLayout
@@ -103,7 +104,12 @@ class SystemEngineView @JvmOverloads constructor(
     }
     private val longClickPoint:Point= Point()
     private val runnable= Runnable { onLongClick(null) }
-    private var longClickListener:LongClickListener= LongClickListener(runnable = runnable,view = this,point = longClickPoint)
+    private var longClickListener: LongClickListener =
+        LongClickListener(
+            runnable = runnable,
+            view = this,
+            point = longClickPoint
+        )
     override fun dispatchTouchEvent(ev: MotionEvent): Boolean {
         longClickListener.onTouch(ev)
         return super.dispatchTouchEvent(ev)
@@ -193,7 +199,6 @@ class SystemEngineView @JvmOverloads constructor(
 
     @Suppress("ComplexMethod", "NestedBlockDepth")
     private fun createWebViewClient() = object : WebViewClient() {
-
         override fun shouldOverrideUrlLoading(view: WebView?, request: WebResourceRequest?): Boolean {
             session?.internalNotifyObservers {
                 onLoadingStateChange(true)
@@ -320,7 +325,8 @@ class SystemEngineView @JvmOverloads constructor(
 
         override fun onReceivedError(view: WebView, errorCode: Int, description: String?, failingUrl: String?) {
             session?.let { session ->
-                val errorType = SystemEngineSession.webViewErrorToErrorType(errorCode)
+                val errorType =
+                    SystemEngineSession.webViewErrorToErrorType(errorCode)
                 session.settings.requestInterceptor?.onErrorRequest(
                     session,
                     errorType,
@@ -337,7 +343,8 @@ class SystemEngineView @JvmOverloads constructor(
                 if (!request.isForMainFrame) {
                     return
                 }
-                val errorType = SystemEngineSession.webViewErrorToErrorType(error.errorCode)
+                val errorType =
+                    SystemEngineSession.webViewErrorToErrorType(error.errorCode)
                 session.settings.requestInterceptor?.onErrorRequest(
                     session,
                     errorType,
@@ -350,6 +357,10 @@ class SystemEngineView @JvmOverloads constructor(
     }
     @Suppress("ComplexMethod")
     private fun createWebChromeClient() = object : WebChromeClient() {
+        override fun onConsoleMessage(consoleMessage: ConsoleMessage?): Boolean {
+            Log.d("onConsoleMessage",consoleMessage?.toString())
+            return super.onConsoleMessage(consoleMessage)
+        }
         override fun getVisitedHistory(callback: ValueCallback<Array<String>>) {
             // TODO private browsing not supported for SystemEngine
             // https://github.com/mozilla-mobile/android-components/issues/649
@@ -397,14 +408,27 @@ class SystemEngineView @JvmOverloads constructor(
             session?.internalNotifyObservers { onFullScreenChange(false) }
         }
         override fun onGeolocationPermissionsShowPrompt(origin: String, callback: GeolocationPermissions.Callback) {
-            session?.internalNotifyObservers { onContentPermissionRequest(SystemGeolocationRequest(origin,callback)) }
+            session?.internalNotifyObservers { onContentPermissionRequest(
+                SystemGeolocationRequest(
+                    origin,
+                    callback
+                )
+            ) }
         }
         override fun onPermissionRequestCanceled(request: PermissionRequest) {
-            session?.internalNotifyObservers { onCancelContentPermissionRequest(SystemPermissionRequest(request)) }
+            session?.internalNotifyObservers { onCancelContentPermissionRequest(
+                SystemPermissionRequest(
+                    request
+                )
+            ) }
         }
 
         override fun onPermissionRequest(request: PermissionRequest) {
-            session?.internalNotifyObservers { onContentPermissionRequest(SystemPermissionRequest(request)) }
+            session?.internalNotifyObservers { onContentPermissionRequest(
+                SystemPermissionRequest(
+                    request
+                )
+            ) }
         }
 
         override fun onJsAlert(view: WebView, url: String?, message: String?, result: JsResult): Boolean {
@@ -587,7 +611,11 @@ class SystemEngineView @JvmOverloads constructor(
         }
 
         override fun onCloseWindow(window: WebView) {
-            session?.internalNotifyObservers { onCloseWindowRequest(SystemWindowRequest(window)) }
+            session?.internalNotifyObservers { onCloseWindowRequest(
+                SystemWindowRequest(
+                    window
+                )
+            ) }
         }
     }
 

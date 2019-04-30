@@ -2,7 +2,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-package com.dev.browser.engine
+package com.dev.browser.engine.system
 
 import android.content.Context
 import android.os.Bundle
@@ -262,22 +262,50 @@ class SystemEngineSession(
 
     private fun initSettings(webView: WebView, s: WebSettings) {
         internalSettings = object : Settings() {
-            override var javascriptEnabled by WebSetting(s::getJavaScriptEnabled, s::setJavaScriptEnabled)
-            override var domStorageEnabled by WebSetting(s::getDomStorageEnabled, s::setDomStorageEnabled)
-            override var allowFileAccess by WebSetting(s::getAllowFileAccess, s::setAllowFileAccess)
-            override var allowContentAccess by WebSetting(s::getAllowContentAccess, s::setAllowContentAccess)
-            override var userAgentString by WebSetting(s::getUserAgentString, s::setUserAgentString)
-            override var displayZoomControls by WebSetting(s::getDisplayZoomControls, s::setDisplayZoomControls)
-            override var loadWithOverviewMode by WebSetting(s::getLoadWithOverviewMode, s::setLoadWithOverviewMode)
-            override var supportMultipleWindows by WebSetting(s::supportMultipleWindows, s::setSupportMultipleWindows)
+            override var javascriptEnabled by WebSetting(
+                s::getJavaScriptEnabled,
+                s::setJavaScriptEnabled
+            )
+            override var domStorageEnabled by WebSetting(
+                s::getDomStorageEnabled,
+                s::setDomStorageEnabled
+            )
+            override var allowFileAccess by WebSetting(
+                s::getAllowFileAccess,
+                s::setAllowFileAccess
+            )
+            override var allowContentAccess by WebSetting(
+                s::getAllowContentAccess,
+                s::setAllowContentAccess
+            )
+            override var userAgentString by WebSetting(
+                s::getUserAgentString,
+                s::setUserAgentString
+            )
+            override var displayZoomControls by WebSetting(
+                s::getDisplayZoomControls,
+                s::setDisplayZoomControls
+            )
+            override var loadWithOverviewMode by WebSetting(
+                s::getLoadWithOverviewMode,
+                s::setLoadWithOverviewMode
+            )
+            override var supportMultipleWindows by WebSetting(
+                s::supportMultipleWindows,
+                s::setSupportMultipleWindows
+            )
             override var allowFileAccessFromFileURLs by WebSetting(
-                    s::getAllowFileAccessFromFileURLs, s::setAllowFileAccessFromFileURLs)
+                s::getAllowFileAccessFromFileURLs, s::setAllowFileAccessFromFileURLs
+            )
             override var allowUniversalAccessFromFileURLs by WebSetting(
-                    s::getAllowUniversalAccessFromFileURLs, s::setAllowUniversalAccessFromFileURLs)
+                s::getAllowUniversalAccessFromFileURLs, s::setAllowUniversalAccessFromFileURLs
+            )
             override var mediaPlaybackRequiresUserGesture by WebSetting(
-                    s::getMediaPlaybackRequiresUserGesture, s::setMediaPlaybackRequiresUserGesture)
+                s::getMediaPlaybackRequiresUserGesture, s::setMediaPlaybackRequiresUserGesture
+            )
             override var javaScriptCanOpenWindowsAutomatically by WebSetting(
-                    s::getJavaScriptCanOpenWindowsAutomatically, s::setJavaScriptCanOpenWindowsAutomatically)
+                s::getJavaScriptCanOpenWindowsAutomatically, s::setJavaScriptCanOpenWindowsAutomatically
+            )
 
             override var verticalScrollBarEnabled
                 get() = webView.isVerticalScrollBarEnabled
@@ -319,7 +347,7 @@ class SystemEngineSession(
                 verticalScrollBarEnabled = it.verticalScrollBarEnabled
                 horizontalScrollBarEnabled = it.horizontalScrollBarEnabled
                 userAgentString = it.userAgentString
-                supportMultipleWindows = it.supportMultipleWindows
+                supportMultipleWindows = it.supportMultipleWindows and false  //暂时不支持多窗口，因为，yandex会崩溃，暂时不知道原因
             }
         }
     }

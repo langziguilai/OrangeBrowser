@@ -52,6 +52,7 @@ class SessionManagerObserver(
     override fun onSessionSelected(session: Session) {
         if (session.id!=originalSession.id){
             redirect(binding=binding,session = originalSession,runnable = Runnable {
+                session.loading=true
                 activity?.loadBrowserFragment(session.id)
             })
         }

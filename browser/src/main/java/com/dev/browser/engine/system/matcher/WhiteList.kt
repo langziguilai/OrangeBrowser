@@ -2,7 +2,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-package com.dev.browser.engine.matcher
+package com.dev.browser.engine.system.matcher
 
 import android.net.Uri
 import android.text.TextUtils
@@ -13,7 +13,8 @@ import java.util.ArrayList
  * Stores white-listed URIs for individual hosts.
  */
 internal class WhiteList {
-    private val rootNode: WhiteListTrie = WhiteListTrie.createRootNode()
+    private val rootNode: WhiteListTrie =
+        WhiteListTrie.createRootNode()
 
     /**
      * Adds the provided whitelist for the provided host.
@@ -52,7 +53,8 @@ internal class WhiteList {
     }
 
     private fun contains(site: ReversibleString, resource: ReversibleString, revHostTrie: Trie): Boolean {
-        val next = revHostTrie.children.get(site.charAt(0).toInt()) as? WhiteListTrie ?: return false
+        val next = revHostTrie.children.get(site.charAt(0).toInt()) as? WhiteListTrie
+            ?: return false
 
         if (next.whitelist?.findNode(resource) != null) {
             return true
@@ -130,7 +132,10 @@ internal class WhiteListTrie private constructor(character: Char, parent: WhiteL
     var whitelist: Trie? = null
 
     override fun createNode(character: Char, parent: Trie): Trie {
-        return WhiteListTrie(character, parent as WhiteListTrie)
+        return WhiteListTrie(
+            character,
+            parent as WhiteListTrie
+        )
     }
 
     /**

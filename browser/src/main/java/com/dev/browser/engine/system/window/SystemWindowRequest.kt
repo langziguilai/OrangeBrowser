@@ -2,16 +2,15 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-package com.dev.browser.engine.window
+package com.dev.browser.engine.system.window
 
 import android.os.Message
-import android.webkit.WebChromeClient
 import android.webkit.WebResourceRequest
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import com.dev.browser.concept.EngineSession
 import com.dev.browser.concept.window.WindowRequest
-import com.dev.browser.engine.SystemEngineSession
+import com.dev.browser.engine.system.SystemEngineSession
 
 /**
  * WebView-based implementation of [WindowRequest].

@@ -141,7 +141,7 @@ data class DefaultSettings(
     override var allowContentAccess: Boolean = true,
     override var verticalScrollBarEnabled: Boolean = true,
     override var horizontalScrollBarEnabled: Boolean = true,
-    override var remoteDebuggingEnabled: Boolean = false,
+    override var remoteDebuggingEnabled: Boolean = true,
     override var supportMultipleWindows: Boolean = true,
     override var testingModeEnabled: Boolean = false
 ) : Settings()
