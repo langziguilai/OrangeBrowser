@@ -23,7 +23,7 @@ class ColorStyleSettingFragment : BaseFragment(), BackHandler {
 
 
     companion object {
-        const val Tag = "ColorStyleSettingFragment"
+        const val Tag = "AdblockFilterSettingFragment"
         fun newInstance() = ColorStyleSettingFragment()
     }
 

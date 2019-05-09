@@ -50,7 +50,7 @@ fun Context.isPermissionGranted(vararg permission: String): Boolean {
 }
 
 /**
- *  Shares content via [ACTION_SEND] intent.
+ *  Shares mContent via [ACTION_SEND] intent.
  *
  * @param text the data to be shared  [EXTRA_TEXT]
  * @param subject of the intent [EXTRA_TEXT]

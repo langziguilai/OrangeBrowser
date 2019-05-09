@@ -325,7 +325,7 @@ open class InlineAutocompleteEditText @JvmOverloads constructor(
     /**
      * Remove any autocomplete text
      *
-     * @param text Current text content that may include autocomplete text
+     * @param text Current text mContent that may include autocomplete text
      */
     private fun removeAutocomplete(text: Editable): Boolean {
         val start = text.getSpanStart(AUTOCOMPLETE_SPAN)
@@ -353,7 +353,7 @@ open class InlineAutocompleteEditText @JvmOverloads constructor(
     /**
      * Convert any autocomplete text to regular text
      *
-     * @param text Current text content that may include autocomplete text
+     * @param text Current text mContent that may include autocomplete text
      */
     private fun commitAutocomplete(text: Editable): Boolean {
         val start = text.getSpanStart(AUTOCOMPLETE_SPAN)
@@ -697,7 +697,7 @@ open class InlineAutocompleteEditText @JvmOverloads constructor(
         /**
          * Get the portion of text that is not marked as autocomplete text.
          *
-         * @param text Current text content that may include autocomplete text
+         * @param text Current text mContent that may include autocomplete text
          */
         private fun getNonAutocompleteText(text: Editable): String {
             val start = text.getSpanStart(AUTOCOMPLETE_SPAN)

@@ -16,7 +16,7 @@ import java.lang.UnsupportedOperationException
 interface Engine {
 
     /**
-     * Creates a new view for rendering web content.
+     * Creates a new view for rendering web mContent.
      *
      * @param context an application context
      * @param attrs optional set of attributes

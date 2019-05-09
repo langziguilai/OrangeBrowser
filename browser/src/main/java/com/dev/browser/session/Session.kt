@@ -328,9 +328,9 @@ class Session(
     }
 
     /**
-     * [Consumable] permission request from web content. A [PermissionRequest]
+     * [Consumable] permission request from web mContent. A [PermissionRequest]
      * must be consumed i.e. either [PermissionRequest.grant] or
-     * [PermissionRequest.reject] must be called. A content permission request
+     * [PermissionRequest.reject] must be called. A mContent permission request
      * can also be cancelled, which will result in a new empty [Consumable].
      */
     var contentPermissionRequest: Consumable<PermissionRequest> by Delegates.vetoable(Consumable.empty()) { _, _, request ->
@@ -349,7 +349,7 @@ class Session(
     }
 
     /**
-     * [Consumable] State for a prompt request from web content.
+     * [Consumable] State for a prompt request from web mContent.
      */
     var promptRequest: Consumable<PromptRequest> by Delegates.vetoable(Consumable.empty()) { _, _, request ->
         val consumers = wrapConsumers<PromptRequest> { onPromptRequested(this@Session, it) }

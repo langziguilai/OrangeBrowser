@@ -24,7 +24,7 @@ private const val KEY_DIALOG_TYPE = "KEY_DIALOG_TYPE"
 
 /**
  * [android.support.v4.app.DialogFragment] implementation to display choice(options,optgroup and menu)
- * web content in native dialogs.
+ * web mContent in native dialogs.
  */
 internal class ChoiceDialogFragment : PromptDialogFragment() {
 

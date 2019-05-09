@@ -142,7 +142,7 @@ abstract class EngineSession(
      * Loads the data with the given mimeType.
      * Example:
      * ```
-     * engineSession.loadData("<html><body>Example HTML content here</body></html>", "text/html")
+     * engineSession.loadData("<html><body>Example HTML mContent here</body></html>", "text/html")
      * ```
      *
      * If the data is base64 encoded, you can override the default encoding (UTF-8) with 'base64'.
@@ -252,6 +252,6 @@ abstract class EngineSession(
     @CallSuper
     open fun close() = delegate.unregisterObservers()
 
-//  是否启用adblock
-    abstract fun enableAdblock(enableAdBlock:Boolean=false)
+    //是否启用adBlock
+    abstract fun enableAdBlock(enableAdBlock:Boolean=false)
 }

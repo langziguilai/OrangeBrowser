@@ -1,4 +1,4 @@
-package com.dev.orangebrowser.bloc.setting.fragments
+package com.dev.orangebrowser.bloc.setting.fragments.adblock
 
 import android.content.Context
 import android.os.Bundle
@@ -8,25 +8,25 @@ import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.dev.base.BaseFragment
 import com.dev.base.support.BackHandler
 import com.dev.orangebrowser.R
-import com.dev.orangebrowser.bloc.host.MainActivity
 import com.dev.orangebrowser.bloc.host.MainViewModel
 import com.dev.orangebrowser.bloc.setting.adapter.Adapter
 import com.dev.orangebrowser.bloc.setting.viewholder.*
 import com.dev.orangebrowser.bloc.setting.viewholder.base.Action
 import com.dev.orangebrowser.databinding.FragmentAdblockSettingBinding
 import com.dev.orangebrowser.extension.*
+import org.adblockplus.libadblockplus.android.ConnectionType
 import java.util.*
 
-class AdBlockSettingFragment : BaseFragment(), BackHandler {
+class AdBlockSettingFragment : BaseAdBlockSettingFragment(), BackHandler {
 
 
     companion object {
         const val Tag = "AdBlockSettingFragment"
         fun newInstance() = AdBlockSettingFragment()
     }
+
 
     lateinit var activityViewModel: MainViewModel
     lateinit var binding: FragmentAdblockSettingBinding
@@ -50,6 +50,7 @@ class AdBlockSettingFragment : BaseFragment(), BackHandler {
         //注入
         appComponent.inject(this)
     }
+
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = FragmentAdblockSettingBinding.bind(super.onCreateView(inflater, container, savedInstanceState))
@@ -75,6 +76,7 @@ class AdBlockSettingFragment : BaseFragment(), BackHandler {
         binding.recyclerView.adapter = adapter
     }
 
+
     //TODO:添加Action
     private fun getData(): List<Any> {
         val list = LinkedList<Any>()
@@ -89,15 +91,39 @@ class AdBlockSettingFragment : BaseFragment(), BackHandler {
 
         list.add(SwitchItem(title = getString(R.string.ad_block), action = object : Action<Boolean> {
             override fun invoke(data: Boolean) {
-                setSpBool(R.string.pref_setting_enable_ad_block, data)
+                handleEnabledChanged(data)
             }
-        }, value = getSpBool(R.string.pref_setting_enable_ad_block, false)))
+        }, value = settings?.isAdblockEnabled ?: false))
+        list.add(SwitchItem(title = getString(R.string.accept_ad), action = object : Action<Boolean> {
+            override fun invoke(data: Boolean) {
+                handleAcceptableAdsEnabledChanged(data)
+            }
+        }, value = settings?.isAcceptableAdsEnabled ?: true))
 
         list.add(SwitchItem(title = getString(R.string.show_tip_when_block_ad), action = object : Action<Boolean> {
             override fun invoke(data: Boolean) {
                 setSpBool(R.string.pref_setting_enable_show_tip_when_block_ad, data)
             }
         }, value = getSpBool(R.string.pref_setting_enable_show_tip_when_block_ad, true)))
+        var updateTip=""
+        settings?.allowedConnectionType?.name?.apply {
+            when(this){
+                ConnectionType.ANY.name-> updateTip=getString(R.string.fragment_adblock_settings_allowed_connection_type_all)
+                ConnectionType.WIFI.name-> updateTip=getString(R.string.fragment_adblock_settings_allowed_connection_type_wifi)
+                ConnectionType.WIFI_NON_METERED.name-> updateTip=getString(R.string.fragment_adblock_settings_allowed_connection_type_wifi_non_metered)
+            }
+        }
+        list.add(
+            TileItem(
+                title = getString(R.string.ad_block_update_connection),
+                tip = updateTip,
+                icon = getString(R.string.ic_right),
+                action = object : Action<TileItem> {
+                    override fun invoke(data: TileItem) {
+                        RouterActivity?.loadAdBlockConnectionSettingFragment()
+                    }
+                })
+        )
         list.add(DividerItem(height = 24, background = getColor(R.color.color_F8F8F8)))
         list.add(
             CategoryHeaderItem(
@@ -109,12 +135,12 @@ class AdBlockSettingFragment : BaseFragment(), BackHandler {
 
         list.add(
             TileItem(
-                title = getString(R.string.magic_browser_rules),
-                tip = getString(R.string.ab_block_status).replace("?", adBlockCount.toString()),
+                title = getString(R.string.ad_block_subscriptions),
+                tip = "",
                 icon = getString(R.string.ic_right),
                 action = object : Action<TileItem> {
                     override fun invoke(data: TileItem) {
-                        RouterActivity?.loadAdBlockRecordSettingFragment()
+                        RouterActivity?.loadAdBlockFilterSettingFragment()
                     }
                 })
         )
@@ -139,7 +165,7 @@ class AdBlockSettingFragment : BaseFragment(), BackHandler {
                 icon = getString(R.string.ic_right),
                 action = object : Action<TileItem> {
                     override fun invoke(data: TileItem) {
-                        //TODO
+                        //TODO:打开白名单
                     }
                 })
         )
@@ -165,5 +191,27 @@ class AdBlockSettingFragment : BaseFragment(), BackHandler {
                 })
         )
         return list
+    }
+
+    private fun handleAcceptableAdsEnabledChanged(newValue: Boolean?) {
+        val enabledValue = newValue!!
+
+        // update and save settings
+        settings?.isAcceptableAdsEnabled = enabledValue
+        adBlockSettingsStorage.save(settings)
+
+        // apply settings
+        adBlockEngine.isAcceptableAdsEnabled = enabledValue
+    }
+
+
+
+    private fun handleEnabledChanged(newValue: Boolean) {
+        // update and save settings
+        settings?.isAdblockEnabled = newValue
+        adBlockSettingsStorage.save(settings)
+
+        // apply settings
+        adBlockEngine.isEnabled = newValue
     }
 }

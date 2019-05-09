@@ -9,7 +9,7 @@ import android.os.Environment
 /**
  * Value type that represents a Download.
  *
- * @property url The full url to the content that should be downloaded.
+ * @property url The full url to the mContent that should be downloaded.
  * @property fileName A canonical filename for this download.
  * @property contentType Content type (MIME type) to indicate the media type of the download.
  * @property contentLength The file size reported by the server.

@@ -368,7 +368,7 @@ class SystemEngineSession(
     }
 
     //TODO:启用拦截
-    override fun enableAdblock(enableAdBlock: Boolean) {
+    override fun enableAdBlock(enableAdBlock: Boolean) {
 
     }
 

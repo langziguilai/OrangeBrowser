@@ -151,7 +151,7 @@ class SearchEngineParser {
             when (parser.next()) {
                 XmlPullParser.END_TAG -> depth--
                 XmlPullParser.START_TAG -> depth++
-                // else: Do nothing - we're skipping content
+                // else: Do nothing - we're skipping mContent
             }
         }
     }

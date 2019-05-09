@@ -50,6 +50,9 @@ dependencies {
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
     implementation 'com.squareup.okhttp3:okhttp:3.13.1'
     implementation 'com.squareup.okhttp3:okhttp-urlconnection:3.13.1'
+    implementation 'com.hankcs:aho-corasick-double-array-trie:1.2.1'
+    implementation 'org.adblockplus:adblock-android:3.0'
+    implementation "androidx.preference:preference:1.1.0-alpha04"
     implementation project(':util')
     implementation project(path: ':base')
     implementation project(':view')

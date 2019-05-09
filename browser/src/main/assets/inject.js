@@ -50,3 +50,4 @@ else
   }, false);
 }
 console.log("injected JS finished");
+

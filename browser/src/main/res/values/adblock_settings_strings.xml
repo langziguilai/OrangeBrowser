@@ -1,0 +1,48 @@
+<resources>
+
+    <!-- Settings Activity/Fragment title for general purpose -->
+    <string name="fragment_adblock_settings_general_title">AdBlock</string>
+
+    <!-- Title of SwitchPreference to enable/disable Adblock -->
+    <string name="fragment_adblock_settings_enabled_title">AdBlock</string>
+
+    <!-- Summary of SwitchPreference to enable/disable Adblock -->
+    <string name="fragment_adblock_settings_enabled_summary">允许在此App的访问的网站上屏蔽广告</string>
+
+    <!-- Title of MultiSelectListPreference to choose filter lists -->
+    <string name="fragment_adblock_settings_filter_lists_title">过滤列表</string>
+
+    <!-- Summary of MultiSelectListPreference to choose filter lists -->
+    <string name="fragment_adblock_settings_filter_lists_summary">在过滤列表中添加或者删除一个特定语言的过滤器</string>
+
+    <!-- Title of SwitchPreference to enable/disable Acceptable Ads -->
+    <string name="fragment_adblock_settings_aa_enabled_title">可接受广告</string>
+
+    <!-- Summary of SwitchPreference to enable/disable Acceptable Ads -->
+    <string name="fragment_adblock_settings_aa_enabled_summary">We\'d like to encourage websites to use straightforward, nonintrusive advertising. That\'s why we\'ve established strict guidelines to identify Acceptable Ads, which are shown under default settings. If you wish to browse ad-free, you can disable this setting at any time.</string>
+
+    <!-- Title of Preference to configure whitelisted domains -->
+    <string name="fragment_adblock_settings_wl_title">网站白名单</string>
+
+    <!-- Summary of Preference to configure whitelisted domains -->
+    <string name="fragment_adblock_settings_wl_summary">添加你可以接受广告的网站到列表中</string>
+
+    <!-- Hint of EditText for typing domain in whitelisted domains fragment -->
+    <string name="fragment_adblock_settings_add_domain">添加域名</string>
+
+    <!-- Text of TextView above the list of whitelisted domains in whitelisted domains fragment -->
+    <string name="fragment_adblock_settings_wl_domains">白名单域名</string>
+
+    <!-- Title of ListPreference and Dialog to configure update connection type -->
+    <string name="fragment_adblock_settings_allowed_connection_type">自动更新配置</string>
+
+    <!-- Title of list value #1 for ListPreference for update connection type -->
+    <string name="fragment_adblock_settings_allowed_connection_type_wifi_non_metered">使用流量时可更新</string>
+
+    <!-- Title of list value #2 for ListPreference for update connection type -->
+    <string name="fragment_adblock_settings_allowed_connection_type_wifi">使用WIFI时更新</string>
+
+    <!-- Title of list value #3 for ListPreference for update connection type -->
+    <string name="fragment_adblock_settings_allowed_connection_type_all">随时更新</string>
+
+</resources>

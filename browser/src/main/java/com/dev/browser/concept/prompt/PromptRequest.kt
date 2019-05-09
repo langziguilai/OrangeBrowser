@@ -8,7 +8,7 @@ import android.content.Context
 import android.net.Uri
 
 /**
- * Value type that represents a request for showing a native dialog for prompt web content.
+ * Value type that represents a request for showing a native dialog for prompt web mContent.
  *
  */
 sealed class PromptRequest {
@@ -161,7 +161,7 @@ sealed class PromptRequest {
 
     /**
      * Value type that represents a request for showing a pop-pup prompt.
-     * This occurs when content attempts to open a new window,
+     * This occurs when mContent attempts to open a new window,
      * in a way that doesn't appear to be the result of user input.
      *
      * @property targetUri the uri that the page is trying to open.

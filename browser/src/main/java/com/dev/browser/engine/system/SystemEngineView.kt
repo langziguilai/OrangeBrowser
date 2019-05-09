@@ -72,7 +72,7 @@ class SystemEngineView @JvmOverloads constructor(
     internal var lastDialogShownAt = Date()
 
     /**
-     * Render the content of the given session.
+     * Render the mContent of the given session.
      */
     override fun render(session: EngineSession) {
         removeAllViews()

@@ -25,7 +25,7 @@ package com.dev.browser.session.manifest
  * @property backgroundColor Defines the expected “background color” for the website. This value repeats what is
  * already available in the site’s CSS, but can be used by browsers to draw the background color of a shortcut when
  * the manifest is available before the stylesheet has loaded. This creates a smooth transition between launching the
- * web application and loading the site's content.
+ * web application and loading the site's mContent.
  * @property description Provides a general description of what the pinned website does.
  * @property icons Specifies a list of image files that can serve as application icons, depending on context. For
  * example, they can be used to represent the web application amongst a list of other applications, or to integrate the

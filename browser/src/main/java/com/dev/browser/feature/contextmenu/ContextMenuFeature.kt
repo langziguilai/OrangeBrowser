@@ -19,7 +19,7 @@ import com.dev.browser.session.SessionManager
 internal const val FRAGMENT_TAG = "mozac_feature_contextmenu_dialog"
 
 /**
- * Feature for displaying a context menu after long-pressing web content.
+ * Feature for displaying a context menu after long-pressing web mContent.
  *
  * This feature will subscribe to the currently selected [Session] and display the context menu based on
  * [Session.Observer.onLongPress] events. Once the context menu is closed or the user selects an item from the context

@@ -40,7 +40,7 @@ abstract class DownloadDialogFragment : BaseTransparentFullScreenDialogFragment(
          */
         const val KEY_FILE_NAME = "KEY_FILE_NAME"
         /**
-         * Key for finding the content length in the arguments.
+         * Key for finding the mContent length in the arguments.
          */
         const val KEY_CONTENT_LENGTH = "KEY_CONTENT_LENGTH"
         /**

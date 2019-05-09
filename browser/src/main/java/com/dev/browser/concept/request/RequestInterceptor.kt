@@ -40,7 +40,7 @@ interface RequestInterceptor {
      * providing custom behavior.
      *
      * @param session The engine session that initiated the callback.
-     * @return An [InterceptionResponse] object containing alternative content
+     * @return An [InterceptionResponse] object containing alternative mContent
      * or an alternative URL. Null if the original request should continue to
      * be loaded.
      */
@@ -53,7 +53,7 @@ interface RequestInterceptor {
      * @param errorType The error that was provided by the engine related to the
      * type of error caused.
      * @param uri The uri that resulted in the error.
-     * @return An [ErrorResponse] object containing content to display for the
+     * @return An [ErrorResponse] object containing mContent to display for the
      * provided error type.
      */
     fun onErrorRequest(session: EngineSession, errorType: ErrorType, uri: String?): ErrorResponse? = null

@@ -108,6 +108,7 @@
     <string name="web_setting">网页选项</string>
     <string name="clear_cache">清除缓存</string>
     <string name="ad_block">广告拦截</string>
+    <string name="accept_ad">可接受广告</string>
     <string name="library">实验室</string>
     <string name="custom_config">自定义配置</string>
     <string name="action_and_gesture">操作与手势</string>
@@ -200,7 +201,8 @@
     <string name="ad_block_status">已拦截页面广告0条</string>
     <string name="show_tip_when_block_ad">拦截时显示提示</string>
     <string name="default_ad_block_rule">默认规则</string>
-    <string name="magic_browser_rules">Magic Browser Rules</string>
+    <string name="ad_block_subscriptions">AdBlock订阅列表</string>
+    <string name="ad_block_update_connection">AdBlock联网更新</string>
     <string name="ab_block_status">已拦截?条</string>
     <string name="my_ad_block_rules">我的规则</string>
     <string name="white_list_sites">白名单网站</string>

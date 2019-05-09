@@ -127,7 +127,7 @@ interface AwesomeBar {
         }
 
         /**
-         * Returns true if the content of the two suggestions is the same.
+         * Returns true if the mContent of the two suggestions is the same.
          *
          * This is used by [AwesomeBar] implementations to decide whether an updated suggestion (same id) needs its
          * view to be updated in order to display new data.

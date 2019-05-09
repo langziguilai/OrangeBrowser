@@ -17,7 +17,7 @@ import java.nio.charset.Charset
  * being returned as the result of calling [Client.fetch].
  *
  * A [Response] may hold references to other resources (e.g. streams). Therefore it's important to always close the
- * [Response] object or its [Body]. This can be done by either consuming the content of the [Body] with one of the
+ * [Response] object or its [Body]. This can be done by either consuming the mContent of the [Body] with one of the
  * available methods or by using Kotlin's extension methods for using [Closeable] implementations (like `use()`):
  *
  * ```Kotlin
@@ -46,7 +46,7 @@ data class Response(
      * **The response body can be consumed only once.**.
      *
      * @param stream the input stream from which the response body can be read.
-     * @param contentType optional content-type as provided in the response
+     * @param contentType optional mContent-type as provided in the response
      * header. If specified, an attempt will be made to look up the charset
      * which will be used for decoding the body. If not specified, or if the
      * charset can't be found, UTF-8 will be used for decoding.
@@ -83,7 +83,7 @@ data class Response(
          * whether an exception is thrown or not.
          *
          * @param charset the optional charset to use when decoding the body. If not specified,
-         * the charset provided in the response content-type header will be used. If the header
+         * the charset provided in the response mContent-type header will be used. If the header
          * is missing or the charset is not supported, UTF-8 will be used.
          * @param block a function to consume the buffered reader.
          *
@@ -98,7 +98,7 @@ data class Response(
          * Takes care of closing the body down correctly whether an exception is thrown or not.
          *
          * @param charset the optional charset to use when decoding the body. If not specified,
-         * the charset provided in the response content-type header will be used. If the header
+         * the charset provided in the response mContent-type header will be used. If the header
          * is missing or the charset not supported, UTF-8 will be used.
          */
         fun string(charset: Charset? = null): String = useBufferedReader(charset) { it.readText() }

@@ -19,7 +19,7 @@ android {
     }
     buildTypes {
         release {
-            minifyEnabled true
+            minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
@@ -73,7 +73,7 @@ dependencies {
     //state
     implementation 'com.evernote:android-state:1.4.1'
     kapt 'com.evernote:android-state-processor:1.4.1'
-
+    implementation 'org.adblockplus:adblock-android:3.0'
     implementation project(':base')
     implementation project(':util')
     implementation project(':view')

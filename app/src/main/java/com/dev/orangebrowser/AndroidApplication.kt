@@ -3,6 +3,7 @@ package com.dev.orangebrowser
 import android.os.Environment
 import android.util.Log
 import com.dev.base.BaseApplication
+import com.dev.browser.adblock.setting.AdblockHelper
 import com.dev.browser.session.Session
 import com.dev.browser.session.SessionManager
 import com.dev.orangebrowser.data.model.ApplicationData
@@ -72,6 +73,11 @@ class AndroidApplication:BaseApplication(),CoroutineScope {
             }
         }
         sessionManager.register(sessionClearObserver)
+        AdblockHelper.get().apply {
+            init(this@AndroidApplication,"adblock",true,"adblock_pref")
+            provider.retain(true)
+        }
+
     }
 
     override fun onTerminate() {

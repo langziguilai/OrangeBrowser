@@ -42,7 +42,7 @@ object DownloadUtils {
         var filename: String? = null
         var extension: String? = null
 
-        // Extract file name from content disposition header field
+        // Extract file name from mContent disposition header field
         if (contentDisposition != null) {
             filename = parseContentDisposition(contentDisposition)
             if (filename != null) {

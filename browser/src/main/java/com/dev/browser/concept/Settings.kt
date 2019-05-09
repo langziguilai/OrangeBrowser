@@ -67,7 +67,7 @@ abstract class Settings {
     open var displayZoomControls: Boolean by UnsupportedSetting()
 
     /**
-     * Setting to control whether or not the engine zooms out the content to fit on screen by width.
+     * Setting to control whether or not the engine zooms out the mContent to fit on screen by width.
      */
     open var loadWithOverviewMode: Boolean by UnsupportedSetting()
 
@@ -78,18 +78,18 @@ abstract class Settings {
 
     /**
      * Setting to control whether or not JavaScript running in the context of a file scheme URL
-     * should be allowed to access content from other file scheme URLs.
+     * should be allowed to access mContent from other file scheme URLs.
      */
     open var allowFileAccessFromFileURLs: Boolean by UnsupportedSetting()
 
     /**
      * Setting to control whether or not JavaScript running in the context of a file scheme URL
-     * should be allowed to access content from any origin.
+     * should be allowed to access mContent from any origin.
      */
     open var allowUniversalAccessFromFileURLs: Boolean by UnsupportedSetting()
 
     /**
-     * Setting to control whether or not the engine is allowed to load content from a content
+     * Setting to control whether or not the engine is allowed to load mContent from a mContent
      * provider installed in the system.
      */
     open var allowContentAccess: Boolean by UnsupportedSetting()

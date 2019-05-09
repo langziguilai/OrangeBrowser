@@ -12,7 +12,7 @@ import androidx.lifecycle.OnLifecycleEvent
 import androidx.lifecycle.LifecycleObserver
 
 /**
- * View component that renders web content.
+ * View component that renders web mContent.
  */
 interface EngineView {
 
@@ -25,7 +25,7 @@ interface EngineView {
      */
     fun getLongClickPosition():Point
     /**
-     * Render the content of the given session.
+     * Render the mContent of the given session.
      */
     fun render(session: EngineSession)
 

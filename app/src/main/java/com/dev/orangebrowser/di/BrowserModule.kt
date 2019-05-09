@@ -1,6 +1,8 @@
 package com.dev.orangebrowser.di
 
 import android.content.Context
+import com.dev.browser.adblock.setting.AdblockHelper
+import com.dev.browser.adblock.setting.AdblockSettingsStorage
 import com.dev.browser.concept.Engine
 import com.dev.browser.concept.fetch.Client
 import com.dev.browser.concept.history.HistoryTrackingDelegate
@@ -18,6 +20,7 @@ import com.dev.browser.session.SessionManager
 import com.dev.browser.storage.local.PlacesHistoryStorage
 import dagger.Module
 import dagger.Provides
+import org.adblockplus.libadblockplus.android.AdblockEngine
 import javax.inject.Singleton
 
 @Module
@@ -86,5 +89,24 @@ class BrowserModule {
         return ShippedDomainsProvider().apply {
             this.initialize(context)
         }
+    }
+
+    //AdBlockHelper
+    @Provides
+    @Singleton
+    fun provideAdBlockHelper(context: Context): AdblockHelper {
+        return AdblockHelper.get()
+    }
+    //AdBlockEngine
+    @Provides
+    @Singleton
+    fun provideAdBlockEngine(context: Context): AdblockEngine {
+        return AdblockHelper.get().provider.engine
+    }
+    //AdBlockSettingStorage
+    @Provides
+    @Singleton
+    fun provideAdBlockSettingStorage(context: Context): AdblockSettingsStorage {
+        return AdblockHelper.get().storage
     }
 }

@@ -10,9 +10,9 @@
 //import android.graphics.Color
 //import android.graphics.drawable.BitmapDrawable
 //import android.support.annotation.VisibleForTesting
-//import android.support.v4.content.ContextCompat
+//import android.support.v4.mContent.ContextCompat
 //import androidx.annotation.VisibleForTesting
-//import androidx.core.content.ContextCompat
+//import androidx.core.mContent.ContextCompat
 //import com.dev.base.support.BackHandler
 //import com.dev.base.support.LifecycleAwareFeature
 //import com.dev.browser.R
@@ -32,7 +32,7 @@
 //import mozilla.components.concept.toolbar.Toolbar
 //import mozilla.components.support.base.feature.BackHandler
 //import mozilla.components.support.base.feature.LifecycleAwareFeature
-//import mozilla.components.support.ktx.android.content.share
+//import mozilla.components.support.ktx.android.mContent.share
 //
 ///**
 // * Initializes and resets the Toolbar for a Custom Tab based on the CustomTabConfig.
