@@ -26,6 +26,7 @@ import android.webkit.WebStorage;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
+import com.dev.browser.adblock.setting.AdblockHelper;
 import org.adblockplus.libadblockplus.FilterEngine;
 import org.adblockplus.libadblockplus.Subscription;
 import org.adblockplus.libadblockplus.android.AdblockEngine;
@@ -844,8 +845,9 @@ public class AdblockWebView extends WebView {
         // if AdblockWebView works as drop-in replacement for WebView 'provider' is not set.
         // Thus AdblockWebView is using SingleInstanceEngineProvider instance
         if (provider == null) {
-            setProvider(new SingleInstanceEngineProvider(
-                    getContext(), AdblockEngine.BASE_PATH_DIRECTORY, debugMode));
+//            setProvider(new SingleInstanceEngineProvider(
+//                    getContext(), AdblockEngine.BASE_PATH_DIRECTORY, debugMode));
+            setProvider(AdblockHelper.get().getProvider());
         }
     }
 

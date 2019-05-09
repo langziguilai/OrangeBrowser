@@ -13,6 +13,7 @@ import com.dev.orangebrowser.di.DaggerApplicationComponent
 import com.dev.orangebrowser.di.DatabaseModule
 import com.dev.util.FileUtil
 import kotlinx.coroutines.*
+import org.adblockplus.libadblockplus.android.AdblockEngine
 import java.lang.Exception
 import javax.inject.Inject
 import kotlin.coroutines.CoroutineContext
@@ -74,7 +75,7 @@ class AndroidApplication:BaseApplication(),CoroutineScope {
         }
         sessionManager.register(sessionClearObserver)
         AdblockHelper.get().apply {
-            init(this@AndroidApplication,"adblock",true,"adblock_pref")
+            init(this@AndroidApplication, AdblockEngine.BASE_PATH_DIRECTORY,true,"adblock_pref")
             provider.retain(true)
         }
 
