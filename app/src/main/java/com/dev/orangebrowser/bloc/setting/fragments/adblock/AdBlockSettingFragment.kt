@@ -71,14 +71,16 @@ class AdBlockSettingFragment : BaseAdBlockSettingFragment(), BackHandler {
         binding.recyclerView.layoutManager = LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
     }
 
+    lateinit var dataList: LinkedList<Any>
     override fun initData(savedInstanceState: Bundle?) {
-        val adapter = Adapter(getData())
+        dataList = getData()
+        val adapter = Adapter(dataList)
         binding.recyclerView.adapter = adapter
     }
 
 
     //TODO:添加Action
-    private fun getData(): List<Any> {
+    private fun getData(): LinkedList<Any> {
         val list = LinkedList<Any>()
 //        val adBlockCount = getSpInt(R.string.pref_setting_ad_block_count, 0)
 //        list.add(
@@ -105,12 +107,15 @@ class AdBlockSettingFragment : BaseAdBlockSettingFragment(), BackHandler {
 //                setSpBool(R.string.pref_setting_enable_show_tip_when_block_ad, data)
 //            }
 //        }, value = getSpBool(R.string.pref_setting_enable_show_tip_when_block_ad, true)))
-        var updateTip=""
+        var updateTip = ""
         settings?.allowedConnectionType?.name?.apply {
-            when(this){
-                ConnectionType.ANY.name-> updateTip=getString(R.string.fragment_adblock_settings_allowed_connection_type_all)
-                ConnectionType.WIFI.name-> updateTip=getString(R.string.fragment_adblock_settings_allowed_connection_type_wifi)
-                ConnectionType.WIFI_NON_METERED.name-> updateTip=getString(R.string.fragment_adblock_settings_allowed_connection_type_wifi_non_metered)
+            when (this) {
+                ConnectionType.ANY.name -> updateTip =
+                    getString(R.string.fragment_adblock_settings_allowed_connection_type_all)
+                ConnectionType.WIFI.name -> updateTip =
+                    getString(R.string.fragment_adblock_settings_allowed_connection_type_wifi)
+                ConnectionType.WIFI_NON_METERED.name -> updateTip =
+                    getString(R.string.fragment_adblock_settings_allowed_connection_type_wifi_non_metered)
             }
         }
         list.add(
@@ -203,8 +208,6 @@ class AdBlockSettingFragment : BaseAdBlockSettingFragment(), BackHandler {
         // apply settings
         adBlockEngine.isAcceptableAdsEnabled = enabledValue
     }
-
-
 
     private fun handleEnabledChanged(newValue: Boolean) {
         // update and save settings
