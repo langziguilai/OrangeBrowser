@@ -80,13 +80,13 @@ class AdBlockSettingFragment : BaseAdBlockSettingFragment(), BackHandler {
     //TODO:添加Action
     private fun getData(): List<Any> {
         val list = LinkedList<Any>()
-        val adBlockCount = getSpInt(R.string.pref_setting_ad_block_count, 0)
-        list.add(
-            AdblockStatusItem(
-                count = adBlockCount.toString(),
-                status = getString(R.string.ad_block_status).replace("0", adBlockCount.toString())
-            )
-        )
+//        val adBlockCount = getSpInt(R.string.pref_setting_ad_block_count, 0)
+//        list.add(
+//            AdblockStatusItem(
+//                count = adBlockCount.toString(),
+//                status = getString(R.string.ad_block_status).replace("0", adBlockCount.toString())
+//            )
+//        )
         list.add(DividerItem(height = 24, background = getColor(R.color.color_F8F8F8)))
 
         list.add(SwitchItem(title = getString(R.string.ad_block), action = object : Action<Boolean> {
@@ -100,11 +100,11 @@ class AdBlockSettingFragment : BaseAdBlockSettingFragment(), BackHandler {
             }
         }, value = settings?.isAcceptableAdsEnabled ?: true))
 
-        list.add(SwitchItem(title = getString(R.string.show_tip_when_block_ad), action = object : Action<Boolean> {
-            override fun invoke(data: Boolean) {
-                setSpBool(R.string.pref_setting_enable_show_tip_when_block_ad, data)
-            }
-        }, value = getSpBool(R.string.pref_setting_enable_show_tip_when_block_ad, true)))
+//        list.add(SwitchItem(title = getString(R.string.show_tip_when_block_ad), action = object : Action<Boolean> {
+//            override fun invoke(data: Boolean) {
+//                setSpBool(R.string.pref_setting_enable_show_tip_when_block_ad, data)
+//            }
+//        }, value = getSpBool(R.string.pref_setting_enable_show_tip_when_block_ad, true)))
         var updateTip=""
         settings?.allowedConnectionType?.name?.apply {
             when(this){

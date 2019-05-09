@@ -9,8 +9,12 @@
                                                    android:background="@color/colorWhite">
     <TextView android:textSize="16sp" android:textColor="#6C6C6C" tools:text="云同步"
               app:layout_constraintTop_toTopOf="parent"
-              app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintStart_toStartOf="parent"
-              android:id="@+id/title" android:layout_width="wrap_content" android:layout_height="21dp"
+              app:layout_constraintBottom_toBottomOf="parent"
+              app:layout_constraintStart_toStartOf="parent"
+              android:ellipsize="end"
+              android:id="@+id/title"
+              android:layout_width="wrap_content"
+              android:layout_height="21dp"
               android:layout_marginStart="14dp"/>
     <CheckBox android:id="@+id/checkbox"
               style="@style/checkbox"

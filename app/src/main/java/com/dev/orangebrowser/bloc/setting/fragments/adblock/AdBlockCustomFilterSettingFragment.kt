@@ -31,11 +31,11 @@ import kotlinx.coroutines.launch
 import org.adblockplus.libadblockplus.android.Subscription
 import java.util.*
 
-class AdBlockSubscriptionSettingFragment : BaseAdBlockSettingFragment(), BackHandler {
+class AdBlockCustomFilterSettingFragment : BaseAdBlockSettingFragment(), BackHandler {
 
     companion object {
-        const val Tag = "AdBlockSubscriptionSettingFragment"
-        fun newInstance() = AdBlockSubscriptionSettingFragment()
+        const val Tag = "AdBlockCustomFilterSettingFragment"
+        fun newInstance() = AdBlockCustomFilterSettingFragment()
     }
 
     lateinit var activityViewModel: MainViewModel

@@ -27,15 +27,6 @@
                       android:textColor="@color/colorWhite"
                       android:layout_width="match_parent"
                       android:layout_height="match_parent"/>
-            <com.dev.view.IconfontTextView
-                    android:id="@+id/add"
-                    android:layout_width="42dp"
-                    android:layout_height="38dp"
-                    android:textColor="@color/colorWhite"
-                    android:textSize="18sp"
-                    android:text="@string/ic_circle_plus"
-                    android:gravity="center"
-                    android:layout_gravity="start|center_vertical"/>
         </FrameLayout>
         <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerView"

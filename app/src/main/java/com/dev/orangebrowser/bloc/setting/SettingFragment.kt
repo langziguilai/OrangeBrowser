@@ -15,6 +15,7 @@ import com.dev.browser.session.SessionManager
 import com.dev.orangebrowser.R
 import com.dev.orangebrowser.bloc.host.MainViewModel
 import com.dev.orangebrowser.bloc.setting.adapter.Adapter
+import com.dev.orangebrowser.bloc.setting.fragments.adblock.BaseAdBlockSettingFragment
 import com.dev.orangebrowser.bloc.setting.viewholder.*
 import com.dev.orangebrowser.bloc.setting.viewholder.base.Action
 import com.dev.orangebrowser.databinding.FragmentMainSettingBinding
@@ -22,9 +23,7 @@ import com.dev.orangebrowser.extension.*
 import java.util.*
 import javax.inject.Inject
 
-class SettingFragment : BaseFragment(),BackHandler {
-
-
+class SettingFragment : BaseAdBlockSettingFragment(),BackHandler {
     companion object {
         const val Tag="SettingFragment"
         fun newInstance() = SettingFragment()
@@ -110,9 +109,12 @@ class SettingFragment : BaseFragment(),BackHandler {
             }
         }))
         var adBlockTip=getString(R.string.closed)
-        if(getSpBool(R.string.pref_setting_ad_block_on,false)){
-            adBlockTip=getString(R.string.opened)
+        settings?.isAdblockEnabled?.apply {
+            if(this){
+                adBlockTip=getString(R.string.opened)
+            }
         }
+
         list.add(TileItem(title=getString(R.string.ad_block),tip=adBlockTip,icon = getString(R.string.ic_right),action = object:Action<TileItem>{
             override fun invoke(data: TileItem) {
                        RouterActivity?.loadAdBlockSettinglFragment()

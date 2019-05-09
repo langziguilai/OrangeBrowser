@@ -768,9 +768,10 @@ public class AdblockWebView extends WebView {
 //                            List<FilterEngine.EmulationSelector> emuSelectors = provider
 //                                    .getEngine()
 //                                    .getElementHidingEmulationSelectors(url, domain, referrers);
+                            emuSelectorsString="" ;
+                             //d("Finished requesting elemhideemu selectors, got " + emuSelectors.size() + " in " + this);
+                             //emuSelectorsString = Utils.emulationSelectorListToJsonArray(emuSelectors);
 
-                            // d("Finished requesting elemhideemu selectors, got " + emuSelectors.size() + " in " + this);
-                            // emuSelectorsString = Utils.emulationSelectorListToJsonArray(emuSelectors);
                         }
                     }
                 } finally {
