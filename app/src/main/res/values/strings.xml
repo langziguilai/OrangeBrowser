@@ -251,5 +251,9 @@
     <string name="tip_rule_deleted">规则已经删除</string>
     <string name="tip_add_filter">自定义过滤器规则，可查看帮助来查看规则</string>
     <string name="input_valid_rule">请输入正确的规则</string>
+    <string name="ad_block_white_list">AdBlock白名单</string>
+    <string name="input_white_list_url">请输入白名单网址</string>
+    <string name="add_white_list">新增白名单</string>
+    <string name="tip_domain_deleted">域名已删除</string>
 
 </resources>

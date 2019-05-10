@@ -234,6 +234,7 @@ class AdBlockSubscriptionSettingFragment : BaseAdBlockSettingFragment(), BackHan
                 selectedTitles.add(subscription.title)
                 handleFilterListsChanged(selectedTitles)
                 launch(Dispatchers.Main) {
+                    binding.addRuleText.setText("")
                     binding.recyclerView.adapter?.notifyDataSetChanged()
                 }
 

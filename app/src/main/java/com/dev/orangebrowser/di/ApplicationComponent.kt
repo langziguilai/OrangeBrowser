@@ -17,10 +17,7 @@ import com.dev.orangebrowser.bloc.scan.ScanFragment
 import com.dev.orangebrowser.bloc.search.SearchFragment
 import com.dev.orangebrowser.bloc.setting.SettingFragment
 import com.dev.orangebrowser.bloc.setting.fragments.*
-import com.dev.orangebrowser.bloc.setting.fragments.adblock.AdBlockConnectionSettingFragment
-import com.dev.orangebrowser.bloc.setting.fragments.adblock.AdBlockFilterSettingFragment
-import com.dev.orangebrowser.bloc.setting.fragments.adblock.AdBlockSubscriptionSettingFragment
-import com.dev.orangebrowser.bloc.setting.fragments.adblock.AdBlockSettingFragment
+import com.dev.orangebrowser.bloc.setting.fragments.adblock.*
 import com.dev.orangebrowser.bloc.sourcecode.SourceCodeFragment
 import com.dev.orangebrowser.bloc.tabs.TabFragment
 import com.dev.orangebrowser.bloc.theme.ThemeFragment
@@ -69,5 +66,6 @@ interface ApplicationComponent {
     fun inject(openAppSettingFragment: OpenAppSettingFragment)
     fun inject(adBlockSubscriptionSettingFragment: AdBlockSubscriptionSettingFragment)
     fun inject(adBlockFilterSettingFragment: AdBlockFilterSettingFragment)
+    fun inject(adBlockWhiteListSettingFragment: AdBlockWhiteListSettingFragment)
     fun inject(adBlockConnectionSettingFragment: AdBlockConnectionSettingFragment)
 }

@@ -170,7 +170,7 @@ class AdBlockSettingFragment : BaseAdBlockSettingFragment(), BackHandler {
                 icon = getString(R.string.ic_right),
                 action = object : Action<TileItem> {
                     override fun invoke(data: TileItem) {
-                        //TODO:打开白名单
+                        RouterActivity?.loadAdBlockWhiteListSettingFragment()
                     }
                 })
         )
@@ -183,7 +183,6 @@ class AdBlockSettingFragment : BaseAdBlockSettingFragment(), BackHandler {
             )
         )
         list.add(DividerItem(height = 24, background = getColor(R.color.color_F8F8F8)))
-
         list.add(
             TileItem(
                 title = getString(R.string.help),

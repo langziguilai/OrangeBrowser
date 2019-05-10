@@ -12,35 +12,28 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.dev.base.extension.*
 import com.dev.base.support.BackHandler
-import com.dev.base.support.isUrl
 import com.dev.orangebrowser.R
 import com.dev.orangebrowser.bloc.host.MainViewModel
 import com.dev.orangebrowser.bloc.setting.adapter.Adapter
 import com.dev.orangebrowser.bloc.setting.viewholder.TickItem
 import com.dev.orangebrowser.bloc.setting.viewholder.base.Action
-import com.dev.orangebrowser.data.dao.AdBlockFilterDao
-import com.dev.orangebrowser.data.model.AdBlockFilter
-import com.dev.orangebrowser.databinding.FragmentAdBlockFilterSettingBinding
+import com.dev.orangebrowser.databinding.FragmentAdBlockWhiteListSettingBinding
 import com.dev.orangebrowser.extension.RouterActivity
 import com.dev.orangebrowser.extension.appComponent
 import com.dev.util.DensityUtil
-import kotlinx.android.synthetic.main.fragment_ad_block_subscription_setting.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import org.adblockplus.libadblockplus.android.Subscription
 import java.util.*
-import javax.inject.Inject
 
-class AdBlockFilterSettingFragment : BaseAdBlockSettingFragment(), BackHandler {
+class AdBlockWhiteListSettingFragment : BaseAdBlockSettingFragment(), BackHandler {
 
     companion object {
-        const val Tag = "AdBlockFilterSettingFragment"
-        fun newInstance() = AdBlockFilterSettingFragment()
+        const val Tag = "AdBlockWhiteListSettingFragment"
+        fun newInstance() = AdBlockWhiteListSettingFragment()
     }
-    @Inject
-    lateinit var dao:AdBlockFilterDao
+
     lateinit var activityViewModel: MainViewModel
-    lateinit var binding: FragmentAdBlockFilterSettingBinding
+    lateinit var binding: FragmentAdBlockWhiteListSettingBinding
     override fun onBackPressed(): Boolean {
         RouterActivity?.loadAdBlockSettinglFragment()
         return true
@@ -49,7 +42,7 @@ class AdBlockFilterSettingFragment : BaseAdBlockSettingFragment(), BackHandler {
 
     //获取layoutResourceId
     override fun getLayoutResId(): Int {
-        return R.layout.fragment_ad_block_filter_setting
+        return R.layout.fragment_ad_block_white_list_setting
     }
 
     override fun useDataBinding(): Boolean {
@@ -62,8 +55,8 @@ class AdBlockFilterSettingFragment : BaseAdBlockSettingFragment(), BackHandler {
         appComponent.inject(this)
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        binding = FragmentAdBlockFilterSettingBinding.bind(super.onCreateView(inflater, container, savedInstanceState))
+    override  fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+        binding = FragmentAdBlockWhiteListSettingBinding.bind(super.onCreateView(inflater, container, savedInstanceState))
         return binding.root
     }
 
@@ -95,8 +88,8 @@ class AdBlockFilterSettingFragment : BaseAdBlockSettingFragment(), BackHandler {
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 val position=viewHolder.adapterPosition
                 if (position>=0){
-                   val rule= (dataList[position] as TickItem).title
-                    deleteRule(rule)
+                   val domain= (dataList[position] as TickItem).title
+                    deleteDomain(domain)
                     dataList.removeAt(position)
                     binding.recyclerView.adapter?.notifyItemRemoved(position)
                 }
@@ -104,41 +97,41 @@ class AdBlockFilterSettingFragment : BaseAdBlockSettingFragment(), BackHandler {
 
         }).attachToRecyclerView(binding.recyclerView)
         binding.add.setOnClickListener {
-            showAddFilterDialog()
+            showAddWhiteListDialog()
         }
-        binding.addFilterContainer.onGlobalLayoutComplete{
+        binding.addWhiteListContainer.onGlobalLayoutComplete{
             it.translationY=(it.measuredHeight+DensityUtil.dip2px(requireContext(),8f)).toFloat()
             binding.bottomOverlay.hide()
         }
         binding.bottomOverlay.setOnClickListener {
-            hideAddFilterDialog()
+            hideAddWhiteListDialog()
         }
-        binding.cancelAddFilterBtn.setOnClickListener {
-            hideAddFilterDialog()
+        binding.cancelAddWhiteListBtn.setOnClickListener {
+            hideAddWhiteListDialog()
         }
-        binding.addFilterBtn.setOnClickListener {
-            val text=binding.addFilterText.text.toString().trim()
-            if (isValidRule(text)){
-                addFilter(text)
-                hideAddFilterDialog()
+        binding.addWhiteListBtn.setOnClickListener {
+            val text=binding.addWhiteListText.text.toString().trim()
+            if (isValidSite(text)){
+                addWhiteListDomain(text)
+                hideAddWhiteListDialog()
             }else{
                 Toast.makeText(requireContext(),getString(R.string.input_valid_rule),Toast.LENGTH_SHORT).show()
             }
         }
     }
     //TODO:判断规则是否准确
-    private fun isValidRule(rule:String):Boolean{
+    private fun isValidSite(rule:String):Boolean{
         return true
     }
     //
-    private fun showAddFilterDialog(){
+    private fun showAddWhiteListDialog(){
         binding.bottomOverlay.show()
-        binding.addFilterContainer.animate().alpha(1f).translationY(0f)
+        binding.addWhiteListContainer.animate().alpha(1f).translationY(0f)
             .setInterpolator(DEFAULT_INTERPOLATOR).setDuration(NORMAL_ANIMATION).start()
     }
-    private fun hideAddFilterDialog(){
-        binding.addFilterText.hideKeyboard()
-        val view=binding.addFilterContainer
+    private fun hideAddWhiteListDialog(){
+        binding.addWhiteListText.hideKeyboard()
+        val view=binding.addWhiteListContainer
         view.animate().alpha(0f).translationY((view.measuredHeight+DensityUtil.dip2px(requireContext(),8f)).toFloat())
             .withEndAction {
                 binding.bottomOverlay.hide()
@@ -158,51 +151,66 @@ class AdBlockFilterSettingFragment : BaseAdBlockSettingFragment(), BackHandler {
 
     private fun getData(): LinkedList<Any> {
         val list = LinkedList<Any>()
-        dao.getAll().forEach {
-            it.rule?.apply {
-                list.add(TickItem(title = this, action = object : Action<TickItem> {
-                    override fun invoke(data: TickItem) {
-                    }
-                }, value = false))
+        settings?.whitelistedDomains?.apply {
+            this.forEach {
+                    list.add(TickItem(title = it, action = object : Action<TickItem> {
+                        override fun invoke(data: TickItem) {
+                        }
+                    }, value = false))
             }
         }
-
         return list
     }
 
-    private fun addFilter(rule:String){
-        launch(Dispatchers.IO) {
-            val filerPtr= adBlockEngine.filterEngine.getFilter(rule)
-            //如果不在列表中,就添加到列表中
-            if (!filerPtr.isListed){
-                filerPtr.addToList()
+    private fun addWhiteListDomain(domain:String){
+        settings?.apply {
+            val localSettings=this
+            var whitelistedDomains: MutableList<String>? = localSettings.whitelistedDomains
+            if (whitelistedDomains == null) {
+                whitelistedDomains = LinkedList()
+                localSettings.whitelistedDomains = whitelistedDomains
             }
-            //如果不存在，则添加
-            if(dao.count(rule)==0){
-                val adBlockFilter=AdBlockFilter(rule = rule)
-                dao.insertAll(adBlockFilter)
-                dataList.add(
-                    TickItem(title =adBlockFilter.rule ?: "", action = object : Action<TickItem> {
+            // update and save settings
+            if (!whitelistedDomains.contains(domain)){
+                launch (Dispatchers.IO){
+                    whitelistedDomains.add(domain)
+                    adBlockSettingsStorage.save(localSettings)
+                    adBlockEngine.whitelistedDomains = whitelistedDomains
+                    dataList.add(TickItem(title =domain, action = object : Action<TickItem> {
                         override fun invoke(data: TickItem) {
                         }
-                    }, value = false)
-                )
-                launch(Dispatchers.Main) {
-                    binding.addFilterText.setText("")
-                    binding.recyclerView.adapter?.notifyItemInserted(dataList.size-1)
+                    }, value = false))
+                    launch(Dispatchers.Main) {
+                        binding.addWhiteListText.setText("")
+                        binding.recyclerView.adapter?.notifyItemInserted(dataList.size-1)
+                    }
                 }
             }
         }
+
     }
-    private fun deleteRule(rule:String){
-        launch(Dispatchers.IO) {
-            dao.delete(rule)
-            val filter=adBlockEngine.filterEngine.getFilter(rule)
-            if (filter.isListed){
-                filter.removeFromList()
+    private fun deleteDomain(domain:String){
+        settings?.apply {
+            val localSettings=this
+            var whitelistedDomains: MutableList<String>? = localSettings.whitelistedDomains
+            if (whitelistedDomains == null) {
+                whitelistedDomains = LinkedList()
+                localSettings.whitelistedDomains = whitelistedDomains
             }
-            launch(Dispatchers.Main) {
-                Toast.makeText(requireContext(),getString(R.string.tip_rule_deleted),Toast.LENGTH_SHORT).show()
+            // update and save settings
+            if (whitelistedDomains.contains(domain)){
+                launch (Dispatchers.IO){
+                    whitelistedDomains.remove(domain)
+                    adBlockSettingsStorage.save(localSettings)
+                    adBlockEngine.whitelistedDomains = whitelistedDomains
+                    dataList.add(TickItem(title =domain, action = object : Action<TickItem> {
+                        override fun invoke(data: TickItem) {
+                        }
+                    }, value = false))
+                    launch(Dispatchers.Main) {
+                        Toast.makeText(requireContext(),getString(R.string.tip_domain_deleted),Toast.LENGTH_SHORT).show()
+                    }
+                }
             }
         }
     }

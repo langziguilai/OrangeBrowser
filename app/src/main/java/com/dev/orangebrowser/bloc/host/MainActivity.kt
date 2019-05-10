@@ -26,10 +26,7 @@ import com.dev.orangebrowser.bloc.scan.ScanFragment
 import com.dev.orangebrowser.bloc.search.SearchFragment
 import com.dev.orangebrowser.bloc.setting.SettingFragment
 import com.dev.orangebrowser.bloc.setting.fragments.*
-import com.dev.orangebrowser.bloc.setting.fragments.adblock.AdBlockConnectionSettingFragment
-import com.dev.orangebrowser.bloc.setting.fragments.adblock.AdBlockFilterSettingFragment
-import com.dev.orangebrowser.bloc.setting.fragments.adblock.AdBlockSubscriptionSettingFragment
-import com.dev.orangebrowser.bloc.setting.fragments.adblock.AdBlockSettingFragment
+import com.dev.orangebrowser.bloc.setting.fragments.adblock.*
 import com.dev.orangebrowser.bloc.sourcecode.SourceCodeFragment
 import com.dev.orangebrowser.bloc.tabs.TabFragment
 import com.dev.orangebrowser.bloc.theme.ThemeFragment
@@ -402,7 +399,11 @@ class MainActivity : BaseActivity() {
         supportFragmentManager.beginTransaction().replace(R.id.container, AdBlockFilterSettingFragment.newInstance())
             .commit()
     }
-
+    //设置AdBlock的白名单
+    fun loadAdBlockWhiteListSettingFragment() {
+        supportFragmentManager.beginTransaction().replace(R.id.container, AdBlockWhiteListSettingFragment.newInstance())
+            .commit()
+    }
     //设置AdBlock的更新选择
     fun loadAdBlockConnectionSettingFragment() {
         supportFragmentManager.beginTransaction()
