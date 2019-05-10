@@ -1,5 +1,6 @@
 package com.dev.orangebrowser.bloc.search
 
+import android.content.ClipboardManager
 import android.content.Context
 import android.os.Bundle
 import android.text.*
@@ -104,14 +105,9 @@ class SearchFragment : BaseFragment(), SearchBar, BackHandler {
         binding.searchText.requestFocus()
         val inputManager = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         inputManager.showSoftInput(binding.searchText, 0)
-
         sessionManager.findSessionById(originalSessionId)?.apply {
-            if (this.url.isBlank()){
-                binding.searchText.updateIme(EditorInfo.IME_ACTION_DONE)
-                binding.go.hide()
-                binding.search.hide()
-                binding.cancel.show()
-            }else{
+
+            if (!this.url.isBlank()){
                 binding.searchText.applyAutocompleteResult(
                     InlineAutocompleteEditText.AutocompleteResult(text = this.url, source = "", totalItems = 1)
                 )
@@ -119,8 +115,12 @@ class SearchFragment : BaseFragment(), SearchBar, BackHandler {
                 binding.go.show()
                 binding.search.hide()
                 binding.cancel.hide()
+            }else{
+                binding.searchText.updateIme(EditorInfo.IME_ACTION_DONE)
+                binding.go.hide()
+                binding.search.hide()
+                binding.cancel.show()
             }
-
         }
         toggleClearIcon()
         binding.clear.setOnClickListener {
@@ -247,8 +247,10 @@ class SearchFragment : BaseFragment(), SearchBar, BackHandler {
 
     //获取搜索引擎
     private fun getSearchEngine(): SearchEngine {
-        val searchEngine=searchEngineManager.getDefaultSearchEngine(requireContext(),getSpString(R.string.pref_setting_search_engine_name,""))
-        return searchEngine
+        return searchEngineManager.getDefaultSearchEngine(
+            requireContext(),
+            getSpString(R.string.pref_setting_search_engine_name,"")
+        )
     }
 
     private fun updateViewByInput(input: String) {
@@ -275,7 +277,7 @@ class SearchFragment : BaseFragment(), SearchBar, BackHandler {
 
     //是否为URL
     private fun isUrl(value: String): Boolean {
-        return Regex("""(https?://)?(www.)?(.+)+(\..+)+""").matches(value)
+        return value.matches(Regex("""^(https?|ftp|file)://[-a-zA-Z0-9+&@#/%?=~_|!:,.;]*[-a-zA-Z0-9+&@#/%=~_|]"""))
     }
 
     private fun getUrl(value: String): String {

@@ -145,7 +145,7 @@ class AdBlockSettingFragment : BaseAdBlockSettingFragment(), BackHandler {
                 icon = getString(R.string.ic_right),
                 action = object : Action<TileItem> {
                     override fun invoke(data: TileItem) {
-                        RouterActivity?.loadAdBlockFilterSettingFragment()
+                        RouterActivity?.loadAdBlockSubscriptionSettingFragment()
                     }
                 })
         )
@@ -158,7 +158,7 @@ class AdBlockSettingFragment : BaseAdBlockSettingFragment(), BackHandler {
                 icon = getString(R.string.ic_right),
                 action = object : Action<TileItem> {
                     override fun invoke(data: TileItem) {
-                        //TODO
+                        RouterActivity?.loadAdBlockFilterSettingFragment()
                     }
                 })
         )

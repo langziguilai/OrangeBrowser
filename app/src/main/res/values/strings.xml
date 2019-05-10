@@ -248,5 +248,8 @@
     <string name="input_valid_url">请输入正确的地址</string>
     <string name="add_new">新建</string>
     <string name="ad_block_custom_filter">我的规则</string>
+    <string name="tip_rule_deleted">规则已经删除</string>
+    <string name="tip_add_filter">自定义过滤器规则，可查看帮助来查看规则</string>
+    <string name="input_valid_rule">请输入正确的规则</string>
 
 </resources>

@@ -4,6 +4,7 @@
 
 package com.dev.browser.ui.inlineautocomplete
 
+import android.content.ClipboardManager
 import android.content.Context
 import android.content.Context.INPUT_METHOD_SERVICE
 import android.graphics.Rect
@@ -19,6 +20,7 @@ import android.text.TextWatcher
 import android.text.style.BackgroundColorSpan
 import android.text.style.ForegroundColorSpan
 import android.util.AttributeSet
+import android.view.ContextMenu
 import android.view.KeyEvent
 import android.view.MotionEvent
 import android.view.View

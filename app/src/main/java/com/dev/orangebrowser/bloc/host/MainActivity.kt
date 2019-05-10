@@ -27,6 +27,7 @@ import com.dev.orangebrowser.bloc.search.SearchFragment
 import com.dev.orangebrowser.bloc.setting.SettingFragment
 import com.dev.orangebrowser.bloc.setting.fragments.*
 import com.dev.orangebrowser.bloc.setting.fragments.adblock.AdBlockConnectionSettingFragment
+import com.dev.orangebrowser.bloc.setting.fragments.adblock.AdBlockFilterSettingFragment
 import com.dev.orangebrowser.bloc.setting.fragments.adblock.AdBlockSubscriptionSettingFragment
 import com.dev.orangebrowser.bloc.setting.fragments.adblock.AdBlockSettingFragment
 import com.dev.orangebrowser.bloc.sourcecode.SourceCodeFragment
@@ -388,16 +389,27 @@ class MainActivity : BaseActivity() {
         supportFragmentManager.beginTransaction().replace(R.id.container, GeneralSettingsFragment.newInstance())
             .commit()
     }
+
     //设置AdBlock的订阅
-    fun loadAdBlockFilterSettingFragment() {
-        supportFragmentManager.beginTransaction().replace(R.id.container, AdBlockSubscriptionSettingFragment.newInstance())
+    fun loadAdBlockSubscriptionSettingFragment() {
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.container, AdBlockSubscriptionSettingFragment.newInstance())
             .commit()
     }
+
+    //设置AdBlock的自定义过滤规则
+    fun loadAdBlockFilterSettingFragment() {
+        supportFragmentManager.beginTransaction().replace(R.id.container, AdBlockFilterSettingFragment.newInstance())
+            .commit()
+    }
+
     //设置AdBlock的更新选择
     fun loadAdBlockConnectionSettingFragment() {
-        supportFragmentManager.beginTransaction().replace(R.id.container, AdBlockConnectionSettingFragment.newInstance())
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.container, AdBlockConnectionSettingFragment.newInstance())
             .commit()
     }
+
     var quitSignal: Boolean = false
     //双击退出
     fun quit() {
