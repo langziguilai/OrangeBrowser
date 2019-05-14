@@ -277,7 +277,7 @@ class SearchFragment : BaseFragment(), SearchBar, BackHandler {
 
     //是否为URL
     private fun isUrl(value: String): Boolean {
-        return value.matches(Regex("""^(https?|ftp|file)://[-a-zA-Z0-9+&@#/%?=~_|!:,.;]*[-a-zA-Z0-9+&@#/%=~_|]"""))
+        return value.matches(Regex("""^(https?://)?(www\.)?([\w-]+\.)+\w+(:\d+)?(/[\w&=?.*]*)?"""))
     }
 
     private fun getUrl(value: String): String {

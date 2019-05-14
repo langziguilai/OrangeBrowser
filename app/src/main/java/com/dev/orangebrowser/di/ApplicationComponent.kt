@@ -57,6 +57,8 @@ interface ApplicationComponent {
     fun inject(gestureSettingFragment: GestureSettingFragment)
     fun inject(adBlockSettingFragment: AdBlockSettingFragment)
     fun inject(downloadSettingFragment: DownloadSettingFragment)
+    fun inject(downloadManagerSettingFragment: DownloadManagerSettingFragment)
+    fun inject(downloadPathSettingFragment: DownloadPathSettingFragment)
     fun inject(addressBarSettingFragment: AddressBarSettingFragment)
     fun inject(visionModeSettingFragment: VisionModeSettingFragment)
     fun inject(fontSizeSettingFragment: FontSizeSettingFragment)

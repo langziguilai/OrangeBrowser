@@ -3,4 +3,5 @@
     <color name="color_7A7A7A">#5F5F5F</color>
     <color name="color_E6E6E5">#E6E6E5</color>
     <color name="rippelColor">#FFFFFF</color>
+    <color name="transparent">#00FFFFFF</color>
 </resources>

@@ -69,7 +69,6 @@ public class FileUtil {
         }
     }
     public static File getOrCreateDir(Context context, String dirname) throws Exception {
-
         String dirPath = context.getFilesDir().getPath();
         File file= new File(dirPath+File.separator+dirname+File.separator);
         if (!file.exists()){

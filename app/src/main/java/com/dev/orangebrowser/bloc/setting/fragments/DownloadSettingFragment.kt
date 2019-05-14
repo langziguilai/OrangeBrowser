@@ -25,7 +25,7 @@ class DownloadSettingFragment : BaseFragment(), BackHandler {
 
 
     companion object {
-        const val Tag = "GeneralSettingFragment"
+        const val Tag = "DownloadSettingFragment"
         fun newInstance() = DownloadSettingFragment()
     }
 
@@ -90,11 +90,11 @@ class DownloadSettingFragment : BaseFragment(), BackHandler {
         list.add(
             TileItem(
                 title = getString(R.string.download_manager),
-                tip = getSpString(R.string.pref_setting_download_manager_title,getString(R.string.system_download_manager)),
+                tip = getSpString(R.string.pref_setting_download_manager,getString(R.string.system_download_manager)),
                 icon = getString(R.string.ic_right),
                 action = object : Action<TileItem> {
                     override fun invoke(data: TileItem) {
-                        //TODO:
+                        RouterActivity?.loadDownloadManagerSettingFragment()
                     }
                 })
         )
@@ -102,11 +102,11 @@ class DownloadSettingFragment : BaseFragment(), BackHandler {
         list.add(
             TileItem(
                 title = getString(R.string.download_path),
-                tip = getSpString(R.string.pref_setting_download_path,getString(R.string.default_download_path)),
+                tip = getSpString(R.string.pref_setting_download_relative_path,getString(R.string.default_download_path_name)),
                 icon = getString(R.string.ic_right),
                 action = object : Action<TileItem> {
                     override fun invoke(data: TileItem) {
-                        //TODO:
+                        RouterActivity?.loadDownloadPathSettingFragment()
                     }
                 })
         )

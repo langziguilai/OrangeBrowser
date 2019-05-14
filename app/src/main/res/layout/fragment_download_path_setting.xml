@@ -33,14 +33,27 @@
                     android:layout_height="38dp"
                     android:textColor="@color/colorWhite"
                     android:textSize="18sp"
-                    android:text="@string/ic_circle_plus"
+                    android:text="@string/ic_folder_add"
                     android:gravity="center"
                     android:layout_gravity="end|center_vertical"/>
         </FrameLayout>
+        <FrameLayout android:id="@+id/parent_path_container"
+                     app:layout_constraintStart_toStartOf="parent"
+                     app:layout_constraintTop_toBottomOf="@id/header"
+                     app:layout_constraintEnd_toEndOf="parent"
+                     android:layout_width="0dp" android:layout_height="wrap_content">
+            <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/parent_path"
+                    android:layout_gravity="start"
+                    android:layoutDirection="rtl"
+                    android:layout_width="wrap_content"
+                    android:layout_height="28dp"/>
+        </FrameLayout>
+
         <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerView"
                 android:background="@color/color_F8F8F8"
-                app:layout_constraintTop_toBottomOf="@+id/header"
+                app:layout_constraintTop_toBottomOf="@+id/parent_path_container"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintBottom_toTopOf="@+id/choose_directory"
@@ -60,7 +73,7 @@
                     android:layout_width="22dp"
                     android:layout_height="22dp"
                     android:textColor="@color/color_393A3F"
-                    android:textSize="18sp"
+                    android:textSize="15sp"
                     android:background="@drawable/ic_check"
                     android:layout_gravity="center"/>
             <TextView android:layout_width="wrap_content"
@@ -70,5 +83,86 @@
                       android:text="@string/choose_directory"
                       android:textSize="10sp"/>
         </LinearLayout>
+        <FrameLayout android:id="@+id/bottom_overlay"
+                     app:layout_constraintTop_toTopOf="parent"
+                     app:layout_constraintBottom_toBottomOf="parent"
+                     app:layout_constraintStart_toStartOf="parent"
+                     app:layout_constraintEnd_toEndOf="parent"
+                     android:clickable="true"
+                     android:focusable="true"
+                     android:layout_width="match_parent"
+                     android:layout_height="match_parent">
+            <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/add_folder_container"
+                    android:layout_gravity="bottom"
+                    android:background="@drawable/bg_white_corner_2dp"
+                    android:layout_margin="8dp"
+                    android:padding="4dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                <TextView android:id="@+id/add_folder_title"
+                          app:layout_constraintTop_toTopOf="parent"
+                          app:layout_constraintStart_toStartOf="parent"
+                          app:layout_constraintEnd_toEndOf="parent"
+                          android:gravity="center"
+                          android:text="@string/add_folder"
+                          android:textSize="15sp"
+                          android:textStyle="bold"
+                          android:textColor="@color/color_6C6C6C"
+                          android:layout_width="match_parent"
+                          android:layout_height="40dp"/>
+                <EditText app:layout_constraintTop_toBottomOf="@id/add_folder_title"
+                          android:background="@drawable/bg_white_corner_2dp"
+                          app:layout_constraintStart_toStartOf="parent"
+                          app:layout_constraintEnd_toEndOf="parent"
+                          android:textSize="13sp"
+                          android:ellipsize="end"
+                          android:textColor="@color/color_6C6C6C"
+                          android:textStyle="normal"
+                          android:hint="@string/tip_add_folder"
+                          android:textColorHint="@color/color_CCCCCC"
+                          android:id="@+id/add_folder_text"
+                          android:layout_width="0dp"
+                          android:gravity="center"
+                          android:padding="8dp"
+                          android:layout_height="39dp"
+                          android:layout_marginEnd="24dp"
+                          android:layout_marginTop="14dp"
+                          android:layout_marginStart="24dp"/>
+                <TextView
+                        android:id="@+id/cancel_add_folder_btn"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/add_folder_text"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:layout_marginTop="14dp"
+                        android:layout_marginStart="24dp"
+                        android:layout_marginBottom="12dp"
+                        android:textColor="@color/color_6C6C6C"
+                        android:text="@string/cancel"
+                        android:textSize="13sp"
+                        android:gravity="center"
+                        android:layout_width="80dp"
+                        android:layout_height="26dp"/>
+                <TextView
+                        android:id="@+id/add_folder_btn"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/add_folder_text"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:text="@string/add_new"
+                        android:layout_marginTop="14dp"
+                        android:layout_marginEnd="24dp"
+                        android:layout_marginBottom="12dp"
+                        android:textColor="@color/colorBlack"
+                        android:textStyle="bold"
+                        android:textSize="13sp"
+                        android:gravity="center"
+                        android:layout_width="80dp"
+                        android:layout_height="26dp"/>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </FrameLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

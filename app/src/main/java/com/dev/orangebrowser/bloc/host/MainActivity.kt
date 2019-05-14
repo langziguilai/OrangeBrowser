@@ -410,7 +410,18 @@ class MainActivity : BaseActivity() {
             .replace(R.id.container, AdBlockConnectionSettingFragment.newInstance())
             .commit()
     }
-
+    //下载器设置
+    fun loadDownloadManagerSettingFragment() {
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.container, DownloadManagerSettingFragment.newInstance())
+            .commit()
+    }
+    //下载路径设置
+    fun loadDownloadPathSettingFragment() {
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.container, DownloadPathSettingFragment.newInstance())
+            .commit()
+    }
     var quitSignal: Boolean = false
     //双击退出
     fun quit() {

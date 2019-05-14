@@ -60,11 +60,13 @@
     <string name="ic_more">&#xe78d;</string>
     <string name="ic_translate">&#xe633;</string>
     <string name="ic_ad_mark">&#xe650;</string>
-    <string name="ic_download">&#xe7f0;</string>
+    <string name="ic_download">&#xe7f1;</string>
     <string name="ic_close">&#xe7fd;</string>
     <string name="ic_lock_fill">&#xe86a;</string>
     <string name="ic_circle_plus">&#xe532;</string>
     <string name="ic_arrow_left">&#xe7f0;</string>
+    <string name="ic_folder_add">&#xe7d1;</string>
+    <string name="ic_folder_fill">&#xe85e;</string>
 
 
     <string name="search_or_input">搜索或输入网址</string>
@@ -255,5 +257,14 @@
     <string name="input_white_list_url">请输入白名单网址</string>
     <string name="add_white_list">新增白名单</string>
     <string name="tip_domain_deleted">域名已删除</string>
+    <string name="pref_setting_download_manager">pref_setting_download_manager</string>
+    <string name="adm_download_manager">ADM下载器</string>
+    <string name="tip_permission_write_external_storage">需要设置写入外部存储器的权限</string>
+    <string name="tip_create_download_foloder_error">创建文件夹时发生错误</string>
+    <string name="pref_setting_download_relative_path">pref_setting_download_relative_path</string>
+    <string name="default_download_path_name">/Download</string>
+    <string name="add_folder">新建文件夹</string>
+    <string name="tip_add_folder">新建文件夹</string>
+    <string name="tip_correct_folder_name">请输入正确的文件夹名称</string>
 
 </resources>

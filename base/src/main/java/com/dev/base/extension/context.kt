@@ -86,3 +86,7 @@ fun <T> Context.loadJsonArray(path: String, clazz: Class<T>): List<T> {
     }
     return lst
 }
+
+fun Context.showToast(content:String){
+    Toast.makeText(this,content,Toast.LENGTH_SHORT).show()
+}

@@ -99,7 +99,6 @@ class AdBlockSubscriptionSettingFragment : BaseAdBlockSettingFragment(), BackHan
             }else{
                 Toast.makeText(requireContext(),getString(R.string.input_valid_url),Toast.LENGTH_SHORT).show()
             }
-
         }
     }
     //
