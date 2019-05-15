@@ -36,7 +36,7 @@ abstract class BrowserDatabase : RoomDatabase() {
             instance?.let { return it }
 
             return Room.databaseBuilder(
-                context,
+                context.applicationContext,
                 BrowserDatabase::class.java,
                 "browser_database"
             ).build().also { instance = it }

@@ -24,6 +24,8 @@ interface VisitHistoryDao {
     fun getVisitHistoryList(): List<VisitHistoryEntity>
     @Query("SELECT * FROM visit_history WHERE date<=:end AND date>=:start ORDER BY date DESC")
     fun getVisitHistoryListByRange(start:Long,end:Long): List<VisitHistoryEntity>
+    @Query("SELECT * FROM visit_history WHERE date<=:end ORDER BY date DESC LIMIT :limit")
+    fun getVisitHistoryListByDate(end:Long,limit:Int): List<VisitHistoryEntity>
     @Query("SELECT * FROM visit_history WHERE url=:uri")
     fun getVisitHistoryByUri(uri:String): VisitHistoryEntity?
     @Query("SELECT * FROM visit_history WHERE url IN(:uris)")
@@ -34,4 +36,6 @@ interface VisitHistoryDao {
     fun getVisitHistoryByQueryOne(query:String): VisitHistoryEntity?
     @Delete
     fun deleteHistory(entity: VisitHistoryEntity)
+    @Query("DELETE  FROM visit_history")
+    fun clearHistory()
 }

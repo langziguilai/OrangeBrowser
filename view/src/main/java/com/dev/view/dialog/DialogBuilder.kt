@@ -2,6 +2,7 @@ package com.dev.view.dialog
 
 import android.app.Dialog
 import android.content.Context
+import android.graphics.drawable.ColorDrawable
 import android.view.*
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
@@ -25,6 +26,8 @@ class DialogBuilder {
     private var listener: OnViewCreateListener? = null
     private var enterAnimationId: Int = -1
     private var backgroundColorId:Int=-1
+    private var locationX: Int = 0
+    private var locationY: Int = 0
 
     fun setBackgourndColorId(backgroundColorId:Int):DialogBuilder{
         this.backgroundColorId=backgroundColorId
@@ -69,7 +72,15 @@ class DialogBuilder {
         this.listener = listener
         return this
     }
+    fun setLocationX(x: Int): DialogBuilder {
+        this.locationX = x
+        return this
+    }
 
+    fun setLocationY(y: Int): DialogBuilder {
+        this.locationY = y
+        return this
+    }
     fun createDialog(context: Context): Dialog {
         val dialog = MyDialog(context, R.style.Dialog)
         dialog.setCanceledOnTouchOutside(this.cancel)
@@ -78,9 +89,10 @@ class DialogBuilder {
         dialog.setContentView(container)
         dialog.setExitAnimationId(this.exitAnimationId)
         dialog.setEnterAnimationId(this.enterAnimationId)
+        dialog.window?.setGravity(this.gravity)
         val containerLayoutParams=container.layoutParams
-        containerLayoutParams.width=context.resources.displayMetrics.widthPixels
-        containerLayoutParams.height=context.resources.displayMetrics.heightPixels
+        containerLayoutParams.width=ViewGroup.LayoutParams.MATCH_PARENT
+        containerLayoutParams.height=ViewGroup.LayoutParams.MATCH_PARENT
         container.layoutParams=containerLayoutParams
         view = LayoutInflater.from(context).inflate(this.layoutId, null)
         container.addView(view)
@@ -89,8 +101,20 @@ class DialogBuilder {
         container.setOnClickListener {
             dialog.dismiss()
         }
+        if (locationX != 0) {
+            val params = container.layoutParams as FrameLayout.LayoutParams
+            params.marginStart = locationX
+            container.layoutParams = params
+            dialog.window?.setGravity(Gravity.TOP)
+        }
+        if (locationY != 0) {
+            val params = container.layoutParams as FrameLayout.LayoutParams
+            params.topMargin = locationY
+            container.layoutParams = params
+            dialog.window?.setGravity(Gravity.TOP)
+        }
         val layoutParams = view.layoutParams as FrameLayout.LayoutParams
-        layoutParams.gravity=this.gravity
+
         if (widthPercent > 0) {
             layoutParams.width = (view.context.resources.displayMetrics.widthPixels * widthPercent).toInt()
         }else{
@@ -103,6 +127,7 @@ class DialogBuilder {
         }
         if (backgroundColorId>0){
             container.setBackgroundColor(context.resources.getColor(backgroundColorId))
+            dialog.window?.setBackgroundDrawable(ColorDrawable(context.resources.getColor(backgroundColorId)))
         }
         view.layoutParams = layoutParams
         listener?.onViewCreated(view)

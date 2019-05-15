@@ -2,6 +2,8 @@ package com.dev.orangebrowser.di
 
 import android.content.Context
 import androidx.room.Room
+import com.dev.browser.database.BrowserDatabase
+import com.dev.browser.database.history.VisitHistoryDao
 import com.dev.orangebrowser.data.AppDatabase
 import com.dev.orangebrowser.data.dao.AdBlockFilterDao
 import dagger.Module
@@ -24,5 +26,15 @@ class DatabaseModule {
     @Singleton
     fun provideAdBlockFilterDao(appDatabase: AppDatabase): AdBlockFilterDao {
         return appDatabase.adBlockFilterDao()
+    }
+    @Provides
+    @Singleton
+    fun provideBrowserDatabase(applicationContext: Context): BrowserDatabase {
+        return BrowserDatabase.get(applicationContext.applicationContext)
+    }
+    @Provides
+    @Singleton
+    fun provideHistoryDao(browserDatabase: BrowserDatabase): VisitHistoryDao {
+        return browserDatabase.historyDao()
     }
 }
