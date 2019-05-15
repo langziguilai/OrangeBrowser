@@ -32,6 +32,7 @@ import com.dev.orangebrowser.bloc.tabs.TabFragment
 import com.dev.orangebrowser.bloc.theme.ThemeFragment
 import com.dev.orangebrowser.extension.appComponent
 import com.dev.orangebrowser.extension.myApplication
+import com.dev.view.NavigationBarUtil
 import com.dev.view.StatusBarUtil
 import es.dmoral.toasty.Toasty
 import kotlinx.coroutines.Dispatchers
@@ -104,6 +105,7 @@ class MainActivity : BaseActivity() {
             })
             viewModel.theme.observe(this, Observer {
                 StatusBarUtil.setStatusBarBackGroundColorAndIconColor(this, it.colorPrimaryDark)
+                NavigationBarUtil.setNavigationBarColor(this, it.colorPrimaryDark)
             })
             viewModel.quitSignalClear.observe(this, Observer {
                 quitSignal = it

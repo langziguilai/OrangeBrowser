@@ -12,6 +12,7 @@ import com.dev.orangebrowser.R
 import com.dev.orangebrowser.bloc.browser.BrowserFragment
 import com.dev.orangebrowser.databinding.FragmentBrowserBinding
 import com.dev.util.ColorKitUtil
+import com.dev.view.NavigationBarUtil
 import com.dev.view.StatusBarUtil
 
 //根据webview的头部来更新显示的头部
@@ -58,6 +59,7 @@ class StyleIntegration(
         binding.topBar.background = ColorDrawable(color)
         binding.topMenuPanel.background = ColorDrawable(color)
         StatusBarUtil.setStatusBarBackGroundColorAndIconColor(fragment.requireActivity(), color)
+        NavigationBarUtil.setNavigationBarColor(fragment.requireActivity(), color)
         setTextColor(color)
     }
 

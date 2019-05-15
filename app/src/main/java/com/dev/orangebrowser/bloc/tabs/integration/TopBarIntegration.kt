@@ -8,6 +8,7 @@ import com.dev.orangebrowser.R
 import com.dev.orangebrowser.bloc.tabs.TabFragment
 import com.dev.orangebrowser.databinding.FragmentTabBinding
 import com.dev.util.ColorKitUtil
+import com.dev.view.NavigationBarUtil
 import com.dev.view.StatusBarUtil
 
 
@@ -92,6 +93,7 @@ class TopBarIntegration(
     }
     private fun updateTopBarBackGround(color:Int){
         StatusBarUtil.setStatusBarBackGroundColorAndIconColor(fragment.requireActivity(),color)
+        NavigationBarUtil.setNavigationBarColor(fragment.requireActivity(),color)
         //binding.topBar.setBackgroundColor(color)
         binding.topbarBackground.setBackgroundColor(color)
     }

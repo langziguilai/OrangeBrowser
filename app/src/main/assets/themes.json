@@ -88,15 +88,5 @@
     "colorPrimaryActive": "#4CAF50",
     "colorPrimaryDisable": "#80393A3F",
     "colorBackground": "#222225"
-  },
-  {
-    "name": "纯白",
-    "active": false,
-    "colorPrimary": "#FEFEFE",
-    "colorPrimaryDark": "#FEFEFE",
-    "colorAccent": "#D81B60",
-    "colorPrimaryActive": "#4CAF50",
-    "colorPrimaryDisable": "#80FEFEFE",
-    "colorBackground": "#404040"
   }
 ]

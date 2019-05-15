@@ -177,6 +177,10 @@ abstract class EngineSession(
      * Navigates forward in the history of this session.
      */
     abstract fun goForward()
+    /**
+     * 设置字体大小
+     */
+    //abstract fun setFontSize(size:Int)
 
     /**
      * Saves and returns the engine state. Engine implementations are not required

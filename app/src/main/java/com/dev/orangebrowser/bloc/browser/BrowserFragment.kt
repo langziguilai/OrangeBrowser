@@ -35,6 +35,7 @@ import javax.inject.Inject
 import android.widget.RelativeLayout
 import com.dev.browser.session.Session
 import com.dev.orangebrowser.extension.appData
+import com.dev.view.NavigationBarUtil
 
 
 class BrowserFragment : BaseFragment(), BackHandler, UserInteractionHandler {
@@ -435,6 +436,7 @@ class BrowserFragment : BaseFragment(), BackHandler, UserInteractionHandler {
                 RouterActivity!!,
                 activityViewModel.theme.value!!.colorPrimary
             )
+            NavigationBarUtil.setNavigationBarColor(RouterActivity!!,activityViewModel.theme.value!!.colorPrimary)
         }
         //清除全局视野模式的active标志
         appData.bottomMenuActionItems.find {
