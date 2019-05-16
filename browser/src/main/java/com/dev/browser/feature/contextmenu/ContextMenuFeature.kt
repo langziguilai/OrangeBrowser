@@ -4,7 +4,6 @@
 
 package com.dev.browser.feature.contextmenu
 
-import android.view.HapticFeedbackConstants
 import androidx.annotation.VisibleForTesting
 import androidx.fragment.app.FragmentManager
 import com.dev.base.support.LifecycleAwareFeature
@@ -13,6 +12,7 @@ import com.dev.browser.concept.HitResult
 import com.dev.browser.session.SelectionAwareSessionObserver
 import com.dev.browser.session.Session
 import com.dev.browser.session.SessionManager
+import com.dev.util.ColorStore
 
 
 @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
@@ -102,7 +102,7 @@ class ContextMenuFeature(
         //engineView.asView().performHapticFeedback(HapticFeedbackConstants.LONG_PRESS)
 
         val fragment = ContextMenuFragment.create(session, hitResult.src, ids, labels,
-            longClickX = engineView.getLongClickPosition().x,longClickY =engineView.getLongClickPosition().y )
+            longClickX = engineView.getLongClickPosition().x,longClickY =engineView.getLongClickPosition().y)
         fragment.feature = this
         fragment.show(fragmentManager, FRAGMENT_TAG)
     }

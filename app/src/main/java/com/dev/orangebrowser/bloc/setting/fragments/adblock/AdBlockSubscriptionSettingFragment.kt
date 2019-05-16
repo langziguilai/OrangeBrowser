@@ -244,7 +244,7 @@ class AdBlockSubscriptionSettingFragment : BaseAdBlockSettingFragment(), BackHan
     private fun convertJsSubscription(jsSubscription: org.adblockplus.libadblockplus.Subscription): Subscription {
         val subscription = Subscription()
 
-        val jsTitle = jsSubscription.getProperty("title")
+        val jsTitle = jsSubscription.getProperty("label")
         try {
             subscription.title = jsTitle.toString()
         } finally {

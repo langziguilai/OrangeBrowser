@@ -108,7 +108,7 @@ internal class ChoiceAdapter(
      * View holder for a single choice item.
      */
     internal class SingleViewHolder(itemView: View) : ViewHolder(itemView) {
-        internal val labelView = itemView.findViewById<CheckedTextView>(R.id.labelView)
+        internal val labelView = itemView.findViewById<CheckedTextView>(R.id.label)
 
         fun bind(choice: Choice, fragment: ChoiceDialogFragment) {
 
@@ -129,7 +129,7 @@ internal class ChoiceAdapter(
      * View holder for a Multiple choice item.
      */
     internal class MultipleViewHolder(itemView: View) : ViewHolder(itemView) {
-        internal val labelView = itemView.findViewById<CheckedTextView>(R.id.labelView)
+        internal val labelView = itemView.findViewById<CheckedTextView>(R.id.label)
 
         fun bind(choice: Choice, fragment: ChoiceDialogFragment) {
             labelView.choice = choice
@@ -155,7 +155,7 @@ internal class ChoiceAdapter(
      * View holder for a Menu choice item.
      */
     internal class MenuViewHolder(itemView: View) : ViewHolder(itemView) {
-        internal val labelView = itemView.findViewById<TextView>(R.id.labelView)
+        internal val labelView = itemView.findViewById<TextView>(R.id.label)
 
         fun bind(choice: Choice, fragment: ChoiceDialogFragment) {
 
@@ -179,7 +179,7 @@ internal class ChoiceAdapter(
      * View holder for a group choice item.
      */
     internal class GroupViewHolder(itemView: View) : ViewHolder(itemView) {
-        internal val labelView = itemView.findViewById<TextView>(R.id.labelView)
+        internal val labelView = itemView.findViewById<TextView>(R.id.label)
 
         fun bind(choice: Choice) {
             labelView.choice = choice

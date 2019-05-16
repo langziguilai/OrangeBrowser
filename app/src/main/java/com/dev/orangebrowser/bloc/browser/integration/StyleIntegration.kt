@@ -55,7 +55,6 @@ class StyleIntegration(
     }
 
     private fun updateStyle(@ColorInt color: Int) {
-
         binding.topBar.background = ColorDrawable(color)
         binding.topMenuPanel.background = ColorDrawable(color)
         StatusBarUtil.setStatusBarBackGroundColorAndIconColor(fragment.requireActivity(), color)

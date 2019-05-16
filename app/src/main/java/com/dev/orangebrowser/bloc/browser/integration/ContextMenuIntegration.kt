@@ -9,6 +9,7 @@ import com.dev.browser.feature.contextmenu.ContextMenuCandidate
 import com.dev.browser.feature.contextmenu.ContextMenuFeature
 import com.dev.browser.feature.tabs.TabsUseCases
 import com.dev.browser.session.SessionManager
+import com.dev.util.ColorStore
 import kotlinx.android.synthetic.main.fragment_browser.view.*
 
 class ContextMenuIntegration(

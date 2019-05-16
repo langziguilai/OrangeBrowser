@@ -102,7 +102,7 @@ class AdBlockSettingFragment : BaseAdBlockSettingFragment(), BackHandler {
             }
         }, value = settings?.isAcceptableAdsEnabled ?: true))
 
-//        list.add(SwitchItem(title = getString(R.string.show_tip_when_block_ad), action = object : Action<Boolean> {
+//        list.add(SwitchItem(label = getString(R.string.show_tip_when_block_ad), action = object : Action<Boolean> {
 //            override fun invoke(data: Boolean) {
 //                setSpBool(R.string.pref_setting_enable_show_tip_when_block_ad, data)
 //            }

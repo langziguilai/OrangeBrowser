@@ -126,7 +126,7 @@ class SearchEngineSettingFragment : BaseFragment(), BackHandler {
 //TODO：开始自定义搜索引擎
 //        list.add(
 //            TileItem(
-//                title = getString(R.string.custom_search_engine),
+//                label = getString(R.string.custom_search_engine),
 //                tip = "",
 //                icon = getString(R.string.ic_right),
 //                action = object : Action<TileItem> {

@@ -5,7 +5,6 @@
 package com.dev.browser.database.favoriate
 
 import androidx.room.*
-import com.dev.browser.database.history.FavoriteLinkEntity
 
 
 /**
@@ -22,7 +21,7 @@ interface FavoriteLinkDao {
     fun getFavoriteLinkList(): List<FavoriteLinkEntity>
 //通过category ID来查询收藏
     @Query("SELECT * FROM favorite_link WHERE category_id=:categoryId ORDER BY date  ASC")
-    fun getgetFavoriteLinkListByCategoryId(categoryId:String): List<FavoriteLinkEntity>
+    fun getFavoriteLinkListByCategoryId(categoryId:String): List<FavoriteLinkEntity>
     @Delete
     fun delete(entity: FavoriteLinkEntity)
 }

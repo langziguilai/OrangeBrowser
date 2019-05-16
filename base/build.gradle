@@ -55,6 +55,7 @@ dependencies {
     //debug tool
     implementation 'com.facebook.stetho:stetho:1.5.0'
     implementation project(':util')
+    implementation project(':view')
 }
 repositories {
     mavenCentral()

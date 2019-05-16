@@ -17,4 +17,7 @@ public class NavigationBarUtil {
     public static void setNavigationBarColor(Activity activity,int color){
         activity.getWindow().setNavigationBarColor(color);
     }
+    public static void setNavigationBarColor(Window window,int color){
+        window.setNavigationBarColor(color);
+    }
 }

@@ -5,10 +5,7 @@
 package com.dev.browser.feature.contextmenu
 
 import android.annotation.SuppressLint
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -114,7 +111,6 @@ class ContextMenuFragment : BaseTransparentFullScreenDialogFragment() {
             arguments.putString(KEY_SESSION_ID, session.id)
             arguments.putInt(LONG_CLICK_X, longClickX)
             arguments.putInt(LONG_CLICK_Y,longClickY)
-
             val fragment = ContextMenuFragment()
             fragment.arguments = arguments
             return fragment
@@ -125,7 +121,7 @@ class ContextMenuFragment : BaseTransparentFullScreenDialogFragment() {
 /**
  * RecyclerView adapter for displayig the context menu.
  */
-internal class ContextMenuAdapter(
+class ContextMenuAdapter(
     private val fragment: ContextMenuFragment,
     private val inflater: LayoutInflater
 ) : RecyclerView.Adapter<ContextMenuViewHolder>() {
@@ -145,6 +141,6 @@ internal class ContextMenuAdapter(
 /**
  * View holder for a context menu item.
  */
-internal class ContextMenuViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-    internal val labelView = itemView.findViewById<TextView>(R.id.labelView)
+class ContextMenuViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    internal val labelView = itemView.findViewById<TextView>(R.id.label)
 }

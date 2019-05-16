@@ -35,6 +35,7 @@ import javax.inject.Inject
 import android.widget.RelativeLayout
 import com.dev.browser.session.Session
 import com.dev.orangebrowser.extension.appData
+import com.dev.util.ColorStore
 import com.dev.view.NavigationBarUtil
 
 
@@ -88,7 +89,7 @@ class BrowserFragment : BaseFragment(), BackHandler, UserInteractionHandler {
     val backHandlers = LinkedList<BackHandler>()
     //
     lateinit var fullScreenHelper: FullScreenHelper
-
+    val colorStore=ColorStore()
     //
     init {
         backHandlers.add(adaptToBackHandler(fullScreenFeature))
