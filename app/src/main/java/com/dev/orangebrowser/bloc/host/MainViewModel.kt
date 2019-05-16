@@ -39,6 +39,10 @@ class MainViewModel @Inject constructor(var context: Context) : CoroutineViewMod
             }
         }
     }
+    fun initFromApplicationData(applicationData: ApplicationData){
+        theme.value=applicationData.themes.getActiveThemeSource()?.toTheme() ?: Theme.defaultTheme(context)
+        appData.value=Either.Right(applicationData)
+    }
     fun clearQuitSignal()=launch(Dispatchers.IO){
         delay(2000)
         launch (Dispatchers.Main ){

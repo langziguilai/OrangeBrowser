@@ -3,6 +3,7 @@ package com.dev.orangebrowser.bloc.host
 
 import android.Manifest
 import android.os.Bundle
+import android.view.View
 import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -41,9 +42,9 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import permissions.dispatcher.*
-import java.util.*
 import javax.inject.Inject
-import kotlin.collections.ArrayList
+
+const val APPLICATION_DATA="application_data"
 
 @RuntimePermissions
 class MainActivity : BaseActivity() {
@@ -95,34 +96,50 @@ class MainActivity : BaseActivity() {
         return R.layout.activity_main
     }
 
+    private lateinit var containerView: View
     override fun initView(savedInstanceState: Bundle?) {
-        if (savedInstanceState != null) {
-            savedInstanceState.getParcelable<ApplicationData>("appData")?.apply {
-                   appData=this
-            }
-        } else {
-            viewModel.appData.observe(this, Observer {
-                it.either(fun(failure) {
-                    Toasty.error(this, failure.error, Toast.LENGTH_SHORT).show()
-                }, fun(data) {
-                    myApplication.initApplicationData(data)
-                    loadFirstInFragmentWithPermissionCheck()
-                })
+        containerView = findViewById(R.id.container)
+        viewModel.appData.observe(this, Observer {
+            it.either(fun(failure) {
+                Toasty.error(this, failure.error, Toast.LENGTH_SHORT).show()
+            }, fun(data) {
+                myApplication.initApplicationData(data)
+                loadFirstInFragmentWithPermissionCheck()
             })
-            viewModel.theme.observe(this, Observer {
-                StatusBarUtil.setStatusBarBackGroundColorAndIconColor(this, it.colorPrimaryDark)
-                NavigationBarUtil.setNavigationBarColor(this, it.colorPrimaryDark)
-            })
-            viewModel.quitSignalClear.observe(this, Observer {
-                quitSignal = it
-            })
-        }
+        })
+        viewModel.theme.observe(this, Observer {
+            setColor(it.colorPrimary)
+        })
+        viewModel.quitSignalClear.observe(this, Observer {
+            quitSignal = it
+        })
+    }
+
+    private fun setColor(color: Int) {
+        StatusBarUtil.setStatusBarBackGroundColorAndIconColor(this, color)
+        NavigationBarUtil.setNavigationBarColor(this, color)
+        containerView.setBackgroundColor(color)
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
-        outState.putParcelable("appData",appData)
+        outState.putParcelable(APPLICATION_DATA, appData)
         super.onSaveInstanceState(outState)
     }
+
+    override fun initData(savedInstanceState: Bundle?) {
+        if (savedInstanceState == null) {
+            viewModel.loadAppData()
+        } else {
+            val data = savedInstanceState.getParcelable<ApplicationData>(APPLICATION_DATA)
+            if (data == null) {
+                viewModel.loadAppData()
+            } else {
+                myApplication.initApplicationData(data)
+                viewModel.initFromApplicationData(data)
+            }
+        }
+    }
+
     @NeedsPermission(
         Manifest.permission.CAMERA,
         Manifest.permission.WRITE_EXTERNAL_STORAGE,
@@ -177,11 +194,6 @@ class MainActivity : BaseActivity() {
         onRequestPermissionsResult(requestCode, grantResults)
     }
 
-    override fun initData(savedInstanceState: Bundle?) {
-        if (savedInstanceState == null) {
-            viewModel.loadAppData()
-        }
-    }
 
     override fun onBackPressed() {
         //这里倒序是因为：默认结构不是栈，是列表，我们要首先处理栈顶的fragment,再依次向下处理
@@ -411,29 +423,34 @@ class MainActivity : BaseActivity() {
         supportFragmentManager.beginTransaction().replace(R.id.container, AdBlockFilterSettingFragment.newInstance())
             .commit()
     }
+
     //设置AdBlock的白名单
     fun loadAdBlockWhiteListSettingFragment() {
         supportFragmentManager.beginTransaction().replace(R.id.container, AdBlockWhiteListSettingFragment.newInstance())
             .commit()
     }
+
     //设置AdBlock的更新选择
     fun loadAdBlockConnectionSettingFragment() {
         supportFragmentManager.beginTransaction()
             .replace(R.id.container, AdBlockConnectionSettingFragment.newInstance())
             .commit()
     }
+
     //下载器设置
     fun loadDownloadManagerSettingFragment() {
         supportFragmentManager.beginTransaction()
             .replace(R.id.container, DownloadManagerSettingFragment.newInstance())
             .commit()
     }
+
     //下载路径设置
     fun loadDownloadPathSettingFragment() {
         supportFragmentManager.beginTransaction()
             .replace(R.id.container, DownloadPathSettingFragment.newInstance())
             .commit()
     }
+
     var quitSignal: Boolean = false
     //双击退出
     fun quit() {

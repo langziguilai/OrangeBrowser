@@ -8,9 +8,8 @@ import com.dev.orangebrowser.di.ApplicationComponent
 val AppCompatActivity.appComponent: ApplicationComponent
     get() = (applicationContext as AndroidApplication).appComponent
 
-var AppCompatActivity.appData: ApplicationData
+val AppCompatActivity.appData: ApplicationData
     get() = (applicationContext as AndroidApplication).applicationData
-    set(value) = (applicationContext as AndroidApplication).initApplicationData(value)
 
 val AppCompatActivity.myApplication:AndroidApplication
     get() = (applicationContext as AndroidApplication)
