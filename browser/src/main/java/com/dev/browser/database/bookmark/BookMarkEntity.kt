@@ -2,17 +2,16 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-package com.dev.browser.database.favoriate
+package com.dev.browser.database.bookmark
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.dev.browser.feature.sitepermissions.SitePermissions
 
 /**
  * Internal entity representing a site permission as it gets saved to the database.
  */
-@Entity(tableName = "favorite_link")
+@Entity(tableName = "book_mark")
 data class FavoriteLinkEntity(
     @PrimaryKey
     @ColumnInfo(name = "url")
