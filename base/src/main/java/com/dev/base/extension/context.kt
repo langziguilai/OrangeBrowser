@@ -5,7 +5,7 @@
 package com.dev.base.extension
 
 import android.app.ActivityManager
-import android.content.Context
+import android.content.*
 import android.content.pm.PackageManager.PERMISSION_GRANTED
 import android.util.Log
 import android.widget.Toast
@@ -17,7 +17,10 @@ import java.io.InputStreamReader
 import com.google.gson.JsonElement
 import com.google.gson.JsonParser
 import com.google.gson.JsonArray
-
+import androidx.core.content.ContextCompat.getSystemService
+import android.net.Uri
+import androidx.core.content.ContextCompat.startActivity
+import com.dev.base.R
 
 
 /**
@@ -89,4 +92,55 @@ fun <T> Context.loadJsonArray(path: String, clazz: Class<T>): List<T> {
 
 fun Context.showToast(content:String){
     Toast.makeText(this,content,Toast.LENGTH_SHORT).show()
+}
+
+fun Context.shareText(title:String,text:String):Boolean{
+    return try {
+        val intent = Intent(Intent.ACTION_SEND).apply {
+            type = "text/plain"
+            putExtra(Intent.EXTRA_SUBJECT, title)
+            putExtra(Intent.EXTRA_TEXT, text)
+            flags = Intent.FLAG_ACTIVITY_NEW_TASK
+        }
+
+        val shareIntent = Intent.createChooser(intent, getString(R.string.share)).apply {
+            flags = Intent.FLAG_ACTIVITY_NEW_TASK
+        }
+        startActivity(shareIntent)
+        true
+    } catch (e: ActivityNotFoundException) {
+        Log.d("share error","No activity to share to found")
+        false
+    }
+}
+fun Context.shareLink(title:String,url:String):Boolean{
+    return try {
+        val intent = Intent(Intent.ACTION_SEND).apply {
+            type = "text/plain"
+            putExtra(Intent.EXTRA_SUBJECT, getString(R.string.share)+":"+title)
+            putExtra(Intent.EXTRA_TEXT, getString(R.string.share_link)+"-"+title+":"+url)
+            flags = Intent.FLAG_ACTIVITY_NEW_TASK
+        }
+
+        val shareIntent = Intent.createChooser(intent, getString(R.string.share)).apply {
+            flags = Intent.FLAG_ACTIVITY_NEW_TASK
+        }
+        startActivity(shareIntent)
+        true
+    } catch (e: ActivityNotFoundException) {
+        Log.d("share error","No activity to share to found")
+        false
+    }
+}
+//拷贝文字
+fun Context.copyText(label:String,text:String){
+    val cm = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+    val mClipData = ClipData.newPlainText(label, text)
+    cm.primaryClip = mClipData
+}
+//拷贝链接
+fun Context.copyLink(label:String,link:String){
+    val cm = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+    val mClipData = ClipData.newUri(contentResolver,label, Uri.parse(link))
+    cm.primaryClip = mClipData
 }

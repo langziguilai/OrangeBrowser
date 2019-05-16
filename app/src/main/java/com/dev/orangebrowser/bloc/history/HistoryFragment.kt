@@ -8,20 +8,19 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
-import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.dev.base.BaseFragment
-import com.dev.base.extension.onGlobalLayoutComplete
+import com.dev.base.extension.*
 import com.dev.base.support.BackHandler
 import com.dev.browser.database.history.VisitHistoryDao
 import com.dev.browser.database.history.VisitHistoryEntity
+import com.dev.browser.feature.tabs.TabsUseCases
 import com.dev.browser.session.SessionManager
 import com.dev.orangebrowser.R
 import com.dev.orangebrowser.bloc.host.MainViewModel
-import com.dev.orangebrowser.data.dao.FavoriteSiteDao
 import com.dev.orangebrowser.databinding.FragmentHistoryBinding
 import com.dev.orangebrowser.extension.RouterActivity
 import com.dev.orangebrowser.extension.appComponent
@@ -46,8 +45,10 @@ class HistoryFragment : BaseFragment(), BackHandler {
 
     @Inject
     lateinit var historyDao: VisitHistoryDao
-
+    @Inject
     lateinit var sessionManager: SessionManager
+    @Inject
+    lateinit var tabUseCases: TabsUseCases
     lateinit var viewModel: HistoryViewModel
     lateinit var activityViewModel: MainViewModel
     lateinit var binding: FragmentHistoryBinding
@@ -107,7 +108,7 @@ class HistoryFragment : BaseFragment(), BackHandler {
                             clearHistory()
                         }
                     }
-                }).createDialog(requireContext())
+                }).build(requireContext())
             clearHistoryDialog?.show()
         }
         binding.recyclerView.layoutManager = LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
@@ -148,71 +149,86 @@ class HistoryFragment : BaseFragment(), BackHandler {
                 }
             }
         }, binding.recyclerView)
+        adapter?.setOnItemClickListener { _, _, position ->
+            //如果不是header，那么就显示dialog
+            if (!sectionEntityList[position].isHeader) {
+                 //打开这个history
+                 tabUseCases.addTab.invoke(url=sectionEntityList[position].t.url)
+                 RouterActivity?.loadBrowserFragment(sessionManager.selectedSession!!.id)
+            }
+        }
         initHistoryItemDialog(adapter)
     }
-
+    var historyItemDialog:Dialog?=null
     private fun initHistoryItemDialog(adapter: BaseQuickAdapter<MySectionEntity, CustomBaseViewHolder>?) {
         adapter?.setOnItemLongClickListener { _, _, position ->
             //如果不是header，那么就显示dialog
             if (!sectionEntityList[position].isHeader) {
-                    DialogBuilder()
+                historyItemDialog=  DialogBuilder()
                         .setLayoutId(R.layout.dialog_process_history_item)
                         .setHeightParent(1f)
                         .setWidthPercent(1f)
                         .setOnViewCreateListener(object : DialogBuilder.OnViewCreateListener {
                             override fun onViewCreated(view: View) {
-                                val recyclerView = view.findViewById<RecyclerView>(R.id.recyclerView).apply {
-                                    this.layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
-                                    this.adapter = CommonContextMenuAdapter(
-                                        R.layout.mozac_feature_contextmenu_item, listOf(
-                                            MenuItem(label = getString(R.string.menu_delete),action = object:Action<MenuItem>{
-                                                override fun execute(data: MenuItem) {
-                                                    deleteHistoryItem(sectionEntityList[position].t)
-                                                }
-                                            }),
-                                            MenuItem(label = getString(R.string.menu_add_book_mark),action = object:Action<MenuItem>{
-                                                override fun execute(data: MenuItem) {
-                                                    addToBookmark(sectionEntityList[position].t)
-                                                }
-                                            }),
-                                            MenuItem(label = getString(R.string.menu_share),action = object:Action<MenuItem>{
-                                                override fun execute(data: MenuItem) {
-                                                    shareLink(sectionEntityList[position].t)
-                                                }
-                                            }),
-                                            MenuItem(label = getString(R.string.menu_copy_link),action = object:Action<MenuItem>{
-                                                override fun execute(data: MenuItem) {
-                                                    copyLink(sectionEntityList[position].t)
-                                                }
-                                            })
-                                        )
-                                    )
-                                }
-                                recyclerView.onGlobalLayoutComplete {
-                                    (it.layoutParams as? FrameLayout.LayoutParams)?.apply {
-                                        this.leftMargin = calculateRecyclerViewLeftMargin(
-                                            binding.container.width,
-                                            it.width, binding.container.getLongClickPosition().x
-                                        )
-                                        this.topMargin = calculateRecyclerViewTopMargin(
-                                            binding.container.height,
-                                            it.height, binding.container.getLongClickPosition().y
-                                        )
-                                        it.layoutParams = this
-                                    }
-                                }
+                                initHistoryItemDialogView(view,position)
                             }
                         })
                         .setGravity(Gravity.TOP)
-                        .createDialog(requireContext()).show()
+                        .build(requireContext())
+                      historyItemDialog?.show()
             }
             true
         }
     }
-
+    private fun initHistoryItemDialogView(view:View,position:Int){
+        val recyclerView = view.findViewById<RecyclerView>(R.id.recyclerView).apply {
+            this.layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
+            this.adapter = CommonContextMenuAdapter(
+                R.layout.mozac_feature_contextmenu_item, listOf(
+                    MenuItem(label = getString(R.string.menu_delete),action = object:Action<MenuItem>{
+                        override fun execute(data: MenuItem) {
+                            deleteHistoryItem(position)
+                            historyItemDialog?.dismiss()
+                        }
+                    }),
+                    MenuItem(label = getString(R.string.menu_add_book_mark),action = object:Action<MenuItem>{
+                        override fun execute(data: MenuItem) {
+                            addToBookmark(position)
+                            historyItemDialog?.dismiss()
+                        }
+                    }),
+                    MenuItem(label = getString(R.string.menu_share),action = object:Action<MenuItem>{
+                        override fun execute(data: MenuItem) {
+                            shareLink(position)
+                            historyItemDialog?.dismiss()
+                        }
+                    }),
+                    MenuItem(label = getString(R.string.menu_copy_link),action = object:Action<MenuItem>{
+                        override fun execute(data: MenuItem) {
+                            copyLink(position)
+                            historyItemDialog?.dismiss()
+                        }
+                    })
+                )
+            )
+        }
+        recyclerView.onGlobalLayoutComplete {
+            (it.layoutParams as? FrameLayout.LayoutParams)?.apply {
+                this.leftMargin = calculateRecyclerViewLeftMargin(
+                    binding.container.width,
+                    it.width, binding.container.getLongClickPosition().x
+                )
+                this.topMargin = calculateRecyclerViewTopMargin(
+                    binding.container.height,
+                    it.height, binding.container.getLongClickPosition().y
+                )
+                it.layoutParams = this
+            }
+        }
+    }
     //计算左边的距离
     private fun calculateRecyclerViewLeftMargin(containerWidth: Int, childWidth: Int, x: Int): Int {
-        return if (x + childWidth + offSet > containerWidth) {
+        return if (x - childWidth - offSet > 0) {
             x - childWidth - offSet
         } else {
             x + offSet
@@ -238,19 +254,44 @@ class HistoryFragment : BaseFragment(), BackHandler {
         }
     }
 
-    private fun deleteHistoryItem(item:VisitHistoryEntity){
+    private fun deleteHistoryItem(position:Int){
         launch(Dispatchers.IO) {
-            historyDao.deleteHistory(item)
+            if(!sectionEntityList[position].isHeader){
+                historyDao.deleteHistory(sectionEntityList[position].t)
+                //当选中的Item的前面是Header，并且后面是Header或者无下一个Item时，删除Header
+                if (sectionEntityList[position-1].isHeader && (sectionEntityList.size==position+1 || sectionEntityList[position+1].isHeader)){
+                    //删除Item
+                    sectionEntityList.removeAt(position)
+                    //删除前面的Header
+                    sectionEntityList.removeAt(position-1)
+                }else{
+                    //删除Item
+                    sectionEntityList.removeAt(position)
+                }
+                launch(Dispatchers.Main) {
+                    adapter?.notifyDataSetChanged()
+                }
+            }
         }
     }
-    private fun addToBookmark(item:VisitHistoryEntity){
+    private fun addToBookmark(position:Int){
+        if(!sectionEntityList[position].isHeader){
 
+        }
     }
-    private fun shareLink(item:VisitHistoryEntity){
-
+    private fun shareLink(position:Int){
+        val mySectionEntity=sectionEntityList[position]
+        if(!mySectionEntity.isHeader){
+             if(!requireContext().shareLink(title =mySectionEntity.t.title,url =mySectionEntity.t.url)){
+                 requireContext().showToast(getString(R.string.tip_share_fail))
+             }
+        }
     }
-    private fun copyLink(item:VisitHistoryEntity){
-
+    private fun copyLink(position:Int){
+        if(!sectionEntityList[position].isHeader){
+             requireContext().copyText(getString(R.string.link),sectionEntityList[position].t.url)
+             requireContext().showToast(getString(R.string.tip_copy_link))
+        }
     }
 
     //获取layoutResourceId
@@ -261,7 +302,7 @@ class HistoryFragment : BaseFragment(), BackHandler {
     private val groupTitleSet = HashSet<String>()
     val sectionEntityList = LinkedList<MySectionEntity>()
     var adapter: BaseSectionQuickAdapter<MySectionEntity, CustomBaseViewHolder>? = null
-    var lastVisitHistoryEntity: VisitHistoryEntity? = null
+    private var lastVisitHistoryEntity: VisitHistoryEntity? = null
     override fun initData(savedInstanceState: Bundle?) {
         launch(Dispatchers.IO) {
             val addSize = addSectionEntityList()
@@ -280,7 +321,9 @@ class HistoryFragment : BaseFragment(), BackHandler {
             endTime = this.date
         }
         val list = getHistory(endTime)
-        lastVisitHistoryEntity = list.last()
+        if (list.isNotEmpty()){
+            lastVisitHistoryEntity = list.last()
+        }
         //分组
         list.forEach {
             val calendar = Calendar.getInstance()

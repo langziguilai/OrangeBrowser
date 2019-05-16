@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">base</string>
+    <string name="share">分享</string>
+    <string name="share_link">分享链接</string>
 </resources>

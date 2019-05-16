@@ -11,7 +11,7 @@ import androidx.appcompat.app.AppCompatDialog
 import com.dev.view.AndroidAdjustByKeyboard
 import com.dev.view.R
 
-class DialogBuilder {
+open class DialogBuilder {
     interface OnViewCreateListener {
         fun onViewCreated(view: View)
     }
@@ -81,7 +81,7 @@ class DialogBuilder {
         this.locationY = y
         return this
     }
-    fun createDialog(context: Context): Dialog {
+    fun build(context: Context): Dialog {
         val dialog = MyDialog(context, R.style.Dialog)
         dialog.setCanceledOnTouchOutside(this.cancel)
         if (layoutId <= 0) throw Exception("please set layout Id")
