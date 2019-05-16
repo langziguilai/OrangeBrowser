@@ -96,9 +96,7 @@ class MainActivity : BaseActivity() {
         return R.layout.activity_main
     }
 
-    private lateinit var containerView: View
     override fun initView(savedInstanceState: Bundle?) {
-        containerView = findViewById(R.id.container)
         viewModel.appData.observe(this, Observer {
             it.either(fun(failure) {
                 Toasty.error(this, failure.error, Toast.LENGTH_SHORT).show()
@@ -118,7 +116,6 @@ class MainActivity : BaseActivity() {
     private fun setColor(color: Int) {
         StatusBarUtil.setStatusBarBackGroundColorAndIconColor(this, color)
         NavigationBarUtil.setNavigationBarColor(this, color)
-        containerView.setBackgroundColor(color)
     }
 
     override fun onSaveInstanceState(outState: Bundle) {

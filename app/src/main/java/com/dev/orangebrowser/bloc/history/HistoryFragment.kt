@@ -46,8 +46,6 @@ class HistoryFragment : BaseFragment(), BackHandler {
 
     @Inject
     lateinit var historyDao: VisitHistoryDao
-    @Inject
-    lateinit var favoriteSiteDao:FavoriteSiteDao
 
     lateinit var sessionManager: SessionManager
     lateinit var viewModel: HistoryViewModel
