@@ -95,7 +95,8 @@ data class ThemeSource(
     }
 }
 
-data class ThemeSources(var themeSources:List<ThemeSource>){
+data class ThemeSources(var themeSources:List<ThemeSource>) : Parcelable {
+    constructor(parcel: Parcel) : this(parcel.createTypedArrayList(ThemeSource.CREATOR))
     //获取使用的ThemeSource
     fun getActiveThemeSource():ThemeSource?{
         return themeSources.find { it.active  }
@@ -105,10 +106,26 @@ data class ThemeSources(var themeSources:List<ThemeSource>){
         themeSources.forEach { it.active=false }
         themeSources.find { it.name == name }?.active=true
     }
-    companion object {
+
+    override fun writeToParcel(parcel: Parcel, flags: Int) {
+        parcel.writeTypedList(themeSources)
+    }
+
+    override fun describeContents(): Int {
+        return 0
+    }
+
+    companion object CREATOR : Parcelable.Creator<ThemeSources> {
         fun loadThemeSources(context:Context):ThemeSources{
             val themes=context.loadJsonArray("themes.json",ThemeSource::class.java)
             return ThemeSources(themeSources = themes)
+        }
+        override fun createFromParcel(parcel: Parcel): ThemeSources {
+            return ThemeSources(parcel)
+        }
+
+        override fun newArray(size: Int): Array<ThemeSources?> {
+            return arrayOfNulls(size)
         }
     }
 }

@@ -30,7 +30,9 @@ import com.dev.orangebrowser.bloc.setting.fragments.adblock.*
 import com.dev.orangebrowser.bloc.sourcecode.SourceCodeFragment
 import com.dev.orangebrowser.bloc.tabs.TabFragment
 import com.dev.orangebrowser.bloc.theme.ThemeFragment
+import com.dev.orangebrowser.data.model.*
 import com.dev.orangebrowser.extension.appComponent
+import com.dev.orangebrowser.extension.appData
 import com.dev.orangebrowser.extension.myApplication
 import com.dev.view.NavigationBarUtil
 import com.dev.view.StatusBarUtil
@@ -39,7 +41,9 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import permissions.dispatcher.*
+import java.util.*
 import javax.inject.Inject
+import kotlin.collections.ArrayList
 
 @RuntimePermissions
 class MainActivity : BaseActivity() {
@@ -93,7 +97,21 @@ class MainActivity : BaseActivity() {
 
     override fun initView(savedInstanceState: Bundle?) {
         if (savedInstanceState != null) {
-
+//           savedInstanceState.getParcelable<ThemeSources>(THEME)?.apply {
+//               appData.themes=this
+//           }
+//            savedInstanceState.getParcelableArrayList<Site>(FAVOR_SITES)?.apply {
+//                appData.favorSites=LinkedList(this)
+//            }
+//            savedInstanceState.getParcelableArrayList<ActionItem>(BOTTOM_MENU_ACTION_ITEMS)?.apply {
+//                appData.bottomMenuActionItems=LinkedList(this)
+//            }
+//            savedInstanceState.getParcelableArrayList<ActionItem>(TOP_MENU_ACTION_ITEMS)?.apply {
+//                appData.topMenuActionItems=LinkedList(this)
+//            }
+            savedInstanceState.getParcelable<ApplicationData>("appData")?.apply {
+                   appData=this
+            }
         } else {
             viewModel.appData.observe(this, Observer {
                 it.either(fun(failure) {
@@ -113,6 +131,14 @@ class MainActivity : BaseActivity() {
         }
     }
 
+    override fun onSaveInstanceState(outState: Bundle) {
+//        outState.putParcelable(THEME,appData.themes)
+//        outState.putParcelableArrayList(FAVOR_SITES,ArrayList<Site>(appData.favorSites))
+//        outState.putParcelableArrayList(BOTTOM_MENU_ACTION_ITEMS,ArrayList<ActionItem>(appData.bottomMenuActionItems))
+//        outState.putParcelableArrayList(TOP_MENU_ACTION_ITEMS,ArrayList<ActionItem>(appData.topMenuActionItems))
+        outState.putParcelable("appData",appData)
+        super.onSaveInstanceState(outState)
+    }
     @NeedsPermission(
         Manifest.permission.CAMERA,
         Manifest.permission.WRITE_EXTERNAL_STORAGE,
