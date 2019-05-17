@@ -2,4 +2,6 @@
     <string name="app_name">base</string>
     <string name="share">分享</string>
     <string name="share_link">分享链接</string>
+    <string name="tip">提示</string>
+    <string name="tip_redirect_to_other_app">是否允许跳转到其他应用?</string>
 </resources>

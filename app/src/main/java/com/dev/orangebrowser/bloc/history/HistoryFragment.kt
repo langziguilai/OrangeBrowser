@@ -91,25 +91,31 @@ class HistoryFragment : BaseFragment(), BackHandler {
         }
         binding.clear.setOnClickListener {
             if (clearHistoryDialog != null) {
+               if(!clearHistoryDialog!!.isShowing) clearHistoryDialog?.show()
+            }else{
+                clearHistoryDialog = DialogBuilder()
+                    .setLayoutId(R.layout.dialog_delete_history)
+                    .setGravity(Gravity.CENTER)
+                    .setWidthPercent(0.9f)
+                    .setCanceledOnTouchOutside(true)
+                    .setOnViewCreateListener(object : DialogBuilder.OnViewCreateListener {
+                        override fun onViewCreated(view: View) {
+                            view.findViewById<View>(R.id.cancel).setOnClickListener {
+                                if (clearHistoryDialog!=null && clearHistoryDialog!!.isShowing){
+                                    clearHistoryDialog?.dismiss()
+                                }
+                            }
+                            view.findViewById<View>(R.id.sure).setOnClickListener {
+                                if (clearHistoryDialog!=null && clearHistoryDialog!!.isShowing){
+                                    clearHistoryDialog?.dismiss()
+                                }
+                                clearHistory()
+                            }
+                        }
+                    }).build(requireContext())
                 clearHistoryDialog?.show()
             }
-            clearHistoryDialog = DialogBuilder()
-                .setLayoutId(R.layout.dialog_delete_history)
-                .setGravity(Gravity.CENTER)
-                .setWidthPercent(0.9f)
-                .setCanceledOnTouchOutside(true)
-                .setOnViewCreateListener(object : DialogBuilder.OnViewCreateListener {
-                    override fun onViewCreated(view: View) {
-                        view.findViewById<View>(R.id.cancel).setOnClickListener {
-                            clearHistoryDialog?.dismiss()
-                        }
-                        view.findViewById<View>(R.id.sure).setOnClickListener {
-                            clearHistoryDialog?.dismiss()
-                            clearHistory()
-                        }
-                    }
-                }).build(requireContext())
-            clearHistoryDialog?.show()
+
         }
         binding.recyclerView.layoutManager = LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
         adapter = object : BaseSectionQuickAdapter<MySectionEntity, CustomBaseViewHolder>(

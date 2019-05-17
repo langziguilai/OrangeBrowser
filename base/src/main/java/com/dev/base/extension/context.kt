@@ -5,6 +5,7 @@
 package com.dev.base.extension
 
 import android.app.ActivityManager
+import android.app.Dialog
 import android.content.*
 import android.content.pm.PackageManager.PERMISSION_GRANTED
 import android.util.Log
@@ -19,8 +20,10 @@ import com.google.gson.JsonParser
 import com.google.gson.JsonArray
 import androidx.core.content.ContextCompat.getSystemService
 import android.net.Uri
+import android.view.Gravity
 import androidx.core.content.ContextCompat.startActivity
 import com.dev.base.R
+import com.dev.view.dialog.AlertDialogBuilder
 
 
 /**
@@ -143,4 +146,38 @@ fun Context.copyLink(label:String,link:String){
     val cm = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
     val mClipData = ClipData.newUri(contentResolver,label, Uri.parse(link))
     cm.primaryClip = mClipData
+}
+
+//保证只有一个Dialog显示
+var redirectDialog: Dialog?=null
+var redirectUrl:String=""
+//通过链接跳转到可以接收的应用
+fun Context.redirectToApp(url:String){
+    Log.d("redirectToApp",url)
+    redirectUrl=url
+    if (redirectDialog==null){
+        redirectDialog= AlertDialogBuilder()
+            .setTitle(title = getString(R.string.tip))
+            .setContent(content = getString(R.string.tip_redirect_to_other_app))
+            .setGravity(Gravity.BOTTOM)
+            .setNegativeButtonText(text=getString(R.string.cancel))
+            .setOnPositive(Runnable {
+                try {
+                    Log.d("app url is :",redirectUrl)
+                    val intent = Intent(Intent.ACTION_VIEW,Uri.parse(redirectUrl)).apply {
+                        flags = Intent.FLAG_ACTIVITY_NEW_TASK
+                    }
+                    startActivity(intent)
+                } catch (e: ActivityNotFoundException) {
+                    Log.d("share error","No activity to share to found")
+                }
+            })
+            .setOnNegative(Runnable {
+            })
+            .setPositiveButtonText(text=getString(R.string.sure))
+            .build(this)
+    }
+    if(!redirectDialog!!.isShowing){
+        redirectDialog?.show()
+    }
 }

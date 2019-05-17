@@ -149,7 +149,7 @@ class BrowserFragment : BaseFragment(), BackHandler, UserInteractionHandler {
         val webViewVisionHelper = WebViewVisionHelper(binding)
         //将EngineView添加到上面去
         binding.webViewContainer.removeAllViews()
-        val engineView = SystemEngineView(requireContext().applicationContext)
+        val engineView = SystemEngineView(requireContext())
         val params = RelativeLayout.LayoutParams(
             RelativeLayout.LayoutParams.WRAP_CONTENT,
             RelativeLayout.LayoutParams.WRAP_CONTENT

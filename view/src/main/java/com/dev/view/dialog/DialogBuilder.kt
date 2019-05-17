@@ -3,12 +3,14 @@ package com.dev.view.dialog
 import android.app.Dialog
 import android.content.Context
 import android.graphics.drawable.ColorDrawable
-import android.view.*
+import android.view.Gravity
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.FrameLayout
 import androidx.appcompat.app.AppCompatDialog
-import com.dev.view.AndroidAdjustByKeyboard
 import com.dev.view.R
 
 open class DialogBuilder {
@@ -81,6 +83,7 @@ open class DialogBuilder {
         this.locationY = y
         return this
     }
+
     fun build(context: Context): Dialog {
         val dialog = MyDialog(context, R.style.Dialog)
         dialog.setCanceledOnTouchOutside(this.cancel)
@@ -156,16 +159,14 @@ open class MyDialog : AppCompatDialog {
     }
 
     override fun show() {
+        super.show()
         if (enterAnimationId > 0 && view != null) {
-            view!!.startAnimation(AnimationUtils.loadAnimation(view!!.context, enterAnimationId))
-            super.show()
-        } else {
-            super.show()
+            val animation = AnimationUtils.loadAnimation(view!!.context, enterAnimationId)
+            view!!.startAnimation(animation)
         }
     }
-
     override fun dismiss() {
-        if (enterAnimationId > 0 && view != null) {
+        if (exitAnimationId > 0 && view != null) {
             val animation = AnimationUtils.loadAnimation(view!!.context, exitAnimationId)
             animation.setAnimationListener(object : Animation.AnimationListener {
                 override fun onAnimationRepeat(animation: Animation?) {}

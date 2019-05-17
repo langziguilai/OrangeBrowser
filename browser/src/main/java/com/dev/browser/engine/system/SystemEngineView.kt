@@ -26,6 +26,8 @@ import android.widget.FrameLayout
 import androidx.annotation.VisibleForTesting
 import androidx.annotation.VisibleForTesting.PRIVATE
 import com.dev.base.extension.capture
+import com.dev.base.extension.redirectToApp
+import com.dev.base.support.isUrl
 import com.dev.browser.R
 import com.dev.browser.concept.EngineSession
 import com.dev.browser.concept.EngineSession.TrackingProtectionPolicy
@@ -53,7 +55,6 @@ class SystemEngineView @JvmOverloads constructor(
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
 ) : MatchParentLayout(context, attrs, defStyleAttr), EngineView {
-
     var enableAdblock=false
     init {
         //
@@ -199,17 +200,27 @@ class SystemEngineView @JvmOverloads constructor(
 
     @Suppress("ComplexMethod", "NestedBlockDepth")
     private fun createWebViewClient() = object : WebViewClient() {
-        override fun shouldOverrideUrlLoading(view: WebView?, request: WebResourceRequest?): Boolean {
+        override fun shouldOverrideUrlLoading(view: WebView, request: WebResourceRequest): Boolean {
+            //不是有效的URL则拦截
+            if(!request.url.toString().isUrl()){
+                context.redirectToApp(request.url.toString())
+                return true
+            }
             session?.internalNotifyObservers {
                 onLoadingStateChange(true)
-                onLocationChange(request?.url.toString())
+                onLocationChange(request.url.toString())
             }
             return super.shouldOverrideUrlLoading(view, request)
         }
 
-        override fun shouldOverrideUrlLoading(view: WebView?, url: String?): Boolean {
+        override fun shouldOverrideUrlLoading(view: WebView, url: String): Boolean {
+            //不是有效的URL则拦截
+            if (!url.isUrl()){
+                context.redirectToApp(url)
+                return true
+            }
             session?.internalNotifyObservers {
-                url?.apply {
+                url.apply {
                     onLoadingStateChange(true)
                     onLocationChange(this)
                 }

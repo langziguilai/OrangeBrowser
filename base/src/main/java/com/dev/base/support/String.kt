@@ -31,7 +31,8 @@ fun String.isUrl(): Boolean {
         return false
     }
 
-    return trimmedUrl.contains(".") || trimmedUrl.contains(":")
+    //return trimmedUrl.contains(".") || trimmedUrl.contains(":")
+    return trimmedUrl.matches(Regex("""^(https?://)?(www\.)?([\w-]+\.)+\w+(:\d+)?.*"""))
 }
 
 fun String.isPhone(): Boolean = contains("tel:", true)

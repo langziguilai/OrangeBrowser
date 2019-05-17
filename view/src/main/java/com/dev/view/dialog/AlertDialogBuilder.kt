@@ -5,10 +5,11 @@ import android.content.Context
 import android.view.Gravity
 import android.view.View
 import android.widget.TextView
+import com.dev.view.R
 
 
 class AlertDialogBuilder{
-    private var layoutId:Int=0
+    private var layoutId:Int=R.layout.dialog_alert
     private var onNegative:Runnable?=null
     private var onPositive:Runnable?=null
     private var title:String=""
@@ -19,11 +20,27 @@ class AlertDialogBuilder{
     private var positiveButtonTextId:Int=-1
     private var negativeButtonText:String="取消"
     private var negativeButtonTextId:Int=-1
-    fun setLayoutId(layoutId:Int):AlertDialogBuilder{
+    private var enterAnimationId: Int = R.anim.slide_up
+    private var exitAnimationId:Int=  R.anim.slide_down
+    private var gravity:Int=Gravity.BOTTOM
+    private var dialog:Dialog?=null
+    fun setEnterAnimation(animationId: Int): AlertDialogBuilder {
+        this.enterAnimationId = animationId
+        return this
+    }
+    fun setExitAnimationId(animationId: Int): AlertDialogBuilder {
+        this.exitAnimationId = animationId
+        return this
+    }
+    fun setGravity(gravity:Int):AlertDialogBuilder{
+        this.gravity=gravity
+        return this
+    }
+    fun setLayoutId(layoutId:Int=R.layout.dialog_alert):AlertDialogBuilder{
         this.layoutId=layoutId
         return this
     }
-    fun setonNegative(onNegative:Runnable):AlertDialogBuilder{
+    fun setOnNegative(onNegative:Runnable):AlertDialogBuilder{
         this.onNegative=onNegative
         return this
     }
@@ -31,40 +48,69 @@ class AlertDialogBuilder{
         this.onPositive=onPositive
         return this
     }
-    fun setTitle(id:Int,title:String):AlertDialogBuilder{
+    fun setTitle(id:Int=R.id.title,title:String):AlertDialogBuilder{
         this.titleId=id
         this.title=title
         return this
     }
-    fun setContent(id:Int,content:String):AlertDialogBuilder{
+    fun setContent(id:Int= R.id.content,content:String):AlertDialogBuilder{
         this.contentId=id
         this.content=content
         return this
     }
-    fun setPositiveButtonText(id:Int,text:String):AlertDialogBuilder{
+    fun setPositiveButtonText(id:Int= R.id.sure, text:String):AlertDialogBuilder{
         this.positiveButtonTextId=id
         this.positiveButtonText=text
         return this
     }
-    fun setNegativeButtonText(id:Int,text:String):AlertDialogBuilder{
+    fun setNegativeButtonText(id:Int= R.id.cancel,text:String):AlertDialogBuilder{
         this.negativeButtonTextId=id
         this.negativeButtonText=text
         return this
     }
     fun build(context:Context): Dialog {
-        return DialogBuilder()
-            .setLayoutId(layoutId)
-            .setHeightParent(1f)
-            .setWidthPercent(1f)
-            .setOnViewCreateListener(object : DialogBuilder.OnViewCreateListener {
-                override fun onViewCreated(view: View) {
-                    view.findViewById<TextView>(titleId).text=title
-                    view.findViewById<TextView>(contentId).text=content
-                    view.findViewById<TextView>(positiveButtonTextId).text=positiveButtonText
-                    view.findViewById<TextView>(negativeButtonTextId).text=negativeButtonText
-                }
-            })
-            .setGravity(Gravity.CENTER)
-            .build(context)
+        if (dialog==null){
+            dialog= DialogBuilder()
+                .setLayoutId(layoutId)
+                .setGravity(gravity)
+                .setExitAnimationId(exitAnimationId)
+                .setEnterAnimation(enterAnimationId)
+                .setWidthPercent(0.9f)
+                .setCanceledOnTouchOutside(true)
+                .setOnViewCreateListener(object : DialogBuilder.OnViewCreateListener {
+                    override fun onViewCreated(view: View) {
+                        view.findViewById<TextView>(titleId)?.apply {
+                            text=title
+                        }
+                        view.findViewById<TextView>(contentId)?.apply {
+                            text=content
+                        }
+                        view.findViewById<TextView>(positiveButtonTextId)?.apply {
+                            isClickable=true
+                            isFocusable=true
+                            text=positiveButtonText
+                            setOnClickListener {
+                                onPositive?.run()
+                                if (dialog!=null && dialog!!.isShowing){
+                                    dialog?.dismiss()
+                                }
+                            }
+                        }
+                        view.findViewById<TextView>(negativeButtonTextId)?.apply {
+                            isClickable=true
+                            isFocusable=true
+                            text=negativeButtonText
+                            setOnClickListener {
+                                onNegative?.run()
+                                if (dialog!=null && dialog!!.isShowing){
+                                    dialog?.dismiss()
+                                }
+                            }
+                        }
+                    }
+                })
+                .build(context)
+        }
+         return dialog!!
     }
 }
