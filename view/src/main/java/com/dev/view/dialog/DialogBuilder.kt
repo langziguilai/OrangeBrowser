@@ -3,10 +3,7 @@ package com.dev.view.dialog
 import android.app.Dialog
 import android.content.Context
 import android.graphics.drawable.ColorDrawable
-import android.view.Gravity
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.FrameLayout
@@ -92,6 +89,7 @@ open class DialogBuilder {
         dialog.setContentView(container)
         dialog.setExitAnimationId(this.exitAnimationId)
         dialog.setEnterAnimationId(this.enterAnimationId)
+
         dialog.window?.setGravity(this.gravity)
         val containerLayoutParams=container.layoutParams
         containerLayoutParams.width=ViewGroup.LayoutParams.MATCH_PARENT

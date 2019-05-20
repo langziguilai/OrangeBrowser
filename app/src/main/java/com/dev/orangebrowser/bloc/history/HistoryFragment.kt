@@ -374,9 +374,9 @@ class HistoryFragment : BaseFragment(), BackHandler {
         view.findViewById<View>(R.id.sure).setOnClickListener {
             //若category不存在，则添加
             if(category.text.toString().isNotBlank() && categories?.find { it.categoryName==category.text.toString() }==null){
-                 val category=BookMarkCategoryEntity(date=Date().time,categoryName = category.text.toString())
+                 val categoryNew=BookMarkCategoryEntity(date=Date().time,categoryName = category.text.toString())
                  launch(Dispatchers.IO) {
-                     bookMarkCategoryDao.insert(category)
+                     bookMarkCategoryDao.insert(categoryNew)
                  }
             }
 

@@ -4,7 +4,10 @@ import android.drm.DrmStore
 import android.os.Bundle
 import androidx.annotation.ColorRes
 import com.dev.base.extension.onGlobalLayoutComplete
+import com.dev.base.extension.shareLink
+import com.dev.base.extension.showToast
 import com.dev.base.support.LifecycleAwareFeature
+import com.dev.browser.session.Session
 import com.dev.orangebrowser.R
 import com.dev.orangebrowser.bloc.browser.BrowserFragment
 import com.dev.orangebrowser.bloc.browser.integration.helper.TopPanelHelper
@@ -19,6 +22,7 @@ import com.dev.view.recyclerview.adapter.base.BaseQuickAdapter
 
 class TopPanelMenuIntegration(var binding: FragmentBrowserBinding,
                               var fragment: BrowserFragment,
+                              var session: Session,
                               var savedInstanceState: Bundle?,
                               var topPanelHelper: TopPanelHelper,
                               var findInPageIntegration: FindInPageIntegration):
@@ -58,9 +62,11 @@ class TopPanelMenuIntegration(var binding: FragmentBrowserBinding,
                     })
                 })
             }
-            //TODO:分享
-            R.string.ic_share->{
 
+            R.string.ic_share->{
+                topPanelHelper.toggleTopPanel(Runnable {
+                    shareLink()
+                })
             }
             //阅读模式
             R.string.ic_read->{
@@ -79,7 +85,7 @@ class TopPanelMenuIntegration(var binding: FragmentBrowserBinding,
             R.string.ic_ad_mark->{
 
             }
-            //TODO:页内查找
+
             R.string.ic_search->{
                 topPanelHelper.toggleTopPanel(Runnable {
                     findInPageIntegration.launch()
@@ -115,7 +121,11 @@ class TopPanelMenuIntegration(var binding: FragmentBrowserBinding,
             }
         }
     }
-
+    private fun shareLink(){
+            if(!fragment.requireContext().shareLink(title =session.title,url =session.url)){
+                fragment.requireContext().showToast(fragment.getString(R.string.tip_share_fail))
+            }
+    }
 
     override fun start() {
         //TODO("not implemented") //To change body of created functions use File | Settings | File Templates.

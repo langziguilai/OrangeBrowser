@@ -1,15 +1,27 @@
 package com.dev.orangebrowser.bloc.browser.integration
 
+import android.app.Dialog
 import android.os.Bundle
+import android.view.Gravity
 import android.view.View
+import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import androidx.coordinatorlayout.widget.CoordinatorLayout
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.dev.base.extension.hide
 import com.dev.base.extension.onGlobalLayoutComplete
+import com.dev.base.extension.show
 import com.dev.base.support.LifecycleAwareFeature
+import com.dev.browser.database.bookmark.BookMarkCategoryDao
+import com.dev.browser.database.bookmark.BookMarkCategoryEntity
+import com.dev.browser.database.bookmark.BookMarkDao
+import com.dev.browser.database.bookmark.BookMarkEntity
 import com.dev.browser.feature.session.SessionUseCases
 import com.dev.browser.session.Session
 import com.dev.orangebrowser.R
+import com.dev.orangebrowser.bloc.bookmark.LeftRightEntity
 import com.dev.orangebrowser.bloc.browser.BrowserFragment
 import com.dev.orangebrowser.bloc.browser.integration.helper.BottomPanelHelper
 import com.dev.orangebrowser.bloc.browser.integration.helper.redirect
@@ -18,11 +30,19 @@ import com.dev.orangebrowser.databinding.FragmentBrowserBinding
 import com.dev.orangebrowser.extension.RouterActivity
 import com.dev.orangebrowser.extension.appData
 import com.dev.orangebrowser.bloc.browser.view.WebViewToggleBehavior
+import com.dev.orangebrowser.bloc.host.MainViewModel
+import com.dev.orangebrowser.extension.getColor
 import com.dev.util.DensityUtil
 import com.dev.view.GridView
+import com.dev.view.dialog.DialogBuilder
 import com.dev.view.recyclerview.CustomBaseViewHolder
+import com.dev.view.recyclerview.GridDividerItemDecoration
 import com.dev.view.recyclerview.adapter.base.BaseQuickAdapter
+import com.noober.background.drawable.DrawableCreator
 import es.dmoral.toasty.Toasty
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import java.util.*
 
 class BottomPanelMenuIntegration(
     private var binding: FragmentBrowserBinding,
@@ -30,17 +50,21 @@ class BottomPanelMenuIntegration(
     var savedInstanceState: Bundle?,
     var bottomPanelHelper: BottomPanelHelper,
     var session: Session,
-    var sessionUseCases: SessionUseCases
+    var sessionUseCases: SessionUseCases,
+    var bookMarkDao: BookMarkDao,
+    var bookMarkCategoryDao: BookMarkCategoryDao,
+    var activityViewModel: MainViewModel
 ) :
     LifecycleAwareFeature {
-    private var sessionObserver:Session.Observer
-    private var behavior:WebViewToggleBehavior?=null
+    private var sessionObserver: Session.Observer
+    private var behavior: WebViewToggleBehavior? = null
+
     init {
         initBottomMenuGridView(binding.bottomMenuGridView)
-        if(binding.webViewContainer.layoutParams is CoordinatorLayout.LayoutParams){
-           val layoutParams= binding.webViewContainer.layoutParams as CoordinatorLayout.LayoutParams
-            if (layoutParams.behavior is WebViewToggleBehavior){
-                behavior=layoutParams.behavior as WebViewToggleBehavior
+        if (binding.webViewContainer.layoutParams is CoordinatorLayout.LayoutParams) {
+            val layoutParams = binding.webViewContainer.layoutParams as CoordinatorLayout.LayoutParams
+            if (layoutParams.behavior is WebViewToggleBehavior) {
+                behavior = layoutParams.behavior as WebViewToggleBehavior
             }
         }
         binding.bottomMenuGridViewClose.setOnClickListener {
@@ -53,11 +77,11 @@ class BottomPanelMenuIntegration(
         binding.bottomMenuPanel.apply {
             onGlobalLayoutComplete {
                 fragment.context?.apply {
-                    it.translationY=it.height.toFloat() + DensityUtil.dip2px(fragment.requireContext(), 16f)
+                    it.translationY = it.height.toFloat() + DensityUtil.dip2px(fragment.requireContext(), 16f)
                 }
             }
         }
-        sessionObserver=object :Session.Observer{
+        sessionObserver = object : Session.Observer {
             override fun onDesktopModeChanged(session: Session, enabled: Boolean) {
                 //自动重载，所以不需要在此处重新加载sessionUseCases.reload.invoke(session)
             }
@@ -105,7 +129,7 @@ class BottomPanelMenuIntegration(
                         .setTextColor(fragment.activityViewModel.theme.value!!.colorPrimary)
                 }
                 sessionUseCases.forbidLoadImage.invoke(actionItem.active)
-                session.forbidImageMode=actionItem.active
+                session.forbidImageMode = actionItem.active
             }
             //隐身
             R.string.ic_privacy -> {
@@ -121,15 +145,15 @@ class BottomPanelMenuIntegration(
                     view.findViewById<TextView>(R.id.name)
                         .setTextColor(fragment.activityViewModel.theme.value!!.colorPrimary)
                 }
-                session.private=actionItem.active
+                session.private = actionItem.active
             }
             //全局视野
             R.string.ic_normal_screen -> {
-                var newVisionMode=Session.SCROLL_FULL_SCREEN_MODE
+                var newVisionMode = Session.SCROLL_FULL_SCREEN_MODE
                 when {
-                    session.visionMode==Session.NORMAL_SCREEN_MODE -> {
+                    session.visionMode == Session.NORMAL_SCREEN_MODE -> {
 
-                        newVisionMode=Session.SCROLL_FULL_SCREEN_MODE
+                        newVisionMode = Session.SCROLL_FULL_SCREEN_MODE
                         actionItem.active = !actionItem.active
                         view.findViewById<TextView>(R.id.icon)
                             .setTextColor(fragment.activityViewModel.theme.value!!.colorPrimaryActive)
@@ -137,12 +161,12 @@ class BottomPanelMenuIntegration(
                         view.findViewById<TextView>(R.id.name)
                             .setTextColor(fragment.activityViewModel.theme.value!!.colorPrimaryActive)
                     }
-                    session.visionMode==Session.SCROLL_FULL_SCREEN_MODE -> {
-                        newVisionMode=Session.MAX_SCREEN_MODE
+                    session.visionMode == Session.SCROLL_FULL_SCREEN_MODE -> {
+                        newVisionMode = Session.MAX_SCREEN_MODE
                         view.findViewById<TextView>(R.id.icon).setText(R.string.ic_fullscreen)
                     }
-                    session.visionMode==Session.MAX_SCREEN_MODE  -> {
-                        newVisionMode=Session.NORMAL_SCREEN_MODE
+                    session.visionMode == Session.MAX_SCREEN_MODE -> {
+                        newVisionMode = Session.NORMAL_SCREEN_MODE
                         actionItem.active = !actionItem.active
                         view.findViewById<TextView>(R.id.icon)
                             .setTextColor(fragment.activityViewModel.theme.value!!.colorPrimary)
@@ -151,11 +175,11 @@ class BottomPanelMenuIntegration(
                             .setTextColor(fragment.activityViewModel.theme.value!!.colorPrimary)
                     }
                 }
-                session.visionMode=newVisionMode
-                if (session.visionMode==Session.MAX_SCREEN_MODE){
-                    binding.miniBottomBar.visibility=View.VISIBLE
-                }else{
-                    binding.miniBottomBar.visibility=View.GONE
+                session.visionMode = newVisionMode
+                if (session.visionMode == Session.MAX_SCREEN_MODE) {
+                    binding.miniBottomBar.visibility = View.VISIBLE
+                } else {
+                    binding.miniBottomBar.visibility = View.GONE
                 }
                 binding.fragmentContainer.requestLayout()
             }
@@ -163,13 +187,13 @@ class BottomPanelMenuIntegration(
             R.string.ic_desktop -> {
                 actionItem.active = !actionItem.active
                 if (actionItem.active) {
-                    sessionUseCases.requestDesktopSite.invoke(true,session)
+                    sessionUseCases.requestDesktopSite.invoke(true, session)
                     view.findViewById<TextView>(R.id.icon)
                         .setTextColor(fragment.activityViewModel.theme.value!!.colorPrimaryActive)
                     view.findViewById<TextView>(R.id.name)
                         .setTextColor(fragment.activityViewModel.theme.value!!.colorPrimaryActive)
                 } else {
-                    sessionUseCases.requestDesktopSite.invoke(false,session)
+                    sessionUseCases.requestDesktopSite.invoke(false, session)
                     view.findViewById<TextView>(R.id.icon)
                         .setTextColor(fragment.activityViewModel.theme.value!!.colorPrimary)
                     view.findViewById<TextView>(R.id.name)
@@ -180,7 +204,7 @@ class BottomPanelMenuIntegration(
             //发现
             R.string.ic_found -> {
                 bottomPanelHelper.toggleBottomPanel(Runnable {
-                    redirect(binding=binding,session = session,runnable = Runnable {
+                    redirect(binding = binding, session = session, runnable = Runnable {
                         fragment.RouterActivity?.loadFoundFragment()
                     })
                 })
@@ -188,7 +212,7 @@ class BottomPanelMenuIntegration(
             //历史
             R.string.ic_history -> {
                 bottomPanelHelper.toggleBottomPanel(Runnable {
-                    redirect(binding=binding,session = session,runnable = Runnable {
+                    redirect(binding = binding, session = session, runnable = Runnable {
                         fragment.RouterActivity?.loadHistoryFragment()
                     })
                 })
@@ -197,7 +221,7 @@ class BottomPanelMenuIntegration(
             //书签
             R.string.ic_bookmark -> {
                 bottomPanelHelper.toggleBottomPanel(Runnable {
-                    redirect(binding=binding,session = session,runnable = Runnable {
+                    redirect(binding = binding, session = session, runnable = Runnable {
                         fragment.RouterActivity?.loadBookMarkFragment()
                     })
                 })
@@ -205,13 +229,22 @@ class BottomPanelMenuIntegration(
             }
             //收藏
             R.string.ic_star -> {
-                Toasty.warning(fragment.requireContext(), R.string.webview_not_available_hint, Toast.LENGTH_SHORT, true)
-                    .show()
+                bottomPanelHelper.toggleBottomPanel(Runnable {
+                    openBookMarkEditorDialog(
+                        BookMarkEntity(
+                            url = session.url,
+                            title = session.title,
+                            date = Date().time,
+                            categoryName = ""
+                        ),
+                        view
+                    )
+                })
             }
             //主题
             R.string.ic_theme -> {
                 bottomPanelHelper.toggleBottomPanel(Runnable {
-                    redirect(binding=binding,session = session,runnable = Runnable {
+                    redirect(binding = binding, session = session, runnable = Runnable {
                         fragment.RouterActivity?.loadThemeFragment()
                     })
                 })
@@ -220,7 +253,7 @@ class BottomPanelMenuIntegration(
             //下载
             R.string.ic_download -> {
                 bottomPanelHelper.toggleBottomPanel(Runnable {
-                    redirect(binding=binding,session = session,runnable = Runnable {
+                    redirect(binding = binding, session = session, runnable = Runnable {
                         fragment.RouterActivity?.loadDownloadFragment()
                     })
                 })
@@ -229,7 +262,7 @@ class BottomPanelMenuIntegration(
             //设置
             R.string.ic_setting -> {
                 bottomPanelHelper.toggleBottomPanel(Runnable {
-                    redirect(binding=binding,session = session,runnable = Runnable {
+                    redirect(binding = binding, session = session, runnable = Runnable {
                         fragment.RouterActivity?.loadSettingFragment()
                     })
                 })
@@ -241,6 +274,116 @@ class BottomPanelMenuIntegration(
             }
         }
     }
+
+
+    private var editBookMarkDialog: Dialog? = null
+    private fun openBookMarkEditorDialog(bookMarkEntity: BookMarkEntity,editTextContainer: View) {
+        editBookMarkDialog = DialogBuilder()
+            .setLayoutId(R.layout.dialog_add_bookmark)
+            .setOnViewCreateListener(object : DialogBuilder.OnViewCreateListener {
+                override fun onViewCreated(view: View) {
+                    initEditBookMarkDialog(view, bookMarkEntity,editTextContainer)
+                }
+            })
+            .setCanceledOnTouchOutside(true)
+            .setEnterAnimation(R.anim.slide_up)
+            .setExitAnimationId(R.anim.slide_down)
+            .setGravity(Gravity.BOTTOM)
+            .build(fragment.requireContext())
+        editBookMarkDialog?.show()
+    }
+
+    var categories: List<BookMarkCategoryEntity>? = null
+    var selectedCategory: BookMarkCategoryEntity? = null
+    private fun initEditBookMarkDialog(view: View, bookMark: BookMarkEntity,editTextContainer:View) {
+        fragment.launch(Dispatchers.IO) {
+            val exitBookMark = bookMarkDao.getBookMarkByUrl(bookMark.url)
+            categories = bookMarkCategoryDao.getCategoryList()
+            launch(Dispatchers.Main) {
+                val title = view.findViewById<EditText>(R.id.input_title)
+                title.setText(bookMark.title)
+                val url = view.findViewById<EditText>(R.id.url)
+                url.setText(bookMark.url)
+                val category = view.findViewById<EditText>(R.id.category)
+                exitBookMark?.apply {
+                    title.setText(exitBookMark.title)
+                    url.setText(exitBookMark.url)
+                    category.setText(exitBookMark.categoryName)
+                }
+                val recyclerView = view.findViewById<RecyclerView>(R.id.category_list).apply {
+                    this.layoutManager = LinearLayoutManager(context, RecyclerView.HORIZONTAL, false)
+                    this.addItemDecoration(
+                        GridDividerItemDecoration(
+                            DensityUtil.dip2px(fragment.requireContext(), 6f),
+                            0,
+                            fragment.getColor(R.color.transparent)
+                        )
+                    )
+                }
+                categories?.apply {
+                    if (this.isNotEmpty()) {
+                        recyclerView.show()
+                    } else {
+                        recyclerView.hide()
+                    }
+                }
+                recyclerView.adapter = object :
+                    BaseQuickAdapter<BookMarkCategoryEntity, CustomBaseViewHolder>(R.layout.item_category, categories) {
+                    override fun convert(helper: CustomBaseViewHolder, item: BookMarkCategoryEntity) {
+                        if (selectedCategory != null && selectedCategory!!.categoryName == item.categoryName) {
+                            val bg =
+                                DrawableCreator.Builder().setSolidColor(activityViewModel.theme.value!!.colorPrimary)
+                                    .setCornersRadius(DensityUtil.dip2px(fragment.requireContext(), 1000f).toFloat())
+                                    .setStrokeColor(fragment.getColor(R.color.color_EEEEEE))
+                                    .setStrokeWidth(DensityUtil.dip2px(fragment.requireContext(), 1f).toFloat())
+                                    .build()
+                            helper.setTextColor(R.id.category, fragment.getColor(R.color.colorWhite))
+                            helper.itemView.background = bg
+                        } else {
+                            val bg = DrawableCreator.Builder().setSolidColor(fragment.getColor(R.color.transparent))
+                                .setCornersRadius(DensityUtil.dip2px(fragment.requireContext(), 1000f).toFloat())
+                                .setStrokeColor(fragment.getColor(R.color.color_EEEEEE))
+                                .setStrokeWidth(DensityUtil.dip2px(fragment.requireContext(), 1f).toFloat())
+                                .build()
+                            helper.itemView.background = bg
+                            helper.setTextColor(R.id.category, fragment.getColor(R.color.colorBlack))
+                        }
+                        helper.setText(R.id.category, item.categoryName)
+                        helper.itemView.setOnClickListener {
+                            selectedCategory = item
+                            category.setText(item.categoryName)
+                            recyclerView.adapter?.notifyDataSetChanged()
+                        }
+                    }
+                }
+
+                view.findViewById<View>(R.id.cancel).setOnClickListener {
+                    editBookMarkDialog?.dismiss()
+                }
+                view.findViewById<View>(R.id.sure).setOnClickListener {
+                    //若category不存在，则添加
+                    if (category.text.toString().isNotBlank() && categories?.find { it.categoryName == category.text.toString() } == null) {
+                        val categoryNew =
+                            BookMarkCategoryEntity(date = Date().time, categoryName = category.text.toString())
+                        fragment.launch(Dispatchers.IO) {
+                            bookMarkCategoryDao.insert(categoryNew)
+                        }
+                    }
+                    bookMark.title = title.text.toString()
+                    bookMark.url = url.text.toString()
+                    bookMark.categoryName = category.text.toString()
+                    bookMark.date=Date().time
+                    fragment.launch(Dispatchers.IO) {
+                        bookMarkDao.delete(bookMark)
+                        bookMarkDao.insert(bookMark)
+                    }
+                     editBookMarkDialog?.dismiss()
+                }
+            }
+        }
+
+    }
+
 
     override fun start() {
         session.register(sessionObserver)

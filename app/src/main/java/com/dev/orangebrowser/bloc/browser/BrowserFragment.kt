@@ -33,6 +33,8 @@ import kotlinx.android.synthetic.main.fragment_browser.*
 import java.util.*
 import javax.inject.Inject
 import android.widget.RelativeLayout
+import com.dev.browser.database.bookmark.BookMarkCategoryDao
+import com.dev.browser.database.bookmark.BookMarkDao
 import com.dev.browser.session.Session
 import com.dev.orangebrowser.extension.appData
 import com.dev.util.ColorStore
@@ -50,6 +52,10 @@ class BrowserFragment : BaseFragment(), BackHandler, UserInteractionHandler {
     lateinit var sessionUseCases: SessionUseCases
     @Inject
     lateinit var tabsUseCases: TabsUseCases
+    @Inject
+    lateinit var bookMarkCategoryDao: BookMarkCategoryDao
+    @Inject
+    lateinit var bookMarkDao: BookMarkDao
 
     lateinit var viewModel: BrowserViewModel
     lateinit var activityViewModel: MainViewModel
@@ -210,7 +216,11 @@ class BrowserFragment : BaseFragment(), BackHandler, UserInteractionHandler {
                 savedInstanceState = savedInstanceState,
                 bottomPanelHelper = bottomPanelHelper,
                 sessionUseCases = sessionUseCases,
-                session = session
+                session = session,
+                bookMarkCategoryDao = bookMarkCategoryDao,
+                bookMarkDao = bookMarkDao,
+                activityViewModel = activityViewModel
+
             ), owner = this, view = binding.root
         )
         val findInPageIntegrationFeature = FindInPageIntegration(
@@ -228,7 +238,8 @@ class BrowserFragment : BaseFragment(), BackHandler, UserInteractionHandler {
                 fragment = this,
                 savedInstanceState = savedInstanceState,
                 topPanelHelper = topPanelHelper,
-                findInPageIntegration = findInPageIntegrationFeature
+                findInPageIntegration = findInPageIntegrationFeature,
+                session = session
             ), owner = this, view = binding.root
         )
         webViewScrollHandlerIntegration.set(
