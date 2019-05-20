@@ -9,10 +9,11 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 /**
- * Internal entity representing a site permission as it gets saved to the database.
+ * Internal entity representing a site permission as it gets saved to the database
+ * @Entity(primaryKeys = {"column1","column2","column3"})多个字段组合而成的主键
  */
 @Entity(tableName = "book_mark")
-data class FavoriteLinkEntity(
+data class BookMarkEntity(
     @PrimaryKey
     @ColumnInfo(name = "url")
     var url: String,
@@ -22,15 +23,13 @@ data class FavoriteLinkEntity(
 
     @ColumnInfo(name = "date")
     var date: Long,
-    @ColumnInfo(name = "category_id")
-    var categoryId: Int,
     @ColumnInfo(name = "category_name")
     var categoryName: String
 )
 //通过categoryId过滤
-fun filterFavoriteLinksByCategoryId(categoryId: Int,data:List<FavoriteLinkEntity>):List<FavoriteLinkEntity>{
-    return data.filter { it.categoryId==categoryId }.sortedWith(object:Comparator<FavoriteLinkEntity>{
-        override fun compare(o1: FavoriteLinkEntity, o2: FavoriteLinkEntity): Int {
+fun filterFavoriteLinksByCategory(categoryName: String, data:List<BookMarkEntity>):List<BookMarkEntity>{
+    return data.filter { it.categoryName==categoryName }.sortedWith(object:Comparator<BookMarkEntity>{
+        override fun compare(o1: BookMarkEntity, o2: BookMarkEntity): Int {
            if (o1.date>o2.date)
                return 1
             if (o1.date==o2.date)

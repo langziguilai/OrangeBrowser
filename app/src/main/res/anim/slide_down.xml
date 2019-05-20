@@ -2,12 +2,7 @@
 <set xmlns:android="http://schemas.android.com/apk/res/android"
      android:duration="@android:integer/config_longAnimTime">
     <translate
-
             android:fromYDelta="0%p"
             android:interpolator="@android:anim/accelerate_interpolator"
             android:toYDelta="100%p"/>
-
-    <alpha
-            android:fromAlpha="1"
-            android:toAlpha="0"/>
 </set>

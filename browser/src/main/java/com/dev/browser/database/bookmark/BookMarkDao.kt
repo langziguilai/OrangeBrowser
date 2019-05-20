@@ -13,15 +13,17 @@ import androidx.room.*
 @Dao
 interface BookMarkDao {
     @Insert
-    fun insert(entity: FavoriteLinkEntity): Long
+    fun insert(entity: BookMarkEntity): Long
     @Update
-    fun update(entity: FavoriteLinkEntity)
-//    获取所有的标签
+    fun update(entity: BookMarkEntity)
+    //    获取所有的标签
     @Query("SELECT * FROM book_mark ORDER BY date ASC")
-    fun getFavoriteLinkList(): List<FavoriteLinkEntity>
-//通过category ID来查询标签
-    @Query("SELECT * FROM book_mark WHERE category_id=:categoryId ORDER BY date  ASC")
-    fun getFavoriteLinkListByCategoryId(categoryId:String): List<FavoriteLinkEntity>
+    fun getBookMarkList(): List<BookMarkEntity>
+    //通过category ID来查询标签
+    @Query("SELECT * FROM book_mark WHERE category_name=:category ORDER BY date  ASC")
+    fun getBookMarkListByCategoryId(category:String): List<BookMarkEntity>
     @Delete
-    fun delete(entity: FavoriteLinkEntity)
+    fun delete(entity: BookMarkEntity)
+    @Query("SELECT * FROM book_mark WHERE url=:url  ORDER BY date  ASC  LIMIT 1")
+    fun getBookMarkByUrl(url:String): BookMarkEntity?
 }

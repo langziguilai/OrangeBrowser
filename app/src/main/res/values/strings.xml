@@ -287,5 +287,10 @@
     <string name="tip_copy_link">已拷贝链接</string>
     <string name="tip_share_success">分享成功</string>
     <string name="tip_share_fail">分享失败</string>
+    <string name="add_book_mark">新建书签</string>
+    <string name="title">标题</string>
+    <string name="url">网址</string>
+    <string name="category">分类</string>
+    <string name="tip_add_category">选择或新增分类</string>
 
 </resources>

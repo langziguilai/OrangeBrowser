@@ -10,7 +10,7 @@ import androidx.room.*
 import com.dev.browser.database.bookmark.BookMarkCategoryDao
 import com.dev.browser.database.bookmark.BookMarkCategoryEntity
 import com.dev.browser.database.bookmark.BookMarkDao
-import com.dev.browser.database.bookmark.FavoriteLinkEntity
+import com.dev.browser.database.bookmark.BookMarkEntity
 import com.dev.browser.database.history.VisitHistoryDao
 import com.dev.browser.database.history.VisitHistoryEntity
 import com.dev.browser.database.sitepermission.SitePermissionsDao
@@ -20,7 +20,7 @@ import com.dev.browser.feature.sitepermissions.SitePermissions
 /**
  * Internal database for saving site permissions.
  */
-@Database(entities = [SitePermissionsEntity::class,VisitHistoryEntity::class, FavoriteLinkEntity::class,BookMarkCategoryEntity::class], version = 1)
+@Database(entities = [SitePermissionsEntity::class,VisitHistoryEntity::class, BookMarkEntity::class,BookMarkCategoryEntity::class], version = 1)
 @TypeConverters(StatusConverter::class)
 abstract class BrowserDatabase : RoomDatabase() {
     abstract fun sitePermissionsDao(): SitePermissionsDao

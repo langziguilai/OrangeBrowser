@@ -5,7 +5,4 @@
             android:fromYDelta="100%p"
             android:interpolator="@android:anim/accelerate_interpolator"
             android:toXDelta="0%p"/>
-    <alpha
-            android:fromAlpha="0"
-            android:toAlpha="1"/>
 </set>

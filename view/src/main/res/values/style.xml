@@ -17,6 +17,5 @@
         <item name="android:windowNoTitle">true</item><!--无标题-->
         <item name="android:windowBackground">@color/transparent</item><!--背景透明-->
         <item name="android:backgroundDimEnabled">false</item><!--模糊-->
-        <item name="android:windowAnimationStyle">@null</item>
     </style>
 </resources>

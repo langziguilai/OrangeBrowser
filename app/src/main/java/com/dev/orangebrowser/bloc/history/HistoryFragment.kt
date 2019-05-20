@@ -7,6 +7,7 @@ import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
 import android.widget.FrameLayout
 import android.widget.TextView
 import androidx.lifecycle.ViewModelProviders
@@ -15,6 +16,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.dev.base.BaseFragment
 import com.dev.base.extension.*
 import com.dev.base.support.BackHandler
+import com.dev.browser.database.bookmark.BookMarkCategoryDao
+import com.dev.browser.database.bookmark.BookMarkCategoryEntity
+import com.dev.browser.database.bookmark.BookMarkDao
+import com.dev.browser.database.bookmark.BookMarkEntity
 import com.dev.browser.database.history.VisitHistoryDao
 import com.dev.browser.database.history.VisitHistoryEntity
 import com.dev.browser.feature.tabs.TabsUseCases
@@ -24,12 +29,15 @@ import com.dev.orangebrowser.bloc.host.MainViewModel
 import com.dev.orangebrowser.databinding.FragmentHistoryBinding
 import com.dev.orangebrowser.extension.RouterActivity
 import com.dev.orangebrowser.extension.appComponent
+import com.dev.orangebrowser.extension.getColor
 import com.dev.util.DensityUtil
 import com.dev.view.dialog.DialogBuilder
 import com.dev.view.recyclerview.CustomBaseViewHolder
+import com.dev.view.recyclerview.GridDividerItemDecoration
 import com.dev.view.recyclerview.adapter.base.BaseQuickAdapter
 import com.dev.view.recyclerview.adapter.base.BaseSectionQuickAdapter
 import com.dev.view.recyclerview.adapter.base.entity.SectionEntity
+import com.noober.background.drawable.DrawableCreator
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.util.*
@@ -45,6 +53,10 @@ class HistoryFragment : BaseFragment(), BackHandler {
 
     @Inject
     lateinit var historyDao: VisitHistoryDao
+    @Inject
+    lateinit var bookMarkCategoryDao:BookMarkCategoryDao
+    @Inject
+    lateinit var bookMarkDao:BookMarkDao
     @Inject
     lateinit var sessionManager: SessionManager
     @Inject
@@ -280,9 +292,105 @@ class HistoryFragment : BaseFragment(), BackHandler {
             }
         }
     }
+    private var addBookMarkDialog:Dialog?=null
     private fun addToBookmark(position:Int){
         if(!sectionEntityList[position].isHeader){
+            addBookMarkDialog=  DialogBuilder()
+                .setLayoutId(R.layout.dialog_add_history_to_bookmark)
+                .setOnViewCreateListener(object : DialogBuilder.OnViewCreateListener {
+                    override fun onViewCreated(view: View) {
+                        initAddBookMarkDialog(view,sectionEntityList[position].t)
+                    }
+                })
+                .setEnterAnimation(R.anim.slide_up)
+                .setExitAnimationId(R.anim.slide_down)
+                .setGravity(Gravity.BOTTOM)
+                .build(requireContext())
+            addBookMarkDialog?.show()
+        }
+    }
+    var categories:List<BookMarkCategoryEntity>?=null
+    var selectedCategory:BookMarkCategoryEntity?=null
+    private fun initAddBookMarkDialog(view:View,historyEntity: VisitHistoryEntity){
+        val title=view.findViewById<EditText>(R.id.input_title)
+        title.setText(historyEntity.title)
+        val url=view.findViewById<EditText>(R.id.url)
+        url.setText(historyEntity.url)
+        val category=view.findViewById<EditText>(R.id.category)
+        val recyclerView = view.findViewById<RecyclerView>(R.id.category_list).apply {
+            this.layoutManager = LinearLayoutManager(context, RecyclerView.HORIZONTAL, false)
+            this.addItemDecoration(GridDividerItemDecoration(DensityUtil.dip2px(requireContext(),6f),0,getColor(R.color.transparent)))
+        }
+        var existBookMark:BookMarkEntity?=null
+        launch(Dispatchers.IO) {
+            categories=bookMarkCategoryDao.getCategoryList()
+            existBookMark=bookMarkDao.getBookMarkByUrl(historyEntity.url)
+            launch(Dispatchers.Main) {
+                existBookMark?.apply {
+                    category.setText(this.categoryName)
+                    selectedCategory=BookMarkCategoryEntity(date=0,categoryName = this.categoryName)
+                }
+                categories?.apply {
+                    if(this.isNotEmpty()){
+                        recyclerView.show()
+                    }else{
+                        recyclerView.hide()
+                    }
+                }
+                recyclerView.adapter=object:BaseQuickAdapter<BookMarkCategoryEntity,CustomBaseViewHolder>(R.layout.item_category,categories){
+                    override fun convert(helper: CustomBaseViewHolder, item: BookMarkCategoryEntity) {
+                         if (selectedCategory!=null && selectedCategory!!.categoryName==item.categoryName){
+                             val bg= DrawableCreator.Builder().setSolidColor(activityViewModel.theme.value!!.colorPrimary)
+                                  .setCornersRadius(DensityUtil.dip2px(requireContext(),1000f).toFloat())
+                                  .setStrokeColor(getColor(R.color.color_EEEEEE)).setStrokeWidth(DensityUtil.dip2px(requireContext(),1f).toFloat())
+                                  .build()
+                             helper.setTextColor(R.id.category,getColor(R.color.colorWhite))
+                             helper.itemView.background=bg
+                         }else{
+                             val bg= DrawableCreator.Builder().setSolidColor(getColor(R.color.transparent))
+                                 .setCornersRadius(DensityUtil.dip2px(requireContext(),1000f).toFloat())
+                                 .setStrokeColor(getColor(R.color.color_EEEEEE)).setStrokeWidth(DensityUtil.dip2px(requireContext(),1f).toFloat())
+                                 .build()
+                             helper.itemView.background=bg
+                             helper.setTextColor(R.id.category,getColor(R.color.colorBlack))
+                         }
+                         helper.setText(R.id.category,item.categoryName)
+                         helper.itemView.setOnClickListener {
+                             selectedCategory=item
+                             category.setText(item.categoryName)
+                             recyclerView.adapter?.notifyDataSetChanged()
+                         }
+                    }
+                }
+            }
+        }
 
+        view.findViewById<View>(R.id.cancel).setOnClickListener {
+            addBookMarkDialog?.dismiss()
+        }
+        view.findViewById<View>(R.id.sure).setOnClickListener {
+            if(categories?.find { it.categoryName==category.text.toString() }==null){
+                 val category=BookMarkCategoryEntity(date=Date().time,categoryName = category.text.toString())
+                 launch(Dispatchers.IO) {
+                     bookMarkCategoryDao.insert(category)
+                 }
+            }
+
+            val bookMark=BookMarkEntity(
+                title=title.text.toString(),
+                url = url.text.toString(),
+                date=Date().time,
+                categoryName = category.text.toString()
+            )
+            launch(Dispatchers.IO) {
+                if (existBookMark!=null){
+                    bookMarkDao.delete(existBookMark!!)
+                }
+                bookMarkDao.insert(bookMark)
+                launch(Dispatchers.Main) {
+                    addBookMarkDialog?.dismiss()
+                }
+            }
         }
     }
     private fun shareLink(position:Int){

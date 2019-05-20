@@ -12,4 +12,17 @@
         <attr name="dividerPreference_height" format="reference|dimension"/>
         <attr name="dividerPreference_bg" format="reference|color"/>
     </declare-styleable>
+    <declare-styleable name="TagCloudView">
+        <attr name="singleChoice" format="boolean" />
+        <attr name="tagTextSize" format="reference|dimension" />
+        <attr name="tagTextBorderColor" format="reference|color" />
+        <attr name="tagTextBorderWidth" format="reference|dimension" />
+        <attr name="tagTextDefaultColor" format="reference|color" />
+        <attr name="tagTextDefaultBackgroundColor" format="reference|color" />
+        <attr name="tagTextSelectedColor" format="reference|color" />
+        <attr name="tagTextSelectedBackgroundColor" format="reference|color" />
+        <attr name="tagTextRadius" format="reference|dimension" />
+        <attr name="tagCloudBackgroundColor" format="reference|color" />
+        <attr name="tagCloudRadius" format="reference|dimension" />
+    </declare-styleable>
 </resources>

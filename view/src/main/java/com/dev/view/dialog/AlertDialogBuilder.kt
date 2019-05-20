@@ -20,8 +20,8 @@ class AlertDialogBuilder{
     private var positiveButtonTextId:Int=-1
     private var negativeButtonText:String="取消"
     private var negativeButtonTextId:Int=-1
-    private var enterAnimationId: Int = R.anim.slide_up
-    private var exitAnimationId:Int=  R.anim.slide_down
+    private var enterAnimationId: Int = R.anim.slide_up_alert
+    private var exitAnimationId:Int=  R.anim.slide_down_alert
     private var gravity:Int=Gravity.BOTTOM
     private var dialog:Dialog?=null
     fun setEnterAnimation(animationId: Int): AlertDialogBuilder {
@@ -75,7 +75,7 @@ class AlertDialogBuilder{
                 .setGravity(gravity)
                 .setExitAnimationId(exitAnimationId)
                 .setEnterAnimation(enterAnimationId)
-                .setWidthPercent(0.9f)
+                .setWidthPercent(1f)
                 .setCanceledOnTouchOutside(true)
                 .setOnViewCreateListener(object : DialogBuilder.OnViewCreateListener {
                     override fun onViewCreated(view: View) {
