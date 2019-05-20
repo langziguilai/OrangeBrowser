@@ -30,6 +30,9 @@ import com.dev.orangebrowser.databinding.FragmentHistoryBinding
 import com.dev.orangebrowser.extension.RouterActivity
 import com.dev.orangebrowser.extension.appComponent
 import com.dev.orangebrowser.extension.getColor
+import com.dev.orangebrowser.view.contextmenu.Action
+import com.dev.orangebrowser.view.contextmenu.CommonContextMenuAdapter
+import com.dev.orangebrowser.view.contextmenu.MenuItem
 import com.dev.util.DensityUtil
 import com.dev.view.dialog.DialogBuilder
 import com.dev.view.recyclerview.CustomBaseViewHolder
@@ -183,7 +186,7 @@ class HistoryFragment : BaseFragment(), BackHandler {
             //如果不是header，那么就显示dialog
             if (!sectionEntityList[position].isHeader) {
                 historyItemDialog=  DialogBuilder()
-                        .setLayoutId(R.layout.dialog_process_history_item)
+                        .setLayoutId(R.layout.dialog_context_menu)
                         .setHeightParent(1f)
                         .setWidthPercent(1f)
                         .setOnViewCreateListener(object : DialogBuilder.OnViewCreateListener {
@@ -203,7 +206,7 @@ class HistoryFragment : BaseFragment(), BackHandler {
             this.layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
             this.adapter = CommonContextMenuAdapter(
                 R.layout.mozac_feature_contextmenu_item, listOf(
-                    MenuItem(label = getString(R.string.menu_delete),action = object:Action<MenuItem>{
+                    MenuItem(label = getString(R.string.menu_delete),action = object: Action<MenuItem> {
                         override fun execute(data: MenuItem) {
                             deleteHistoryItem(position)
                             historyItemDialog?.dismiss()
@@ -369,7 +372,8 @@ class HistoryFragment : BaseFragment(), BackHandler {
             addBookMarkDialog?.dismiss()
         }
         view.findViewById<View>(R.id.sure).setOnClickListener {
-            if(categories?.find { it.categoryName==category.text.toString() }==null){
+            //若category不存在，则添加
+            if(category.text.toString().isNotBlank() && categories?.find { it.categoryName==category.text.toString() }==null){
                  val category=BookMarkCategoryEntity(date=Date().time,categoryName = category.text.toString())
                  launch(Dispatchers.IO) {
                      bookMarkCategoryDao.insert(category)
@@ -516,39 +520,7 @@ class MySectionEntity : SectionEntity<VisitHistoryEntity> {
     constructor(isHeader: Boolean, header: String) : super(isHeader, header)
 }
 
-interface Action<T> {
-    fun execute(data: T)
-}
 
-data class MenuItem(
-    var label: String,
-    var icon: String? = null,
-    var iconColor: Int = -1,
-    var labelColor: Int = -1,
-    var key: String = "",
-    var action: Action<MenuItem>? = null
-)
 
-class CommonContextMenuAdapter(menuItemLayout: Int, dataList: List<MenuItem>) :
-    BaseQuickAdapter<MenuItem, CustomBaseViewHolder>(menuItemLayout, dataList) {
-    override fun convert(helper: CustomBaseViewHolder, item: MenuItem) {
-        helper.setText(R.id.label, item.label)
-        if (item.labelColor > 0) {
-            helper.setTextColor(R.id.label, item.labelColor)
-        }
-        item.icon?.apply {
-            helper.setText(R.id.icon, this)
-            if (item.iconColor > 0) {
-                helper.setTextColor(R.id.icon, item.iconColor)
-            }
-        }
-        helper.itemView.apply {
-            isClickable = true
-            isFocusable = true
-            setOnClickListener {
-                item.action?.execute(item)
-            }
-        }
-    }
 
-}
+

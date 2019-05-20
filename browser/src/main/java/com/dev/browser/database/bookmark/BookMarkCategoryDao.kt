@@ -20,4 +20,6 @@ interface BookMarkCategoryDao {
     fun getCategoryList(): List<BookMarkCategoryEntity>
     @Delete
     fun deleteCategory(entity: BookMarkCategoryEntity)
+    @Query("UPDATE book_mark_category SET category_name=:newCategory WHERE category_name=:category")
+    fun updateCategoryName(category:String,newCategory:String)
 }

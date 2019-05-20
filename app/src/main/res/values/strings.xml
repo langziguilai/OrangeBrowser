@@ -67,6 +67,9 @@
     <string name="ic_arrow_left">&#xe7f0;</string>
     <string name="ic_folder_add">&#xe7d1;</string>
     <string name="ic_folder_fill">&#xe85e;</string>
+    <string name="ic_tag">&#xe7e4;</string>
+    <string name="ic_tags">&#xe7e5;</string>
+    <string name="ic_folder">&#xe7d1;</string>
 
 
     <string name="search_or_input">搜索或输入网址</string>
@@ -292,5 +295,8 @@
     <string name="url">网址</string>
     <string name="category">分类</string>
     <string name="tip_add_category">选择或新增分类</string>
+    <string name="menu_edit">编辑</string>
+    <string name="edit_category">编辑分类</string>
+    <string name="menu_add_to_front">添加至首页</string>
 
 </resources>

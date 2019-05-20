@@ -21,9 +21,11 @@ interface BookMarkDao {
     fun getBookMarkList(): List<BookMarkEntity>
     //通过category ID来查询标签
     @Query("SELECT * FROM book_mark WHERE category_name=:category ORDER BY date  ASC")
-    fun getBookMarkListByCategoryId(category:String): List<BookMarkEntity>
+    fun getBookMarkListByCategory(category:String): List<BookMarkEntity>
     @Delete
     fun delete(entity: BookMarkEntity)
     @Query("SELECT * FROM book_mark WHERE url=:url  ORDER BY date  ASC  LIMIT 1")
     fun getBookMarkByUrl(url:String): BookMarkEntity?
+    @Query("UPDATE  book_mark set category_name=:newCategoryName WHERE category_name=:category")
+    fun updateCategoryName(category:String,newCategoryName:String="")
 }
