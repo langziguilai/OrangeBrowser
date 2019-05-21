@@ -8,6 +8,7 @@ import com.dev.browser.database.bookmark.BookMarkDao
 import com.dev.browser.database.history.VisitHistoryDao
 import com.dev.orangebrowser.data.AppDatabase
 import com.dev.orangebrowser.data.dao.AdBlockFilterDao
+import com.dev.orangebrowser.data.dao.SavedFileDao
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton
@@ -28,6 +29,11 @@ class DatabaseModule {
     @Singleton
     fun provideAdBlockFilterDao(appDatabase: AppDatabase): AdBlockFilterDao {
         return appDatabase.adBlockFilterDao()
+    }
+    @Provides
+    @Singleton
+    fun provideSavedFileDao(appDatabase: AppDatabase): SavedFileDao {
+        return appDatabase.savedFileDao()
     }
     @Provides
     @Singleton
