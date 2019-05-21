@@ -78,12 +78,11 @@ class TopBarHelper(var binding: FragmentHomeBinding, var fragment: HomeFragment,
             //扫码
             R.string.ic_scan->{
                 toggleTopPanel(Runnable {
-                    fragment.RouterActivity?.loadScanFragment()
+                    fragment.RouterActivity?.loadScanActivity()
                 })
             }
-            //TODO:分享
             R.string.ic_share->{
-
+                Toasty.warning(fragment.requireContext(), R.string.webview_not_available_hint, Toast.LENGTH_SHORT).show()
             }
             //阅读模式
             R.string.ic_read->{

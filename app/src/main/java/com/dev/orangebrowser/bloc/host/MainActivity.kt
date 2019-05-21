@@ -23,7 +23,6 @@ import com.dev.orangebrowser.bloc.imageMode.ImageModeModeFragment
 import com.dev.orangebrowser.bloc.news.NewsFragment
 import com.dev.orangebrowser.bloc.readMode.ReadModeFragment
 import com.dev.orangebrowser.bloc.resource.ResourceFragment
-import com.dev.orangebrowser.bloc.scan.ScanFragment
 import com.dev.orangebrowser.bloc.search.SearchFragment
 import com.dev.orangebrowser.bloc.setting.SettingFragment
 import com.dev.orangebrowser.bloc.setting.fragments.*

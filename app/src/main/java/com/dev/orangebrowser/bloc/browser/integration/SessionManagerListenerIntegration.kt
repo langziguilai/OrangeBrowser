@@ -52,8 +52,11 @@ class SessionManagerObserver(
     override fun onSessionSelected(session: Session) {
         if (session.id!=originalSession.id){
             redirect(binding=binding,session = originalSession,runnable = Runnable {
-                session.loading=true
-                activity?.loadBrowserFragment(session.id)
+                //如果原来的session没有被删除，说明是新增，此时，就需要跳转到browser fragment（一种情况是：删除后再选中，另一种是新增时选中）
+                if (sessionManager.findSessionById(originalSession.id)!=null){
+                    session.loading=true
+                    activity?.loadBrowserFragment(session.id)
+                }
             })
         }
     }

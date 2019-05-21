@@ -29,7 +29,6 @@ import com.dev.orangebrowser.bloc.imageMode.ImageModeViewModel
 import com.dev.orangebrowser.bloc.news.NewsViewModel
 import com.dev.orangebrowser.bloc.readMode.ReadModeViewModel
 import com.dev.orangebrowser.bloc.resource.ResourceViewModel
-import com.dev.orangebrowser.bloc.scan.ScanViewModel
 import com.dev.orangebrowser.bloc.search.SearchViewModel
 import com.dev.orangebrowser.bloc.setting.SettingViewModel
 import com.dev.orangebrowser.bloc.sourcecode.SourceCodeViewModel
@@ -99,10 +98,6 @@ abstract class ViewModelModule {
     @ViewModelKey(SettingViewModel::class)
     abstract fun bindsSettingViewModel(settingViewModel:SettingViewModel): ViewModel
 
-    @Binds
-    @IntoMap
-    @ViewModelKey(ScanViewModel::class)
-    abstract fun bindsScanViewModel(scanViewModel:ScanViewModel): ViewModel
     @Binds
     @IntoMap
     @ViewModelKey(ReadModeViewModel::class)
