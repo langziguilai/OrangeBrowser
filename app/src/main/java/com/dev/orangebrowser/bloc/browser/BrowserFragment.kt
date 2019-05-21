@@ -239,7 +239,9 @@ class BrowserFragment : BaseFragment(), BackHandler, UserInteractionHandler {
                 savedInstanceState = savedInstanceState,
                 topPanelHelper = topPanelHelper,
                 findInPageIntegration = findInPageIntegrationFeature,
-                session = session
+                session = session,
+                sessionManager = sessionManager,
+                tabsUseCases = tabsUseCases
             ), owner = this, view = binding.root
         )
         webViewScrollHandlerIntegration.set(

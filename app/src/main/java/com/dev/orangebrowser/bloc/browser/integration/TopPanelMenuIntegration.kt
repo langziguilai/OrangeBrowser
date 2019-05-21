@@ -7,7 +7,9 @@ import com.dev.base.extension.onGlobalLayoutComplete
 import com.dev.base.extension.shareLink
 import com.dev.base.extension.showToast
 import com.dev.base.support.LifecycleAwareFeature
+import com.dev.browser.feature.tabs.TabsUseCases
 import com.dev.browser.session.Session
+import com.dev.browser.session.SessionManager
 import com.dev.orangebrowser.R
 import com.dev.orangebrowser.bloc.browser.BrowserFragment
 import com.dev.orangebrowser.bloc.browser.integration.helper.TopPanelHelper
@@ -19,10 +21,13 @@ import com.dev.orangebrowser.extension.appData
 import com.dev.view.GridView
 import com.dev.view.recyclerview.CustomBaseViewHolder
 import com.dev.view.recyclerview.adapter.base.BaseQuickAdapter
+import java.net.URLEncoder
 
 class TopPanelMenuIntegration(var binding: FragmentBrowserBinding,
                               var fragment: BrowserFragment,
                               var session: Session,
+                              var sessionManager:SessionManager,
+                              var tabsUseCases: TabsUseCases,
                               var savedInstanceState: Bundle?,
                               var topPanelHelper: TopPanelHelper,
                               var findInPageIntegration: FindInPageIntegration):
@@ -95,9 +100,12 @@ class TopPanelMenuIntegration(var binding: FragmentBrowserBinding,
             R.string.ic_save->{
 
             }
-            //TODO:翻译
             R.string.ic_translate->{
-
+                topPanelHelper.toggleTopPanel(Runnable {
+                    val url="http://fanyi.youdao.com/WebpageTranslate?url="+ URLEncoder.encode(session.url, "UTF-8")
+                    tabsUseCases.addTab.invoke(url,true,true,session)
+                    fragment.RouterActivity?.loadBrowserFragment(sessionManager.selectedSession!!.id)
+                })
             }
             //源码
             R.string.ic_code->{
