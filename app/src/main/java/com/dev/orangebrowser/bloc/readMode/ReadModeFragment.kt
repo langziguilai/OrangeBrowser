@@ -5,9 +5,11 @@ import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.ViewModelProviders
 import com.dev.base.BaseFragment
+import com.dev.browser.session.SessionManager
 import com.dev.orangebrowser.R
 import com.dev.orangebrowser.bloc.browser.BrowserFragment
 import com.dev.orangebrowser.extension.appComponent
+import javax.inject.Inject
 
 class ReadModeFragment : BaseFragment() {
 
@@ -20,7 +22,8 @@ class ReadModeFragment : BaseFragment() {
             }
         }
     }
-
+    @Inject
+    lateinit var sessionManager:SessionManager
     lateinit var viewModel: ReadModeViewModel
 
     override fun onAttach(context: Context) {
@@ -38,6 +41,7 @@ class ReadModeFragment : BaseFragment() {
     }
 
     override fun initData(savedInstanceState: Bundle?) {
-        //TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        val session=sessionManager.findSessionById(arguments?.getString(BrowserFragment.SESSION_ID) ?: "")
+        sessionManager.getOrCreateEngineSession()
     }
 }

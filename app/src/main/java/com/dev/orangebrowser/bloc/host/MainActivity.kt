@@ -9,7 +9,6 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.dev.base.BaseActivity
 import com.dev.base.support.BackHandler
-import com.dev.browser.adblock.setting.GeneralSettingsFragment
 import com.dev.browser.session.Session
 import com.dev.browser.session.SessionManager
 import com.dev.orangebrowser.R
@@ -409,11 +408,6 @@ class MainActivity : BaseActivity() {
         supportFragmentManager.beginTransaction().replace(R.id.container, OpenAppSettingFragment.newInstance()).commit()
     }
 
-    //拦截记录设置界面
-    fun loadAdBlockRecordSettingFragment() {
-        supportFragmentManager.beginTransaction().replace(R.id.container, GeneralSettingsFragment.newInstance())
-            .commit()
-    }
 
     //设置AdBlock的订阅
     fun loadAdBlockSubscriptionSettingFragment() {

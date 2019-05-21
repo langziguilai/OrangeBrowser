@@ -41,6 +41,7 @@ import com.dev.browser.engine.system.permission.SystemPermissionRequest
 import com.dev.browser.engine.system.window.SystemWindowRequest
 import com.dev.browser.support.DownloadUtils
 import com.dev.browser.support.ErrorType
+import com.dev.browser.utils.WebviewUtils
 import com.dev.view.MatchParentLayout
 import kotlinx.coroutines.runBlocking
 import java.util.*
@@ -265,6 +266,8 @@ class SystemEngineView @JvmOverloads constructor(
                         issuer = cert?.issuedBy?.oName
                     )
                 }
+                //注入javascript
+                WebviewUtils.injectScriptFile(view,"inject/tools.js")
             }
         }
         @Suppress("ReturnCount", "NestedBlockDepth")
