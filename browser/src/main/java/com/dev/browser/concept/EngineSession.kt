@@ -5,6 +5,7 @@
 package com.dev.browser.concept
 
 import android.graphics.Bitmap
+import android.webkit.ValueCallback
 import androidx.annotation.CallSuper
 import com.dev.browser.concept.media.Media
 import com.dev.browser.concept.permission.PermissionRequest
@@ -185,6 +186,10 @@ abstract class EngineSession(
      * 保存网页，返回path
      */
     abstract fun savePage():String
+    /**
+     * 获取网页内容
+     * */
+    abstract fun executeJsFunction(js:String, callback:ValueCallback<String>)
     /**
      * Saves and returns the engine state. Engine implementations are not required
      * to persist the state anywhere else than in the returned map. Engines that

@@ -1,4 +1,4 @@
-console.log("injected JS started")
+console.log("injected JS started");
 var hideElements = function()
 {
   // no need to invoke if already invoked on another event

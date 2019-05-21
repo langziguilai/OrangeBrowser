@@ -6,13 +6,7 @@ package com.dev.browser.engine.system
 
 import android.content.Context
 import android.os.Bundle
-import android.webkit.CookieManager
-import android.webkit.WebChromeClient
-import android.webkit.WebSettings
-import android.webkit.WebStorage
-import android.webkit.WebView
-import android.webkit.WebViewClient
-import android.webkit.WebViewDatabase
+import android.webkit.*
 import com.dev.browser.concept.EngineSession
 import com.dev.browser.concept.EngineSessionState
 import com.dev.browser.concept.Settings
@@ -124,6 +118,10 @@ class SystemEngineSession(
         val path=dirPath+webView.title+".mht"
         webView.saveWebArchive(path)
         return path
+    }
+
+    override fun executeJsFunction(js:String, callback: ValueCallback<String>) {
+       webView.evaluateJavascript(js,callback)
     }
 
     /**

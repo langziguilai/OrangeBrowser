@@ -2,12 +2,16 @@ package com.dev.orangebrowser.bloc.readMode
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.View
+import android.webkit.ValueCallback
 import androidx.lifecycle.ViewModelProviders
 import com.dev.base.BaseFragment
 import com.dev.browser.session.SessionManager
+import com.dev.browser.utils.WebviewUtils
 import com.dev.orangebrowser.R
 import com.dev.orangebrowser.bloc.browser.BrowserFragment
+import com.dev.orangebrowser.extension.RouterActivity
 import com.dev.orangebrowser.extension.appComponent
 import javax.inject.Inject
 
@@ -42,6 +46,11 @@ class ReadModeFragment : BaseFragment() {
 
     override fun initData(savedInstanceState: Bundle?) {
         val session=sessionManager.findSessionById(arguments?.getString(BrowserFragment.SESSION_ID) ?: "")
-        sessionManager.getOrCreateEngineSession()
+        if (session==null){
+            RouterActivity?.loadHomeOrBrowserFragment(sessionManager.selectedSession?.id  ?: "")
+            return
+        }
+        sessionManager.getOrCreateEngineSession(session).executeJsFunction("javascript:getHtml();",
+            ValueCallback<String> { value -> Log.d("executeJsFunction",value) })
     }
 }

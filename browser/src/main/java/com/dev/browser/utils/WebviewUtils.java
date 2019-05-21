@@ -26,6 +26,7 @@ public class WebviewUtils {
                     "script.innerHTML = window.atob('" + encoded + "');" +
                     "parent.appendChild(script)" +
                     "})()";
+
             if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP){
                 view.evaluateJavascript(content,null);
             }else{
@@ -63,4 +64,5 @@ public class WebviewUtils {
             e.printStackTrace();
         }
     }
+
 }
