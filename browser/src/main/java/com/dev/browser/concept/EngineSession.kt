@@ -180,8 +180,11 @@ abstract class EngineSession(
     /**
      * 设置字体大小
      */
-    //abstract fun setFontSize(size:Int)
-
+    abstract fun setFontSize(size:Int)
+    /**
+     * 保存网页，返回path
+     */
+    abstract fun savePage():String
     /**
      * Saves and returns the engine state. Engine implementations are not required
      * to persist the state anywhere else than in the returned map. Engines that
@@ -258,4 +261,9 @@ abstract class EngineSession(
 
     //是否启用adBlock
     abstract fun enableAdBlock(enableAdBlock:Boolean=false)
+
+    companion object{
+        const val OFFLINE_PAGE_PATH="OFFLINE_PAGE_PATH"
+        const val SAVE_PAGE_ERROR="SAVE_PAGE_ERROR"
+    }
 }

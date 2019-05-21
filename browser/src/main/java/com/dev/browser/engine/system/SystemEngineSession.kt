@@ -24,6 +24,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+import java.io.File
 import kotlin.reflect.KProperty
 
 internal val additionalHeaders = mapOf(
@@ -107,6 +108,22 @@ class SystemEngineSession(
      */
     override fun goForward() {
         webView.goForward()
+    }
+
+    override fun setFontSize(size: Int) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun savePage(): String {
+        val dirPath= context.filesDir.absolutePath+File.separator+OFFLINE_PAGE_PATH+File.separator
+        val dir=File(dirPath)
+        if (!dir.exists()){
+            val result=dir.mkdirs()
+            if (!result) throw Exception(message =SAVE_PAGE_ERROR)
+        }
+        val path=dirPath+webView.title+".mht"
+        webView.saveWebArchive(path)
+        return path
     }
 
     /**

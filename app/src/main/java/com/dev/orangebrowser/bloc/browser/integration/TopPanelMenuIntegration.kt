@@ -2,6 +2,7 @@ package com.dev.orangebrowser.bloc.browser.integration
 
 import android.drm.DrmStore
 import android.os.Bundle
+import android.util.Log
 import androidx.annotation.ColorRes
 import com.dev.base.extension.onGlobalLayoutComplete
 import com.dev.base.extension.shareLink
@@ -14,13 +15,17 @@ import com.dev.orangebrowser.R
 import com.dev.orangebrowser.bloc.browser.BrowserFragment
 import com.dev.orangebrowser.bloc.browser.integration.helper.TopPanelHelper
 import com.dev.orangebrowser.bloc.browser.integration.helper.redirect
+import com.dev.orangebrowser.data.dao.SavedFileDao
 import com.dev.orangebrowser.data.model.ActionItem
+import com.dev.orangebrowser.data.model.SavedFile
 import com.dev.orangebrowser.databinding.FragmentBrowserBinding
 import com.dev.orangebrowser.extension.RouterActivity
 import com.dev.orangebrowser.extension.appData
 import com.dev.view.GridView
 import com.dev.view.recyclerview.CustomBaseViewHolder
 import com.dev.view.recyclerview.adapter.base.BaseQuickAdapter
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import java.net.URLEncoder
 
 class TopPanelMenuIntegration(var binding: FragmentBrowserBinding,
@@ -30,6 +35,7 @@ class TopPanelMenuIntegration(var binding: FragmentBrowserBinding,
                               var tabsUseCases: TabsUseCases,
                               var savedInstanceState: Bundle?,
                               var topPanelHelper: TopPanelHelper,
+                              var savedFileDao: SavedFileDao,
                               var findInPageIntegration: FindInPageIntegration):
     LifecycleAwareFeature {
 
@@ -96,8 +102,36 @@ class TopPanelMenuIntegration(var binding: FragmentBrowserBinding,
                     findInPageIntegration.launch()
                 })
             }
-            //TODO:离线保存
+
             R.string.ic_save->{
+                try {
+                    val path=sessionManager.getOrCreateEngineSession(session).savePage()
+                    fragment.launch(Dispatchers.IO) {
+                        try {
+                            savedFileDao.insertAll(SavedFile(referer = session.url,
+                                name = session.title,url = session.url,
+                                path = path,type = SavedFile.HTML))
+                            launch (Dispatchers.Main){
+                                fragment.requireContext().apply {
+                                    showToast(getString(R.string.save_page_success))
+                                }
+                            }
+                        }catch (e:Exception){
+                            Log.d("离线保存",e.message)
+                            launch (Dispatchers.Main){
+                                fragment.requireContext().apply {
+                                    showToast(getString(R.string.save_page_fail))
+                                }
+                            }
+                        }
+
+                    }
+                }catch (e:Exception){
+                    Log.d("离线保存",e.message)
+                    fragment.requireContext().apply {
+                        showToast(getString(R.string.save_page_fail))
+                    }
+                }
 
             }
             R.string.ic_translate->{

@@ -36,6 +36,7 @@ import android.widget.RelativeLayout
 import com.dev.browser.database.bookmark.BookMarkCategoryDao
 import com.dev.browser.database.bookmark.BookMarkDao
 import com.dev.browser.session.Session
+import com.dev.orangebrowser.data.dao.SavedFileDao
 import com.dev.orangebrowser.extension.appData
 import com.dev.util.ColorStore
 import com.dev.view.NavigationBarUtil
@@ -56,6 +57,8 @@ class BrowserFragment : BaseFragment(), BackHandler, UserInteractionHandler {
     lateinit var bookMarkCategoryDao: BookMarkCategoryDao
     @Inject
     lateinit var bookMarkDao: BookMarkDao
+    @Inject
+    lateinit var savedFileDao: SavedFileDao
 
     lateinit var viewModel: BrowserViewModel
     lateinit var activityViewModel: MainViewModel
@@ -241,7 +244,8 @@ class BrowserFragment : BaseFragment(), BackHandler, UserInteractionHandler {
                 findInPageIntegration = findInPageIntegrationFeature,
                 session = session,
                 sessionManager = sessionManager,
-                tabsUseCases = tabsUseCases
+                tabsUseCases = tabsUseCases,
+                savedFileDao = savedFileDao
             ), owner = this, view = binding.root
         )
         webViewScrollHandlerIntegration.set(

@@ -13,6 +13,7 @@ import java.util.*
 data class SavedFile(
     @PrimaryKey(autoGenerate = true) var uid: Int=0,
     @ColumnInfo(name = "referer") var referer: String?, //来源
+    @ColumnInfo(name = "url") var url: String?, //地址
     @ColumnInfo(name = "name") var name: String?,//名称
     @ColumnInfo(name = "path") var path: String?,//保存路径
     @ColumnInfo(name = "_type") var type: String= UNKNOWN, //类型
