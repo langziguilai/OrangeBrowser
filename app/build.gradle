@@ -75,6 +75,9 @@ dependencies {
     kapt 'com.evernote:android-state-processor:1.4.1'
     implementation 'org.adblockplus:adblock-android:3.0'
     implementation "com.noober.background:core:1.4.6"
+
+    //二维码扫描
+    implementation 'com.github.yuzhiqiang1993:zxing:2.2.8'
     implementation project(':base')
     implementation project(':util')
     implementation project(':view')

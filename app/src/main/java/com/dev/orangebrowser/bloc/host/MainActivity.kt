@@ -2,8 +2,8 @@ package com.dev.orangebrowser.bloc.host
 
 
 import android.Manifest
+import android.content.Intent
 import android.os.Bundle
-import android.view.View
 import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -37,21 +37,34 @@ import com.dev.orangebrowser.extension.appData
 import com.dev.orangebrowser.extension.myApplication
 import com.dev.view.NavigationBarUtil
 import com.dev.view.StatusBarUtil
+import com.yzq.zxinglibrary.android.CaptureActivity
+import com.yzq.zxinglibrary.bean.ZxingConfig
+import com.yzq.zxinglibrary.common.Constant
 import es.dmoral.toasty.Toasty
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import permissions.dispatcher.*
 import javax.inject.Inject
+import android.app.Activity
+import com.dev.base.extension.showToast
+import com.dev.base.support.isUrl
+import com.dev.browser.feature.tabs.TabsUseCases
+
 
 const val APPLICATION_DATA="application_data"
 
 @RuntimePermissions
 class MainActivity : BaseActivity() {
 
+    companion object{
+        const val REQUEST_CODE_SCAN=0x123456
+    }
 
     @Inject
     lateinit var sessionManager: SessionManager
+    @Inject
+    lateinit var tabsUseCases: TabsUseCases
     lateinit var viewModel: MainViewModel
     lateinit var mOrientationDetector: OrientationDetector
     //是否可以自动旋转屏幕，默认可以
@@ -447,7 +460,19 @@ class MainActivity : BaseActivity() {
             .replace(R.id.container, DownloadPathSettingFragment.newInstance())
             .commit()
     }
-
+    fun loadScanActivity(){
+        val intent = Intent(this, CaptureActivity::class.java)
+        val config = ZxingConfig()
+        config.isPlayBeep = true//是否播放扫描声音 默认为true
+        config.isShake = true//是否震动  默认为true
+        config.isDecodeBarCode = true//是否扫描条形码 默认为true
+        config.reactColor = R.color.colorAccent//设置扫描框四个角的颜色 默认为白色
+        config.frameLineColor = R.color.colorAccent//设置扫描框边框颜色 默认无色
+        config.scanLineColor = R.color.colorAccent//设置扫描线的颜色 默认白色
+        config.isFullScreenScan = false//是否全屏扫描  默认为true  设为false则只会在扫描框中扫描
+        intent.putExtra(Constant.INTENT_ZXING_CONFIG, config)
+        startActivityForResult(intent, REQUEST_CODE_SCAN)
+    }
     var quitSignal: Boolean = false
     //双击退出
     fun quit() {
@@ -458,6 +483,22 @@ class MainActivity : BaseActivity() {
             viewModel.clearQuitSignal()
             //提示
             Toast.makeText(this, R.string.quit_hint, Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        // 扫描二维码/条码回传
+        if (requestCode == REQUEST_CODE_SCAN && resultCode == Activity.RESULT_OK) {
+            if (data != null) {
+                val content = data.getStringExtra(Constant.CODED_CONTENT)
+                if(!content.isUrl()){
+                    showToast(content)
+                }else{
+                    tabsUseCases.addTab.invoke(url=content,selectTab = true,startLoading = true,parent = sessionManager.selectedSession)
+                    loadBrowserFragment(sessionManager.selectedSession!!.id)
+                }
+            }
         }
     }
 }

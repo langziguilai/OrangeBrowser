@@ -119,7 +119,7 @@ class SystemEngineSession(
         val dir=File(dirPath)
         if (!dir.exists()){
             val result=dir.mkdirs()
-            if (!result) throw Exception(message =SAVE_PAGE_ERROR)
+            if (!result) return SAVE_PAGE_ERROR
         }
         val path=dirPath+webView.title+".mht"
         webView.saveWebArchive(path)
