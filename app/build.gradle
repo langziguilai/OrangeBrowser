@@ -78,6 +78,8 @@ dependencies {
 
     //二维码扫描
     implementation 'com.github.yuzhiqiang1993:zxing:2.2.8'
+    //jsoup
+    implementation 'org.jsoup:jsoup:1.12.1'
     implementation project(':base')
     implementation project(':util')
     implementation project(':view')
