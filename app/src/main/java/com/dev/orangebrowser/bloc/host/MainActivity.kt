@@ -58,7 +58,7 @@ const val APPLICATION_DATA="application_data"
 class MainActivity : BaseActivity() {
 
     companion object{
-        const val REQUEST_CODE_SCAN=0x123456
+        const val REQUEST_CODE_SCAN=0x1234
     }
 
     @Inject
@@ -296,11 +296,6 @@ class MainActivity : BaseActivity() {
     //加载设置页面
     fun loadSettingFragment() {
         supportFragmentManager.beginTransaction().replace(R.id.container, SettingFragment.newInstance()).commit()
-    }
-
-    //加载扫码页面
-    fun loadScanFragment() {
-        supportFragmentManager.beginTransaction().replace(R.id.container, ScanFragment.newInstance()).commit()
     }
 
     //加载阅读模式页面
