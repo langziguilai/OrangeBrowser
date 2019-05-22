@@ -38,6 +38,29 @@ import java.io.StringReader
 
 
 class ReadModeFragment : BaseFragment(),BackHandler {
+    companion object {
+        val Tag = "ReadModeFragment"
+        const val SMALL_FONT_SIZE="16"
+        const val MEDIUM_FONT_SIZE="18"
+        const val LARGE_FONT_SIZE="20"
+        const val BG_WHITE="#FFFFFF"
+        const val TEXT_COLOR_FOR_BG_WHITE="#1B1B1B"
+        const val BG_MO="#F8F1E3"
+        const val TEXT_COLOR_FOR_BG_MO="#4F321C"
+        const val BG_GERY="#5A5A5C"
+        const val TEXT_COLOR_FOR_BG_GERY="#CBCBCB"
+        const val BG_BLACK="#121212"
+        const val TEXT_COLOR_FOR_BG_BLACK="#B0B0B0"
+        const val STYLE_WHITE=1
+        const val STYLE_MO=2
+        const val STYLE_GREY=3
+        const val STYLE_BLACK=4
+        fun newInstance(sessionId: String) = ReadModeFragment().apply {
+            arguments = Bundle().apply {
+                putString(BrowserFragment.SESSION_ID, sessionId)
+            }
+        }
+    }
 
     override fun onBackPressed(): Boolean {
         val session=sessionManager.findSessionById(arguments?.getString(BrowserFragment.SESSION_ID) ?: "")
@@ -49,14 +72,7 @@ class ReadModeFragment : BaseFragment(),BackHandler {
         return true
     }
 
-    companion object {
-        val Tag = "ReadModeFragment"
-        fun newInstance(sessionId: String) = ReadModeFragment().apply {
-            arguments = Bundle().apply {
-                putString(BrowserFragment.SESSION_ID, sessionId)
-            }
-        }
-    }
+
 
     @Inject
     lateinit var sessionManager: SessionManager
@@ -111,11 +127,38 @@ class ReadModeFragment : BaseFragment(),BackHandler {
         webView?.webViewClient=object:WebViewClient(){
             override fun shouldOverrideUrlLoading(view: WebView, request: WebResourceRequest): Boolean {
                val url= request.url.toString()
-                tabsUseCases.addTab.invoke(url)
+                tabsUseCases.addTab.invoke(url,true,true,sessionManager.selectedSession)
+                RouterActivity?.loadBrowserFragment(sessionManager.selectedSession!!.id)
                 return true
             }
         }
         container.addView(webView,params)
+    }
+    private fun setFontSize(size:String){
+        webView?.evaluateJavascript("setFontSize($size)",null)
+    }
+    private fun setStyle(style:Int){
+        var bgColor= BG_WHITE
+        var textColor= TEXT_COLOR_FOR_BG_WHITE
+        when(style){
+            STYLE_WHITE->{
+                 bgColor= BG_WHITE
+                 textColor= TEXT_COLOR_FOR_BG_WHITE
+            }
+            STYLE_MO->{
+                bgColor= BG_MO
+                textColor= TEXT_COLOR_FOR_BG_MO
+            }
+            STYLE_GREY->{
+                bgColor= BG_GERY
+                textColor= TEXT_COLOR_FOR_BG_GERY
+            }
+            STYLE_BLACK->{
+                bgColor= BG_BLACK
+                textColor= TEXT_COLOR_FOR_BG_BLACK
+            }
+        }
+        webView?.evaluateJavascript("setStyle('$bgColor','$textColor')",null)
     }
     private fun showDialog(){
 
@@ -155,6 +198,9 @@ class ReadModeFragment : BaseFragment(),BackHandler {
                         """
                         //ImageTextUtil.setImageText(contentTextView,article.contentHtml)
                         webView?.loadData(html,null,null)
+                        setFontSize(MEDIUM_FONT_SIZE)
+                        setStyle(STYLE_GREY)
+
                     }
                 }
             })
