@@ -25,6 +25,7 @@ import android.widget.TextView
 import com.dev.base.support.BackHandler
 import com.dev.browser.concept.EngineViewLifecycleObserver
 import com.dev.browser.engine.system.SystemEngineView
+import com.dev.browser.feature.tabs.TabsUseCases
 import com.dev.orangebrowser.bloc.host.MainViewModel
 import com.dev.orangebrowser.utils.html2article.ContentExtractor
 import com.dev.util.StringUtil
@@ -59,6 +60,8 @@ class ReadModeFragment : BaseFragment(),BackHandler {
 
     @Inject
     lateinit var sessionManager: SessionManager
+    @Inject
+    lateinit var tabsUseCases: TabsUseCases
     lateinit var viewModel: ReadModeViewModel
     lateinit var activityViewModel:MainViewModel
     lateinit var container:FrameLayout
@@ -106,8 +109,10 @@ class ReadModeFragment : BaseFragment(),BackHandler {
         )
         webView?.settings?.javaScriptEnabled=true
         webView?.webViewClient=object:WebViewClient(){
-            override fun shouldOverrideUrlLoading(view: WebView?, request: WebResourceRequest?): Boolean {
-                return super.shouldOverrideUrlLoading(view, request)
+            override fun shouldOverrideUrlLoading(view: WebView, request: WebResourceRequest): Boolean {
+               val url= request.url.toString()
+                tabsUseCases.addTab.invoke(url)
+                return true
             }
         }
         container.addView(webView,params)
@@ -138,12 +143,13 @@ class ReadModeFragment : BaseFragment(),BackHandler {
                                    <style>
                                     $css
                                    </style>
-                                   <script>
-                                      $js
-                                   </script>
+
                                </head>
                                <body>
                                ${article.contentHtml}
+                                <script>
+                                      $js
+                                   </script>
                                </body>
                             </html>
                         """
