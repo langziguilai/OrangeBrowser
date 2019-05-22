@@ -1,5 +1,6 @@
 package com.dev.browser.utils;
 
+import android.content.Context;
 import android.os.Build;
 import android.util.Base64;
 import android.webkit.WebView;
@@ -36,6 +37,22 @@ public class WebviewUtils {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+    public static String getInjectFileContent(Context context, String fileName) {
+        InputStream input;
+        try {
+            input = context.getAssets().open(fileName);
+            byte[] buffer = new byte[input.available()];
+            input.read(buffer);
+            input.close();
+
+            // String-ify the script byte-array using BASE64 encoding !!!
+           return new String(buffer);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return "";
     }
     public static void injectCssFile(WebView view, String cssFile) {
         InputStream input;

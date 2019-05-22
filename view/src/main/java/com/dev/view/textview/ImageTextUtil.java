@@ -3,6 +3,7 @@ package com.dev.view.textview;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
+import android.os.Parcel;
 import android.text.Html;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
@@ -15,6 +16,7 @@ import android.text.style.StyleSpan;
 import android.text.style.URLSpan;
 import android.view.View;
 import android.widget.TextView;
+import androidx.annotation.NonNull;
 
 /**
  * @author: Allen.
@@ -71,5 +73,21 @@ public class ImageTextUtil {
                 tv.setText(style);
             }
         }
+    }
+}
+
+class CustomUrlSpan extends URLSpan{
+
+    public CustomUrlSpan(String url) {
+        super(url);
+    }
+
+    public CustomUrlSpan(@NonNull Parcel src) {
+        super(src);
+    }
+
+    @Override
+    public void onClick(View widget) {
+        super.onClick(widget);
     }
 }
