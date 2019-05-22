@@ -19,8 +19,10 @@ abstract class BaseFragment : LogLifeCycleEventFragment() {
         Log.d(this.javaClass.simpleName+this.hashCode(), "onCreateView")
         return inflater.inflate(getLayoutResId(), container, false)
     }
-
-    abstract fun getLayoutResId(): Int
+    //默认不设置
+    open fun getLayoutResId(): Int{
+        return -1
+    }
 
     //在view被创建好之后初始化view
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

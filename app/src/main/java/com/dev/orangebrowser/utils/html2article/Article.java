@@ -40,7 +40,14 @@ public class Article {
         return content;
     }
 
-
+    public String getContentHtml(){
+        if (content == null) {
+            if (contentElement != null) {
+                content = contentElement.html();
+            }
+        }
+        return content;
+    }
 
     public void setContent(String content) {
         this.content = content;
