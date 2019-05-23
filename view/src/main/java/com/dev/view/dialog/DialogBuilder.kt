@@ -62,7 +62,7 @@ open class DialogBuilder {
         return this
     }
 
-    fun setEnterAnimation(animationId: Int): DialogBuilder {
+    fun setEnterAnimationId(animationId: Int): DialogBuilder {
         this.enterAnimationId = animationId
         return this
     }

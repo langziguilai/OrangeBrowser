@@ -74,7 +74,7 @@ class AlertDialogBuilder{
                 .setLayoutId(layoutId)
                 .setGravity(gravity)
                 .setExitAnimationId(exitAnimationId)
-                .setEnterAnimation(enterAnimationId)
+                .setEnterAnimationId(enterAnimationId)
                 .setWidthPercent(1f)
                 .setCanceledOnTouchOutside(true)
                 .setOnViewCreateListener(object : DialogBuilder.OnViewCreateListener {

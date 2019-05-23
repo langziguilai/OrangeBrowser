@@ -6,7 +6,6 @@ import android.view.Gravity
 import android.view.View
 import android.widget.EditText
 import android.widget.TextView
-import android.widget.Toast
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -21,7 +20,6 @@ import com.dev.browser.database.bookmark.BookMarkEntity
 import com.dev.browser.feature.session.SessionUseCases
 import com.dev.browser.session.Session
 import com.dev.orangebrowser.R
-import com.dev.orangebrowser.bloc.bookmark.LeftRightEntity
 import com.dev.orangebrowser.bloc.browser.BrowserFragment
 import com.dev.orangebrowser.bloc.browser.integration.helper.BottomPanelHelper
 import com.dev.orangebrowser.bloc.browser.integration.helper.redirect
@@ -39,7 +37,6 @@ import com.dev.view.recyclerview.CustomBaseViewHolder
 import com.dev.view.recyclerview.GridDividerItemDecoration
 import com.dev.view.recyclerview.adapter.base.BaseQuickAdapter
 import com.noober.background.drawable.DrawableCreator
-import es.dmoral.toasty.Toasty
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.util.*
@@ -286,7 +283,7 @@ class BottomPanelMenuIntegration(
                 }
             })
             .setCanceledOnTouchOutside(true)
-            .setEnterAnimation(R.anim.slide_up)
+            .setEnterAnimationId(R.anim.slide_up)
             .setExitAnimationId(R.anim.slide_down)
             .setGravity(Gravity.BOTTOM)
             .build(fragment.requireContext())

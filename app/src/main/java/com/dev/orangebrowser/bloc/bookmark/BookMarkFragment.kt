@@ -277,7 +277,7 @@ class BookMarkFragment : BaseFragment(), BackHandler {
                     initEditCategoryDialog(view, categoryEntity)
                 }
             })
-            .setEnterAnimation(R.anim.slide_up)
+            .setEnterAnimationId(R.anim.slide_up)
             .setExitAnimationId(R.anim.slide_down)
             .setGravity(Gravity.BOTTOM)
             .build(requireContext())
@@ -455,7 +455,7 @@ class BookMarkFragment : BaseFragment(), BackHandler {
                     initEditBookMarkDialog(view, bookMarkEntity)
                 }
             })
-            .setEnterAnimation(R.anim.slide_up)
+            .setEnterAnimationId(R.anim.slide_up)
             .setExitAnimationId(R.anim.slide_down)
             .setGravity(Gravity.BOTTOM)
             .build(requireContext())

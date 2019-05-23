@@ -305,7 +305,7 @@ class HistoryFragment : BaseFragment(), BackHandler {
                         initAddBookMarkDialog(view,sectionEntityList[position].t)
                     }
                 })
-                .setEnterAnimation(R.anim.slide_up)
+                .setEnterAnimationId(R.anim.slide_up)
                 .setExitAnimationId(R.anim.slide_down)
                 .setGravity(Gravity.BOTTOM)
                 .build(requireContext())
