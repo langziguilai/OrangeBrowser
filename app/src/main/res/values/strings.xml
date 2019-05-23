@@ -304,5 +304,6 @@
     <string name="color_mo">墨</string>
     <string name="color_grey">灰</string>
     <string name="color_black">黑</string>
+    <string name="tip_download_all_images">确认保存所有图片?</string>
 
 </resources>
