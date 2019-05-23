@@ -206,14 +206,14 @@ class ReadModeFragment : BaseFragment(), BackHandler {
                             setStyle(STYLE_MO)
                         }
                     }
-                    view.findViewById<TextView>(R.id.style_white)?.apply {
+                    view.findViewById<TextView>(R.id.style_grey)?.apply {
                         this.setBackgroundColor(Color.parseColor(BG_GERY))
                         this.setTextColor(Color.parseColor(TEXT_COLOR_FOR_BG_GERY))
                         setOnClickListener {
                             setStyle(STYLE_GREY)
                         }
                     }
-                    view.findViewById<TextView>(R.id.style_white)?.apply {
+                    view.findViewById<TextView>(R.id.style_black)?.apply {
                         this.setBackgroundColor(Color.parseColor(BG_BLACK))
                         this.setTextColor(Color.parseColor(TEXT_COLOR_FOR_BG_BLACK))
                         setOnClickListener {
