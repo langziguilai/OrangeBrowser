@@ -53,8 +53,19 @@ open class CustomBaseViewHolder(view: View): BaseViewHolder(view){
             .centerCrop()
         Glide.with(view.context).load(getGlideUrlWithReferer(url, referer))
             .placeholder(ColorDrawable(view.context.resources.getColor(R.color.color_7A7A7A)))
-            .transition(DrawableTransitionOptions().crossFade(500))
+            .transition(DrawableTransitionOptions().crossFade(300))
             .apply(mRequestOptions).into(view)
+        return this
+    }
+    //加载不被裁剪的图片
+    fun loadNoCropImage(@IdRes viewId: Int, url:String, referer:String): CustomBaseViewHolder {
+        val view = getView<ImageView>(viewId)
+        Glide.with(view.context)
+            .applyDefaultRequestOptions(RequestOptions().centerInside())
+            .load(getGlideUrlWithReferer(url, referer))
+            .placeholder(ColorDrawable(view.context.resources.getColor(R.color.color_7A7A7A)))
+            .transition(DrawableTransitionOptions().crossFade(300))
+            .into(view)
         return this
     }
     fun loadLocalImage(@IdRes viewId: Int, path:String): CustomBaseViewHolder {

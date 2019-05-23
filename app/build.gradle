@@ -80,8 +80,8 @@ dependencies {
     implementation 'com.github.yuzhiqiang1993:zxing:2.2.8'
     //jsoup
     implementation 'org.jsoup:jsoup:1.12.1'
-
-    implementation 'org.apache.commons:commons-text:1.6'
+    //视觉动差图片
+    implementation 'com.gjiazhe:scrollparallaximageview:1.0'
     implementation project(':base')
     implementation project(':util')
     implementation project(':view')

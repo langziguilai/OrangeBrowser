@@ -35,6 +35,8 @@ public class Article {
         if (content == null) {
             if (contentElement != null) {
                 content = contentElement.text();
+            }else{
+                return "";
             }
         }
         return content;
@@ -44,6 +46,8 @@ public class Article {
         if (content == null) {
             if (contentElement != null) {
                 content = contentElement.html();
+            }else{
+                return "";
             }
         }
         return content;

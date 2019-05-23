@@ -130,7 +130,9 @@ class MainActivity : BaseActivity() {
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
-        outState.putParcelable(APPLICATION_DATA, appData)
+        if (appData!=null){
+            outState.putParcelable(APPLICATION_DATA, appData)
+        }
         super.onSaveInstanceState(outState)
     }
 

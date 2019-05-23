@@ -236,7 +236,6 @@ class ReadModeFragment : BaseFragment(), BackHandler {
             ValueCallback<String> { value ->
                 launch(Dispatchers.IO) {
                     val html = StringUtil.unEscapeString(value)
-
                     val article = ContentExtractor.getArticleByHtml(html)
                     val css = WebviewUtils.getInjectFileContent(requireContext(), "inject/read_mode.css")
                     val js = WebviewUtils.getInjectFileContent(requireContext(), "inject/read_mode.js")
@@ -251,7 +250,7 @@ class ReadModeFragment : BaseFragment(), BackHandler {
                                    </style>
 
                                </head>
-                               <body>
+                               <body style="margin:0px">
                                ${article.contentHtml}
                                 <script>
                                       $js

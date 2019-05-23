@@ -305,5 +305,8 @@
     <string name="color_grey">灰</string>
     <string name="color_black">黑</string>
     <string name="tip_download_all_images">确认保存所有图片?</string>
+    <string name="menu_download">下载</string>
+    <string name="share_image">分享图片</string>
+    <string name="not_finish">此功能暂未完成</string>
 
 </resources>

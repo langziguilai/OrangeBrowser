@@ -23,7 +23,7 @@
                 android:text="@string/ic_arrow_left"
                 android:gravity="center"
                 android:layout_gravity="start|center_vertical"/>
-        <TextView android:text="@string/image_mode"
+        <TextView tools:text="@string/history"
                   android:id="@+id/title"
                   android:gravity="center"
                   android:textSize="18sp"
@@ -34,27 +34,33 @@
                   android:layout_width="match_parent"
                   android:layout_height="match_parent"/>
         <com.dev.view.IconfontTextView
-                android:id="@+id/download"
+                android:id="@+id/menu"
                 android:layout_width="48dp"
                 android:layout_height="42dp"
                 android:textColor="@color/colorWhite"
                 android:textSize="18sp"
-                android:text="@string/ic_download"
+                android:text="@string/ic_search"
                 android:gravity="center"
                 android:layout_gravity="end|center_vertical"/>
     </LinearLayout>
-    <com.dev.orangebrowser.view.LongClickFrameLayout
+    <FrameLayout
             android:id="@+id/container"
               android:layout_width="0dp"
               android:layout_height="0dp"
               app:layout_constraintStart_toStartOf="parent"
               app:layout_constraintEnd_toEndOf="parent"
-              app:layout_constraintBottom_toBottomOf="parent"
+              app:layout_constraintBottom_toTopOf="@+id/findInPage"
               app:layout_constraintTop_toBottomOf="@+id/header">
-        <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recycler_view"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
-    </com.dev.orangebrowser.view.LongClickFrameLayout>
-
+    </FrameLayout>
+    <com.dev.browser.feature.findinpage.view.FindInPageBar
+            android:clickable="true"
+            android:focusable="true"
+            android:id="@+id/findInPage"
+            android:visibility="gone"
+             android:background="@color/colorWhite"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+             android:layout_width="0dp"
+            android:layout_height="44dp"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

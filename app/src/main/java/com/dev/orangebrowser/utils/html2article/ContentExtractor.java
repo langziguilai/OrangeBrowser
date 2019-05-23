@@ -474,9 +474,14 @@ public class ContentExtractor {
     }
 
     /*输入HTML，获取结构化新闻信息*/
-    public static Article getArticleByHtml(String html) throws Exception {
-        Document doc = Jsoup.parse(html);
-        return getArticleByDoc(doc);
+    public static Article getArticleByHtml(String html) {
+        try{
+            Document doc = Jsoup.parse(html);
+            return getArticleByDoc(doc);
+        }catch (Exception e){
+            return new Article();
+        }
+
     }
 
     /*输入HTML和URL，获取结构化新闻信息*/
