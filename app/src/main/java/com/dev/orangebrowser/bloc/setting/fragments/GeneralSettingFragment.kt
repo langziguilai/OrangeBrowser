@@ -9,6 +9,8 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.dev.base.BaseFragment
+import com.dev.base.extension.enterToImmersiveMode
+import com.dev.base.extension.exitImmersiveModeIfNeeded
 import com.dev.base.support.BackHandler
 import com.dev.browser.search.SearchEngineManager
 import com.dev.browser.session.SessionManager
@@ -20,6 +22,7 @@ import com.dev.orangebrowser.bloc.setting.viewholder.base.Action
 import com.dev.orangebrowser.databinding.FragmentGeneralSettingBinding
 import com.dev.orangebrowser.databinding.FragmentMainSettingBinding
 import com.dev.orangebrowser.extension.*
+import com.dev.view.StatusBarUtil
 import okhttp3.Route
 import java.util.*
 import javax.inject.Inject
@@ -79,7 +82,6 @@ class GeneralSettingFragment : BaseFragment(), BackHandler {
         binding.recyclerView.adapter = adapter
     }
 
-    //TODO:添加Action
     private fun getData(): List<Any> {
         val list = LinkedList<Any>()
         list.add(DividerItem(height = 24, background = getColor(R.color.color_F8F8F8)))
@@ -114,11 +116,18 @@ class GeneralSettingFragment : BaseFragment(), BackHandler {
                     }
                 })
         )
-        list.add(SwitchItem(title = getString(R.string.fullscreen), action = object : Action<Boolean> {
-            override fun invoke(data: Boolean) {
-                setSpBool(R.string.pref_setting_full_screen, data)
-            }
-        }, value = getSpBool(R.string.pref_setting_full_screen, false)))
+//        list.add(SwitchItem(title = getString(R.string.fullscreen), action = object : Action<Boolean> {
+//            override fun invoke(fullscreen: Boolean) {
+//                setSpBool(R.string.pref_setting_full_screen, fullscreen)
+//                //如果全屏
+//                if (fullscreen){
+//                    StatusBarUtil.hideStatusBar(requireActivity())
+//                }else{
+//                    StatusBarUtil.showStatusBar(requireActivity())
+//                }
+//
+//            }
+//        }, value = getSpBool(R.string.pref_setting_full_screen, false)))
         list.add(SwitchItem(title = getString(R.string.record_search_history), action = object : Action<Boolean> {
             override fun invoke(data: Boolean) {
                 setSpBool(R.string.pref_setting_record_search_history, data)
@@ -137,17 +146,17 @@ class GeneralSettingFragment : BaseFragment(), BackHandler {
                 background = getColor(R.color.color_F8F8F8)
             )
         )
-        list.add(
-            TileItem(
-                title = getString(R.string.color_style),
-                tip = getSpString(R.string.pref_setting_color_style, getString(R.string.colorful)),
-                icon = getString(R.string.ic_right),
-                action = object : Action<TileItem> {
-                    override fun invoke(data: TileItem) {
-                       RouterActivity?.loadColorStyleSettingFragment()
-                    }
-                })
-        )
+//        list.add(
+//            TileItem(
+//                title = getString(R.string.color_style),
+//                tip = getSpString(R.string.pref_setting_color_style, getString(R.string.colorful)),
+//                icon = getString(R.string.ic_right),
+//                action = object : Action<TileItem> {
+//                    override fun invoke(data: TileItem) {
+//                       RouterActivity?.loadColorStyleSettingFragment()
+//                    }
+//                })
+//        )
         list.add(SwitchItem(title = getString(R.string.immerse_browse_style), action = object : Action<Boolean> {
             override fun invoke(data: Boolean) {
                 setSpBool(R.string.pref_setting_user_immerse_browse_style, data)

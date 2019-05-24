@@ -44,6 +44,7 @@ import kotlinx.coroutines.launch
 import permissions.dispatcher.*
 import javax.inject.Inject
 import android.app.Activity
+import android.content.Context
 import com.dev.base.extension.showToast
 import com.dev.base.support.isUrl
 import com.dev.browser.feature.tabs.TabsUseCases
@@ -137,6 +138,10 @@ class MainActivity : BaseActivity() {
     }
 
     override fun initData(savedInstanceState: Bundle?) {
+//        //如果是全屏模式，则隐藏StatusBar
+//        if(!getPreferences(Context.MODE_PRIVATE).getBoolean(getString(R.string.pref_setting_full_screen),false)){
+//            StatusBarUtil.hideStatusBar(this)
+//        }
         if (savedInstanceState == null) {
             viewModel.loadAppData()
         } else {

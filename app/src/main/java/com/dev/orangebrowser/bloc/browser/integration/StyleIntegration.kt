@@ -3,6 +3,7 @@ package com.dev.orangebrowser.bloc.browser.integration
 
 import android.graphics.Bitmap
 import android.graphics.drawable.ColorDrawable
+import android.net.Uri
 import androidx.annotation.ColorInt
 import com.dev.base.support.LifecycleAwareFeature
 import com.dev.browser.engine.system.SystemEngineSession
@@ -11,6 +12,7 @@ import com.dev.browser.session.SessionManager
 import com.dev.orangebrowser.R
 import com.dev.orangebrowser.bloc.browser.BrowserFragment
 import com.dev.orangebrowser.databinding.FragmentBrowserBinding
+import com.dev.orangebrowser.extension.getSpBool
 import com.dev.util.ColorKitUtil
 import com.dev.view.NavigationBarUtil
 import com.dev.view.StatusBarUtil
@@ -24,28 +26,40 @@ class StyleIntegration(
 ) :
     LifecycleAwareFeature {
     private var sessionObserver: Session.Observer
-
+    private var immerseBrowseStyle=fragment.getSpBool(R.string.pref_setting_user_immerse_browse_style,false)
     init {
-        if (session.themeColorMap.containsKey(session.url)) {
-            updateStyle(session.themeColorMap[session.url]!!)
-        } else {
+        //如果是沉浸式效果，则需根据网页设置Style
+        if(immerseBrowseStyle){
+            val host=Uri.parse(session.url).host ?: ""
+            if (session.themeColorMap.containsKey(host)) {
+                updateStyle(session.themeColorMap[host]!!)
+            } else {
+                val color = fragment.activityViewModel.theme.value!!.colorPrimary
+                updateStyle(color)
+            }
+        }else{
             val color = fragment.activityViewModel.theme.value!!.colorPrimary
             updateStyle(color)
         }
+
         sessionObserver = object : Session.Observer {
             override fun onThumbnailCapture(session: Session, bitmap: Bitmap?) {
+                if (!immerseBrowseStyle){
+                    return
+                }
                 bitmap?.apply {
                     val engineSession = sessionManager.getOrCreateEngineSession(session) as SystemEngineSession
                     val dy = engineSession.webView.scrollY
                     //在尚未滑动的时候，可以通过截图来获取颜色，否则，不改变style
                     if (dy == 0) {
-                        if (session.themeColorMap.containsKey(session.url)) {
-                            updateStyle(session.themeColorMap[session.url]!!)
+                        val host= Uri.parse(session.url).host ?: ""
+                        if (session.themeColorMap.containsKey(host)) {
+                            updateStyle(session.themeColorMap[host]!!)
                         } else {
                             bitmap.apply {
                                 val color = bitmap.getPixel(5, 5)
                                 updateStyle(color)
-                                session.themeColorMap[session.url] = color
+                                session.themeColorMap[host] = color
                             }
                         }
                     }
