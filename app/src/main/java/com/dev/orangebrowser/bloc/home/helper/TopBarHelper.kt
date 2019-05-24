@@ -11,17 +11,20 @@ import com.dev.orangebrowser.data.model.ActionItem
 import com.dev.orangebrowser.databinding.FragmentHomeBinding
 import com.dev.orangebrowser.extension.RouterActivity
 import com.dev.orangebrowser.extension.appData
+import com.dev.orangebrowser.extension.getSpBool
 import com.dev.view.GridView
 import com.dev.view.NavigationBarUtil
 import com.dev.view.StatusBarUtil
 import com.dev.view.recyclerview.CustomBaseViewHolder
 import com.dev.view.recyclerview.adapter.base.BaseQuickAdapter
 import es.dmoral.toasty.Toasty
+import java.util.*
 
 
 class TopBarHelper(var binding: FragmentHomeBinding, var fragment: HomeFragment, var savedInstanceState: Bundle?, var bottomBarHelper: BottomBarHelper){
     private lateinit var topPanelBackHandler: BackHandler
     init{
+        initTopMenuData()
         initTopBar(savedInstanceState)
     }
     private fun initTopBar(savedInstanceState: Bundle?) {
@@ -35,7 +38,11 @@ class TopBarHelper(var binding: FragmentHomeBinding, var fragment: HomeFragment,
             }
         }
         binding.topMenu.setOnClickListener {
-            toggleTopPanel()
+            if (fragment.appData.topMenuActionItems.isEmpty()){
+                fragment.requireContext().showToast(fragment.requireContext().getString(R.string.tip_no_library_function_selected))
+            }else{
+                toggleTopPanel()
+            }
         }
         initTopMenuGridView(binding.topMenuPanel)
         binding.overLayerTopPanel.setOnClickListener {
@@ -58,7 +65,55 @@ class TopBarHelper(var binding: FragmentHomeBinding, var fragment: HomeFragment,
         StatusBarUtil.setStatusBarBackGroundColorAndIconColor(fragment.requireActivity(),fragment.activityViewModel.theme.value!!.colorPrimary)
         NavigationBarUtil.setNavigationBarColor(fragment.requireActivity(),fragment.activityViewModel.theme.value!!.colorPrimary)
     }
-
+    private fun initTopMenuData(){
+        val result = LinkedList<ActionItem>()
+        fragment.getSpBool(R.string.pref_setting_enable_lib_scan, true).apply {
+            if (this){
+                result.add(ActionItem(nameRes = R.string.scan, iconRes = R.string.ic_scan, id = R.string.ic_scan))
+            }
+        }
+        fragment.getSpBool(R.string.pref_setting_enable_lib_share, true).apply {
+            if (this){
+                result.add(ActionItem(nameRes = R.string.share, iconRes = R.string.ic_share, id = R.string.ic_share))
+            }
+        }
+        fragment.getSpBool(R.string.pref_setting_enable_lib_read_mode, true).apply {
+            if (this){
+                result.add(ActionItem(nameRes = R.string.read_mode, iconRes = R.string.ic_read, id = R.string.ic_read))
+            }
+        }
+        fragment.getSpBool(R.string.pref_setting_enable_lib_image_mode, true).apply {
+            if (this){
+                result.add(ActionItem(nameRes = R.string.image_mode, iconRes = R.string.ic_image, id = R.string.ic_image))
+            }
+        }
+        fragment.getSpBool(R.string.pref_setting_enable_lib_find_in_page, true).apply {
+            if (this){
+                result.add(ActionItem(nameRes = R.string.find_in_page, iconRes = R.string.ic_search, id = R.string.ic_search))
+            }
+        }
+        fragment.getSpBool(R.string.pref_setting_enable_lib_save_resource_offline, true).apply {
+            if (this){
+                result.add(ActionItem(nameRes = R.string.save_resource_offline, iconRes = R.string.ic_save, id = R.string.ic_save))
+            }
+        }
+        fragment.getSpBool(R.string.pref_setting_enable_lib_translation, true).apply {
+            if (this){
+                result.add(ActionItem(nameRes = R.string.translation, iconRes = R.string.ic_translate, id = R.string.ic_translate))
+            }
+        }
+        fragment.getSpBool(R.string.pref_setting_enable_lib_detect_resource, true).apply {
+            if (this){
+                result.add(ActionItem(nameRes = R.string.detect_resource,iconRes = R.string.ic_resources_fang,id = R.string.ic_resources_fang))
+            }
+        }
+        fragment.getSpBool(R.string.pref_setting_enable_lib_add_to_home_page, true).apply {
+            if (this){
+                result.add(ActionItem(nameRes = R.string.add_to_home_page, iconRes = R.string.ic_store, id = R.string.ic_store))
+            }
+        }
+        fragment.appData.topMenuActionItems=result
+    }
     private fun initTopMenuGridView(topMenuPanel: GridView) {
         val adapter=object: BaseQuickAdapter<ActionItem, CustomBaseViewHolder>(R.layout.item_top_action_item,fragment.appData.topMenuActionItems){
             override fun convert(helper: CustomBaseViewHolder, item: ActionItem) {

@@ -5,6 +5,7 @@ import android.os.Bundle
 import com.dev.base.extension.hide
 import com.dev.base.extension.isHidden
 import com.dev.base.extension.show
+import com.dev.base.extension.showToast
 import com.dev.base.support.LifecycleAwareFeature
 import com.dev.browser.feature.session.SessionUseCases
 import com.dev.browser.session.Session
@@ -14,6 +15,7 @@ import com.dev.orangebrowser.bloc.browser.integration.helper.TopPanelHelper
 import com.dev.orangebrowser.bloc.browser.integration.helper.redirect
 import com.dev.orangebrowser.databinding.FragmentBrowserBinding
 import com.dev.orangebrowser.extension.RouterActivity
+import com.dev.orangebrowser.extension.appData
 import com.dev.orangebrowser.extension.getSpInt
 import com.dev.orangebrowser.extension.getSpString
 
@@ -52,7 +54,11 @@ class TopBarIntegration(
             }
         }
         binding.topMenu.setOnClickListener {
-            topPanelHelper.toggleTopPanel()
+            if (fragment.appData.topMenuActionItems.isEmpty()){
+                fragment.requireContext().showToast(fragment.requireContext().getString(R.string.tip_no_library_function_selected))
+            }else{
+                topPanelHelper.toggleTopPanel()
+            }
         }
         binding.reloadIcon.setOnClickListener {
             sessionUseCases.reload.invoke(session)
