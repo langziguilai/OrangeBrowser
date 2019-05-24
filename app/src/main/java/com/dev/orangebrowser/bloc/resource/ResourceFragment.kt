@@ -125,6 +125,11 @@ class ResourceFragment : BaseFragment(), BackHandler {
             this.layoutManager=LinearLayoutManager(requireContext(),RecyclerView.VERTICAL,false)
             this.addItemDecoration(GridDividerItemDecoration(0,DensityUtil.dip2px(requireContext(),0.5f),getColor(R.color.material_grey_300)))
         }
+        view.findViewById<View>(R.id.back)?.apply {
+            setOnClickListener {
+                onBackPressed()
+            }
+        }
     }
     private fun selectCategory(category: String){
         if (category==selectors[0]){
