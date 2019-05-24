@@ -95,10 +95,6 @@ class TopPanelMenuIntegration(
                     fragment.RouterActivity?.loadImageModeFragment(fragment.sessionId)
                 })
             }
-            //TODO:标记广告
-            R.string.ic_ad_mark -> {
-
-            }
 
             R.string.ic_search -> {
                 topPanelHelper.toggleTopPanel(Runnable {

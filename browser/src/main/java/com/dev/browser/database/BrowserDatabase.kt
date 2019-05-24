@@ -20,7 +20,7 @@ import com.dev.browser.feature.sitepermissions.SitePermissions
 /**
  * Internal database for saving site permissions.
  */
-@Database(entities = [SitePermissionsEntity::class,VisitHistoryEntity::class, BookMarkEntity::class,BookMarkCategoryEntity::class], version = 1)
+@Database(entities = [SitePermissionsEntity::class,VisitHistoryEntity::class, BookMarkEntity::class,BookMarkCategoryEntity::class], version = 1,exportSchema = false)
 @TypeConverters(StatusConverter::class)
 abstract class BrowserDatabase : RoomDatabase() {
     abstract fun sitePermissionsDao(): SitePermissionsDao

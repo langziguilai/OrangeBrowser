@@ -13,7 +13,7 @@ import com.dev.orangebrowser.data.model.*
         NewRecommendedSite::class,
         AdBlockFilter::class,
         SavedFile::class
-    ], version = 1
+    ], version = 1,exportSchema=false
 )
 abstract class AppDatabase : RoomDatabase() {
     //    abstract fun favoriteSiteDao(): FavoriteSiteDao

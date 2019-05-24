@@ -26,7 +26,6 @@ import com.dev.orangebrowser.bloc.search.SearchFragment
 import com.dev.orangebrowser.bloc.setting.SettingFragment
 import com.dev.orangebrowser.bloc.setting.fragments.*
 import com.dev.orangebrowser.bloc.setting.fragments.adblock.*
-import com.dev.orangebrowser.bloc.sourcecode.SourceCodeFragment
 import com.dev.orangebrowser.bloc.tabs.TabFragment
 import com.dev.orangebrowser.bloc.theme.ThemeFragment
 import com.dev.orangebrowser.data.model.*

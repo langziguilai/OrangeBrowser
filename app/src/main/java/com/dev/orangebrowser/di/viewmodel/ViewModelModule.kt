@@ -31,7 +31,6 @@ import com.dev.orangebrowser.bloc.readMode.ReadModeViewModel
 import com.dev.orangebrowser.bloc.resource.ResourceViewModel
 import com.dev.orangebrowser.bloc.search.SearchViewModel
 import com.dev.orangebrowser.bloc.setting.SettingViewModel
-import com.dev.orangebrowser.bloc.sourcecode.SourceCodeViewModel
 import com.dev.orangebrowser.bloc.tabs.TabViewModel
 import com.dev.orangebrowser.bloc.theme.ThemeViewModel
 import dagger.Binds
@@ -108,10 +107,6 @@ abstract class ViewModelModule {
     @ViewModelKey(ImageModeViewModel::class)
     abstract fun bindsImageModeViewModel(imageModeViewModel: ImageModeViewModel): ViewModel
 
-    @Binds
-    @IntoMap
-    @ViewModelKey(SourceCodeViewModel::class)
-    abstract fun bindsSourceCodeViewModel(sourceCodeViewModel: SourceCodeViewModel): ViewModel
 
     @Binds
     @IntoMap

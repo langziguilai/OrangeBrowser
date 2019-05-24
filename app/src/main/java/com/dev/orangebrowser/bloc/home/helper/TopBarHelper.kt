@@ -82,39 +82,35 @@ class TopBarHelper(var binding: FragmentHomeBinding, var fragment: HomeFragment,
                 })
             }
             R.string.ic_share->{
-                Toasty.warning(fragment.requireContext(), R.string.webview_not_available_hint, Toast.LENGTH_SHORT).show()
+                fragment.requireContext().showToast(fragment.getString(R.string.webview_not_available_hint))
             }
             //阅读模式
             R.string.ic_read->{
-                Toasty.warning(fragment.requireContext(), R.string.webview_not_available_hint, Toast.LENGTH_SHORT).show()
+                fragment.requireContext().showToast(fragment.getString(R.string.webview_not_available_hint))
             }
             //看图模式
             R.string.ic_image->{
-                Toasty.warning(fragment.requireContext(), R.string.webview_not_available_hint, Toast.LENGTH_SHORT).show()
-            }
-            //标记广告
-            R.string.ic_ad_mark->{
-                Toasty.warning(fragment.requireContext(), R.string.webview_not_available_hint, Toast.LENGTH_SHORT).show()
+                fragment.requireContext().showToast(fragment.getString(R.string.webview_not_available_hint))
             }
             //页内查找
             R.string.ic_search->{
-                Toasty.warning(fragment.requireContext(), R.string.webview_not_available_hint, Toast.LENGTH_SHORT).show()
+                fragment.requireContext().showToast(fragment.getString(R.string.webview_not_available_hint))
             }
             //离线保存
             R.string.ic_save->{
-                Toasty.warning(fragment.requireContext(), R.string.webview_not_available_hint, Toast.LENGTH_SHORT).show()
+                fragment.requireContext().showToast(fragment.getString(R.string.webview_not_available_hint))
             }
             //翻译
             R.string.ic_translate->{
-                Toasty.warning(fragment.requireContext(), R.string.webview_not_available_hint, Toast.LENGTH_SHORT).show()
+                fragment.requireContext().showToast(fragment.getString(R.string.webview_not_available_hint))
             }
             //资源嗅探
             R.string.ic_resources_fang->{
-                Toasty.warning(fragment.requireContext(), R.string.webview_not_available_hint, Toast.LENGTH_SHORT).show()
+                fragment.requireContext().showToast(fragment.getString(R.string.webview_not_available_hint))
             }
             //添加到主页
             R.string.ic_store->{
-                Toasty.warning(fragment.requireContext(), R.string.webview_not_available_hint, Toast.LENGTH_SHORT).show()
+                fragment.requireContext().showToast(fragment.getString(R.string.webview_not_available_hint))
             }
         }
     }

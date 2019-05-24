@@ -29,6 +29,7 @@
     <string name="ic_scan">&#xe7d4;</string>
     <string name="ic_camera">&#xe7d7;</string>
     <string name="ic_image">&#xe7de;</string>
+    <string name="ic_video">&#xe7da;</string>
     <string name="ic_heart">&#xe7df;</string>
     <string name="ic_star">&#xe7e0;</string>
     <string name="ic_scissor">&#xe7e6;</string>
@@ -314,5 +315,7 @@
     <string name="javascirpt">JS文件</string>
     <string name="style">样式文件</string>
     <string name="other">其他</string>
+    <string name="video">视频</string>
+    <string name="audio">音频</string>
 
 </resources>

@@ -88,7 +88,6 @@ fun getTopMenActionItems(): List<ActionItem> {
     result.add(ActionItem(nameRes = R.string.share, iconRes = R.string.ic_share, id = R.string.ic_share))
     result.add(ActionItem(nameRes = R.string.read_mode, iconRes = R.string.ic_read, id = R.string.ic_read))
     result.add(ActionItem(nameRes = R.string.image_mode, iconRes = R.string.ic_image, id = R.string.ic_image))
-    result.add(ActionItem(nameRes = R.string.mark_ad, iconRes = R.string.ic_ad_mark, id = R.string.ic_ad_mark))
     result.add(ActionItem(nameRes = R.string.find_in_page, iconRes = R.string.ic_search, id = R.string.ic_search))
     result.add(ActionItem(nameRes = R.string.save_resource_offline, iconRes = R.string.ic_save, id = R.string.ic_save))
     result.add(ActionItem(nameRes = R.string.translation, iconRes = R.string.ic_translate, id = R.string.ic_translate))
