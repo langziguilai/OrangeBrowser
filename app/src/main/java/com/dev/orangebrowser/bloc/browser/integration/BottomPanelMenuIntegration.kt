@@ -87,6 +87,10 @@ class BottomPanelMenuIntegration(
         //设置视野模式
         fragment.appData.bottomMenuActionItems.find { it.id==R.string.ic_normal_screen  }?.apply {
             val viewMode=fragment.getSpInt(R.string.pref_setting_view_mode,Session.NORMAL_SCREEN_MODE)
+            if (viewMode==Session.NORMAL_SCREEN_MODE){
+                this.active=false
+                this.iconRes=R.string.ic_normal_screen
+            }
             if (viewMode==Session.SCROLL_FULL_SCREEN_MODE){
                 this.active=true
                 this.iconRes=R.string.ic_auto_fullscreen
