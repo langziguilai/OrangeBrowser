@@ -101,14 +101,14 @@ class SearchEngineSettingFragment : BaseFragment(), BackHandler {
         }
     }
 
-    //TODO:添加Action
+
     private fun getData(): List<Any> {
-        val engineSelected = getSpString(R.string.pref_setting_search_engine_id)
+        val engineSelected = getSpString(R.string.pref_setting_search_engine_name,"Bing")
         val list = LinkedList<Any>()
         list.add(DividerItem(height = 24, background = getColor(R.color.color_F8F8F8)))
         searchEngineManager.getSearchEngines(requireContext()).forEachIndexed { index, it ->
             var value = false
-            if (engineSelected == it.identifier) {
+            if (engineSelected == it.name) {
                 value = true
             }
 

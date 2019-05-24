@@ -162,28 +162,28 @@ class GeneralSettingFragment : BaseFragment(), BackHandler {
                 setSpBool(R.string.pref_setting_user_immerse_browse_style, data)
             }
         }, value = getSpBool(R.string.pref_setting_user_immerse_browse_style, false)))
-        list.add(
-            SwitchItem(
-                title = getString(R.string.add_shadow_to_white_status_bar),
-                action = object : Action<Boolean> {
-                    override fun invoke(data: Boolean) {
-                        setSpBool(R.string.pref_setting_add_shadow_to_white_status_bar, data)
-                    }
-                },
-                value = getSpBool(R.string.pref_setting_add_shadow_to_white_status_bar, false)
-            )
-        )
-        list.add(
-            SwitchItem(
-                title = getString(R.string.add_shadow_to_white_navigation_bar),
-                action = object : Action<Boolean> {
-                    override fun invoke(data: Boolean) {
-                        setSpBool(R.string.pref_setting_add_shadow_to_white_navigation_bar, data)
-                    }
-                },
-                value = getSpBool(R.string.pref_setting_add_shadow_to_white_navigation_bar, false)
-            )
-        )
+//        list.add(
+//            SwitchItem(
+//                title = getString(R.string.add_shadow_to_white_status_bar),
+//                action = object : Action<Boolean> {
+//                    override fun invoke(data: Boolean) {
+//                        setSpBool(R.string.pref_setting_add_shadow_to_white_status_bar, data)
+//                    }
+//                },
+//                value = getSpBool(R.string.pref_setting_add_shadow_to_white_status_bar, false)
+//            )
+//        )
+//        list.add(
+//            SwitchItem(
+//                title = getString(R.string.add_shadow_to_white_navigation_bar),
+//                action = object : Action<Boolean> {
+//                    override fun invoke(data: Boolean) {
+//                        setSpBool(R.string.pref_setting_add_shadow_to_white_navigation_bar, data)
+//                    }
+//                },
+//                value = getSpBool(R.string.pref_setting_add_shadow_to_white_navigation_bar, false)
+//            )
+//        )
         list.add(DividerItem(height = 24, background = getColor(R.color.color_F8F8F8)))
         list.add(
             CategoryHeaderItem(

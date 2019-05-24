@@ -127,11 +127,12 @@ class SettingFragment : BaseAdBlockSettingFragment(),BackHandler {
                    RouterActivity?.loadLibrarySettinglFragment()
             }
         }))
-        list.add(TileItem(title=getString(R.string.action_and_gesture),tip="",icon = getString(R.string.ic_right),action = object:Action<TileItem>{
-            override fun invoke(data: TileItem) {
-                  RouterActivity?.loadGestureSettinglFragment()
-            }
-        }))
+        //TODO:手势支持
+//        list.add(TileItem(title=getString(R.string.action_and_gesture),tip="",icon = getString(R.string.ic_right),action = object:Action<TileItem>{
+//            override fun invoke(data: TileItem) {
+//                  RouterActivity?.loadGestureSettinglFragment()
+//            }
+//        }))
         //
         var searchEngineName: String
         getSpString(R.string.pref_setting_search_engine_name,"Bing").apply {
