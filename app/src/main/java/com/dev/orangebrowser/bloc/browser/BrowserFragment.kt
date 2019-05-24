@@ -38,6 +38,7 @@ import com.dev.browser.database.bookmark.BookMarkDao
 import com.dev.browser.session.Session
 import com.dev.orangebrowser.data.dao.SavedFileDao
 import com.dev.orangebrowser.extension.appData
+import com.dev.orangebrowser.extension.getSpInt
 import com.dev.util.ColorStore
 import com.dev.view.NavigationBarUtil
 
@@ -84,6 +85,7 @@ class BrowserFragment : BaseFragment(), BackHandler, UserInteractionHandler {
     private val webViewLifeCycleIntegration = ViewBoundFeatureWrapper<WebViewLifeCycleIntegration>()
     private val styleIntegration = ViewBoundFeatureWrapper<StyleIntegration>()
     private val fullScreenProgressIntegration = ViewBoundFeatureWrapper<FullScreenProgressIntegration>()
+    private val webSettingIntegration = ViewBoundFeatureWrapper<WebViewSettingIntegration>()
     val thumbnailIntergration= ViewBoundFeatureWrapper<ThumbnailIntergration>()
     private val backButtonHandler: List<ViewBoundFeatureWrapper<*>> = listOf(
 //        fullScreenFeature,
@@ -373,6 +375,11 @@ class BrowserFragment : BaseFragment(), BackHandler, UserInteractionHandler {
             owner = this,
             view = binding.root
         )
+        webSettingIntegration.set(
+            feature = WebViewSettingIntegration(binding=binding,fragment = this,session = session,sessionManager = sessionManager),
+            owner=this,
+            view=binding.root
+         )
     }
 
     override fun initData(savedInstanceState: Bundle?) {

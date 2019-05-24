@@ -77,7 +77,6 @@ class WebSettingFragment : BaseFragment(), BackHandler {
         binding.recyclerView.adapter = adapter
     }
 
-    //TODO:添加Action
     private fun getData(): List<Any> {
         val list = LinkedList<Any>()
         list.add(DividerItem(height = 24, background = getColor(R.color.color_F8F8F8)))
@@ -108,22 +107,22 @@ class WebSettingFragment : BaseFragment(), BackHandler {
             }
         }, value = getSpBool(R.string.pref_setting_refuse_track, false)))
 
-        list.add(SwitchItem(title = getString(R.string.hide_device_info), action = object : Action<Boolean> {
-            override fun invoke(data: Boolean) {
-                setSpBool(R.string.pref_setting_need_hide_device_info, data)
-            }
-        }, value = getSpBool(R.string.pref_setting_need_hide_device_info, false)))
+//        list.add(SwitchItem(title = getString(R.string.hide_device_info), action = object : Action<Boolean> {
+//            override fun invoke(data: Boolean) {
+//                setSpBool(R.string.pref_setting_need_hide_device_info, data)
+//            }
+//        }, value = getSpBool(R.string.pref_setting_need_hide_device_info, false)))
         list.add(DividerItem(height = 24, background = getColor(R.color.color_F8F8F8)))
-        list.add(SwitchItem(title = getString(R.string.show_https_icon), action = object : Action<Boolean> {
-            override fun invoke(data: Boolean) {
-                setSpBool(R.string.pref_setting_need_show_https_icon, data)
-            }
-        }, value = getSpBool(R.string.pref_setting_need_show_https_icon, true)))
-        list.add(SwitchItem(title = getString(R.string.show_no_secure_https_icon), action = object : Action<Boolean> {
-            override fun invoke(data: Boolean) {
-                setSpBool(R.string.pref_setting_need_show_no_secure_https_icon, data)
-            }
-        }, value = getSpBool(R.string.pref_setting_need_show_no_secure_https_icon, false)))
+//        list.add(SwitchItem(title = getString(R.string.show_https_icon), action = object : Action<Boolean> {
+//            override fun invoke(data: Boolean) {
+//                setSpBool(R.string.pref_setting_need_show_https_icon, data)
+//            }
+//        }, value = getSpBool(R.string.pref_setting_need_show_https_icon, true)))
+//        list.add(SwitchItem(title = getString(R.string.show_no_secure_https_icon), action = object : Action<Boolean> {
+//            override fun invoke(data: Boolean) {
+//                setSpBool(R.string.pref_setting_need_show_no_secure_https_icon, data)
+//            }
+//        }, value = getSpBool(R.string.pref_setting_need_show_no_secure_https_icon, false)))
 
         list.add(DividerItem(height = 24, background = getColor(R.color.color_F8F8F8)))
         list.add(SwitchItem(title = getString(R.string.intercept_alert), action = object : Action<Boolean> {
@@ -142,25 +141,25 @@ class WebSettingFragment : BaseFragment(), BackHandler {
                     }
                 })
         )
-        list.add(DividerItem(height = 24, background = getColor(R.color.color_F8F8F8)))
-        list.add(SwitchItem(title = getString(R.string.keep_last_page), action = object : Action<Boolean> {
-            override fun invoke(data: Boolean) {
-                setSpBool(R.string.pref_setting_need_keep_last_page, data)
-            }
-        }, value = getSpBool(R.string.pref_setting_need_keep_last_page, true)))
-        list.add(DividerItem(height = 24, background = getColor(R.color.color_F8F8F8)))
-        list.add(SwitchItem(title = getString(R.string.super_cache), action = object : Action<Boolean> {
-            override fun invoke(data: Boolean) {
-                setSpBool(R.string.pref_setting_need_use_super_cache, data)
-            }
-        }, value = getSpBool(R.string.pref_setting_need_use_super_cache, false)))
-        list.add(
-            CategoryHeaderItem(
-                height = 48,
-                title = getString(R.string.super_cache_tip),
-                background = getColor(R.color.color_F8F8F8)
-            )
-        )
+//        list.add(DividerItem(height = 24, background = getColor(R.color.color_F8F8F8)))
+//        list.add(SwitchItem(title = getString(R.string.keep_last_page), action = object : Action<Boolean> {
+//            override fun invoke(data: Boolean) {
+//                setSpBool(R.string.pref_setting_need_keep_last_page, data)
+//            }
+//        }, value = getSpBool(R.string.pref_setting_need_keep_last_page, true)))
+//        list.add(DividerItem(height = 24, background = getColor(R.color.color_F8F8F8)))
+//        list.add(SwitchItem(title = getString(R.string.super_cache), action = object : Action<Boolean> {
+//            override fun invoke(data: Boolean) {
+//                setSpBool(R.string.pref_setting_need_use_super_cache, data)
+//            }
+//        }, value = getSpBool(R.string.pref_setting_need_use_super_cache, false)))
+//        list.add(
+//            CategoryHeaderItem(
+//                height = 48,
+//                title = getString(R.string.super_cache_tip),
+//                background = getColor(R.color.color_F8F8F8)
+//            )
+//        )
         return list
     }
 }

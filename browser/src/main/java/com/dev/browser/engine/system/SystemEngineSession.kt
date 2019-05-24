@@ -105,7 +105,7 @@ class SystemEngineSession(
     }
 
     override fun setFontSize(size: Int) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        webView.settings.textZoom=size
     }
 
     override fun savePage(): String {
@@ -372,7 +372,7 @@ class SystemEngineSession(
      */
     override fun toggleDesktopMode(enable: Boolean, reload: Boolean) {
         val webSettings = webView.settings
-        webSettings.userAgentString = toggleDesktopUA(webSettings.userAgentString, enable)
+        // webSettings.userAgentString = toggleDesktopUA(webSettings.userAgentString, enable)
         webSettings.useWideViewPort = enable
 
         notifyObservers { onDesktopModeChange(enable) }
@@ -382,9 +382,8 @@ class SystemEngineSession(
         }
     }
 
-    //TODO:启用拦截
-    override fun enableAdBlock(enableAdBlock: Boolean) {
-
+    override fun setUserAgent(agent: String) {
+        webView.settings.userAgentString=agent
     }
 
     override fun forbidLoadingImage(enable: Boolean, reload: Boolean) {

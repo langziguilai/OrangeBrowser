@@ -181,7 +181,7 @@
     <string name="intercept_all">拦截所有</string>
     <string name="keep_last_page">保存最后浏览的网页</string>
     <string name="super_cache">超级缓存</string>
-    <string name="super_cache_tip">开启草鸡缓存后，网页将优先加载缓存内容，可能导致网页刷新不及时，请谨慎开启</string>
+    <string name="super_cache_tip">开启超级缓存后，网页将优先加载缓存内容，可能导致网页刷新不及时，请谨慎开启</string>
     <string name="page_cache">网页缓存</string>
     <string name="form_cache">表单缓存</string>
     <string name="browser_history">浏览历史</string>
@@ -317,5 +317,7 @@
     <string name="other">其他</string>
     <string name="video">视频</string>
     <string name="audio">音频</string>
+    <string name="pref_setting_font_size">pref_setting_font_size</string>
+    <string name="pref_setting_view_mode">pref_setting_view_mode</string>
 
 </resources>

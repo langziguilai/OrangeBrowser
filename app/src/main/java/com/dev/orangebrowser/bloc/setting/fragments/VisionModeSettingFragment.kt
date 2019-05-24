@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.dev.base.BaseFragment
 import com.dev.base.support.BackHandler
+import com.dev.browser.session.Session
 import com.dev.orangebrowser.R
 import com.dev.orangebrowser.bloc.host.MainViewModel
 import com.dev.orangebrowser.bloc.setting.adapter.Adapter
@@ -94,6 +95,11 @@ class VisionModeSettingFragment : BaseFragment(), BackHandler {
         if (index>=0){
             data.value=true
             setSpString(R.string.pref_setting_view_mode_title,data.title)
+            when(data.title){
+                getString(R.string.normal_vision_mode)->setSpInt(R.string.pref_setting_view_mode,Session.NORMAL_SCREEN_MODE)
+                getString(R.string.auto_vision_mode)->setSpInt(R.string.pref_setting_view_mode,Session.SCROLL_FULL_SCREEN_MODE)
+                getString(R.string.max_vision_mode)->setSpInt(R.string.pref_setting_view_mode,Session.MAX_SCREEN_MODE)
+            }
             binding.recyclerView.adapter?.notifyItemChanged(index)
         }
     }

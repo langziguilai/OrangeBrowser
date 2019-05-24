@@ -25,11 +25,9 @@ import com.dev.orangebrowser.bloc.browser.integration.helper.BottomPanelHelper
 import com.dev.orangebrowser.bloc.browser.integration.helper.redirect
 import com.dev.orangebrowser.data.model.ActionItem
 import com.dev.orangebrowser.databinding.FragmentBrowserBinding
-import com.dev.orangebrowser.extension.RouterActivity
-import com.dev.orangebrowser.extension.appData
 import com.dev.orangebrowser.bloc.browser.view.WebViewToggleBehavior
 import com.dev.orangebrowser.bloc.host.MainViewModel
-import com.dev.orangebrowser.extension.getColor
+import com.dev.orangebrowser.extension.*
 import com.dev.util.DensityUtil
 import com.dev.view.GridView
 import com.dev.view.dialog.DialogBuilder
@@ -57,6 +55,7 @@ class BottomPanelMenuIntegration(
     private var behavior: WebViewToggleBehavior? = null
 
     init {
+        initBottomMenuData()
         initBottomMenuGridView(binding.bottomMenuGridView)
         if (binding.webViewContainer.layoutParams is CoordinatorLayout.LayoutParams) {
             val layoutParams = binding.webViewContainer.layoutParams as CoordinatorLayout.LayoutParams
@@ -84,7 +83,30 @@ class BottomPanelMenuIntegration(
             }
         }
     }
+    private fun initBottomMenuData(){
+        //设置视野模式
+        fragment.appData.bottomMenuActionItems.find { it.id==R.string.ic_normal_screen  }?.apply {
+            val viewMode=fragment.getSpInt(R.string.pref_setting_view_mode,Session.NORMAL_SCREEN_MODE)
+            if (viewMode==Session.SCROLL_FULL_SCREEN_MODE){
+                this.active=true
+                this.iconRes=R.string.ic_auto_fullscreen
+            }
+            if (viewMode==Session.MAX_SCREEN_MODE){
+                this.active=true
+                this.iconRes=R.string.ic_fullscreen
+                binding.miniBottomBar.visibility = View.VISIBLE
+            }else{
+                binding.miniBottomBar.visibility = View.GONE
+            }
+        }
 
+        //设置UserAgent
+        fragment.appData.bottomMenuActionItems.find { it.id== R.string.ic_desktop  }?.apply {
+            if(fragment.getSpString(R.string.pref_setting_ua_title)==fragment.requireContext().getString(R.string.ua_pc)){
+                this.active=true
+            }
+        }
+    }
     private fun initBottomMenuGridView(bottomMenuGridView: GridView) {
         val adapter = object : BaseQuickAdapter<ActionItem, CustomBaseViewHolder>(
             R.layout.item_bottom_action_item,
@@ -184,12 +206,19 @@ class BottomPanelMenuIntegration(
             R.string.ic_desktop -> {
                 actionItem.active = !actionItem.active
                 if (actionItem.active) {
+                    sessionUseCases.setUserAgent.invoke(fragment.requireContext().getString(R.string.user_agent_pc),session)
                     sessionUseCases.requestDesktopSite.invoke(true, session)
                     view.findViewById<TextView>(R.id.icon)
                         .setTextColor(fragment.activityViewModel.theme.value!!.colorPrimaryActive)
                     view.findViewById<TextView>(R.id.name)
                         .setTextColor(fragment.activityViewModel.theme.value!!.colorPrimaryActive)
                 } else {
+                    val ua=fragment.getSpString(R.string.pref_setting_ua)
+                    if (ua!=fragment.requireContext().getString(R.string.user_agent_pc)){
+                        sessionUseCases.setUserAgent.invoke(ua,session)
+                    }else{
+                        sessionUseCases.setUserAgent.invoke(fragment.requireContext().getString(R.string.user_agent_android),session)
+                    }
                     sessionUseCases.requestDesktopSite.invoke(false, session)
                     view.findViewById<TextView>(R.id.icon)
                         .setTextColor(fragment.activityViewModel.theme.value!!.colorPrimary)

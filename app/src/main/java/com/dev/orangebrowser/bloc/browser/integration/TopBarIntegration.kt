@@ -1,5 +1,6 @@
 package com.dev.orangebrowser.bloc.browser.integration
 
+import android.net.Uri
 import android.os.Bundle
 import com.dev.base.extension.hide
 import com.dev.base.extension.isHidden
@@ -7,11 +8,14 @@ import com.dev.base.extension.show
 import com.dev.base.support.LifecycleAwareFeature
 import com.dev.browser.feature.session.SessionUseCases
 import com.dev.browser.session.Session
+import com.dev.orangebrowser.R
 import com.dev.orangebrowser.bloc.browser.BrowserFragment
 import com.dev.orangebrowser.bloc.browser.integration.helper.TopPanelHelper
 import com.dev.orangebrowser.bloc.browser.integration.helper.redirect
 import com.dev.orangebrowser.databinding.FragmentBrowserBinding
 import com.dev.orangebrowser.extension.RouterActivity
+import com.dev.orangebrowser.extension.getSpInt
+import com.dev.orangebrowser.extension.getSpString
 
 
 class TopBarIntegration(
@@ -24,7 +28,10 @@ class TopBarIntegration(
 ) :
     LifecycleAwareFeature {
     lateinit var sessionObserver: Session.Observer
-
+    val showTitle= fragment.requireContext().getString(R.string.show_title)
+    val showAddress= fragment.requireContext().getString(R.string.show_address)
+    val showDomain= fragment.requireContext().getString(R.string.show_domain)
+    val titleSelection= fragment.getSpString(R.string.pref_setting_address_bar_show_title,showTitle)
     init {
         initTopBar(savedInstanceState)
     }
@@ -54,6 +61,7 @@ class TopBarIntegration(
             sessionUseCases.stopLoading.invoke(session)
         }
 
+
         sessionObserver = object : Session.Observer {
             //加载改变
             override fun onLoadingStateChanged(session: Session, loading: Boolean) {
@@ -81,14 +89,21 @@ class TopBarIntegration(
             //title改变
             override fun onTitleChanged(session: Session, title: String) {
                 if (!title.isBlank()){
-                    binding.searchText.text = title
+                    if (titleSelection==showTitle){
+                        binding.searchText.text = title
+                    }
                 }
             }
 
             //url改变
             override fun onUrlChanged(session: Session, url: String) {
                 if (!url.isBlank()){
-                    binding.searchText.text = url
+                    if (titleSelection==showAddress){
+                        binding.searchText.text = url
+                    }
+                    if (titleSelection==showDomain){
+                        binding.searchText.text = Uri.parse(url).host
+                    }
                 }
             }
 
@@ -101,11 +116,16 @@ class TopBarIntegration(
 
     private fun setTopBarInitialState(savedInstanceState:Bundle?){
         //优先设置为title，其次为url
-        if (session.title.isNotEmpty() && session.title!=Session.HOME_TITLE) {
-            binding.searchText.text = session.title
-        } else if (session.url.isNotEmpty()) {
-            binding.searchText.text = session.url
+        when(titleSelection){
+            showTitle->binding.searchText.text = session.title
+            showDomain->binding.searchText.text = Uri.parse(session.url).host
+            showAddress->binding.searchText.text = session.url
         }
+//        if (session.title.isNotEmpty() && session.title!=Session.HOME_TITLE) {
+//            binding.searchText.text = session.title
+//        } else if (session.url.isNotEmpty()) {
+//            binding.searchText.text = session.url
+//        }
         if (session.securityInfo.secure){
             binding.securityIcon.show()
         }else{

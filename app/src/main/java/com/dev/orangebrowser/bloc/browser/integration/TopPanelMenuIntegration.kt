@@ -57,7 +57,9 @@ class TopPanelMenuIntegration(
         }
 
     }
-
+    private fun initTopMenuData(){
+        fragment.appData.topMenuActionItems
+    }
     private fun initTopMenuGridView(topMenuPanel: GridView) {
         val adapter =
             TopMenuPanelAdapter(R.color.colorWhite, R.layout.item_top_action_item, fragment.appData.topMenuActionItems)

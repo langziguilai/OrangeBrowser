@@ -94,11 +94,27 @@ class FontSizeSettingFragment : BaseFragment(), BackHandler {
         if (index>=0){
             data.value=true
             setSpString(R.string.pref_setting_font_size_title,data.title)
+            when(data.title){
+                getString(R.string.font_size_super_small)->{
+                    setSpInt(R.string.pref_setting_font_size,60)
+                }
+                getString(R.string.font_size_small)->{
+                    setSpInt(R.string.pref_setting_font_size,80)
+                }
+                getString(R.string.font_size_middle)->{
+                    setSpInt(R.string.pref_setting_font_size,100)
+                }
+                getString(R.string.font_size_large)->{
+                    setSpInt(R.string.pref_setting_font_size,150)
+                }
+                getString(R.string.font_size_super_large)->{
+                    setSpInt(R.string.pref_setting_font_size,200)
+                }
+            }
             binding.recyclerView.adapter?.notifyItemChanged(index)
         }
     }
 
-    //TODO:添加Action
     private fun getData(): List<Any> {
         val fontSize = getSpString(R.string.pref_setting_font_size_title,getString(R.string.font_size_middle))
         val list = LinkedList<Any>()

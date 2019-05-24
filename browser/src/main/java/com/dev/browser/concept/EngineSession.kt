@@ -190,6 +190,7 @@ abstract class EngineSession(
      * 获取网页内容
      * */
     abstract fun executeJsFunction(js:String, callback:ValueCallback<String>)
+    abstract fun setUserAgent(agent:String)
     /**
      * Saves and returns the engine state. Engine implementations are not required
      * to persist the state anywhere else than in the returned map. Engines that
@@ -263,9 +264,6 @@ abstract class EngineSession(
      */
     @CallSuper
     open fun close() = delegate.unregisterObservers()
-
-    //是否启用adBlock
-    abstract fun enableAdBlock(enableAdBlock:Boolean=false)
 
     companion object{
         const val OFFLINE_PAGE_PATH="OFFLINE_PAGE_PATH"

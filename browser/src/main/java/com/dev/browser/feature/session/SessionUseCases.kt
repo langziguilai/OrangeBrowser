@@ -152,7 +152,18 @@ class SessionUseCases(
             }
         }
     }
-
+    class UserAgentUseCase internal constructor(
+        private val sessionManager: SessionManager
+    ) {
+        /**
+         * Requests the desktop version of the current session and reloads the page.
+         */
+        fun invoke(ua: String, session: Session? = sessionManager.selectedSession) {
+            if (session != null) {
+                sessionManager.getOrCreateEngineSession(session).setUserAgent(ua)
+            }
+        }
+    }
     class ExitFullScreenUseCase internal constructor(
         private val sessionManager: SessionManager
     ) {
@@ -224,6 +235,11 @@ class SessionUseCases(
     }
     val requestDesktopSite: RequestDesktopSiteUseCase by lazy {
         RequestDesktopSiteUseCase(
+            sessionManager
+        )
+    }
+    val setUserAgent: UserAgentUseCase by lazy {
+        UserAgentUseCase(
             sessionManager
         )
     }

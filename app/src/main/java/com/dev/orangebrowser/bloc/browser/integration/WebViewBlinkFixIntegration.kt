@@ -3,8 +3,10 @@ package com.dev.orangebrowser.bloc.browser.integration
 import android.widget.FrameLayout
 import android.widget.ImageView
 import com.dev.browser.session.Session
+import com.dev.orangebrowser.R
 import com.dev.orangebrowser.bloc.browser.BrowserFragment
 import com.dev.orangebrowser.databinding.FragmentBrowserBinding
+import com.dev.orangebrowser.extension.getSpInt
 import com.dev.orangebrowser.view.ScaleTopImageView
 
 class WebViewBlinkFixIntegration(binding: FragmentBrowserBinding,fragment:BrowserFragment,session:Session){
@@ -24,6 +26,8 @@ class WebViewBlinkFixIntegration(binding: FragmentBrowserBinding,fragment:Browse
                 imageView.setImageBitmap(this)
                 //用完清理
                 imageView.postDelayed({
+                    session.visionMode=fragment.getSpInt(R.string.pref_setting_view_mode,Session.NORMAL_SCREEN_MODE)
+                    binding.fragmentContainer.requestLayout()
                     binding.webViewContainer.removeView(imageView)
                 },300)
             }
