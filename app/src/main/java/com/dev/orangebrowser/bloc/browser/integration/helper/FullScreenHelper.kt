@@ -29,9 +29,9 @@ class FullScreenHelper(var binding:FragmentBrowserBinding,var activity: Activity
     fun toggleFullScreen(session: Session, fullScreen: Boolean){
            //进入全局视野
            if (fullScreen){
+               StatusBarUtil.hideStatusBar(activity)
                //隐藏下部导航栏
                activity.enterToImmersiveMode()
-               StatusBarUtil.hideStatusBar(activity)
                lastScreenMode=session.visionMode
 
                binding.topBar.hide()
@@ -47,10 +47,7 @@ class FullScreenHelper(var binding:FragmentBrowserBinding,var activity: Activity
                }
 
            }else{ //退出全局视野
-               //如果不是全屏模式，则显示StatusBar
-//               if(!activity.getPreferences(Context.MODE_PRIVATE).getBoolean(activity.getString(R.string.pref_setting_full_screen),false)){
-//                   StatusBarUtil.showStatusBar(activity)
-//               }
+               StatusBarUtil.showStatusBar(activity)
                //退出全屏模式
                activity.exitImmersiveModeIfNeeded()
                //隐藏StatusBar之后，其文字的颜色会变为默认颜色，我们需要修改其颜色
