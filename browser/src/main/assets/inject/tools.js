@@ -1,9 +1,8 @@
 console.log("tools JS has been injected");
 function getHtml(){
-  // return JSON.stringify({"content":'<html>'+document.getElementsByTagName('html')[0].innerHTML+'</html>'});
   return '<html>'+document.getElementsByTagName('html')[0].innerHTML+'</html>';
 }
-//获取所有的图片信息
+//get all images information
 function getImages(minWidth=100,minHeight=100){
     var result=[];
     var images=document.getElementsByTagName('img');
@@ -39,17 +38,17 @@ function getRealSrc(element){
     }
     return ""
 }
-//TODO:获取真实的SRC
+//extract url from text
 function extractUrlFromString(str){
 
 }
 
-//获取所有的视频信息
+//get all videos information
 function getVideos(){
 }
-//获取所有的脚本信息
+//get all javascript information
 function getJavaScripts(){
 }
-//获取所有的样式信息
+//get all stylesheet information
 function getStyles(){
 }

@@ -1,6 +1,5 @@
 package com.dev.orangebrowser.bloc.browser.integration
 
-import android.drm.DrmStore
 import android.os.Bundle
 import android.util.Log
 import androidx.annotation.ColorRes
@@ -28,14 +27,6 @@ import com.dev.view.recyclerview.adapter.base.BaseQuickAdapter
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.net.URLEncoder
-import androidx.core.app.ActivityCompat.startActivityForResult
-import com.yzq.zxinglibrary.common.Constant.INTENT_ZXING_CONFIG
-import android.R.attr.colorAccent
-import com.yzq.zxinglibrary.bean.ZxingConfig
-import com.yzq.zxinglibrary.android.CaptureActivity
-import com.dev.orangebrowser.bloc.host.MainActivity
-import android.content.Intent
-import com.yzq.zxinglibrary.common.Constant
 
 
 class TopPanelMenuIntegration(
@@ -154,12 +145,6 @@ class TopPanelMenuIntegration(
                     fragment.RouterActivity?.loadBrowserFragment(sessionManager.selectedSession!!.id)
                 })
             }
-            //源码
-            R.string.ic_code -> {
-                redirect(binding = binding, session = fragment.session, runnable = Runnable {
-                    fragment.RouterActivity?.loadSourceCodeFragment(fragment.sessionId)
-                })
-            }
             //资源嗅探
             R.string.ic_resources_fang -> {
                 redirect(binding = binding, session = fragment.session, runnable = Runnable {
@@ -168,10 +153,6 @@ class TopPanelMenuIntegration(
             }
             //TODO:添加到主页
             R.string.ic_store -> {
-
-            }
-            //TODO:天网
-            R.string.ic_sky_net -> {
 
             }
         }

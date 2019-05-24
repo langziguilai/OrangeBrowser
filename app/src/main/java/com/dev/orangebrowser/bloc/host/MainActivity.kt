@@ -310,12 +310,6 @@ class MainActivity : BaseActivity() {
             .commit()
     }
 
-    //加载源代码页面
-    fun loadSourceCodeFragment(sessionId: String) {
-        supportFragmentManager.beginTransaction().replace(R.id.container, SourceCodeFragment.newInstance(sessionId))
-            .commit()
-    }
-
     //资源嗅探页面
     fun loadResourceFragment(sessionId: String) {
         supportFragmentManager.beginTransaction().replace(R.id.container, ResourceFragment.newInstance(sessionId))

@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <androidx.constraintlayout.widget.ConstraintLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:tools="http://schemas.android.com/tools"
@@ -8,12 +7,12 @@
     <LinearLayout android:id="@+id/header"
                   android:layout_width="0dp"
                   android:layout_height="44dp"
-                 android:paddingTop="4dp"
+                  android:paddingTop="4dp"
                   android:orientation="horizontal"
-                 android:background="@color/colorPrimary"
-                 app:layout_constraintTop_toTopOf="parent"
+                  android:background="@color/colorPrimary"
+                  app:layout_constraintTop_toTopOf="parent"
                   app:layout_constraintStart_toStartOf="parent"
-                 app:layout_constraintEnd_toEndOf="parent">
+                  app:layout_constraintEnd_toEndOf="parent">
         <com.dev.view.IconfontTextView
                 android:id="@+id/back"
                 android:layout_width="48dp"
@@ -23,7 +22,7 @@
                 android:text="@string/ic_arrow_left"
                 android:gravity="center"
                 android:layout_gravity="start|center_vertical"/>
-        <TextView tools:text="@string/history"
+        <TextView android:text="@string/detect_resource"
                   android:id="@+id/title"
                   android:gravity="center"
                   android:textSize="18sp"
@@ -34,33 +33,34 @@
                   android:layout_width="match_parent"
                   android:layout_height="match_parent"/>
         <com.dev.view.IconfontTextView
-                android:id="@+id/menu"
+                android:id="@+id/download"
                 android:layout_width="48dp"
                 android:layout_height="42dp"
                 android:textColor="@color/colorWhite"
                 android:textSize="18sp"
-                android:text="@string/ic_search"
+                android:text=""
                 android:gravity="center"
                 android:layout_gravity="end|center_vertical"/>
     </LinearLayout>
-    <FrameLayout
+    <androidx.recyclerview.widget.RecyclerView android:id="@+id/selector"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/header"
+                android:layout_width="0dp"
+                android:layout_height="36dp">
+    </androidx.recyclerview.widget.RecyclerView>
+    <com.dev.orangebrowser.view.LongClickFrameLayout
             android:id="@+id/container"
-              android:layout_width="0dp"
-              android:layout_height="0dp"
-              app:layout_constraintStart_toStartOf="parent"
-              app:layout_constraintEnd_toEndOf="parent"
-              app:layout_constraintBottom_toTopOf="@+id/findInPage"
-              app:layout_constraintTop_toBottomOf="@+id/header">
-    </FrameLayout>
-    <com.dev.browser.feature.findinpage.view.FindInPageBar
-            android:clickable="true"
-            android:focusable="true"
-            android:id="@+id/findInPage"
-            android:visibility="gone"
-             android:background="@color/colorWhite"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-             android:layout_width="0dp"
-            android:layout_height="44dp"/>
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/selector">
+        <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+    </com.dev.orangebrowser.view.LongClickFrameLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

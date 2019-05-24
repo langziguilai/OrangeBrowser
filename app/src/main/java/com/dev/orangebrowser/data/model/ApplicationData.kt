@@ -92,7 +92,6 @@ fun getTopMenActionItems(): List<ActionItem> {
     result.add(ActionItem(nameRes = R.string.find_in_page, iconRes = R.string.ic_search, id = R.string.ic_search))
     result.add(ActionItem(nameRes = R.string.save_resource_offline, iconRes = R.string.ic_save, id = R.string.ic_save))
     result.add(ActionItem(nameRes = R.string.translation, iconRes = R.string.ic_translate, id = R.string.ic_translate))
-    result.add(ActionItem(nameRes = R.string.view_source_code, iconRes = R.string.ic_code, id = R.string.ic_code))
     result.add(
         ActionItem(
             nameRes = R.string.detect_resource,
@@ -101,6 +100,5 @@ fun getTopMenActionItems(): List<ActionItem> {
         )
     )
     result.add(ActionItem(nameRes = R.string.add_to_home_page, iconRes = R.string.ic_store, id = R.string.ic_store))
-    result.add(ActionItem(nameRes = R.string.sky_net, iconRes = R.string.ic_sky_net, id = R.string.ic_sky_net))
     return result
 }

@@ -308,5 +308,11 @@
     <string name="menu_download">下载</string>
     <string name="share_image">分享图片</string>
     <string name="not_finish">此功能暂未完成</string>
+    <string name="all_resource">所有资源</string>
+    <string name="image">图片</string>
+    <string name="media">媒体</string>
+    <string name="javascirpt">JS文件</string>
+    <string name="style">样式文件</string>
+    <string name="other">其他</string>
 
 </resources>

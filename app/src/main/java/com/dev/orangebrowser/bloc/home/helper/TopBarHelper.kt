@@ -108,20 +108,12 @@ class TopBarHelper(var binding: FragmentHomeBinding, var fragment: HomeFragment,
             R.string.ic_translate->{
                 Toasty.warning(fragment.requireContext(), R.string.webview_not_available_hint, Toast.LENGTH_SHORT).show()
             }
-            //源码
-            R.string.ic_code->{
-                Toasty.warning(fragment.requireContext(), R.string.webview_not_available_hint, Toast.LENGTH_SHORT).show()
-            }
             //资源嗅探
             R.string.ic_resources_fang->{
                 Toasty.warning(fragment.requireContext(), R.string.webview_not_available_hint, Toast.LENGTH_SHORT).show()
             }
             //添加到主页
             R.string.ic_store->{
-                Toasty.warning(fragment.requireContext(), R.string.webview_not_available_hint, Toast.LENGTH_SHORT).show()
-            }
-            //天网
-            R.string.ic_sky_net->{
                 Toasty.warning(fragment.requireContext(), R.string.webview_not_available_hint, Toast.LENGTH_SHORT).show()
             }
         }
