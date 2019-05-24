@@ -9,7 +9,11 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.dev.base.BaseFragment
+import com.dev.base.extension.showToast
 import com.dev.base.support.BackHandler
+import com.dev.browser.database.history.VisitHistoryDao
+import com.dev.browser.engine.system.SystemEngineSession
+import com.dev.browser.session.SessionManager
 import com.dev.orangebrowser.R
 import com.dev.orangebrowser.bloc.host.MainViewModel
 import com.dev.orangebrowser.bloc.setting.adapter.Adapter
@@ -21,7 +25,10 @@ import com.dev.orangebrowser.databinding.FragmentCacheSettingBinding
 import com.dev.orangebrowser.extension.RouterActivity
 import com.dev.orangebrowser.extension.appComponent
 import com.dev.orangebrowser.extension.getColor
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import java.util.*
+import javax.inject.Inject
 
 class CacheSettingFragment : BaseFragment(), BackHandler {
 
@@ -33,6 +40,10 @@ class CacheSettingFragment : BaseFragment(), BackHandler {
 
     lateinit var activityViewModel: MainViewModel
     lateinit var binding: FragmentCacheSettingBinding
+    @Inject
+    lateinit var sessionManager:SessionManager
+    @Inject
+    lateinit var historyDao: VisitHistoryDao
     override fun onBackPressed(): Boolean {
         RouterActivity?.loadSettingFragment()
         return true
@@ -85,7 +96,6 @@ class CacheSettingFragment : BaseFragment(), BackHandler {
     var needClearPasswordCache = false
     var needClearSearchHistory = false
     var needClearFileCache = false
-    //TODO:添加Action
     private fun getData(): List<Any> {
         val list = LinkedList<Any>()
         list.add(DividerItem(height = 24, background = getColor(R.color.color_F8F8F8)))
@@ -135,7 +145,36 @@ class CacheSettingFragment : BaseFragment(), BackHandler {
                 icon = getString(R.string.ic_right),
                 action = object : Action<TileItem> {
                     override fun invoke(data: TileItem) {
-                        //TODO：如果选中，开始清理
+                        sessionManager.selectedSession?.apply {
+                            (sessionManager.getOrCreateEngineSession(this) as? SystemEngineSession)?.apply {
+                                if (needClearPageCache){
+                                   this.clearCache()
+                                }
+                                if (needClearFormCache){
+                                    this.clearFormData()
+                                }
+                                if (needClearBrowserHistory){
+                                    this.clearHistory()
+                                    launch(Dispatchers.IO) {
+                                        historyDao.clearHistory()
+                                    }
+                                }
+                                if (needClearCookies){
+                                    this.removeCookies()
+                                }
+                                if (needClearPasswordCache){
+                                    this.clearHttpAuthUsernamePassword()
+                                }
+                                if (needClearSearchHistory){
+                                    //TODO:
+                                }
+                                if (needClearFileCache){
+                                    this.clearAllData()
+                                }
+                                this@CacheSettingFragment.requireContext().showToast(getString(R.string.clear_finish))
+                            }
+                        }
+
                     }
                 })
         )

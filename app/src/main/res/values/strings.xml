@@ -320,5 +320,6 @@
     <string name="pref_setting_font_size">pref_setting_font_size</string>
     <string name="pref_setting_view_mode">pref_setting_view_mode</string>
     <string name="tip_no_library_function_selected">您没有选择实验室功能!</string>
+    <string name="clear_finish">已清理完成</string>
 
 </resources>

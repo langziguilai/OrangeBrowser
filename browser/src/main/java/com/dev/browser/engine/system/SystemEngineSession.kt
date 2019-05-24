@@ -202,7 +202,47 @@ class SystemEngineSession(
             webViewDatabase(context).clearHttpAuthUsernamePassword()
         }
     }
-
+    fun clearFormData() {
+        webView.apply {
+            clearFormData()
+        }
+    }
+    fun clearHistory() {
+        webView.apply {
+            clearHistory()
+        }
+    }
+    fun clearMatches() {
+        webView.apply {
+            clearMatches()
+        }
+    }
+    fun clearSslPreferences() {
+        webView.apply {
+            clearSslPreferences()
+        }
+    }
+    fun clearCache() {
+        webView.apply {
+            clearCache(true)
+        }
+    }
+    fun removeCookies() {
+        webView.apply {
+            // We don't care about the callback - we just want to make sure cookies are gone
+            CookieManager.getInstance().removeAllCookies(null)
+        }
+    }
+    fun clearAllData() {
+        webView.apply {
+            webStorage().deleteAllData()
+        }
+    }
+    fun clearHttpAuthUsernamePassword() {
+        webView.apply {
+            webViewDatabase(context).clearHttpAuthUsernamePassword()
+        }
+    }
     /**
      * See [EngineSession.findAll]
      */
