@@ -121,11 +121,6 @@ class TopBarIntegration(
             showDomain->binding.searchText.text = Uri.parse(session.url).host
             showAddress->binding.searchText.text = session.url
         }
-//        if (session.title.isNotEmpty() && session.title!=Session.HOME_TITLE) {
-//            binding.searchText.text = session.title
-//        } else if (session.url.isNotEmpty()) {
-//            binding.searchText.text = session.url
-//        }
         if (session.securityInfo.secure){
             binding.securityIcon.show()
         }else{

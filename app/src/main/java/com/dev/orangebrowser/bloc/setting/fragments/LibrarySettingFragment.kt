@@ -74,7 +74,6 @@ class LibrarySettingFragment : BaseFragment(), BackHandler {
         binding.recyclerView.adapter = adapter
     }
 
-    //TODO:添加Action
     private fun getData(): List<Any> {
         val list = LinkedList<Any>()
         list.add(DividerItem(height = 24, background = getColor(R.color.color_F8F8F8)))
@@ -86,9 +85,9 @@ class LibrarySettingFragment : BaseFragment(), BackHandler {
         }, value = getSpBool(R.string.pref_setting_enable_lib_scan, true)))
         list.add(SwitchItem(title = getString(R.string.share), action = object : Action<Boolean> {
             override fun invoke(data: Boolean) {
-                setSpBool(R.string.pref_setting_enable_lib_scan, data)
+                setSpBool(R.string.pref_setting_enable_lib_share, data)
             }
-        }, value = getSpBool(R.string.pref_setting_enable_lib_scan, true)))
+        }, value = getSpBool(R.string.pref_setting_enable_lib_share, true)))
 
         list.add(SwitchItem(title = getString(R.string.read_mode), action = object : Action<Boolean> {
             override fun invoke(data: Boolean) {
@@ -102,11 +101,11 @@ class LibrarySettingFragment : BaseFragment(), BackHandler {
             }
         }, value = getSpBool(R.string.pref_setting_enable_lib_image_mode, true)))
 
-        list.add(SwitchItem(title = getString(R.string.mark_ad), action = object : Action<Boolean> {
-            override fun invoke(data: Boolean) {
-                setSpBool(R.string.pref_setting_enable_lib_mark_ad, data)
-            }
-        }, value = getSpBool(R.string.pref_setting_enable_lib_mark_ad, true)))
+//        list.add(SwitchItem(title = getString(R.string.mark_ad), action = object : Action<Boolean> {
+//            override fun invoke(data: Boolean) {
+//                setSpBool(R.string.pref_setting_enable_lib_mark_ad, data)
+//            }
+//        }, value = getSpBool(R.string.pref_setting_enable_lib_mark_ad, true)))
 
         list.add(SwitchItem(title = getString(R.string.find_in_page), action = object : Action<Boolean> {
             override fun invoke(data: Boolean) {
@@ -126,11 +125,11 @@ class LibrarySettingFragment : BaseFragment(), BackHandler {
             }
         }, value = getSpBool(R.string.pref_setting_enable_lib_translation, true)))
 
-        list.add(SwitchItem(title = getString(R.string.view_source_code), action = object : Action<Boolean> {
-            override fun invoke(data: Boolean) {
-                setSpBool(R.string.pref_setting_enable_lib_view_source_code, data)
-            }
-        }, value = getSpBool(R.string.pref_setting_enable_lib_view_source_code, true)))
+//        list.add(SwitchItem(title = getString(R.string.view_source_code), action = object : Action<Boolean> {
+//            override fun invoke(data: Boolean) {
+//                setSpBool(R.string.pref_setting_enable_lib_view_source_code, data)
+//            }
+//        }, value = getSpBool(R.string.pref_setting_enable_lib_view_source_code, true)))
 
         list.add(SwitchItem(title = getString(R.string.detect_resource), action = object : Action<Boolean> {
             override fun invoke(data: Boolean) {
@@ -144,11 +143,11 @@ class LibrarySettingFragment : BaseFragment(), BackHandler {
             }
         }, value = getSpBool(R.string.pref_setting_enable_lib_add_to_home_page, true)))
 
-        list.add(SwitchItem(title = getString(R.string.sky_net), action = object : Action<Boolean> {
-            override fun invoke(data: Boolean) {
-                setSpBool(R.string.pref_setting_enable_lib_sky_net, data)
-            }
-        }, value = getSpBool(R.string.pref_setting_enable_lib_sky_net, true)))
+//        list.add(SwitchItem(title = getString(R.string.sky_net), action = object : Action<Boolean> {
+//            override fun invoke(data: Boolean) {
+//                setSpBool(R.string.pref_setting_enable_lib_sky_net, data)
+//            }
+//        }, value = getSpBool(R.string.pref_setting_enable_lib_sky_net, true)))
 
 
         list.add(

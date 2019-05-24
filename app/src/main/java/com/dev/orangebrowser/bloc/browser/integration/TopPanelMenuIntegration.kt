@@ -21,12 +21,15 @@ import com.dev.orangebrowser.data.model.SavedFile
 import com.dev.orangebrowser.databinding.FragmentBrowserBinding
 import com.dev.orangebrowser.extension.RouterActivity
 import com.dev.orangebrowser.extension.appData
+import com.dev.orangebrowser.extension.getSpBool
+import com.dev.orangebrowser.extension.setSpBool
 import com.dev.view.GridView
 import com.dev.view.recyclerview.CustomBaseViewHolder
 import com.dev.view.recyclerview.adapter.base.BaseQuickAdapter
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.net.URLEncoder
+import java.util.*
 
 
 class TopPanelMenuIntegration(
@@ -43,6 +46,7 @@ class TopPanelMenuIntegration(
     LifecycleAwareFeature {
 
     init {
+        initTopMenuData()
         initTopMenuGridView(binding.topMenuPanel)
         binding.overLayerTopPanel.setOnClickListener {
             topPanelHelper.toggleTopPanel()
@@ -58,7 +62,53 @@ class TopPanelMenuIntegration(
 
     }
     private fun initTopMenuData(){
-        fragment.appData.topMenuActionItems
+        val result = LinkedList<ActionItem>()
+        fragment.getSpBool(R.string.pref_setting_enable_lib_scan, true).apply {
+            if (this){
+                result.add(ActionItem(nameRes = R.string.scan, iconRes = R.string.ic_scan, id = R.string.ic_scan))
+            }
+        }
+        fragment.getSpBool(R.string.pref_setting_enable_lib_share, true).apply {
+            if (this){
+                result.add(ActionItem(nameRes = R.string.share, iconRes = R.string.ic_share, id = R.string.ic_share))
+            }
+        }
+        fragment.getSpBool(R.string.pref_setting_enable_lib_read_mode, true).apply {
+            if (this){
+                result.add(ActionItem(nameRes = R.string.read_mode, iconRes = R.string.ic_read, id = R.string.ic_read))
+            }
+        }
+        fragment.getSpBool(R.string.pref_setting_enable_lib_image_mode, true).apply {
+            if (this){
+                result.add(ActionItem(nameRes = R.string.image_mode, iconRes = R.string.ic_image, id = R.string.ic_image))
+            }
+        }
+        fragment.getSpBool(R.string.pref_setting_enable_lib_find_in_page, true).apply {
+            if (this){
+                result.add(ActionItem(nameRes = R.string.find_in_page, iconRes = R.string.ic_search, id = R.string.ic_search))
+            }
+        }
+        fragment.getSpBool(R.string.pref_setting_enable_lib_save_resource_offline, true).apply {
+            if (this){
+                result.add(ActionItem(nameRes = R.string.save_resource_offline, iconRes = R.string.ic_save, id = R.string.ic_save))
+            }
+        }
+        fragment.getSpBool(R.string.pref_setting_enable_lib_translation, true).apply {
+            if (this){
+                result.add(ActionItem(nameRes = R.string.translation, iconRes = R.string.ic_translate, id = R.string.ic_translate))
+            }
+        }
+        fragment.getSpBool(R.string.pref_setting_enable_lib_detect_resource, true).apply {
+            if (this){
+                result.add(ActionItem(nameRes = R.string.detect_resource,iconRes = R.string.ic_resources_fang,id = R.string.ic_resources_fang))
+            }
+        }
+        fragment.getSpBool(R.string.pref_setting_enable_lib_add_to_home_page, true).apply {
+            if (this){
+                result.add(ActionItem(nameRes = R.string.add_to_home_page, iconRes = R.string.ic_store, id = R.string.ic_store))
+            }
+        }
+        fragment.appData.topMenuActionItems=result
     }
     private fun initTopMenuGridView(topMenuPanel: GridView) {
         val adapter =
@@ -69,7 +119,6 @@ class TopPanelMenuIntegration(
         topMenuPanel.adapter = adapter
     }
 
-    //TODO:点击顶部MenuItem
     private fun onTopMenuActionItemClick(actionItem: ActionItem) {
         when (actionItem.iconRes) {
             //扫码
