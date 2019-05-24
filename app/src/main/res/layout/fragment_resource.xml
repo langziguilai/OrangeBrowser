@@ -30,7 +30,7 @@
                   android:ellipsize="end"
                   android:layout_weight="1"
                   android:textColor="@color/colorWhite"
-                  android:layout_width="match_parent"
+                  android:layout_width="0dp"
                   android:layout_height="match_parent"/>
         <com.dev.view.IconfontTextView
                 android:id="@+id/download"
@@ -43,11 +43,15 @@
                 android:layout_gravity="end|center_vertical"/>
     </LinearLayout>
     <androidx.recyclerview.widget.RecyclerView android:id="@+id/selector"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/header"
-                android:layout_width="0dp"
-                android:layout_height="36dp">
+                                               app:layout_constraintStart_toStartOf="parent"
+                                               app:layout_constraintEnd_toEndOf="parent"
+                                               app:layout_constraintTop_toBottomOf="@+id/header"
+                                               android:paddingTop="6dp"
+                                               android:paddingBottom="6dp"
+                                               android:paddingStart="6dp"
+                                               android:paddingEnd="6dp"
+                                               android:layout_width="0dp"
+                                               android:layout_height="44dp">
     </androidx.recyclerview.widget.RecyclerView>
     <com.dev.orangebrowser.view.LongClickFrameLayout
             android:id="@+id/container"

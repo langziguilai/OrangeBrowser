@@ -87,11 +87,13 @@ class ResourceFragment : BaseFragment(), BackHandler {
     var selectedCategory:String=""
     var selectorRecyclerView:RecyclerView?=null
     private lateinit var container:LongClickFrameLayout
+    private lateinit var header:View
     override fun initView(view: View,savedInstanceState: Bundle?) {
         container=view.findViewById(R.id.container)
+        header=view.findViewById(R.id.header)
         selectorRecyclerView= view.findViewById<RecyclerView>(R.id.selector)?.apply {
             this.layoutManager = LinearLayoutManager(context, RecyclerView.HORIZONTAL, false)
-            this.addItemDecoration(GridDividerItemDecoration(DensityUtil.dip2px(requireContext(),6f),0,getColor(R.color.transparent)))
+            this.addItemDecoration(GridDividerItemDecoration(DensityUtil.dip2px(requireContext(),3f),0,getColor(R.color.transparent)))
             this.adapter=object:
                 BaseQuickAdapter<String, CustomBaseViewHolder>(R.layout.item_category,selectors){
                 override fun convert(helper: CustomBaseViewHolder, item: String) {
@@ -114,14 +116,14 @@ class ResourceFragment : BaseFragment(), BackHandler {
                     helper.itemView.setOnClickListener {
                         selectedCategory=item
                         selectCategory(item)
-                        recyclerView.adapter?.notifyDataSetChanged()
+                        displayRecyclerView?.adapter?.notifyDataSetChanged()
                     }
                 }
             }
         }
         displayRecyclerView=view.findViewById<RecyclerView>(R.id.recycler_view)?.apply {
             this.layoutManager=LinearLayoutManager(requireContext(),RecyclerView.VERTICAL,false)
-            this.addItemDecoration(GridDividerItemDecoration(0,DensityUtil.dip2px(requireContext(),0.5f),getColor(R.color.material_grey_600)))
+            this.addItemDecoration(GridDividerItemDecoration(0,DensityUtil.dip2px(requireContext(),0.5f),getColor(R.color.material_grey_300)))
         }
     }
     private fun selectCategory(category: String){
@@ -155,6 +157,7 @@ class ResourceFragment : BaseFragment(), BackHandler {
     private  var displayRecyclerView:RecyclerView?=null
     private lateinit var  displayAdapter:BaseQuickAdapter<Resource,CustomBaseViewHolder>
     override fun initData(savedInstanceState: Bundle?) {
+        header.setBackgroundColor(activityViewModel.theme.value!!.colorPrimary)
         val session = sessionManager.findSessionById(arguments?.getString(BrowserFragment.SESSION_ID) ?: "")
         if (session == null) {
             RouterActivity?.loadHomeOrBrowserFragment(sessionManager.selectedSession?.id ?: "")
@@ -164,10 +167,10 @@ class ResourceFragment : BaseFragment(), BackHandler {
             ValueCallback<String> { value ->
                 launch(Dispatchers.IO) {
                     val html = StringUtil.unEscapeString(value)
-                    val article = ContentExtractor.getArticleByHtml(html)
-                    imageResource= Jsoup.parse(article.contentHtml).select("img").map { ImageResource(link=it.attr("abs:src")) }.filter { it.link.isNotBlank() }
-                    videoResource= Jsoup.parse(article.contentHtml).select("video").map { VideoResource(link=it.attr("abs:src"))  }.filter { it.link.isNotBlank() }
-                    audioResource= Jsoup.parse(article.contentHtml).select("audio").map { AudioResource(link=it.attr("abs:src"))  }.filter { it.link.isNotBlank() }
+                    val doc=Jsoup.parse(html)
+                    imageResource= doc.select("img").map { ImageResource(link=it.attr("abs:src").trim()) }.filter { it.link.isNotBlank()}
+                    videoResource= doc.select("video").map { VideoResource(link=it.attr("abs:src").trim())  }.filter { it.link.isNotBlank() }
+                    audioResource= doc.select("audio").map { AudioResource(link=it.attr("abs:src").trim())  }.filter { it.link.isNotBlank() }
                     allResource.addAll(imageResource)
                     allResource.addAll(videoResource)
                     allResource.addAll(audioResource)
@@ -212,17 +215,17 @@ class ResourceFragment : BaseFragment(), BackHandler {
                                 helper.setText(R.id.title,item.link)
                             }
                         }
-                        displayAdapter.setOnItemClickListener { _, _, position ->
-                               //TODO:长按显示
-                        }
+                        initResourceItemDialog(displayAdapter)
+                        displayRecyclerView?.adapter=displayAdapter
+                        selectorRecyclerView?.adapter?.notifyDataSetChanged()
+                        displayRecyclerView?.adapter?.notifyDataSetChanged()
                     }
                 }
             })
     }
     var resourceItemDialog: Dialog?=null
-    private fun initHistoryItemDialog(adapter: BaseQuickAdapter<Resource, CustomBaseViewHolder>?) {
+    private fun initResourceItemDialog(adapter: BaseQuickAdapter<Resource, CustomBaseViewHolder>?) {
         adapter?.setOnItemLongClickListener { _, _, position ->
-
             resourceItemDialog=  DialogBuilder()
                     .setLayoutId(R.layout.dialog_context_menu)
                     .setHeightParent(1f)
@@ -245,7 +248,7 @@ class ResourceFragment : BaseFragment(), BackHandler {
                 R.layout.mozac_feature_contextmenu_item, listOf(
                     MenuItem(label = getString(R.string.menu_share),action = object: Action<MenuItem> {
                         override fun execute(data: MenuItem) {
-
+                            resourceItemDialog?.dismiss()
                             if(!requireContext().shareLink(title =getString(R.string.share),url =allResource[position].link)){
                                 requireContext().showToast(getString(R.string.tip_share_fail))
                             }
@@ -253,8 +256,10 @@ class ResourceFragment : BaseFragment(), BackHandler {
                     }),
                     MenuItem(label = getString(R.string.menu_copy_link),action = object: Action<MenuItem> {
                         override fun execute(data: MenuItem) {
+                            resourceItemDialog?.dismiss()
                             requireContext().copyText(getString(R.string.link),allResource[position].link)
                             requireContext().showToast(getString(R.string.tip_copy_link))
+
                         }
                     })
                 )
