@@ -28,7 +28,7 @@ import com.dev.util.DensityUtil
  * the download it triggered.
  *
  */
-//TODO:自定义样式
+
 class SimpleDownloadDialogFragment : DownloadDialogFragment() {
     override fun getLayoutId(): Int {
         return R.layout.fragment_mozac_feature_download
@@ -51,6 +51,7 @@ class SimpleDownloadDialogFragment : DownloadDialogFragment() {
             rootView.findViewById<AppCompatTextView>(R.id.ok_button).apply {
                 setText(positiveButtonText)
                 setOnClickListener {
+                    dismiss()
                     onStartDownload()
                 }
             }

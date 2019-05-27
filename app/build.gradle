@@ -82,6 +82,10 @@ dependencies {
     implementation 'org.jsoup:jsoup:1.12.1'
     //视觉动差图片
     implementation 'com.gjiazhe:scrollparallaximageview:1.0'
+    //文件下载
+    implementation 'com.liulishuo.okdownload:okdownload:1.0.5'
+    implementation 'com.liulishuo.okdownload:sqlite:1.0.5'
+    implementation 'com.liulishuo.okdownload:okhttp:1.0.5'
     implementation project(':base')
     implementation project(':util')
     implementation project(':view')

@@ -10,7 +10,10 @@
         android:id="@+id/container"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-    <FrameLayout android:layout_margin="8dp" android:background="@drawable/bg_white_corner_2dp" android:padding="12dp"
+    <FrameLayout android:layout_marginStart="8dp"
+                 android:layout_marginBottom="20dp"
+                 android:layout_marginEnd="8dp"
+                 android:background="@drawable/bg_white_corner_2dp" android:padding="12dp"
                  android:layout_gravity="bottom" android:layout_width="match_parent"
                  android:layout_height="wrap_content">
         <androidx.constraintlayout.widget.ConstraintLayout
