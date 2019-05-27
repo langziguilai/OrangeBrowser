@@ -2,13 +2,21 @@ package com.dev.orangebrowser.bloc.host
 
 
 import android.Manifest
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.os.Environment
+import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.dev.base.BaseActivity
+import com.dev.base.extension.showToast
 import com.dev.base.support.BackHandler
+import com.dev.base.support.isUrl
+import com.dev.browser.feature.downloads.DownloadManager
+import com.dev.browser.feature.tabs.TabsUseCases
+import com.dev.browser.session.Download
 import com.dev.browser.session.Session
 import com.dev.browser.session.SessionManager
 import com.dev.orangebrowser.R
@@ -28,10 +36,11 @@ import com.dev.orangebrowser.bloc.setting.fragments.*
 import com.dev.orangebrowser.bloc.setting.fragments.adblock.*
 import com.dev.orangebrowser.bloc.tabs.TabFragment
 import com.dev.orangebrowser.bloc.theme.ThemeFragment
-import com.dev.orangebrowser.data.model.*
+import com.dev.orangebrowser.data.model.ApplicationData
 import com.dev.orangebrowser.extension.appComponent
 import com.dev.orangebrowser.extension.appData
 import com.dev.orangebrowser.extension.myApplication
+import com.dev.orangebrowser.utils.InstallAppInstance
 import com.dev.view.NavigationBarUtil
 import com.dev.view.StatusBarUtil
 import com.yzq.zxinglibrary.android.CaptureActivity
@@ -42,19 +51,22 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import permissions.dispatcher.*
+import java.io.File
 import javax.inject.Inject
-import android.app.Activity
-import android.content.Context
-import com.dev.base.extension.showToast
-import com.dev.base.support.isUrl
-import com.dev.browser.feature.tabs.TabsUseCases
-import java.util.*
 
 
 const val APPLICATION_DATA="application_data"
 
 @RuntimePermissions
-class MainActivity : BaseActivity() {
+class MainActivity : BaseActivity(), DownloadManager.OnAutoInstallDownloadAppListener {
+    private var installAppInstance:InstallAppInstance?=null
+    //自动安装应用
+    override fun onAutoInstallDownloadApp(download: Download) {
+        Log.d("get download path is",download.destinationDirectory+ File.separator+ download.fileName)
+        installAppInstance=InstallAppInstance(this, Environment.getExternalStorageDirectory().absolutePath+File.separator+download.destinationDirectory+ File.separator+ download.fileName).apply {
+            install()
+        }
+    }
 
     companion object{
         const val REQUEST_CODE_SCAN=0x1234
@@ -73,6 +85,7 @@ class MainActivity : BaseActivity() {
         //注入
         appComponent.inject(this)
         viewModel = ViewModelProviders.of(this, factory).get(MainViewModel::class.java)
+        DownloadManager.getInstance(applicationContext).setOnAutoInstallDownloadAppListener(this)
         super.onCreate(savedInstanceState)
         //每隔1s，设置Orientation
         launch(Dispatchers.IO) {
@@ -488,6 +501,10 @@ class MainActivity : BaseActivity() {
                     loadBrowserFragment(sessionManager.selectedSession!!.id)
                 }
             }
+        }
+        //如果是安装应用
+        if (requestCode == InstallAppInstance.UNKNOWN_CODE && resultCode==Activity.RESULT_OK){
+            installAppInstance?.install()
         }
     }
 }

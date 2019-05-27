@@ -20,11 +20,11 @@ import android.net.Uri
 import android.os.Environment
 import android.widget.Toast
 import androidx.annotation.RequiresPermission
-import androidx.core.content.ContextCompat.startActivity
 import com.dev.browser.R
 import com.dev.browser.extension.isPermissionGranted
 import com.dev.browser.session.Download
 import com.dev.browser.support.DownloadUtils
+import java.io.File
 
 typealias OnDownloadCompleted = (Download, Long) -> Unit
 typealias AndroidDownloadManager = android.app.DownloadManager
@@ -40,17 +40,25 @@ class DownloadManager(
     private val applicationContext: Context,
     var onDownloadCompleted: OnDownloadCompleted = { _, _ -> }
 ) {
-
+    interface OnAutoInstallDownloadAppListener{
+        fun onAutoInstallDownloadApp(download: Download)
+    }
     private val queuedDownloads = HashMap<Long, Download>()
     private var isSubscribedReceiver = false
     private lateinit var androidDownloadManager: AndroidDownloadManager
     var useSystemDownloadManager:Boolean=true
     var autoInstallDownloadApp:Boolean=false
     var downloadPath:String= Environment.DIRECTORY_DOWNLOADS
+    var mOnAutoInstallDownloadAppListener:OnAutoInstallDownloadAppListener?=null
+
+    fun setOnAutoInstallDownloadAppListener(onAutoInstallDownloadAppListener:OnAutoInstallDownloadAppListener){
+        this.mOnAutoInstallDownloadAppListener=onAutoInstallDownloadAppListener
+    }
+
     fun initDownloadManager(){
         useSystemDownloadManager=applicationContext.getSharedPreferences(DOWNLOAD_MANAGER_STORE, Context.MODE_PRIVATE).getBoolean(USE_SYSTEM_DOWNLOAD_MANAGER,true)
         autoInstallDownloadApp=applicationContext.getSharedPreferences(DOWNLOAD_MANAGER_STORE, Context.MODE_PRIVATE).getBoolean(AUTO_INSTALL_DOWNLOAD_APP,false)
-        downloadPath=applicationContext.getSharedPreferences(DOWNLOAD_MANAGER_STORE, Context.MODE_PRIVATE).getString(DOWNLOAD_PATH,Environment.DIRECTORY_DOWNLOADS)
+        downloadPath=applicationContext.getSharedPreferences(DOWNLOAD_MANAGER_STORE, Context.MODE_PRIVATE).getString(DOWNLOAD_PATH,Environment.DIRECTORY_DOWNLOADS)!!
     }
     fun setDownloadManager(useSystemDownloadManager: Boolean){
         this.useSystemDownloadManager=useSystemDownloadManager
@@ -93,7 +101,12 @@ class DownloadManager(
             //showUnSupportFileErrorMessage()
             return FILE_NOT_SUPPORTED
         }
-
+        //如果是应用下载
+        if (download.fileName.toLowerCase().endsWith(".apk")){
+            download.destinationDirectory="orange_download_apks"
+        }else{
+            download.destinationDirectory=downloadPath
+        }
         if (!applicationContext.isPermissionGranted(INTERNET, WRITE_EXTERNAL_STORAGE)) {
             throw SecurityException("You must be granted INTERNET and WRITE_EXTERNAL_STORAGE permissions")
         }
@@ -169,6 +182,10 @@ class DownloadManager(
                 val download = queuedDownloads[downloadID]
 
                 download?.let {
+                    //如果能自动安装应用
+                    if (autoInstallDownloadApp && download.fileName.toLowerCase().endsWith(".apk")){
+                        mOnAutoInstallDownloadAppListener?.onAutoInstallDownloadApp(download=download)
+                    }
                     onDownloadCompleted.invoke(download, downloadID)
                 }
                 queuedDownloads -= (downloadID)
