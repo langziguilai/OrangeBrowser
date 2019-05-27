@@ -40,7 +40,7 @@ import com.dev.orangebrowser.data.model.ApplicationData
 import com.dev.orangebrowser.extension.appComponent
 import com.dev.orangebrowser.extension.appData
 import com.dev.orangebrowser.extension.myApplication
-import com.dev.orangebrowser.utils.InstallAppInstance
+import com.dev.orangebrowser.utils.auto_install.InstallAppInstance
 import com.dev.view.NavigationBarUtil
 import com.dev.view.StatusBarUtil
 import com.yzq.zxinglibrary.android.CaptureActivity
@@ -59,11 +59,14 @@ const val APPLICATION_DATA="application_data"
 
 @RuntimePermissions
 class MainActivity : BaseActivity(), DownloadManager.OnAutoInstallDownloadAppListener {
-    private var installAppInstance:InstallAppInstance?=null
+    private var installAppInstance: InstallAppInstance?=null
     //自动安装应用
     override fun onAutoInstallDownloadApp(download: Download) {
         Log.d("get download path is",download.destinationDirectory+ File.separator+ download.fileName)
-        installAppInstance=InstallAppInstance(this, Environment.getExternalStorageDirectory().absolutePath+File.separator+download.destinationDirectory+ File.separator+ download.fileName).apply {
+        installAppInstance= InstallAppInstance(
+            this,
+            Environment.getExternalStorageDirectory().absolutePath + File.separator + download.destinationDirectory + File.separator + download.fileName
+        ).apply {
             install()
         }
     }
