@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.dev.base.BaseFragment
 import com.dev.base.extension.*
 import com.dev.base.support.BackHandler
+import com.dev.browser.feature.downloads.DownloadManager
 import com.dev.orangebrowser.R
 import com.dev.orangebrowser.bloc.host.MainViewModel
 import com.dev.orangebrowser.bloc.setting.adapter.Adapter
@@ -39,6 +40,7 @@ class DownloadPathSettingFragment : BaseFragment(), BackHandler {
 
     companion object {
         const val Tag = "DownloadPathSettingFragment"
+        val START_PATH: String = Environment.getExternalStorageDirectory().absolutePath
         fun newInstance() = DownloadPathSettingFragment()
     }
 
@@ -107,7 +109,8 @@ class DownloadPathSettingFragment : BaseFragment(), BackHandler {
         binding.parentPath.layoutManager = LinearLayoutManager(requireContext(), RecyclerView.HORIZONTAL, false)
         binding.chooseDirectory.setOnClickListener {
             launch(Dispatchers.IO) {
-                setSpString(R.string.pref_setting_download_relative_path, currentDirectoryPath.removePrefix(START_PATH))
+                DownloadManager.getInstance(requireContext().applicationContext).setCustomDownloadPath(currentDirectoryPath)
+                //setSpString(R.string.pref_setting_download_relative_path, currentDirectoryPath.removePrefix(START_PATH))
                 launch(Dispatchers.Main) {
                     RouterActivity?.loadDownloadSettingFragment()
                 }
@@ -153,7 +156,7 @@ class DownloadPathSettingFragment : BaseFragment(), BackHandler {
     }
 
     private lateinit var dataList: LinkedList<Any>
-    private val START_PATH = Environment.getExternalStorageDirectory().absolutePath
+
     override fun initData(savedInstanceState: Bundle?) {
         currentDirectoryPath = START_PATH
         launch(Dispatchers.IO) {

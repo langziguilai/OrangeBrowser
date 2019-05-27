@@ -10,9 +10,11 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.dev.base.BaseFragment
 import com.dev.base.support.BackHandler
+import com.dev.browser.feature.downloads.DownloadManager
 import com.dev.orangebrowser.R
 import com.dev.orangebrowser.bloc.host.MainViewModel
 import com.dev.orangebrowser.bloc.setting.adapter.Adapter
+import com.dev.orangebrowser.bloc.setting.fragments.DownloadPathSettingFragment.Companion.START_PATH
 import com.dev.orangebrowser.bloc.setting.viewholder.DividerItem
 import com.dev.orangebrowser.bloc.setting.viewholder.SwitchItem
 import com.dev.orangebrowser.bloc.setting.viewholder.TileItem
@@ -76,21 +78,25 @@ class DownloadSettingFragment : BaseFragment(), BackHandler {
         binding.recyclerView.adapter = adapter
     }
 
-    //TODO:添加Action
+
     private fun getData(): List<Any> {
         val list = LinkedList<Any>()
         list.add(DividerItem(height = 24, background = getColor(R.color.color_F8F8F8)))
+
         list.add(SwitchItem(title = getString(R.string.auto_install_download_app), action = object : Action<Boolean> {
             override fun invoke(data: Boolean) {
-                setSpBool(R.string.pref_setting_enable_auto_install_download_app, data)
+                DownloadManager.getInstance(requireContext().applicationContext).setAutoInstallApp(data)
             }
-        }, value = getSpBool(R.string.pref_setting_enable_auto_install_download_app, false)))
+        }, value = DownloadManager.getInstance(requireContext().applicationContext).autoInstallDownloadApp))
         list.add(DividerItem(height = 24, background = getColor(R.color.color_F8F8F8)))
-
+        var downloadManagerTitle=getString(R.string.system_download_manager)
+        if (!DownloadManager.getInstance(requireContext().applicationContext).useSystemDownloadManager){
+            downloadManagerTitle=getString(R.string.other_download_manager)
+        }
         list.add(
             TileItem(
                 title = getString(R.string.download_manager),
-                tip = getSpString(R.string.pref_setting_download_manager,getString(R.string.system_download_manager)),
+                tip = downloadManagerTitle,
                 icon = getString(R.string.ic_right),
                 action = object : Action<TileItem> {
                     override fun invoke(data: TileItem) {
@@ -102,7 +108,7 @@ class DownloadSettingFragment : BaseFragment(), BackHandler {
         list.add(
             TileItem(
                 title = getString(R.string.download_path),
-                tip = getSpString(R.string.pref_setting_download_relative_path,getString(R.string.default_download_path_name)),
+                tip = DownloadManager.getInstance(requireContext().applicationContext).downloadPath.removePrefix(START_PATH),
                 icon = getString(R.string.ic_right),
                 action = object : Action<TileItem> {
                     override fun invoke(data: TileItem) {

@@ -43,7 +43,7 @@ class DownloadsFeature(
     private val applicationContext: Context,
     var onNeedToRequestPermissions: OnNeedToRequestPermissions = { },
     var onDownloadCompleted: OnDownloadCompleted = { _, _ -> },
-    private val downloadManager: DownloadManager = DownloadManager(applicationContext, onDownloadCompleted),
+    private val downloadManager: DownloadManager = DownloadManager.getInstance(applicationContext, onDownloadCompleted),
     private val sessionManager: SessionManager,
     private val sessionId: String? = null,
     private val fragmentManager: FragmentManager? = null,

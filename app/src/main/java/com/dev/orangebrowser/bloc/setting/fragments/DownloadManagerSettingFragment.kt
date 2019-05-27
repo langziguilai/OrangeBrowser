@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.dev.base.BaseFragment
 import com.dev.base.support.BackHandler
+import com.dev.browser.feature.downloads.DownloadManager
 import com.dev.orangebrowser.R
 import com.dev.orangebrowser.bloc.host.MainViewModel
 import com.dev.orangebrowser.bloc.setting.adapter.Adapter
@@ -92,27 +93,34 @@ class DownloadManagerSettingFragment : BaseFragment(), BackHandler {
 
         val index=dataList.indexOf(data)
         if (index>=0){
-            //TODO:当下载器为ADM时，需要检查其是否安装
             data.value=true
             setSpString(R.string.pref_setting_download_manager,data.title)
+            //如果使用系统下载器
+            if (data.title==getString(R.string.system_download_manager)){
+                DownloadManager.getInstance(requireContext().applicationContext).setDownloadManager(useSystemDownloadManager = true)
+            }else{
+                DownloadManager.getInstance(requireContext().applicationContext).setDownloadManager(useSystemDownloadManager = false)
+            }
             binding.recyclerView.adapter?.notifyItemChanged(index)
         }
     }
 
     private fun getData(): List<Any> {
-        val downloadManager = getSpString(R.string.pref_setting_download_manager,getString(R.string.system_download_manager))
+        //是否使用系统下载器
+        val useSystemDownloadManager=DownloadManager.getInstance(requireContext().applicationContext).useSystemDownloadManager
         val list = LinkedList<Any>()
         list.add(DividerItem(height = 24, background = getColor(R.color.color_F8F8F8)))
         list.add(TickItem(title = getString(R.string.system_download_manager), action = object : Action<TickItem> {
             override fun invoke(data: TickItem) {
                 onSelect(data)
             }
-        }, value = downloadManager==getString(R.string.system_download_manager)))
-        list.add(TickItem(title = getString(R.string.adm_download_manager), action = object : Action<TickItem> {
+        }, value = useSystemDownloadManager))
+        //使用第三方下载器
+        list.add(TickItem(title = getString(R.string.other_download_manager), action = object : Action<TickItem> {
             override fun invoke(data: TickItem) {
                 onSelect(data)
             }
-        }, value = downloadManager==getString(R.string.adm_download_manager)))
+        }, value = !useSystemDownloadManager))
         return list
     }
 }

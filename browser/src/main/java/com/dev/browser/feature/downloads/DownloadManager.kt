@@ -14,10 +14,13 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Context.DOWNLOAD_SERVICE
 import android.content.Intent
+import android.content.Intent.ACTION_VIEW
 import android.content.IntentFilter
 import android.net.Uri
+import android.os.Environment
 import android.widget.Toast
 import androidx.annotation.RequiresPermission
+import androidx.core.content.ContextCompat.startActivity
 import com.dev.browser.R
 import com.dev.browser.extension.isPermissionGranted
 import com.dev.browser.session.Download
@@ -41,7 +44,30 @@ class DownloadManager(
     private val queuedDownloads = HashMap<Long, Download>()
     private var isSubscribedReceiver = false
     private lateinit var androidDownloadManager: AndroidDownloadManager
+    var useSystemDownloadManager:Boolean=true
+    var autoInstallDownloadApp:Boolean=false
+    var downloadPath:String= Environment.DIRECTORY_DOWNLOADS
+    fun initDownloadManager(){
+        useSystemDownloadManager=applicationContext.getSharedPreferences(DOWNLOAD_MANAGER_STORE, Context.MODE_PRIVATE).getBoolean(USE_SYSTEM_DOWNLOAD_MANAGER,true)
+        autoInstallDownloadApp=applicationContext.getSharedPreferences(DOWNLOAD_MANAGER_STORE, Context.MODE_PRIVATE).getBoolean(AUTO_INSTALL_DOWNLOAD_APP,false)
+        downloadPath=applicationContext.getSharedPreferences(DOWNLOAD_MANAGER_STORE, Context.MODE_PRIVATE).getString(DOWNLOAD_PATH,Environment.DIRECTORY_DOWNLOADS)
+    }
+    fun setDownloadManager(useSystemDownloadManager: Boolean){
+        this.useSystemDownloadManager=useSystemDownloadManager
+        applicationContext.getSharedPreferences(DOWNLOAD_MANAGER_STORE, Context.MODE_PRIVATE)
+            .edit().putBoolean(USE_SYSTEM_DOWNLOAD_MANAGER,useSystemDownloadManager).apply()
 
+    }
+    fun setAutoInstallApp(autoInstallDownloadApp:Boolean){
+        this.autoInstallDownloadApp=autoInstallDownloadApp
+        applicationContext.getSharedPreferences(DOWNLOAD_MANAGER_STORE, Context.MODE_PRIVATE)
+            .edit().putBoolean(AUTO_INSTALL_DOWNLOAD_APP,autoInstallDownloadApp).apply()
+    }
+    fun setCustomDownloadPath(path:String){
+        this.downloadPath=path
+        applicationContext.getSharedPreferences(DOWNLOAD_MANAGER_STORE, Context.MODE_PRIVATE)
+            .edit().putString(DOWNLOAD_PATH,path).apply()
+    }
     /**
      * Schedule a download through the [AndroidDownloadManager].
      * @param download metadata related to the download.
@@ -55,12 +81,16 @@ class DownloadManager(
         refererURL: String = "",
         cookie: String = ""
     ): Long {
-
-        if (download.isSupportedProtocol()) {
+        //如果是不支持的格式，或者是使用第三方下载
+        if (download.isNotSupportedProtocol() || !useSystemDownloadManager) {
+            val intent = Intent(ACTION_VIEW,Uri.parse(download.url)).apply {
+                flags = Intent.FLAG_ACTIVITY_NEW_TASK
+            }
+            applicationContext.startActivity(intent)
             // We are ignoring everything that is not http or https. This is a limitation of
             // Android's download manager. There's no reason to show a download dialog for
             // something we can't download anyways.
-            showUnSupportFileErrorMessage()
+            //showUnSupportFileErrorMessage()
             return FILE_NOT_SUPPORTED
         }
 
@@ -150,7 +180,7 @@ class DownloadManager(
         }
     }
 
-    private fun Download.isSupportedProtocol(): Boolean {
+    private fun Download.isNotSupportedProtocol(): Boolean {
         val scheme = Uri.parse(url.trim()).scheme
         return (scheme == null || scheme != "http" && scheme != "https")
     }
@@ -158,6 +188,22 @@ class DownloadManager(
     private fun showUnSupportFileErrorMessage() {
         Toast.makeText(applicationContext, R.string.mozac_feature_downloads_file_not_supported, Toast.LENGTH_LONG)
             .show()
+    }
+
+    companion object{
+        const val DOWNLOAD_MANAGER_STORE="app_download_manager_setting"
+        const val USE_SYSTEM_DOWNLOAD_MANAGER="use_system_download_manager"
+        const val AUTO_INSTALL_DOWNLOAD_APP="auto_install_download_app"
+        const val DOWNLOAD_PATH="download_path"
+        var downloadManager:DownloadManager?=null
+        fun getInstance(applicationContext: Context,onDownloadCompleted: OnDownloadCompleted = { _, _ -> }):DownloadManager{
+            if (downloadManager==null){
+                downloadManager=DownloadManager(applicationContext, onDownloadCompleted).apply {
+                    initDownloadManager()
+                }
+            }
+            return downloadManager!!
+        }
     }
 }
 
