@@ -71,6 +71,9 @@
     <string name="ic_tag">&#xe7e4;</string>
     <string name="ic_tags">&#xe7e5;</string>
     <string name="ic_folder">&#xe7d1;</string>
+    <string name="ic_file">&#xe7bb;</string>
+    <string name="ic_play">&#xe796;</string>
+    <string name="ic_link">&#xe7e2;</string>
 
 
     <string name="search_or_input">搜索或输入网址</string>
@@ -217,7 +220,7 @@
     <string name="auto_install_download_app">自动安装下载应用</string>
     <string name="download_manager">下载器</string>
     <string name="system_download_manager">系统下载器</string>
-    <string name="download_path">下载位置</string>
+    <string name="download_path">下载目录</string>
     <string name="default_download_path">/Download/</string>
     <string name="show_domain">显示域名</string>
     <string name="show_title">显示标题</string>
@@ -333,4 +336,7 @@
     <string name="unknow_setting_title">\"未知来源\"设置</string>
     <string name="unknow_setting_msg">找到并勾选\"未知来源\"。</string>
     <string name="yes">确定</string>
+    <string name="saved_images">保存的图片</string>
+    <string name="saved_pages">离线网页</string>
+    <string name="saved_videoes">保存的视频</string>
 </resources>
