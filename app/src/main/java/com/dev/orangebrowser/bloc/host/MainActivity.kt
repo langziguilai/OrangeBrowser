@@ -80,7 +80,6 @@ class MainActivity : BaseActivity(), DownloadManager.OnAutoInstallDownloadAppLis
     @Inject
     lateinit var tabsUseCases: TabsUseCases
     lateinit var viewModel: MainViewModel
-    lateinit var mOrientationDetector: OrientationDetector
     //是否可以自动旋转屏幕，默认可以
     var enableAutoOrientation: Boolean = true
 
@@ -90,35 +89,8 @@ class MainActivity : BaseActivity(), DownloadManager.OnAutoInstallDownloadAppLis
         viewModel = ViewModelProviders.of(this, factory).get(MainViewModel::class.java)
         DownloadManager.getInstance(applicationContext).setOnAutoInstallDownloadAppListener(this)
         super.onCreate(savedInstanceState)
-        //每隔1s，设置Orientation
-        launch(Dispatchers.IO) {
-            while (true) {
-                launch(Dispatchers.Main) {
-                    if (enableAutoOrientation) {
-                        if (requestedOrientation != mOrientationDetector.orientationType) {
-                            requestedOrientation = mOrientationDetector.orientationType
-                        }
-                    }
-                }
-                delay(1000)
-            }
-        }
-        mOrientationDetector = OrientationDetector(30, contentResolver, this)
     }
 
-    override fun onResume() {
-        super.onResume()
-        if (mOrientationDetector.canDetectOrientation()) {
-            mOrientationDetector.enable()
-        }
-    }
-
-    override fun onPause() {
-        super.onPause()
-        if (mOrientationDetector.canDetectOrientation()) {
-            mOrientationDetector.disable()
-        }
-    }
 
     override fun getLayoutResId(): Int {
         return R.layout.activity_main
