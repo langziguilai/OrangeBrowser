@@ -183,8 +183,18 @@ class ResourceFragment : BaseFragment(), BackHandler {
                     val html = StringUtil.unEscapeString(value)
                     Log.d("html",html)
                     val doc=Jsoup.parse(html)
-                    imageResource= doc.select("img").map { ImageResource(link=it.attr("abs:src").trim()) }.filter { it.link.isNotBlank()}
+                    imageResource= doc.select("img").map {
+                        val src=it.attr("src")
+                        if(src.startsWith("//")){
+                            it.attr("src", "http:$src")
+                        }
+                        ImageResource(link=it.attr("abs:src").trim())
+                    }.filter { it.link.isNotBlank()}
                     videoResource= doc.select("video").map {
+                        val src=it.attr("src")
+                        if(src.startsWith("//")){
+                            it.attr("src", "http:$src")
+                        }
                         var link=it.attr("abs:src").trim()
                         if (link.isBlank()){
                            val sources= it.select("source").map { source->source.attr("abs:src").trim() }
@@ -198,6 +208,10 @@ class ResourceFragment : BaseFragment(), BackHandler {
                         VideoResource(link=link)
                     }.filter { it.link.isNotBlank() }
                     audioResource= doc.select("audio").map {
+                        val src=it.attr("src")
+                        if(src.startsWith("//")){
+                            it.attr("src", "http:$src")
+                        }
                         var link=it.attr("abs:src").trim()
                         if (link.isBlank()){
                             val sources= it.select("source").map { source->source.attr("abs:src").trim() }
