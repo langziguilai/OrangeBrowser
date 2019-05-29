@@ -19,7 +19,7 @@ import java.lang.ref.SoftReference
 import java.lang.ref.WeakReference
 import kotlin.coroutines.CoroutineContext
 
-class ThumbnailPlaceHolderIntegration(var binding: FragmentTabBinding, session: Session, val fragment: TabFragment){
+class ThumbnailPlaceHolderIntegration(var binding: FragmentTabBinding, session: Session, val fragment: TabFragment) {
 
     init {
         if (session.tmpThumbnail != null) {
@@ -33,13 +33,13 @@ class ThumbnailPlaceHolderIntegration(var binding: FragmentTabBinding, session: 
 
     fun setImage(session: Session) {
         if (session.tmpThumbnail != null && session.tmpThumbnail!!.get() != null) {
-                binding.thumbnailPlaceHolder.setImageBitmap(session.tmpThumbnail!!.get())
+            binding.thumbnailPlaceHolder.setImageBitmap(session.tmpThumbnail!!.get())
         } else if (session.thumbnailPath != null) {
             binding.thumbnailPlaceHolder.loadLocalImage(session.thumbnailPath!!)
         }
     }
 
-    fun show(runnable: Runnable,selectSession: Session) {
+    fun show(runnable: Runnable, selectSession: Session) {
         val it = binding.thumbnailPlaceHolder
         it.show()
         it.animate().setDuration(NORMAL_ANIMATION)
@@ -47,7 +47,7 @@ class ThumbnailPlaceHolderIntegration(var binding: FragmentTabBinding, session: 
             .scaleY(1f)
             .setInterpolator(DEFAULT_INTERPOLATOR).withEndAction {
                 //保存起来，因为它可能被回收掉了
-                selectSession.tmpThumbnail= SoftReference(it.getBitmap())
+                selectSession.tmpThumbnail = SoftReference(it.getBitmap())
                 runnable.run()
             }.start()
     }

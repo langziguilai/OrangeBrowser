@@ -1,5 +1,6 @@
 package com.dev.orangebrowser.bloc.browser.integration
 
+import android.util.Log
 import android.widget.FrameLayout
 import android.widget.ImageView
 import com.dev.browser.session.Session

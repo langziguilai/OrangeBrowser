@@ -7,25 +7,21 @@ import com.dev.util.DensityUtil
 
 //使用application的context，防止内存泄漏
 open class AdaptUIWebView : AdblockWebView {
-    private var mApplicationContext: Context? = null
 
     constructor(context: Context) : super(context) {
-        mApplicationContext = context.applicationContext
-        DensityUtil.resetDensity(mApplicationContext!!)
+        DensityUtil.resetDensity()
     }
 
     constructor(context: Context, attrs: AttributeSet) : super(context, attrs) {
-        mApplicationContext = context.applicationContext
-        DensityUtil.resetDensity(mApplicationContext!!)
+        DensityUtil.resetDensity()
     }
 
     constructor(context: Context, attrs: AttributeSet, defStyleAttr: Int) : super(context, attrs, defStyleAttr) {
-        mApplicationContext = context.applicationContext
-        DensityUtil.resetDensity(mApplicationContext!!)
+        DensityUtil.resetDensity()
     }
 
 
-//    constructor(context: Context, attrs: AttributeSet, defStyleAttr: Int, defStyleRes: Int) : super(
+    //    constructor(context: Context, attrs: AttributeSet, defStyleAttr: Int, defStyleRes: Int) : super(
 //        context,
 //        attrs,
 //        defStyleAttr,
@@ -34,5 +30,8 @@ open class AdaptUIWebView : AdblockWebView {
 //        mApplicationContext = context.applicationContext
 //        DensityUtil.resetDensity(mApplicationContext!!)
 //    }
-
+    override fun setOverScrollMode(mode: Int) {
+        super.setOverScrollMode(mode)
+        DensityUtil.resetDensity()
+    }
 }

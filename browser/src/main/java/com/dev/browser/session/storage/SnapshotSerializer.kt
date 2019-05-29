@@ -71,6 +71,9 @@ class SnapshotSerializer {
 internal fun serializeSession(session: Session): JSONObject {
     return JSONObject().apply {
         put(Keys.SESSION_URL_KEY, session.url)
+        put(Keys.SESSION_FORBID_IMAGE, session.forbidImageMode)
+        put(Keys.SESSION_SCREEN_NUMBER, session.screenNumber)
+        put(Keys.SESSION_THUMBNAIL_PATH, session.thumbnailPath)
         put(Keys.SESSION_SOURCE_KEY, session.source.name)
         put(Keys.SESSION_UUID_KEY, session.id)
         put(Keys.SESSION_PARENT_UUID_KEY, session.parentId ?: "")
@@ -95,21 +98,25 @@ internal fun deserializeSession(json: JSONObject): Session {
     )
     session.parentId = json.getString(Keys.SESSION_PARENT_UUID_KEY).takeIf { it != "" }
     session.title = if (json.has(Keys.SESSION_TITLE)) json.getString(Keys.SESSION_TITLE) else ""
+    session.forbidImageMode = if (json.has(Keys.SESSION_FORBID_IMAGE)) json.getBoolean(Keys.SESSION_FORBID_IMAGE) else false
+    session.screenNumber = if (json.has(Keys.SESSION_SCREEN_NUMBER)) json.getInt(Keys.SESSION_SCREEN_NUMBER) else Session.HOME_SCREEN
+    session.title = if (json.has(Keys.SESSION_TITLE)) json.getString(Keys.SESSION_TITLE) else ""
+    session.thumbnailPath = if (json.has(Keys.SESSION_THUMBNAIL_PATH)) json.getString(Keys.SESSION_THUMBNAIL_PATH) else ""
     return session
 }
 
 private object Keys {
     const val SELECTED_SESSION_INDEX_KEY = "selectedSessionIndex"
     const val SESSION_STATE_TUPLES_KEY = "sessionStateTuples"
-
     const val SESSION_SOURCE_KEY = "source"
     const val SESSION_URL_KEY = "url"
     const val SESSION_UUID_KEY = "uuid"
     const val SESSION_PARENT_UUID_KEY = "parentUuid"
     const val SESSION_TITLE = "title"
-
+    const val SESSION_FORBID_IMAGE="forbidImageMode"
+    const val SESSION_SCREEN_NUMBER="screenNumber"
+    const val SESSION_THUMBNAIL_PATH="thumbnailPath"
     const val SESSION_KEY = "session"
     const val ENGINE_SESSION_KEY = "engineSession"
-
     const val VERSION_KEY = "version"
 }

@@ -42,7 +42,7 @@ abstract class BaseFragment : LogLifeCycleEventFragment() {
     //在activity被创建好之后初始化数据
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         //webview会重置density所以，我们需要重置
-        DensityUtil.resetDensity(requireActivity(),requireActivity().application)
+        DensityUtil.resetDensity()
         if (useDataBinding()){
             initViewWithDataBinding(savedInstanceState)
         }

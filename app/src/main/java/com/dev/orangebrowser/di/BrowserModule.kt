@@ -17,10 +17,12 @@ import com.dev.browser.feature.tabs.TabsUseCases
 import com.dev.browser.fetch.OkHttpClient
 import com.dev.browser.search.SearchEngineManager
 import com.dev.browser.session.SessionManager
+import com.dev.browser.session.storage.SessionStorage
 import com.dev.browser.storage.local.PlacesHistoryStorage
 import dagger.Module
 import dagger.Provides
 import org.adblockplus.libadblockplus.android.AdblockEngine
+import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 
 @Module
@@ -29,7 +31,15 @@ class BrowserModule {
     @Provides
     @Singleton
     fun provideSessionManager(context: Context,engine: Engine): SessionManager {
-        return SessionManager(engine)
+        val sessionStorage = SessionStorage(context, engine)
+        return SessionManager(engine).apply {
+            sessionStorage.restore()?.let { snapshot -> restore(snapshot) }
+
+            sessionStorage.autoSave(this)
+                .periodicallyInForeground(interval = 30, unit = TimeUnit.SECONDS)
+                .whenGoingToBackground()
+                .whenSessionsChange()
+        }
     }
     @Provides
     @Singleton
