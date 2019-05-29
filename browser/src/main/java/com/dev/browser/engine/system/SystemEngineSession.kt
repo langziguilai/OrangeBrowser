@@ -435,7 +435,7 @@ class SystemEngineSession(
     }
 
     override fun getCookies(url: String): String {
-        return CookieManager.getInstance().getCookie(url)
+        return CookieManager.getInstance().getCookie(url) ?: ""
     }
 
     /**

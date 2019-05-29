@@ -1,5 +1,7 @@
 package com.dev.orangebrowser.bloc.resource
 
+import android.Manifest
+import android.annotation.SuppressLint
 import android.app.Dialog
 import android.content.Context
 import android.os.Bundle
@@ -7,6 +9,7 @@ import android.view.Gravity
 import android.view.View
 import android.webkit.ValueCallback
 import android.widget.FrameLayout
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -16,16 +19,20 @@ import com.dev.base.extension.onGlobalLayoutComplete
 import com.dev.base.extension.shareLink
 import com.dev.base.extension.showToast
 import com.dev.base.support.BackHandler
+import com.dev.browser.concept.EngineSession
+import com.dev.browser.extension.isPermissionGranted
+import com.dev.browser.feature.downloads.DownloadManager
+import com.dev.browser.session.Download
+import com.dev.browser.session.Session
 import com.dev.browser.session.SessionManager
+import com.dev.browser.support.DownloadUtils
 import com.dev.orangebrowser.R
 import com.dev.orangebrowser.bloc.browser.BrowserFragment
-import com.dev.orangebrowser.bloc.history.MySectionEntity
 import com.dev.orangebrowser.bloc.host.MainViewModel
 import com.dev.orangebrowser.extension.RouterActivity
 import com.dev.orangebrowser.extension.appComponent
 import com.dev.orangebrowser.extension.getColor
 import com.dev.orangebrowser.utils.PositionUtils
-import com.dev.orangebrowser.utils.html2article.ContentExtractor
 import com.dev.orangebrowser.view.LongClickFrameLayout
 import com.dev.orangebrowser.view.contextmenu.Action
 import com.dev.orangebrowser.view.contextmenu.CommonContextMenuAdapter
@@ -161,21 +168,46 @@ class ResourceFragment : BaseFragment(), BackHandler {
     private lateinit var audioResource:List<AudioResource>
     private  var displayRecyclerView:RecyclerView?=null
     private lateinit var  displayAdapter:BaseQuickAdapter<Resource,CustomBaseViewHolder>
+    var session:Session?=null
     override fun initData(savedInstanceState: Bundle?) {
         header.setBackgroundColor(activityViewModel.theme.value!!.colorPrimary)
-        val session = sessionManager.findSessionById(arguments?.getString(BrowserFragment.SESSION_ID) ?: "")
+        session = sessionManager.findSessionById(arguments?.getString(BrowserFragment.SESSION_ID) ?: "")
         if (session == null) {
             RouterActivity?.loadHomeOrBrowserFragment(sessionManager.selectedSession?.id ?: "")
             return
         }
-        sessionManager.getOrCreateEngineSession(session).executeJsFunction("javascript:getHtml();",
+        sessionManager.getOrCreateEngineSession(session!!).executeJsFunction("javascript:getHtml();",
             ValueCallback<String> { value ->
                 launch(Dispatchers.IO) {
                     val html = StringUtil.unEscapeString(value)
                     val doc=Jsoup.parse(html)
                     imageResource= doc.select("img").map { ImageResource(link=it.attr("abs:src").trim()) }.filter { it.link.isNotBlank()}
-                    videoResource= doc.select("video").map { VideoResource(link=it.attr("abs:src").trim())  }.filter { it.link.isNotBlank() }
-                    audioResource= doc.select("audio").map { AudioResource(link=it.attr("abs:src").trim())  }.filter { it.link.isNotBlank() }
+                    videoResource= doc.select("video").map {
+                        var link=it.attr("abs:src").trim()
+                        if (link.isBlank()){
+                           val sources= it.select("source").map { source->source.attr("abs:src").trim() }
+                            for (source in sources){
+                                if (source.isNotBlank()){
+                                    link=source
+                                    break
+                                }
+                            }
+                        }
+                        VideoResource(link=link)
+                    }.filter { it.link.isNotBlank() }
+                    audioResource= doc.select("audio").map {
+                        var link=it.attr("abs:src").trim()
+                        if (link.isBlank()){
+                            val sources= it.select("source").map { source->source.attr("abs:src").trim() }
+                            for (source in sources){
+                                if (source.isNotBlank()){
+                                    link=source
+                                    break
+                                }
+                            }
+                        }
+                        AudioResource(link=link)
+                    }.filter { it.link.isNotBlank() }
                     allResource.addAll(imageResource)
                     allResource.addAll(videoResource)
                     allResource.addAll(audioResource)
@@ -246,11 +278,45 @@ class ResourceFragment : BaseFragment(), BackHandler {
             true
         }
     }
+
     private fun initResourceItemDialogView(view:View,position:Int){
         val recyclerView = view.findViewById<RecyclerView>(R.id.recyclerView).apply {
             this.layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
             this.adapter = CommonContextMenuAdapter(
                 R.layout.mozac_feature_contextmenu_item, listOf(
+                    MenuItem(label = getString(R.string.menu_download),action = object: Action<MenuItem> {
+                        @SuppressLint("MissingPermission")
+                        override fun execute(data: MenuItem) {
+                            resourceItemDialog?.dismiss()
+                            val resource=allResource[position]
+
+                            val download=Download(
+                                url = resource.link,
+                                fileName = DownloadUtils.guessFileName(null, resource.link, null),
+                                referer = session?.url,
+                                cookies = session?.getCookies(resource.link)
+                            )
+                            when(resource){
+                                is ImageResource->{
+                                    download.destinationDirectory=EngineSession.OFFLINE_IMAGE_PATH
+                                }
+                                is VideoResource->{
+                                    download.destinationDirectory=EngineSession.OFFLINE_VIDEO_PATH
+                                }
+                                is AudioResource->{
+                                    download.destinationDirectory=EngineSession.OFFLINE_AUDIO_PATH
+                                }
+                            }
+                            if (requireContext().applicationContext.isPermissionGranted(
+                                    Manifest.permission.INTERNET,
+                                    Manifest.permission.WRITE_EXTERNAL_STORAGE
+                                )){
+                                DownloadManager.getInstance(requireContext().applicationContext).download(download)
+                            }else{
+                                requireContext().showToast(getString(R.string.tip_permission_write_external_storage))
+                            }
+                        }
+                    }),
                     MenuItem(label = getString(R.string.menu_share),action = object: Action<MenuItem> {
                         override fun execute(data: MenuItem) {
                             resourceItemDialog?.dismiss()

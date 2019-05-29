@@ -269,6 +269,8 @@ abstract class EngineSession(
     companion object{
         const val OFFLINE_PAGE_PATH="OFFLINE_PAGE_PATH"
         const val OFFLINE_IMAGE_PATH="UNIQUE_OFFLINE_IMAGE_PATH"
+        const val OFFLINE_VIDEO_PATH="UNIQUE_OFFLINE_VIDEO_PATH"
+        const val OFFLINE_AUDIO_PATH="UNIQUE_OFFLINE_AUDIO_PATH"
         const val SAVE_PAGE_ERROR="SAVE_PAGE_ERROR"
     }
 }

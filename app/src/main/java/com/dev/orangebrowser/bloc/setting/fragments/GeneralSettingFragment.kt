@@ -116,18 +116,6 @@ class GeneralSettingFragment : BaseFragment(), BackHandler {
                     }
                 })
         )
-//        list.add(SwitchItem(title = getString(R.string.fullscreen), action = object : Action<Boolean> {
-//            override fun invoke(fullscreen: Boolean) {
-//                setSpBool(R.string.pref_setting_full_screen, fullscreen)
-//                //如果全屏
-//                if (fullscreen){
-//                    StatusBarUtil.hideStatusBar(requireActivity())
-//                }else{
-//                    StatusBarUtil.showStatusBar(requireActivity())
-//                }
-//
-//            }
-//        }, value = getSpBool(R.string.pref_setting_full_screen, false)))
         list.add(SwitchItem(title = getString(R.string.record_search_history), action = object : Action<Boolean> {
             override fun invoke(data: Boolean) {
                 setSpBool(R.string.pref_setting_record_search_history, data)

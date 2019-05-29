@@ -26,33 +26,23 @@ class StyleIntegration(
 ) :
     LifecycleAwareFeature {
     private var sessionObserver: Session.Observer
-    private var immerseBrowseStyle=fragment.getSpBool(R.string.pref_setting_user_immerse_browse_style,false)
+
     init {
-        //如果是沉浸式效果，则需根据网页设置Style
-        if(immerseBrowseStyle){
-            val host=Uri.parse(session.url).host ?: ""
-            if (session.themeColorMap.containsKey(host)) {
-                updateStyle(session.themeColorMap[host]!!)
-            } else {
-                val color = fragment.activityViewModel.theme.value!!.colorPrimary
-                updateStyle(color)
-            }
-        }else{
+        val host = Uri.parse(session.url).host ?: ""
+        if (session.themeColorMap.containsKey(host)) {
+            updateStyle(session.themeColorMap[host]!!)
+        } else {
             val color = fragment.activityViewModel.theme.value!!.colorPrimary
             updateStyle(color)
         }
-
         sessionObserver = object : Session.Observer {
             override fun onThumbnailCapture(session: Session, bitmap: Bitmap?) {
-                if (!immerseBrowseStyle){
-                    return
-                }
                 bitmap?.apply {
                     val engineSession = sessionManager.getOrCreateEngineSession(session) as SystemEngineSession
                     val dy = engineSession.webView.scrollY
                     //在尚未滑动的时候，可以通过截图来获取颜色，否则，不改变style
                     if (dy == 0) {
-                        val host= Uri.parse(session.url).host ?: ""
+                        val host = Uri.parse(session.url).host ?: ""
                         if (session.themeColorMap.containsKey(host)) {
                             updateStyle(session.themeColorMap[host]!!)
                         } else {
@@ -122,6 +112,7 @@ class StyleIntegration(
             adapter.notifyDataSetChanged()
         }
     }
+
     override fun start() {
         session.register(sessionObserver)
     }
