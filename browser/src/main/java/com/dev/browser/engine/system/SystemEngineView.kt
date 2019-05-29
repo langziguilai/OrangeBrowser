@@ -638,7 +638,8 @@ class SystemEngineView @JvmOverloads constructor(
             session?.internalNotifyObservers {
                 val fileName = DownloadUtils.guessFileName(contentDisposition, url, mimetype)
                 val cookie = CookieManager.getInstance().getCookie(url)
-                onExternalResource(url, fileName, contentLength, mimetype, cookie, userAgent)
+                val referer=session?.currentUrl
+                onExternalResource(url, fileName,referer, contentLength, mimetype, cookie, userAgent)
             }
         }
     }

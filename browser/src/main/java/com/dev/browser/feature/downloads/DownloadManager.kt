@@ -85,9 +85,7 @@ class DownloadManager(
      */
     @RequiresPermission(allOf = arrayOf(INTERNET, WRITE_EXTERNAL_STORAGE))
     fun download(
-        download: Download,
-        refererURL: String = "",
-        cookie: String = ""
+        download: Download
     ): Long {
         //如果是不支持的格式，或者是使用第三方下载
         if (download.isNotSupportedProtocol() || !useSystemDownloadManager) {
@@ -117,15 +115,14 @@ class DownloadManager(
 
         val request = Request(Uri.parse(download.url))
             .setNotificationVisibility(VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
-
         if (!download.contentType.isNullOrEmpty()) {
             request.setMimeType(download.contentType)
         }
 
         with(request) {
             addRequestHeaderSafely("User-Agent", download.userAgent)
-            addRequestHeaderSafely("Cookie", cookie)
-            addRequestHeaderSafely("Referer", refererURL)
+            addRequestHeaderSafely("Cookie", download.cookies)
+            addRequestHeaderSafely("Referer", download.referer)
         }
 
         request.setDestinationInExternalPublicDir(download.destinationDirectory, fileName)

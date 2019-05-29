@@ -433,6 +433,11 @@ class SystemEngineSession(
             webView.reload()
         }
     }
+
+    override fun getCookies(url: String): String {
+        return CookieManager.getInstance().getCookie(url)
+    }
+
     /**
      * See [EngineSession.exitFullScreenMode]
      */

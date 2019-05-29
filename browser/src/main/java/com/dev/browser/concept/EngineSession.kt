@@ -54,6 +54,7 @@ abstract class EngineSession(
         fun onExternalResource(
             url: String,
             fileName: String,
+            referer:String?=null,
             contentLength: Long? = null,
             contentType: String? = null,
             cookie: String? = null,
@@ -264,9 +265,10 @@ abstract class EngineSession(
      */
     @CallSuper
     open fun close() = delegate.unregisterObservers()
-
+    abstract fun getCookies(url:String):String
     companion object{
         const val OFFLINE_PAGE_PATH="OFFLINE_PAGE_PATH"
+        const val OFFLINE_IMAGE_PATH="UNIQUE_OFFLINE_IMAGE_PATH"
         const val SAVE_PAGE_ERROR="SAVE_PAGE_ERROR"
     }
 }

@@ -7,6 +7,7 @@ import android.content.Intent
 import android.view.View
 import androidx.annotation.VisibleForTesting
 import com.dev.browser.R
+import com.dev.browser.concept.EngineSession.Companion.OFFLINE_IMAGE_PATH
 import com.dev.browser.concept.HitResult
 import com.dev.browser.feature.tabs.TabsUseCases
 import com.dev.browser.session.Download
@@ -57,7 +58,8 @@ data class ContextMenuCandidate(
             showFor = { session, hitResult -> hitResult.isLink() && !session.private },
             action = { parent, hitResult ->
                 val session = tabsUseCases.addTab.invoke(
-                    hitResult.getLink(), selectTab = false, startLoading = true, parent = parent)
+                    hitResult.getLink(), selectTab = false, startLoading = true, parent = parent
+                )
                 tabsUseCases.selectTab.invoke(session)
             }
         )
@@ -75,7 +77,8 @@ data class ContextMenuCandidate(
             showFor = { _, hitResult -> hitResult.isLink() },
             action = { parent, hitResult ->
                 val session = tabsUseCases.addPrivateTab.invoke(
-                    hitResult.src, selectTab = false, startLoading = true, parent = parent)
+                    hitResult.src, selectTab = false, startLoading = true, parent = parent
+                )
                 tabsUseCases.selectTab.invoke(session)
             }
         )
@@ -94,10 +97,12 @@ data class ContextMenuCandidate(
             action = { parent, hitResult ->
                 val session = if (parent.private) {
                     tabsUseCases.addPrivateTab.invoke(
-                        hitResult.src, selectTab = false, startLoading = true, parent = parent)
+                        hitResult.src, selectTab = false, startLoading = true, parent = parent
+                    )
                 } else {
                     tabsUseCases.addTab.invoke(
-                        hitResult.src, selectTab = false, startLoading = true, parent = parent)
+                        hitResult.src, selectTab = false, startLoading = true, parent = parent
+                    )
                 }
                 tabsUseCases.selectTab.invoke(session)
             }
@@ -115,8 +120,12 @@ data class ContextMenuCandidate(
             action = { session, hitResult ->
                 session.download = Consumable.from(
                     Download(
-                    hitResult.src,
-                    DownloadUtils.guessFileName(null, hitResult.src, null))
+                        url=hitResult.src,
+                        fileName = DownloadUtils.guessFileName(null, hitResult.src, null),
+                        referer = session.url,
+                        cookies = session.getCookies(hitResult.src),
+                        destinationDirectory = OFFLINE_IMAGE_PATH
+                    )
                 )
             }
         )
@@ -220,7 +229,8 @@ internal open class SnackbarDelegate {
         val snackbar = Snackbar.make(
             snackBarParentView,
             text,
-            duration)
+            duration
+        )
 
         if (action != 0 && listener != null) {
             snackbar.setAction(action, listener)

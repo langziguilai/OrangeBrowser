@@ -99,6 +99,9 @@ class Session(
         fun onMediaAdded(session: Session, media: List<Media>, added: Media) = Unit
     }
 
+    fun getCookies(url:String):String{
+        return engineSessionHolder.engineSession?.getCookies(url) ?: ""
+    }
     /**
      * A value type holding security information for a Session.
      *

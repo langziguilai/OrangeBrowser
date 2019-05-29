@@ -87,12 +87,13 @@ internal class EngineObserver(val session: Session) : EngineSession.Observer {
     override fun onExternalResource(
         url: String,
         fileName: String,
+        referer:String?,
         contentLength: Long?,
         contentType: String?,
         cookie: String?,
         userAgent: String?
     ) {
-        val download = Download(url, fileName, contentType, contentLength, userAgent, Environment.DIRECTORY_DOWNLOADS)
+        val download = Download(url=url,fileName =  fileName,referer = referer,cookies = cookie,contentType =  contentType,contentLength =  contentLength, userAgent = userAgent, destinationDirectory = Environment.DIRECTORY_DOWNLOADS)
         session.download = Consumable.from(download)
     }
 
