@@ -5,6 +5,7 @@ import android.annotation.SuppressLint
 import android.app.Dialog
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.Gravity
 import android.view.View
 import android.webkit.ValueCallback
@@ -180,6 +181,7 @@ class ResourceFragment : BaseFragment(), BackHandler {
             ValueCallback<String> { value ->
                 launch(Dispatchers.IO) {
                     val html = StringUtil.unEscapeString(value)
+                    Log.d("html",html)
                     val doc=Jsoup.parse(html)
                     imageResource= doc.select("img").map { ImageResource(link=it.attr("abs:src").trim()) }.filter { it.link.isNotBlank()}
                     videoResource= doc.select("video").map {
