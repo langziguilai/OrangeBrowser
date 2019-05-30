@@ -182,7 +182,7 @@
                                                android:textColor="@{activityViewModel.theme.colorPrimaryActive}"
                                                android:id="@+id/security_icon" android:layout_width="20dp"
                                                android:layout_height="20dp" android:layout_gravity="center_vertical"/>
-                <TextView android:id="@+id/search_text" android:layout_marginStart="8dp"
+                <TextView android:id="@+id/search_text" android:layout_marginStart="0dp"
                           android:paddingStart="6dp"
                           android:paddingEnd="6dp"
                           android:layout_weight="1"
