@@ -199,7 +199,7 @@ class ResourceFragment : BaseFragment(), BackHandler {
                         if (link.isBlank()){
                            val sources= it.select("source").map { source->source.attr("abs:src").trim() }
                             for (source in sources){
-                                if (source.isNotBlank()){
+                                if (source.isNotBlank() && !source.startsWith("blob:")){
                                     link=source
                                     break
                                 }
@@ -216,7 +216,7 @@ class ResourceFragment : BaseFragment(), BackHandler {
                         if (link.isBlank()){
                             val sources= it.select("source").map { source->source.attr("abs:src").trim() }
                             for (source in sources){
-                                if (source.isNotBlank()){
+                                if (source.isNotBlank() && !source.startsWith("blob:")){
                                     link=source
                                     break
                                 }
