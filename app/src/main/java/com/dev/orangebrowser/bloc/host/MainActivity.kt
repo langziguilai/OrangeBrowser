@@ -213,7 +213,7 @@ class MainActivity : BaseActivity(), DownloadManager.OnAutoInstallDownloadAppLis
 
     //加载浏览器页面
     fun loadBrowserFragment(sessionId: String) {
-        supportFragmentManager.beginTransaction().replace(R.id.container, BrowserFragment.newInstance(sessionId))
+        supportFragmentManager.beginTransaction().replace(R.id.root_container, BrowserFragment.newInstance(sessionId))
             .commit()
     }
 
@@ -224,7 +224,7 @@ class MainActivity : BaseActivity(), DownloadManager.OnAutoInstallDownloadAppLis
         sessionManager.findSessionById(sessionId)?.apply {
             fragment.setInitialSavedState(this.homeScreenState)
         }
-        supportFragmentManager.beginTransaction().replace(R.id.container, fragment).commit()
+        supportFragmentManager.beginTransaction().replace(R.id.root_container, fragment).commit()
     }
 
     fun loadHomeOrBrowserFragment(sessionId: String) {
@@ -242,195 +242,195 @@ class MainActivity : BaseActivity(), DownloadManager.OnAutoInstallDownloadAppLis
 
     //加载TabFragment
     fun loadTabFragment(sessionId: String, ratio: Float) {
-        supportFragmentManager.beginTransaction().replace(R.id.container, TabFragment.newInstance(sessionId, ratio))
+        supportFragmentManager.beginTransaction().replace(R.id.root_container, TabFragment.newInstance(sessionId, ratio))
             .commit()
     }
 
     //
     fun loadNewsFragment() {
-        supportFragmentManager.beginTransaction().replace(R.id.container, NewsFragment.newInstance()).commit()
+        supportFragmentManager.beginTransaction().replace(R.id.root_container, NewsFragment.newInstance()).commit()
     }
 
     //加载搜索页面
     fun loadSearchFragment(sessionId: String) {
-        supportFragmentManager.beginTransaction().replace(R.id.container, SearchFragment.newInstance(sessionId))
+        supportFragmentManager.beginTransaction().replace(R.id.root_container, SearchFragment.newInstance(sessionId))
             .commit()
     }
 
     //加载发现页面
     fun loadFoundFragment() {
-        supportFragmentManager.beginTransaction().replace(R.id.container, FoundFragment.newInstance()).commit()
+        supportFragmentManager.beginTransaction().replace(R.id.root_container, FoundFragment.newInstance()).commit()
     }
 
     //加载历史页面
     fun loadHistoryFragment() {
-        supportFragmentManager.beginTransaction().replace(R.id.container, HistoryFragment.newInstance()).commit()
+        supportFragmentManager.beginTransaction().replace(R.id.root_container, HistoryFragment.newInstance()).commit()
     }
 
     //加载书签页面
     fun loadBookMarkFragment() {
-        supportFragmentManager.beginTransaction().replace(R.id.container, BookMarkFragment.newInstance()).commit()
+        supportFragmentManager.beginTransaction().replace(R.id.root_container, BookMarkFragment.newInstance()).commit()
     }
 
     //加载主题页面
     fun loadThemeFragment() {
-        supportFragmentManager.beginTransaction().replace(R.id.container, ThemeFragment.newInstance()).commit()
+        supportFragmentManager.beginTransaction().replace(R.id.root_container, ThemeFragment.newInstance()).commit()
     }
 
     //加载下载页面
     fun loadDownloadFragment() {
-        supportFragmentManager.beginTransaction().replace(R.id.container, DownloadFragment.newInstance()).commit()
+        supportFragmentManager.beginTransaction().replace(R.id.root_container, DownloadFragment.newInstance()).commit()
     }
 
     //加载设置页面
     fun loadSettingFragment() {
-        supportFragmentManager.beginTransaction().replace(R.id.container, SettingFragment.newInstance()).commit()
+        supportFragmentManager.beginTransaction().replace(R.id.root_container, SettingFragment.newInstance()).commit()
     }
 
     //加载阅读模式页面
     fun loadReadModeFragment(sessionId: String) {
-        supportFragmentManager.beginTransaction().replace(R.id.container, ReadModeFragment.newInstance(sessionId))
+        supportFragmentManager.beginTransaction().replace(R.id.root_container, ReadModeFragment.newInstance(sessionId))
             .commit()
     }
 
     //加载图片模式页面
     fun loadImageModeFragment(sessionId: String) {
-        supportFragmentManager.beginTransaction().replace(R.id.container, ImageModeModeFragment.newInstance(sessionId))
+        supportFragmentManager.beginTransaction().replace(R.id.root_container, ImageModeModeFragment.newInstance(sessionId))
             .commit()
     }
 
     //资源嗅探页面
     fun loadResourceFragment(sessionId: String) {
-        supportFragmentManager.beginTransaction().replace(R.id.container, ResourceFragment.newInstance(sessionId))
+        supportFragmentManager.beginTransaction().replace(R.id.root_container, ResourceFragment.newInstance(sessionId))
             .commit()
     }
 
     //Account界面
     fun loadAccountFragment() {
-        supportFragmentManager.beginTransaction().replace(R.id.container, AccountFragment.newInstance()).commit()
+        supportFragmentManager.beginTransaction().replace(R.id.root_container, AccountFragment.newInstance()).commit()
     }
 
     //通用设置界面
     fun loadGeneralSettinglFragment() {
-        supportFragmentManager.beginTransaction().replace(R.id.container, GeneralSettingFragment.newInstance()).commit()
+        supportFragmentManager.beginTransaction().replace(R.id.root_container, GeneralSettingFragment.newInstance()).commit()
     }
 
     //网页设置界面
     fun loadWebSettinglFragment() {
-        supportFragmentManager.beginTransaction().replace(R.id.container, WebSettingFragment.newInstance()).commit()
+        supportFragmentManager.beginTransaction().replace(R.id.root_container, WebSettingFragment.newInstance()).commit()
     }
 
     //缓存设置界面
     fun loadCacheSettinglFragment() {
-        supportFragmentManager.beginTransaction().replace(R.id.container, CacheSettingFragment.newInstance())
+        supportFragmentManager.beginTransaction().replace(R.id.root_container, CacheSettingFragment.newInstance())
             .commit()
     }
 
     //广告拦截设置界面
     fun loadAdBlockSettinglFragment() {
-        supportFragmentManager.beginTransaction().replace(R.id.container, AdBlockSettingFragment.newInstance()).commit()
+        supportFragmentManager.beginTransaction().replace(R.id.root_container, AdBlockSettingFragment.newInstance()).commit()
     }
 
     //实验室功能设置界面
     fun loadLibrarySettinglFragment() {
-        supportFragmentManager.beginTransaction().replace(R.id.container, LibrarySettingFragment.newInstance()).commit()
+        supportFragmentManager.beginTransaction().replace(R.id.root_container, LibrarySettingFragment.newInstance()).commit()
     }
 
     //手势设置界面
     fun loadGestureSettinglFragment() {
-        supportFragmentManager.beginTransaction().replace(R.id.container, GestureSettingFragment.newInstance()).commit()
+        supportFragmentManager.beginTransaction().replace(R.id.root_container, GestureSettingFragment.newInstance()).commit()
     }
 
     //搜索引擎设置界面
     fun loadSearchEngineSettingFragment() {
-        supportFragmentManager.beginTransaction().replace(R.id.container, SearchEngineSettingFragment.newInstance())
+        supportFragmentManager.beginTransaction().replace(R.id.root_container, SearchEngineSettingFragment.newInstance())
             .commit()
     }
 
     //搜索引擎设置界面
     fun loadDownloadSettingFragment() {
-        supportFragmentManager.beginTransaction().replace(R.id.container, DownloadSettingFragment.newInstance())
+        supportFragmentManager.beginTransaction().replace(R.id.root_container, DownloadSettingFragment.newInstance())
             .commit()
     }
 
     //地址栏展示设置界面
     fun loadAddressBarSettingFragment() {
-        supportFragmentManager.beginTransaction().replace(R.id.container, AddressBarSettingFragment.newInstance())
+        supportFragmentManager.beginTransaction().replace(R.id.root_container, AddressBarSettingFragment.newInstance())
             .commit()
     }
 
     //视野模式设置界面
     fun loadVisionModeSettingFragment() {
-        supportFragmentManager.beginTransaction().replace(R.id.container, VisionModeSettingFragment.newInstance())
+        supportFragmentManager.beginTransaction().replace(R.id.root_container, VisionModeSettingFragment.newInstance())
             .commit()
     }
 
     //字体大小设置界面
     fun loadFontSizeSettingFragment() {
-        supportFragmentManager.beginTransaction().replace(R.id.container, FontSizeSettingFragment.newInstance())
+        supportFragmentManager.beginTransaction().replace(R.id.root_container, FontSizeSettingFragment.newInstance())
             .commit()
     }
 
     //语言设置界面
     fun loadLanguageSettingFragment() {
-        supportFragmentManager.beginTransaction().replace(R.id.container, LanguageSettingFragment.newInstance())
+        supportFragmentManager.beginTransaction().replace(R.id.root_container, LanguageSettingFragment.newInstance())
             .commit()
     }
 
     //色彩风格设置界面
     fun loadColorStyleSettingFragment() {
-        supportFragmentManager.beginTransaction().replace(R.id.container, ColorStyleSettingFragment.newInstance())
+        supportFragmentManager.beginTransaction().replace(R.id.root_container, ColorStyleSettingFragment.newInstance())
             .commit()
     }
 
     //UA设置界面
     fun loadUaSettingFragment() {
-        supportFragmentManager.beginTransaction().replace(R.id.container, UaSettingFragment.newInstance()).commit()
+        supportFragmentManager.beginTransaction().replace(R.id.root_container, UaSettingFragment.newInstance()).commit()
     }
 
     //打开应用设置界面
     fun loadOpenAppSettingFragment() {
-        supportFragmentManager.beginTransaction().replace(R.id.container, OpenAppSettingFragment.newInstance()).commit()
+        supportFragmentManager.beginTransaction().replace(R.id.root_container, OpenAppSettingFragment.newInstance()).commit()
     }
 
 
     //设置AdBlock的订阅
     fun loadAdBlockSubscriptionSettingFragment() {
         supportFragmentManager.beginTransaction()
-            .replace(R.id.container, AdBlockSubscriptionSettingFragment.newInstance())
+            .replace(R.id.root_container, AdBlockSubscriptionSettingFragment.newInstance())
             .commit()
     }
 
     //设置AdBlock的自定义过滤规则
     fun loadAdBlockFilterSettingFragment() {
-        supportFragmentManager.beginTransaction().replace(R.id.container, AdBlockFilterSettingFragment.newInstance())
+        supportFragmentManager.beginTransaction().replace(R.id.root_container, AdBlockFilterSettingFragment.newInstance())
             .commit()
     }
 
     //设置AdBlock的白名单
     fun loadAdBlockWhiteListSettingFragment() {
-        supportFragmentManager.beginTransaction().replace(R.id.container, AdBlockWhiteListSettingFragment.newInstance())
+        supportFragmentManager.beginTransaction().replace(R.id.root_container, AdBlockWhiteListSettingFragment.newInstance())
             .commit()
     }
 
     //设置AdBlock的更新选择
     fun loadAdBlockConnectionSettingFragment() {
         supportFragmentManager.beginTransaction()
-            .replace(R.id.container, AdBlockConnectionSettingFragment.newInstance())
+            .replace(R.id.root_container, AdBlockConnectionSettingFragment.newInstance())
             .commit()
     }
 
     //下载器设置
     fun loadDownloadManagerSettingFragment() {
         supportFragmentManager.beginTransaction()
-            .replace(R.id.container, DownloadManagerSettingFragment.newInstance())
+            .replace(R.id.root_container, DownloadManagerSettingFragment.newInstance())
             .commit()
     }
 
     //下载路径设置
     fun loadDownloadPathSettingFragment() {
         supportFragmentManager.beginTransaction()
-            .replace(R.id.container, DownloadPathSettingFragment.newInstance())
+            .replace(R.id.root_container, DownloadPathSettingFragment.newInstance())
             .commit()
     }
     fun loadScanActivity(){

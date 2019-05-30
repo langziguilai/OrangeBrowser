@@ -174,7 +174,7 @@ class BookMarkFragment : BaseFragment(), BackHandler {
            fragment.arguments=Bundle().apply {
                putString(CATEGORY,categoryEntity.categoryName)
            }
-           fragmentManager?.beginTransaction()?.replace(R.id.container,fragment)?.commit()
+           fragmentManager?.beginTransaction()?.replace(R.id.root_container,fragment)?.commit()
     }
 
     private var bookMarkItemContextMenu: Dialog? = null
