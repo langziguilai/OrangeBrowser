@@ -269,8 +269,6 @@ class SystemEngineView @JvmOverloads constructor(
                         issuer = cert?.issuedBy?.oName
                     )
                 }
-                //注入javascript
-                WebviewUtils.injectScriptFile(view,"inject/tools.js")
             }
         }
         @Suppress("ReturnCount", "NestedBlockDepth")
@@ -387,12 +385,19 @@ class SystemEngineView @JvmOverloads constructor(
                 }
             }
         }
-
+        var hasInjectedJavascriptFile=false
         override fun onProgressChanged(view: WebView?, newProgress: Int) {
             session?.internalNotifyObservers { onProgress(newProgress) }
             //这里这样做是因为：onPageFinished不一定会调用，所以通过progress来判断
             if (newProgress>90){
                 session?.internalNotifyObservers { onNavigationStateChange(view?.canGoBack(),view?.canGoForward()) }
+                if (!hasInjectedJavascriptFile){
+                    //注入javascript
+                    WebviewUtils.injectScriptFile(view,"inject/tools.js")
+                    hasInjectedJavascriptFile=true
+                }
+            }else{
+                hasInjectedJavascriptFile=false
             }
         }
 

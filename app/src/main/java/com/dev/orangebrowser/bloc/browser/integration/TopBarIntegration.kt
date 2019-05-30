@@ -62,9 +62,13 @@ class TopBarIntegration(
         }
         binding.reloadIcon.setOnClickListener {
             sessionUseCases.reload.invoke(session)
+            binding.reloadIcon.hide()
+            binding.stopIcon.show()
         }
         binding.stopIcon.setOnClickListener {
             sessionUseCases.stopLoading.invoke(session)
+            binding.reloadIcon.show()
+            binding.stopIcon.hide()
         }
 
 
