@@ -8,5 +8,6 @@
           tools:text="显示与风格"
           android:gravity="center_vertical|start"
           android:layout_width="match_parent"
-          android:layout_height="26dp">
+          android:minHeight="26dp"
+          android:layout_height="wrap_content">
 </TextView>

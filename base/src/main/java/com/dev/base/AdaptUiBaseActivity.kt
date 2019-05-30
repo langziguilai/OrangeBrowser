@@ -5,7 +5,7 @@ import android.os.Bundle
 import android.util.Log
 import com.dev.util.DensityUtil
 
-open class AdaptUiBaseActivity : CoroutineScopeActivity() {
+open class AdaptUiBaseActivity : LogLifeCycleEventActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         DensityUtil.init(this,application)
         Log.d(this.javaClass.simpleName, "onCreate")

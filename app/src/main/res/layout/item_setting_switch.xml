@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
                                                    android:layout_width="match_parent"
-                                                   android:layout_height="48dp"
+                                                   android:layout_height="wrap_content"
+                                                   android:minHeight="48dp"
                                                    android:clickable="true"
                                                    android:focusable="true"
                                                    android:background="@color/colorWhite"
@@ -9,7 +10,9 @@
                                                    xmlns:tools="http://schemas.android.com/tools">
     <TextView android:textSize="16sp" android:textColor="#6C6C6C" tools:text="云同步" app:layout_constraintTop_toTopOf="parent"
               app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintStart_toStartOf="parent"
-              android:id="@+id/title" android:layout_width="wrap_content" android:layout_height="21dp"
+              android:id="@+id/title" android:layout_width="wrap_content"
+              android:minHeight="21dp"
+              android:layout_height="wrap_content"
               android:layout_marginStart="14dp"/>
     <Switch android:id="@+id/switchToggle"
             android:thumb="@drawable/switch_thumb_selector"

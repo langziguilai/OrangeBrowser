@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
                                                    android:layout_width="match_parent"
-                                                   android:layout_height="54dp"
+                                                   android:layout_height="wrap_content"
+                                                   android:minHeight="54dp"
                                                    android:clickable="true"
                                                    android:focusable="true"
                                                    android:background="@drawable/ripple_white_bg"
@@ -13,11 +14,13 @@
                                    android:textSize="20sp"
                                    android:gravity="center"
                                    app:layout_constraintBottom_toBottomOf="parent"
-                                   app:layout_constraintTop_toTopOf="parent" android:layout_width="54dp"
+                                   app:layout_constraintDimensionRatio="1"
+                                   app:layout_constraintTop_toTopOf="parent" android:layout_width="0dp"
                                    android:layout_height="0dp" android:layout_marginEnd="4dp"/>
     <TextView android:textSize="16sp" android:textColor="#6C6C6C" tools:text="云同步" app:layout_constraintTop_toTopOf="parent"
               app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintStart_toEndOf="@id/primary_icon"
-              android:id="@+id/title" android:layout_width="wrap_content" android:layout_height="21dp"
+              android:id="@+id/title" android:layout_width="wrap_content" android:layout_height="wrap_content"
+              android:minHeight="21dp"
               android:layout_marginStart="14dp"/>
     <com.dev.view.IconfontTextView android:id="@+id/icon"
                                    android:textColor="#C5C5DA"
@@ -25,6 +28,9 @@
                                    android:textSize="12sp"
                                    android:gravity="center"
                                    app:layout_constraintBottom_toBottomOf="parent"
-                                   app:layout_constraintTop_toTopOf="parent" android:layout_width="18dp"
-                                   android:layout_height="18dp" android:layout_marginEnd="6dp"/>
+                                   app:layout_constraintTop_toTopOf="parent"
+                                   app:layout_constraintDimensionRatio="1"
+                                   android:layout_width="wrap_content"
+                                   android:minHeight="18dp"
+                                   android:layout_height="wrap_content" android:layout_marginEnd="6dp"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

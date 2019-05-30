@@ -59,7 +59,6 @@ class SystemEngineView @JvmOverloads constructor(
     var enableAdblock=false
     init {
         //
-
         isClickable=true
         isFocusable=true
         isLongClickable=true
@@ -77,10 +76,14 @@ class SystemEngineView @JvmOverloads constructor(
      * Render the mContent of the given session.
      */
     override fun render(session: EngineSession) {
-        removeAllViews()
-        this.session = session as SystemEngineSession
-        (session.webView.parent as? SystemEngineView)?.removeView(session.webView)
-        addView(initWebView(session.webView))
+        val fullScreenView = findViewWithTag<View>("mozac_system_engine_fullscreen")
+        //如果没有处于全局模式下
+        if (fullScreenView==null){
+            removeAllViews()
+            this.session = session as SystemEngineSession
+            (session.webView.parent as? SystemEngineView)?.removeView(session.webView)
+            addView(initWebView(session.webView))
+        }
     }
 
     private fun onLongClick(view: View?): Boolean {
@@ -704,9 +707,9 @@ class SystemEngineView @JvmOverloads constructor(
         val view = findViewWithTag<View>("mozac_system_engine_fullscreen")
         val webView = findViewWithTag<WebView>("mozac_system_engine_webview")
         view?.let {
-            webView?.apply { this.visibility = View.VISIBLE }
             removeView(view)
         }
+        webView?.apply { this.visibility = View.VISIBLE }
     }
 
     class ImageHandler(val session: SystemEngineSession?) : Handler() {

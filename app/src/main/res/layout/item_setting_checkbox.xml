@@ -3,7 +3,8 @@
                                                    xmlns:app="http://schemas.android.com/apk/res-auto"
                                                    xmlns:tools="http://schemas.android.com/tools"
                                                    android:layout_width="match_parent"
-                                                   android:layout_height="48dp"
+                                                   android:layout_height="wrap_content"
+                                                   android:minHeight="48dp"
                                                    android:clickable="true"
                                                    android:focusable="true"
                                                    android:background="@color/colorWhite">
@@ -14,7 +15,8 @@
               android:ellipsize="end"
               android:id="@+id/title"
               android:layout_width="wrap_content"
-              android:layout_height="21dp"
+              android:layout_height="wrap_content"
+              android:minHeight="21dp"
               android:layout_marginStart="14dp"/>
     <CheckBox android:id="@+id/checkbox"
               style="@style/checkbox"
@@ -25,5 +27,6 @@
               app:layout_constraintTop_toTopOf="parent"
               android:layout_width="wrap_content"
               android:layout_height="wrap_content"
+              app:layout_constraintDimensionRatio="1"
               android:layout_marginEnd="6dp"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

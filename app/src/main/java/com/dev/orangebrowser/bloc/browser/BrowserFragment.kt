@@ -33,6 +33,7 @@ import kotlinx.android.synthetic.main.fragment_browser.*
 import java.util.*
 import javax.inject.Inject
 import android.widget.RelativeLayout
+import com.dev.base.extension.enterToImmersiveMode
 import com.dev.browser.database.bookmark.BookMarkCategoryDao
 import com.dev.browser.database.bookmark.BookMarkDao
 import com.dev.browser.session.Session
@@ -169,6 +170,7 @@ class BrowserFragment : BaseFragment(), BackHandler, UserInteractionHandler {
         params.addRule(RelativeLayout.ALIGN_PARENT_TOP, RelativeLayout.TRUE)
         params.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM, RelativeLayout.TRUE)
         params.addRule(RelativeLayout.ALIGN_PARENT_RIGHT, RelativeLayout.TRUE)
+
         binding.webViewContainer.addView(
             engineView,
             params//FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT)
@@ -382,6 +384,14 @@ class BrowserFragment : BaseFragment(), BackHandler, UserInteractionHandler {
          )
     }
 
+    override fun onResume() {
+        super.onResume()
+        if (session.fullScreenMode){
+            StatusBarUtil.hideStatusBar(requireActivity())
+            //隐藏下部导航栏
+            requireActivity().enterToImmersiveMode()
+        }
+    }
     override fun initData(savedInstanceState: Bundle?) {
         //TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
