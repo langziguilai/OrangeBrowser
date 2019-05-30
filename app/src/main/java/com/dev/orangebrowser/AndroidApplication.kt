@@ -48,7 +48,18 @@ class AndroidApplication:BaseApplication(),CoroutineScope {
         sessionClearObserver=object:SessionManager.Observer{
             //删除thumbnial
             override fun onSessionRemoved(session: Session) {
-                session.thumbnailPath?.apply {
+                session.webPageThumbnailPath?.apply {
+                    val thumbnailPath=this
+                    launch(Dispatchers.IO) {
+                        try {
+                            val path=Environment.getExternalStorageDirectory().path+thumbnailPath
+                            FileUtil.delete(path)
+                        }catch (e:Exception){
+                            Log.e("delete thumb error",e.message)
+                        }
+                    }
+                }
+                session.mainPageThumbnailPath?.apply {
                     val thumbnailPath=this
                     launch(Dispatchers.IO) {
                         try {
@@ -63,7 +74,18 @@ class AndroidApplication:BaseApplication(),CoroutineScope {
 
             override fun beforeAllSessionsRemoved(sessions: List<Session>) {
                 sessions.forEach {
-                    it.thumbnailPath?.apply {
+                    it.webPageThumbnailPath?.apply {
+                        val thumbnailPath=this
+                        launch(Dispatchers.IO) {
+                            try {
+                                val path=Environment.getExternalStorageDirectory().path+thumbnailPath
+                                FileUtil.delete(path)
+                            }catch (e:Exception){
+                                Log.e("delete thumb error",e.message)
+                            }
+                        }
+                    }
+                    it.mainPageThumbnailPath?.apply {
                         val thumbnailPath=this
                         launch(Dispatchers.IO) {
                             try {

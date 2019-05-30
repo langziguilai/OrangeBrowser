@@ -37,11 +37,13 @@ class Session(
     var themeColorMap: HashMap<String, Int> = HashMap(),
     var isStatusBarDarkMode: Boolean = false,
     var screenNumber:Int=HOME_SCREEN,//screenNumber默认为
-    var tmpThumbnail:SoftReference<Bitmap>?=null,
+    var webPageThumbnailRef:SoftReference<Bitmap>?=null,
+    var mainPageThumbnailRef:SoftReference<Bitmap>?=null,
     delegate: Observable<Observer> = ObserverRegistry()
 ) : Observable<Session.Observer> by delegate {
     var homeScreenState:Fragment.SavedState?=null  //保存HomeScreen的状态
-    var thumbnailPath:String?=null  //将thumbnail保存起来
+    var webPageThumbnailPath:String?=null  //将web page thumbnail保存起来
+    var mainPageThumbnailPath:String?=null  //将main thumbnail保存起来
     @Synchronized get()= field
     @Synchronized set(value) {
          field=value

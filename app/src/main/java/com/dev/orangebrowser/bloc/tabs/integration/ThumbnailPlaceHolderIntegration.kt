@@ -1,41 +1,52 @@
 package com.dev.orangebrowser.bloc.tabs.integration
 
-import android.content.Context
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
-import android.util.Log
-import android.view.View
-import android.view.animation.LinearInterpolator
 import com.dev.base.extension.*
 import com.dev.browser.session.Session
 import com.dev.orangebrowser.bloc.tabs.TabFragment
 import com.dev.orangebrowser.databinding.FragmentTabBinding
-import com.dev.view.extension.loadBitmap
 import com.dev.view.extension.loadLocalImage
-import kotlinx.coroutines.*
-import java.io.File
 import java.lang.Runnable
 import java.lang.ref.SoftReference
-import java.lang.ref.WeakReference
-import kotlin.coroutines.CoroutineContext
 
 class ThumbnailPlaceHolderIntegration(var binding: FragmentTabBinding, session: Session, val fragment: TabFragment) {
 
     init {
-        if (session.tmpThumbnail != null) {
-            if (session.tmpThumbnail!!.get() != null) {
-                binding.thumbnailPlaceHolder.setImageBitmap(session.tmpThumbnail!!.get())
+        if (session.screenNumber==Session.HOME_SCREEN){
+            if (session.mainPageThumbnailRef != null) {
+                if (session.mainPageThumbnailRef!!.get() != null) {
+                    binding.thumbnailPlaceHolder.setImageBitmap(session.mainPageThumbnailRef!!.get())
+                }
+            } else if (session.mainPageThumbnailPath != null) {
+                binding.thumbnailPlaceHolder.loadLocalImage(session.mainPageThumbnailPath!!)
             }
-        } else if (session.thumbnailPath != null) {
-            binding.thumbnailPlaceHolder.loadLocalImage(session.thumbnailPath!!)
+        }else{
+            if (session.webPageThumbnailRef != null) {
+                if (session.webPageThumbnailRef!!.get() != null) {
+                    binding.thumbnailPlaceHolder.setImageBitmap(session.webPageThumbnailRef!!.get())
+                }
+            } else if (session.webPageThumbnailPath != null) {
+                binding.thumbnailPlaceHolder.loadLocalImage(session.webPageThumbnailPath!!)
+            }
         }
     }
 
     fun setImage(session: Session) {
-        if (session.tmpThumbnail != null && session.tmpThumbnail!!.get() != null) {
-            binding.thumbnailPlaceHolder.setImageBitmap(session.tmpThumbnail!!.get())
-        } else if (session.thumbnailPath != null) {
-            binding.thumbnailPlaceHolder.loadLocalImage(session.thumbnailPath!!)
+        if (session.screenNumber==Session.HOME_SCREEN){
+            if (session.mainPageThumbnailRef != null) {
+                if (session.mainPageThumbnailRef!!.get() != null) {
+                    binding.thumbnailPlaceHolder.setImageBitmap(session.mainPageThumbnailRef!!.get())
+                }
+            } else if (session.mainPageThumbnailPath != null) {
+                binding.thumbnailPlaceHolder.loadLocalImage(session.mainPageThumbnailPath!!)
+            }
+        }else{
+            if (session.webPageThumbnailRef != null) {
+                if (session.webPageThumbnailRef!!.get() != null) {
+                    binding.thumbnailPlaceHolder.setImageBitmap(session.webPageThumbnailRef!!.get())
+                }
+            } else if (session.webPageThumbnailPath != null) {
+                binding.thumbnailPlaceHolder.loadLocalImage(session.webPageThumbnailPath!!)
+            }
         }
     }
 
@@ -47,7 +58,11 @@ class ThumbnailPlaceHolderIntegration(var binding: FragmentTabBinding, session: 
             .scaleY(1f)
             .setInterpolator(DEFAULT_INTERPOLATOR).withEndAction {
                 //保存起来，因为它可能被回收掉了
-                selectSession.tmpThumbnail = SoftReference(it.getBitmap())
+                if (selectSession.screenNumber==Session.HOME_SCREEN){
+                    selectSession.mainPageThumbnailRef = SoftReference(it.getBitmap())
+                }else{
+                    selectSession.webPageThumbnailRef = SoftReference(it.getBitmap())
+                }
                 runnable.run()
             }.start()
     }

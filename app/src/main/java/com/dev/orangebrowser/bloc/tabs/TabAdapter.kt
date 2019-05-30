@@ -39,12 +39,22 @@ class TabAdapter(
 
     override fun onBindViewHolder(holder: TabViewHolder, position: Int) {
         val session = sessions[position]
-        if (session.tmpThumbnail != null && session.tmpThumbnail!!.get() != null) {
-            holder.thumbnail.setImageBitmap(session.tmpThumbnail!!.get())
-        } else if (session.thumbnailPath != null) {
-            holder.thumbnail.loadLocalImage(session.thumbnailPath!!)
+        if (session.screenNumber==Session.HOME_SCREEN){
+            if (session.mainPageThumbnailRef != null && session.mainPageThumbnailRef!!.get() != null) {
+                holder.thumbnail.setImageBitmap(session.mainPageThumbnailRef!!.get())
+            } else if (session.mainPageThumbnailPath != null) {
+                holder.thumbnail.loadLocalImage(session.mainPageThumbnailPath!!)
+            }else{
+                Log.d("onBindViewHolder","session id: "+session.id+" holder.thumbnail not set")
+            }
         }else{
-            Log.d("onBindViewHolder","session id: "+session.id+" holder.thumbnail not set")
+            if (session.webPageThumbnailRef != null && session.webPageThumbnailRef!!.get() != null) {
+                holder.thumbnail.setImageBitmap(session.webPageThumbnailRef!!.get())
+            } else if (session.webPageThumbnailPath != null) {
+                holder.thumbnail.loadLocalImage(session.webPageThumbnailPath!!)
+            }else{
+                Log.d("onBindViewHolder","session id: "+session.id+" holder.thumbnail not set")
+            }
         }
         if (session.screenNumber==Session.HOME_SCREEN){
             holder.title.text=Session.HOME_TITLE

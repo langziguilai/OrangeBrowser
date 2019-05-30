@@ -1,6 +1,5 @@
 package com.dev.orangebrowser.bloc.browser.integration
 
-import android.util.Log
 import android.widget.FrameLayout
 import android.widget.ImageView
 import com.dev.browser.session.Session
@@ -8,11 +7,10 @@ import com.dev.orangebrowser.R
 import com.dev.orangebrowser.bloc.browser.BrowserFragment
 import com.dev.orangebrowser.databinding.FragmentBrowserBinding
 import com.dev.orangebrowser.extension.getSpInt
-import com.dev.orangebrowser.view.ScaleTopImageView
 
 class WebViewBlinkFixIntegration(binding: FragmentBrowserBinding,fragment:BrowserFragment,session:Session){
     init {
-        session.tmpThumbnail?.apply {
+        session.webPageThumbnailRef?.apply {
             this.get()?.apply {
                 val imageView= ImageView(fragment.requireContext())
                 imageView.setBackgroundColor(fragment.activityViewModel.theme.value!!.colorPrimary)
@@ -33,7 +31,7 @@ class WebViewBlinkFixIntegration(binding: FragmentBrowserBinding,fragment:Browse
                 },300)
             }
         }
-        if (session.tmpThumbnail!=null && session.tmpThumbnail!!.get()!=null){
+        if (session.webPageThumbnailRef!=null && session.webPageThumbnailRef!!.get()!=null){
 
         }
 
