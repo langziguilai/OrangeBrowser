@@ -4,77 +4,84 @@
     <data>
         <variable name="activityViewModel" type="com.dev.orangebrowser.bloc.host.MainViewModel"/>
     </data>
-    <LinearLayout
-            android:id="@+id/container"
-            android:orientation="vertical"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-        <!--顶部bar-->
-        <LinearLayout android:id="@+id/top_bar"
-                      app:bgColor="@{activityViewModel.theme.colorPrimary}" android:layout_width="match_parent"
-                      android:layout_height="44dp"
-                      android:orientation="horizontal">
-            <LinearLayout android:background="@drawable/bg_transparent_round"
-                          android:orientation="horizontal"
-                          android:layout_marginStart="8dp"
-                          android:layout_gravity="center_vertical"
-                          android:layout_width="0dp"
-                          android:layout_weight="1"
-                          android:layout_height="32dp">
-                <com.dev.browser.ui.inlineautocomplete.InlineAutocompleteEditText
-                        android:id="@+id/search_text"
-                        android:background="@null"
-                        android:textCursorDrawable="@drawable/cursor_color"
-                        android:singleLine="true"
-                        android:focusable="true"
-                        android:inputType="text"
-                        android:textSize="14sp"
-                        android:hint="@string/search_or_input" android:gravity="start|center_vertical"
-                        android:textColor="@color/colorWhite" android:textColorHint="@color/colorWhite"
-                        android:layout_marginStart="12dp" android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1"/>
-
-
-                <com.dev.view.IconfontTextView
-                        android:id="@+id/clear"
-                        android:layout_marginStart="10dp"
-                        android:layout_gravity="center_vertical"
-                        android:gravity="center"
-                        android:text="@string/ic_close"
-                        android:textSize="14sp"
-                        android:textColor="@color/color_BFBFBF"
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"/>
-            </LinearLayout>
-
-            <TextView android:id="@+id/cancel" android:clickable="true"
-                      android:background="?android:attr/selectableItemBackgroundBorderless"
-                      android:focusable="true"
-                      android:gravity="center" android:layout_width="48dp"
-                      android:layout_height="match_parent"
-                      android:textSize="14sp" android:text="@string/cancel"
-                      android:textColor="@color/colorWhite"/>
-            <TextView android:id="@+id/go" android:clickable="true"
-                      android:background="?android:attr/selectableItemBackgroundBorderless"
-                      android:focusable="true"
-                      android:visibility="gone"
-                      android:gravity="center" android:layout_width="48dp"
-                      android:layout_height="match_parent"
-                      android:textSize="14sp" android:text="@string/go"
-                      android:textColor="@color/colorWhite"/>
-            <TextView android:id="@+id/search" android:clickable="true"
-                      android:background="?android:attr/selectableItemBackgroundBorderless"
-                      android:focusable="true"
-                      android:visibility="gone"
-                      android:gravity="center" android:layout_width="48dp"
-                      android:layout_height="match_parent"
-                      android:textSize="14sp" android:text="@string/search"
-                      android:textColor="@color/colorWhite"/>
-        </LinearLayout>
-        <com.dev.browser.ui.awesomebar.BrowserAwesomeBar
-                android:id="@+id/awesome_bar"
-                android:layout_weight="1"
-                android:paddingTop="10dp"
+    <androidx.coordinatorlayout.widget.CoordinatorLayout android:layout_width="match_parent"
+                                                         android:fitsSystemWindows="true"
+                                                         app:bgColor="@{activityViewModel.theme.colorPrimary}"
+                                                         android:layout_height="match_parent">
+        <LinearLayout
+                android:id="@+id/container"
+                android:orientation="vertical"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"/>
-    </LinearLayout>
+                android:layout_height="match_parent">
+            <!--顶部bar-->
+            <LinearLayout android:id="@+id/top_bar"
+                          app:bgColor="@{activityViewModel.theme.colorPrimary}" android:layout_width="match_parent"
+                          android:layout_height="44dp"
+                          android:orientation="horizontal">
+                <LinearLayout android:background="@drawable/bg_transparent_round"
+                              android:orientation="horizontal"
+                              android:layout_marginStart="8dp"
+                              android:layout_gravity="center_vertical"
+                              android:layout_width="0dp"
+                              android:layout_weight="1"
+                              android:layout_height="32dp">
+                    <com.dev.browser.ui.inlineautocomplete.InlineAutocompleteEditText
+                            android:id="@+id/search_text"
+                            android:background="@null"
+                            android:textCursorDrawable="@drawable/cursor_color"
+                            android:singleLine="true"
+                            android:focusable="true"
+                            android:inputType="text"
+                            android:textSize="14sp"
+                            android:hint="@string/search_or_input" android:gravity="start|center_vertical"
+                            android:textColor="@color/colorWhite" android:textColorHint="@color/colorWhite"
+                            android:layout_marginStart="12dp" android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1"/>
+
+
+                    <com.dev.view.IconfontTextView
+                            android:id="@+id/clear"
+                            android:layout_marginStart="10dp"
+                            android:layout_gravity="center_vertical"
+                            android:gravity="center"
+                            android:text="@string/ic_close"
+                            android:textSize="14sp"
+                            android:textColor="@color/color_BFBFBF"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"/>
+                </LinearLayout>
+
+                <TextView android:id="@+id/cancel" android:clickable="true"
+                          android:background="?android:attr/selectableItemBackgroundBorderless"
+                          android:focusable="true"
+                          android:gravity="center" android:layout_width="48dp"
+                          android:layout_height="match_parent"
+                          android:textSize="14sp" android:text="@string/cancel"
+                          android:textColor="@color/colorWhite"/>
+                <TextView android:id="@+id/go" android:clickable="true"
+                          android:background="?android:attr/selectableItemBackgroundBorderless"
+                          android:focusable="true"
+                          android:visibility="gone"
+                          android:gravity="center" android:layout_width="48dp"
+                          android:layout_height="match_parent"
+                          android:textSize="14sp" android:text="@string/go"
+                          android:textColor="@color/colorWhite"/>
+                <TextView android:id="@+id/search" android:clickable="true"
+                          android:background="?android:attr/selectableItemBackgroundBorderless"
+                          android:focusable="true"
+                          android:visibility="gone"
+                          android:gravity="center" android:layout_width="48dp"
+                          android:layout_height="match_parent"
+                          android:textSize="14sp" android:text="@string/search"
+                          android:textColor="@color/colorWhite"/>
+            </LinearLayout>
+            <com.dev.browser.ui.awesomebar.BrowserAwesomeBar
+                    android:id="@+id/awesome_bar"
+                    android:layout_weight="1"
+                    android:background="@color/colorWhite"
+                    android:paddingTop="10dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"/>
+        </LinearLayout>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
 </layout>

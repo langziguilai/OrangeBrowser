@@ -1,7 +1,6 @@
 package com.dev.orangebrowser.bloc.tabs.integration
 
 import android.os.Bundle
-import androidx.annotation.ColorInt
 import com.dev.base.extension.*
 import com.dev.browser.session.Session
 import com.dev.orangebrowser.R
@@ -92,7 +91,7 @@ class TopBarIntegration(
         binding.topMenu.setTextColor(textColor)
     }
     private fun updateTopBarBackGround(color:Int){
-        StatusBarUtil.setStatusBarBackGroundColorAndIconColor(fragment.requireActivity(),color)
+        StatusBarUtil.setIconColor(fragment.requireActivity(),color)
         NavigationBarUtil.setNavigationBarColor(fragment.requireActivity(),color)
         //binding.topBar.setBackgroundColor(color)
         binding.topbarBackground.setBackgroundColor(color)

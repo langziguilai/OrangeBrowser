@@ -2,7 +2,6 @@ package com.dev.orangebrowser.bloc.home.helper
 
 import android.os.Bundle
 import android.view.animation.AccelerateInterpolator
-import android.widget.Toast
 import com.dev.base.extension.*
 import com.dev.base.support.BackHandler
 import com.dev.orangebrowser.R
@@ -17,7 +16,6 @@ import com.dev.view.NavigationBarUtil
 import com.dev.view.StatusBarUtil
 import com.dev.view.recyclerview.CustomBaseViewHolder
 import com.dev.view.recyclerview.adapter.base.BaseQuickAdapter
-import es.dmoral.toasty.Toasty
 import java.util.*
 
 
@@ -62,7 +60,7 @@ class TopBarHelper(var binding: FragmentHomeBinding, var fragment: HomeFragment,
                 return true
             }
         }
-        StatusBarUtil.setStatusBarBackGroundColorAndIconColor(fragment.requireActivity(),fragment.activityViewModel.theme.value!!.colorPrimary)
+        StatusBarUtil.setIconColor(fragment.requireActivity(),fragment.activityViewModel.theme.value!!.colorPrimary)
         NavigationBarUtil.setNavigationBarColor(fragment.requireActivity(),fragment.activityViewModel.theme.value!!.colorPrimary)
     }
     private fun initTopMenuData(){

@@ -167,20 +167,28 @@ public class StatusBarUtil {
     }
 
     //设置StatusBar背景颜色和Icon的颜色
-    public static void setStatusBarBackGroundColorAndIconColor(@NonNull Activity activity, @ColorInt int color) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            activity.getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-            activity.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-            activity.getWindow().setStatusBarColor(color);
-        }
+    public static void setIconColor(@NonNull Activity activity, @ColorInt int color) {
         if(ColorKitUtil.isBackGroundLightMode(color)){
             setDarkIcon(activity);
         }else{
             setLightIcon(activity);
         }
     }
+//    //设置StatusBar背景颜色和Icon的颜色
+//    public static void setIconColor(@NonNull Activity activity, @ColorInt int color) {
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+//            activity.getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+//            activity.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+//            activity.getWindow().setStatusBarColor(color);
+//        }
+//        if(ColorKitUtil.isBackGroundLightMode(color)){
+//            setDarkIcon(activity);
+//        }else{
+//            setLightIcon(activity);
+//        }
+//    }
     //设置StatusBar背景颜色和Icon的颜色
-    public static void setStatusBarBackGroundColorAndIconColor(@NonNull Window window, @ColorInt int color) {
+    public static void setIconColor(@NonNull Window window, @ColorInt int color) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
             window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);

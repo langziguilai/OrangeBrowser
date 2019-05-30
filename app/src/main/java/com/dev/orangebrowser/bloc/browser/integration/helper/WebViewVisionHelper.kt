@@ -2,8 +2,11 @@ package com.dev.orangebrowser.bloc.browser.integration.helper
 
 import android.animation.ValueAnimator
 import android.view.animation.AccelerateInterpolator
+import androidx.core.animation.addListener
 import androidx.core.view.ViewCompat
 import com.dev.base.extension.FAST_ANIMATION
+import com.dev.base.extension.hide
+import com.dev.base.extension.show
 import com.dev.browser.session.Session
 import com.dev.orangebrowser.databinding.FragmentBrowserBinding
 
@@ -29,7 +32,7 @@ class WebViewVisionHelper(var binding:FragmentBrowserBinding){
             ).start()
     }
     fun animateHideTopBar(){
-        if (binding.topBar.top >= 0) {
+        if (binding.topBar.height >= 0) {
             ValueAnimator.ofInt(0, -binding.topBar.height).apply {
                 duration = FAST_ANIMATION
                 addUpdateListener {
@@ -51,6 +54,7 @@ class WebViewVisionHelper(var binding:FragmentBrowserBinding){
                         (it.animatedValue as Int) - binding.topBar.top
                     )
                 }
+
             }.start()
         }
     }

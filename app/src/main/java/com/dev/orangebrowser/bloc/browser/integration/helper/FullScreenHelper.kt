@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Context
 import android.content.pm.ActivityInfo
 import androidx.coordinatorlayout.widget.CoordinatorLayout
+import androidx.core.view.setPadding
 import com.dev.base.extension.enterToImmersiveMode
 import com.dev.base.extension.exitImmersiveModeIfNeeded
 import com.dev.base.extension.hide
@@ -45,7 +46,7 @@ class FullScreenHelper(var binding:FragmentBrowserBinding,var activity: Activity
                if (activity.resources.configuration.orientation==ActivityInfo.SCREEN_ORIENTATION_PORTRAIT){
                    activity.requestedOrientation= ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
                }
-
+               binding.fragmentContainer.fitsSystemWindows=false
            }else{ //退出全局视野
                StatusBarUtil.showStatusBar(activity)
                //退出全屏模式
@@ -72,7 +73,7 @@ class FullScreenHelper(var binding:FragmentBrowserBinding,var activity: Activity
                if (activity.resources.configuration.orientation!=ActivityInfo.SCREEN_ORIENTATION_PORTRAIT){
                    activity.requestedOrientation= ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
                }
-
+               binding.fragmentContainer.fitsSystemWindows=true
            }
     }
 }

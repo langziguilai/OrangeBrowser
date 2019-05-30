@@ -59,6 +59,9 @@ const val APPLICATION_DATA="application_data"
 
 @RuntimePermissions
 class MainActivity : BaseActivity(), DownloadManager.OnAutoInstallDownloadAppListener {
+    override fun isStatusBarTransparent(): Boolean {
+        return true
+    }
     private var installAppInstance: InstallAppInstance?=null
     //自动安装应用
     override fun onAutoInstallDownloadApp(download: Download) {
@@ -114,7 +117,7 @@ class MainActivity : BaseActivity(), DownloadManager.OnAutoInstallDownloadAppLis
     }
 
     private fun setColor(color: Int) {
-        StatusBarUtil.setStatusBarBackGroundColorAndIconColor(this, color)
+        StatusBarUtil.setIconColor(this, color)
         NavigationBarUtil.setNavigationBarColor(this, color)
     }
 

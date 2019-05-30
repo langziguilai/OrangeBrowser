@@ -3,6 +3,7 @@ package com.dev.orangebrowser.bloc.browser.integration
 import android.os.Bundle
 import android.util.Log
 import androidx.annotation.ColorRes
+import com.dev.base.extension.hide
 import com.dev.base.extension.onGlobalLayoutComplete
 import com.dev.base.extension.shareLink
 import com.dev.base.extension.showToast
@@ -54,6 +55,7 @@ class TopPanelMenuIntegration(
         //initial hide
         binding.topMenuPanel.apply {
             onGlobalLayoutComplete {
+                binding.topMenuPanelContainer.hide()
                 fragment.context?.apply {
                     it.translationY = -it.height.toFloat() - binding.topBar.height.toFloat()
                 }

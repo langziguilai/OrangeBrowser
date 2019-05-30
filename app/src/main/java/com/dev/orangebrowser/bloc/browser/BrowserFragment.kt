@@ -39,7 +39,6 @@ import com.dev.browser.database.bookmark.BookMarkDao
 import com.dev.browser.session.Session
 import com.dev.orangebrowser.data.dao.SavedFileDao
 import com.dev.orangebrowser.extension.appData
-import com.dev.orangebrowser.extension.getSpInt
 import com.dev.util.ColorStore
 import com.dev.view.NavigationBarUtil
 
@@ -390,6 +389,7 @@ class BrowserFragment : BaseFragment(), BackHandler, UserInteractionHandler {
             StatusBarUtil.hideStatusBar(requireActivity())
             //隐藏下部导航栏
             requireActivity().enterToImmersiveMode()
+            binding.fragmentContainer.fitsSystemWindows=false
         }
     }
     override fun initData(savedInstanceState: Bundle?) {
@@ -467,7 +467,7 @@ class BrowserFragment : BaseFragment(), BackHandler, UserInteractionHandler {
     override fun onDetach() {
         RouterActivity?.apply {
             //恢复StatusBar的颜色
-            StatusBarUtil.setStatusBarBackGroundColorAndIconColor(
+            StatusBarUtil.setIconColor(
                 RouterActivity!!,
                 activityViewModel.theme.value!!.colorPrimary
             )

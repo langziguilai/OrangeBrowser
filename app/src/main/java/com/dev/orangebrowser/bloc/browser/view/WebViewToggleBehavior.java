@@ -51,10 +51,10 @@ public class WebViewToggleBehavior extends CoordinatorLayout.Behavior<View> {
             if (topBarRef.get()!=null){
                 View dependency= topBarRef.get();
                 if (bottomBarRef.get()!=null){
-                    int bottom=parent.getBottom()-bottomBarRef.get().getMeasuredHeight();
+                    int bottom=parent.getHeight()-bottomBarRef.get().getMeasuredHeight();
                     child.layout(0,dependency.getBottom(),child.getMeasuredWidth(),bottom);
                 }else{
-                    child.layout(0,dependency.getBottom(),child.getMeasuredWidth(),parent.getBottom());
+                    child.layout(0,dependency.getBottom(),child.getMeasuredWidth(),parent.getHeight());
                 }
 
             }

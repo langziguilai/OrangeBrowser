@@ -35,12 +35,14 @@ class TopPanelHelper(var binding: FragmentBrowserBinding, var fragment: BrowserF
                 AccelerateInterpolator()
             ).withEndAction {
                 binding.topMenuPanel.hide()
+                binding.topMenuPanelContainer.hide()
                 runnable.run()
             }.start()
         }
     }
     private fun showTopPanel(runnable: Runnable= Runnable { }){
         binding.overLayerTopPanel.show()
+        binding.topMenuPanelContainer.show()
         binding.topMenuPanel.show()
         binding.topMenuPanel.apply {
             animate().translationY(0f).setDuration(FAST_ANIMATION).setInterpolator(AccelerateInterpolator()).withEndAction(runnable).start()
