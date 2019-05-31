@@ -12,7 +12,6 @@
         <LinearLayout android:id="@+id/header"
                       android:layout_width="0dp"
                       android:layout_height="44dp"
-                      android:paddingTop="4dp"
                       android:orientation="horizontal"
                       android:background="@color/colorPrimary"
                       app:layout_constraintTop_toTopOf="parent"
