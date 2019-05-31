@@ -387,12 +387,7 @@ class BrowserFragment : BaseFragment(), BackHandler, UserInteractionHandler {
     override fun onResume() {
         //set status bar icon color
 
-//        val host = Uri.parse(session.url).host ?: ""
-//        if (session.themeColorMap.containsKey(host)) {
-//            StatusBarUtil.setIconColor(requireActivity(),session.themeColorMap[host]!!)
-//        } else {
-//            StatusBarUtil.setIconColor(requireActivity(),activityViewModel.theme.value!!.colorPrimary)
-//        }
+
         super.onResume()
         if (session.fullScreenMode){
             StatusBarUtil.hideStatusBar(requireActivity())

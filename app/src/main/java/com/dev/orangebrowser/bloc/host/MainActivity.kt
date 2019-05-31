@@ -4,6 +4,7 @@ package com.dev.orangebrowser.bloc.host
 import android.Manifest
 import android.app.Activity
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
 import android.util.Log
@@ -257,6 +258,19 @@ class MainActivity : BaseActivity(), DownloadManager.OnAutoInstallDownloadAppLis
         }
     }
 
+    fun popUpToHomeOrBrowserFragment() {
+        val session = sessionManager.selectedSession!!
+        if (session.screenNumber != Session.HOME_SCREEN) {
+            val host = Uri.parse(session.url).host ?: ""
+            if (session.themeColorMap.containsKey(host)) {
+                StatusBarUtil.setIconColor(this, session.themeColorMap[host]!!)
+            } else {
+                StatusBarUtil.setIconColor(this, viewModel.theme.value!!.colorPrimary)
+            }
+        }
+        supportFragmentManager.popBackStack()
+    }
+
     //加载TabFragment
     fun loadTabFragment(sessionId: String, ratio: Float, enterAnimationId: Int? = null, exitAnimationId: Int? = null) {
         if (enterAnimationId != null && exitAnimationId != null) {
@@ -302,7 +316,7 @@ class MainActivity : BaseActivity(), DownloadManager.OnAutoInstallDownloadAppLis
     fun addFoundFragment() {
         val fragment = FoundFragment.newInstance()
         supportFragmentManager.beginTransaction()
-            .setCustomAnimations(R.anim.slide_left_in, R.anim.holder,R.anim.holder,R.anim.slide_right_out)
+            .setCustomAnimations(R.anim.slide_left_in, R.anim.holder, R.anim.holder, R.anim.slide_right_out)
             .add(R.id.root_container, fragment)
             .addToBackStack(null)
             .commit()
@@ -312,7 +326,7 @@ class MainActivity : BaseActivity(), DownloadManager.OnAutoInstallDownloadAppLis
     fun addHistoryFragment() {
         val fragment = HistoryFragment.newInstance()
         supportFragmentManager.beginTransaction()
-            .setCustomAnimations(R.anim.slide_left_in, R.anim.holder,R.anim.holder,R.anim.slide_right_out)
+            .setCustomAnimations(R.anim.slide_left_in, R.anim.holder, R.anim.holder, R.anim.slide_right_out)
             .add(R.id.root_container, fragment)
             .addToBackStack(null)
             .commit()
@@ -322,7 +336,7 @@ class MainActivity : BaseActivity(), DownloadManager.OnAutoInstallDownloadAppLis
     fun addBookMarkFragment() {
         val fragment = BookMarkFragment.newInstance()
         supportFragmentManager.beginTransaction()
-            .setCustomAnimations(R.anim.slide_left_in, R.anim.holder,R.anim.holder,R.anim.slide_right_out)
+            .setCustomAnimations(R.anim.slide_left_in, R.anim.holder, R.anim.holder, R.anim.slide_right_out)
             .add(R.id.root_container, fragment)
             .addToBackStack(null)
             .commit()
@@ -332,7 +346,7 @@ class MainActivity : BaseActivity(), DownloadManager.OnAutoInstallDownloadAppLis
     fun addThemeFragment() {
         val fragment = ThemeFragment.newInstance()
         supportFragmentManager.beginTransaction()
-            .setCustomAnimations(R.anim.slide_left_in, R.anim.holder,R.anim.holder,R.anim.slide_right_out)
+            .setCustomAnimations(R.anim.slide_left_in, R.anim.holder, R.anim.holder, R.anim.slide_right_out)
             .add(R.id.root_container, fragment)
             .addToBackStack(null)
             .commit()
@@ -342,7 +356,7 @@ class MainActivity : BaseActivity(), DownloadManager.OnAutoInstallDownloadAppLis
     fun addDownloadFragment() {
         val fragment = DownloadFragment.newInstance()
         supportFragmentManager.beginTransaction()
-            .setCustomAnimations(R.anim.slide_left_in, R.anim.holder,R.anim.holder,R.anim.slide_right_out)
+            .setCustomAnimations(R.anim.slide_left_in, R.anim.holder, R.anim.holder, R.anim.slide_right_out)
             .add(R.id.root_container, fragment)
             .addToBackStack(null)
             .commit()
@@ -352,7 +366,7 @@ class MainActivity : BaseActivity(), DownloadManager.OnAutoInstallDownloadAppLis
     fun addSettingFragment() {
         val fragment = SettingFragment.newInstance()
         supportFragmentManager.beginTransaction()
-            .setCustomAnimations(R.anim.slide_left_in, R.anim.holder,R.anim.holder,R.anim.slide_right_out)
+            .setCustomAnimations(R.anim.slide_left_in, R.anim.holder, R.anim.holder, R.anim.slide_right_out)
             .add(R.id.root_container, fragment)
             .addToBackStack(null)
             .commit()
@@ -365,7 +379,7 @@ class MainActivity : BaseActivity(), DownloadManager.OnAutoInstallDownloadAppLis
     ) {
         val fragment = ReadModeFragment.newInstance(sessionId)
         supportFragmentManager.beginTransaction()
-            .setCustomAnimations(R.anim.slide_left_in, R.anim.holder,R.anim.holder,R.anim.slide_right_out)
+            .setCustomAnimations(R.anim.slide_left_in, R.anim.holder, R.anim.holder, R.anim.slide_right_out)
             .add(R.id.root_container, fragment)
             .addToBackStack(null)
             .commit()
@@ -377,7 +391,7 @@ class MainActivity : BaseActivity(), DownloadManager.OnAutoInstallDownloadAppLis
     ) {
         val fragment = ImageModeModeFragment.newInstance(sessionId)
         supportFragmentManager.beginTransaction()
-            .setCustomAnimations(R.anim.slide_left_in, R.anim.holder,R.anim.holder,R.anim.slide_right_out)
+            .setCustomAnimations(R.anim.slide_left_in, R.anim.holder, R.anim.holder, R.anim.slide_right_out)
             .add(R.id.root_container, fragment)
             .addToBackStack(null)
             .commit()
@@ -389,7 +403,7 @@ class MainActivity : BaseActivity(), DownloadManager.OnAutoInstallDownloadAppLis
     ) {
         val fragment = ResourceFragment.newInstance(sessionId)
         supportFragmentManager.beginTransaction()
-            .setCustomAnimations(R.anim.slide_left_in, R.anim.holder,R.anim.holder,R.anim.slide_right_out)
+            .setCustomAnimations(R.anim.slide_left_in, R.anim.holder, R.anim.holder, R.anim.slide_right_out)
             .add(R.id.root_container, fragment)
             .addToBackStack(null)
             .commit()
@@ -399,7 +413,7 @@ class MainActivity : BaseActivity(), DownloadManager.OnAutoInstallDownloadAppLis
     fun addAccountFragment() {
         val fragment = AccountFragment.newInstance()
         supportFragmentManager.beginTransaction()
-            .setCustomAnimations(R.anim.slide_left_in, R.anim.holder,R.anim.holder,R.anim.slide_right_out)
+            .setCustomAnimations(R.anim.slide_left_in, R.anim.holder, R.anim.holder, R.anim.slide_right_out)
             .add(R.id.root_container, fragment)
             .addToBackStack(null)
             .commit()
@@ -409,7 +423,7 @@ class MainActivity : BaseActivity(), DownloadManager.OnAutoInstallDownloadAppLis
     fun addGeneralSettingFragment() {
         val fragment = GeneralSettingFragment.newInstance()
         supportFragmentManager.beginTransaction()
-            .setCustomAnimations(R.anim.slide_left_in, R.anim.holder,R.anim.holder,R.anim.slide_right_out)
+            .setCustomAnimations(R.anim.slide_left_in, R.anim.holder, R.anim.holder, R.anim.slide_right_out)
             .add(R.id.root_container, fragment)
             .addToBackStack(null)
             .commit()
@@ -419,7 +433,7 @@ class MainActivity : BaseActivity(), DownloadManager.OnAutoInstallDownloadAppLis
     fun addWebSettingFragment() {
         val fragment = WebSettingFragment.newInstance()
         supportFragmentManager.beginTransaction()
-            .setCustomAnimations(R.anim.slide_left_in, R.anim.holder,R.anim.holder,R.anim.slide_right_out)
+            .setCustomAnimations(R.anim.slide_left_in, R.anim.holder, R.anim.holder, R.anim.slide_right_out)
             .add(R.id.root_container, fragment)
             .addToBackStack(null)
             .commit()
@@ -429,7 +443,7 @@ class MainActivity : BaseActivity(), DownloadManager.OnAutoInstallDownloadAppLis
     fun addCacheSettingFragment() {
         val fragment = CacheSettingFragment.newInstance()
         supportFragmentManager.beginTransaction()
-            .setCustomAnimations(R.anim.slide_left_in, R.anim.holder,R.anim.holder,R.anim.slide_right_out)
+            .setCustomAnimations(R.anim.slide_left_in, R.anim.holder, R.anim.holder, R.anim.slide_right_out)
             .add(R.id.root_container, fragment)
             .addToBackStack(null)
             .commit()
@@ -439,7 +453,7 @@ class MainActivity : BaseActivity(), DownloadManager.OnAutoInstallDownloadAppLis
     fun addAdBlockSettingFragment() {
         val fragment = AdBlockSettingFragment.newInstance()
         supportFragmentManager.beginTransaction()
-            .setCustomAnimations(R.anim.slide_left_in, R.anim.holder,R.anim.holder,R.anim.slide_right_out)
+            .setCustomAnimations(R.anim.slide_left_in, R.anim.holder, R.anim.holder, R.anim.slide_right_out)
             .add(R.id.root_container, fragment)
             .addToBackStack(null)
             .commit()
@@ -449,7 +463,7 @@ class MainActivity : BaseActivity(), DownloadManager.OnAutoInstallDownloadAppLis
     fun addLibrarySettingFragment() {
         val fragment = LibrarySettingFragment.newInstance()
         supportFragmentManager.beginTransaction()
-            .setCustomAnimations(R.anim.slide_left_in, R.anim.holder,R.anim.holder,R.anim.slide_right_out)
+            .setCustomAnimations(R.anim.slide_left_in, R.anim.holder, R.anim.holder, R.anim.slide_right_out)
             .add(R.id.root_container, fragment)
             .addToBackStack(null)
             .commit()
@@ -459,7 +473,7 @@ class MainActivity : BaseActivity(), DownloadManager.OnAutoInstallDownloadAppLis
     fun addGestureSettingFragment() {
         val fragment = GestureSettingFragment.newInstance()
         supportFragmentManager.beginTransaction()
-            .setCustomAnimations(R.anim.slide_left_in, R.anim.holder,R.anim.holder,R.anim.slide_right_out)
+            .setCustomAnimations(R.anim.slide_left_in, R.anim.holder, R.anim.holder, R.anim.slide_right_out)
             .add(R.id.root_container, fragment)
             .addToBackStack(null)
             .commit()
@@ -469,7 +483,7 @@ class MainActivity : BaseActivity(), DownloadManager.OnAutoInstallDownloadAppLis
     fun addSearchEngineSettingFragment() {
         val fragment = SearchEngineSettingFragment.newInstance()
         supportFragmentManager.beginTransaction()
-            .setCustomAnimations(R.anim.slide_left_in, R.anim.holder,R.anim.holder,R.anim.slide_right_out)
+            .setCustomAnimations(R.anim.slide_left_in, R.anim.holder, R.anim.holder, R.anim.slide_right_out)
             .add(R.id.root_container, fragment)
             .addToBackStack(null)
             .commit()
@@ -479,7 +493,7 @@ class MainActivity : BaseActivity(), DownloadManager.OnAutoInstallDownloadAppLis
     fun addDownloadSettingFragment() {
         val fragment = DownloadSettingFragment.newInstance()
         supportFragmentManager.beginTransaction()
-            .setCustomAnimations(R.anim.slide_left_in, R.anim.holder,R.anim.holder,R.anim.slide_right_out)
+            .setCustomAnimations(R.anim.slide_left_in, R.anim.holder, R.anim.holder, R.anim.slide_right_out)
             .add(R.id.root_container, fragment)
             .addToBackStack(null)
             .commit()
@@ -489,7 +503,7 @@ class MainActivity : BaseActivity(), DownloadManager.OnAutoInstallDownloadAppLis
     fun addAddressBarSettingFragment() {
         val fragment = AddressBarSettingFragment.newInstance()
         supportFragmentManager.beginTransaction()
-            .setCustomAnimations(R.anim.slide_left_in, R.anim.holder,R.anim.holder,R.anim.slide_right_out)
+            .setCustomAnimations(R.anim.slide_left_in, R.anim.holder, R.anim.holder, R.anim.slide_right_out)
             .add(R.id.root_container, fragment)
             .addToBackStack(null)
             .commit()
@@ -499,7 +513,7 @@ class MainActivity : BaseActivity(), DownloadManager.OnAutoInstallDownloadAppLis
     fun addVisionModeSettingFragment() {
         val fragment = VisionModeSettingFragment.newInstance()
         supportFragmentManager.beginTransaction()
-            .setCustomAnimations(R.anim.slide_left_in, R.anim.holder,R.anim.holder,R.anim.slide_right_out)
+            .setCustomAnimations(R.anim.slide_left_in, R.anim.holder, R.anim.holder, R.anim.slide_right_out)
             .add(R.id.root_container, fragment)
             .addToBackStack(null)
             .commit()
@@ -509,7 +523,7 @@ class MainActivity : BaseActivity(), DownloadManager.OnAutoInstallDownloadAppLis
     fun addFontSizeSettingFragment() {
         val fragment = FontSizeSettingFragment.newInstance()
         supportFragmentManager.beginTransaction()
-            .setCustomAnimations(R.anim.slide_left_in, R.anim.holder,R.anim.holder,R.anim.slide_right_out)
+            .setCustomAnimations(R.anim.slide_left_in, R.anim.holder, R.anim.holder, R.anim.slide_right_out)
             .add(R.id.root_container, fragment)
             .addToBackStack(null)
             .commit()
@@ -519,7 +533,7 @@ class MainActivity : BaseActivity(), DownloadManager.OnAutoInstallDownloadAppLis
     fun addLanguageSettingFragment() {
         val fragment = LanguageSettingFragment.newInstance()
         supportFragmentManager.beginTransaction()
-            .setCustomAnimations(R.anim.slide_left_in, R.anim.holder,R.anim.holder,R.anim.slide_right_out)
+            .setCustomAnimations(R.anim.slide_left_in, R.anim.holder, R.anim.holder, R.anim.slide_right_out)
             .add(R.id.root_container, fragment)
             .addToBackStack(null)
             .commit()
@@ -529,7 +543,7 @@ class MainActivity : BaseActivity(), DownloadManager.OnAutoInstallDownloadAppLis
     fun addColorStyleSettingFragment() {
         val fragment = ColorStyleSettingFragment.newInstance()
         supportFragmentManager.beginTransaction()
-            .setCustomAnimations(R.anim.slide_left_in, R.anim.holder,R.anim.holder,R.anim.slide_right_out)
+            .setCustomAnimations(R.anim.slide_left_in, R.anim.holder, R.anim.holder, R.anim.slide_right_out)
             .add(R.id.root_container, fragment)
             .addToBackStack(null)
             .commit()
@@ -539,7 +553,7 @@ class MainActivity : BaseActivity(), DownloadManager.OnAutoInstallDownloadAppLis
     fun addUaSettingFragment() {
         val fragment = UaSettingFragment.newInstance()
         supportFragmentManager.beginTransaction()
-            .setCustomAnimations(R.anim.slide_left_in, R.anim.holder,R.anim.holder,R.anim.slide_right_out)
+            .setCustomAnimations(R.anim.slide_left_in, R.anim.holder, R.anim.holder, R.anim.slide_right_out)
             .add(R.id.root_container, fragment)
             .addToBackStack(null)
             .commit()
@@ -549,7 +563,7 @@ class MainActivity : BaseActivity(), DownloadManager.OnAutoInstallDownloadAppLis
     fun addOpenAppSettingFragment() {
         val fragment = OpenAppSettingFragment.newInstance()
         supportFragmentManager.beginTransaction()
-            .setCustomAnimations(R.anim.slide_left_in, R.anim.holder,R.anim.holder,R.anim.slide_right_out)
+            .setCustomAnimations(R.anim.slide_left_in, R.anim.holder, R.anim.holder, R.anim.slide_right_out)
             .add(R.id.root_container, fragment)
             .addToBackStack(null)
             .commit()
@@ -560,7 +574,7 @@ class MainActivity : BaseActivity(), DownloadManager.OnAutoInstallDownloadAppLis
     fun addAdBlockSubscriptionSettingFragment() {
         val fragment = AdBlockSubscriptionSettingFragment.newInstance()
         supportFragmentManager.beginTransaction()
-            .setCustomAnimations(R.anim.slide_left_in, R.anim.holder,R.anim.holder,R.anim.slide_right_out)
+            .setCustomAnimations(R.anim.slide_left_in, R.anim.holder, R.anim.holder, R.anim.slide_right_out)
             .add(R.id.root_container, fragment)
             .addToBackStack(null)
             .commit()
@@ -570,7 +584,7 @@ class MainActivity : BaseActivity(), DownloadManager.OnAutoInstallDownloadAppLis
     fun addAdBlockFilterSettingFragment() {
         val fragment = AdBlockFilterSettingFragment.newInstance()
         supportFragmentManager.beginTransaction()
-            .setCustomAnimations(R.anim.slide_left_in, R.anim.holder,R.anim.holder,R.anim.slide_right_out)
+            .setCustomAnimations(R.anim.slide_left_in, R.anim.holder, R.anim.holder, R.anim.slide_right_out)
             .add(R.id.root_container, fragment)
             .addToBackStack(null)
             .commit()
@@ -580,7 +594,7 @@ class MainActivity : BaseActivity(), DownloadManager.OnAutoInstallDownloadAppLis
     fun addAdBlockWhiteListSettingFragment() {
         val fragment = AdBlockWhiteListSettingFragment.newInstance()
         supportFragmentManager.beginTransaction()
-            .setCustomAnimations(R.anim.slide_left_in, R.anim.holder,R.anim.holder,R.anim.slide_right_out)
+            .setCustomAnimations(R.anim.slide_left_in, R.anim.holder, R.anim.holder, R.anim.slide_right_out)
             .add(R.id.root_container, fragment)
             .addToBackStack(null)
             .commit()
@@ -590,7 +604,7 @@ class MainActivity : BaseActivity(), DownloadManager.OnAutoInstallDownloadAppLis
     fun addAdBlockConnectionSettingFragment() {
         val fragment = AdBlockConnectionSettingFragment.newInstance()
         supportFragmentManager.beginTransaction()
-            .setCustomAnimations(R.anim.slide_left_in, R.anim.holder,R.anim.holder,R.anim.slide_right_out)
+            .setCustomAnimations(R.anim.slide_left_in, R.anim.holder, R.anim.holder, R.anim.slide_right_out)
             .add(R.id.root_container, fragment)
             .addToBackStack(null)
             .commit()
@@ -600,7 +614,7 @@ class MainActivity : BaseActivity(), DownloadManager.OnAutoInstallDownloadAppLis
     fun addDownloadManagerSettingFragment() {
         val fragment = DownloadManagerSettingFragment.newInstance()
         supportFragmentManager.beginTransaction()
-            .setCustomAnimations(R.anim.slide_left_in, R.anim.holder,R.anim.holder,R.anim.slide_right_out)
+            .setCustomAnimations(R.anim.slide_left_in, R.anim.holder, R.anim.holder, R.anim.slide_right_out)
             .add(R.id.root_container, fragment)
             .addToBackStack(null)
             .commit()
@@ -610,7 +624,7 @@ class MainActivity : BaseActivity(), DownloadManager.OnAutoInstallDownloadAppLis
     fun addDownloadPathSettingFragment() {
         val fragment = DownloadPathSettingFragment.newInstance()
         supportFragmentManager.beginTransaction()
-            .setCustomAnimations(R.anim.slide_left_in, R.anim.holder,R.anim.holder,R.anim.slide_right_out)
+            .setCustomAnimations(R.anim.slide_left_in, R.anim.holder, R.anim.holder, R.anim.slide_right_out)
             .add(R.id.root_container, fragment)
             .addToBackStack(null)
             .commit()

@@ -69,7 +69,7 @@ class HistoryFragment : BaseFragment(), BackHandler {
     lateinit var activityViewModel: MainViewModel
     lateinit var binding: FragmentHistoryBinding
     override fun onBackPressed(): Boolean {
-        fragmentManager?.popBackStack()
+        RouterActivity?.popUpToHomeOrBrowserFragment()
         return true
     }
 

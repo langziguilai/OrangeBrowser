@@ -45,7 +45,7 @@ class ThemeFragment : BaseFragment(), BackHandler {
     lateinit var activityViewModel: MainViewModel
     lateinit var binding: FragmentThemeBinding
     override fun onBackPressed(): Boolean {
-        fragmentManager?.popBackStack()
+        RouterActivity?.popUpToHomeOrBrowserFragment()
         return true
     }
 

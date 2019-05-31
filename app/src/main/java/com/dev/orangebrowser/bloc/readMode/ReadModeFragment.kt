@@ -57,7 +57,7 @@ class ReadModeFragment : BaseFragment(), BackHandler {
     }
 
     override fun onBackPressed(): Boolean {
-        fragmentManager?.popBackStack()
+        RouterActivity?.popUpToHomeOrBrowserFragment()
         return true
     }
 

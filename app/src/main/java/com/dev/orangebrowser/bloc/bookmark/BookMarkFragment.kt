@@ -65,7 +65,7 @@ class BookMarkFragment : BaseFragment(), BackHandler {
     lateinit var binding: FragmentBookmarkBinding
 
     override fun onBackPressed(): Boolean {
-        fragmentManager?.popBackStack()
+        RouterActivity?.popUpToHomeOrBrowserFragment()
         return true
     }
 
