@@ -246,7 +246,7 @@ class MainActivity : BaseActivity(), DownloadManager.OnAutoInstallDownloadAppLis
         val session = sessionManager.findSessionById(sessionId)
         if (session != null) {
             if (session.screenNumber == Session.HOME_SCREEN) {
-                loadHomeFragment(sessionId)
+                loadHomeFragment(sessionId,enterAnimationId,exitAnimationId)
             } else {
                 loadBrowserFragment(sessionId,enterAnimationId,exitAnimationId)
             }
