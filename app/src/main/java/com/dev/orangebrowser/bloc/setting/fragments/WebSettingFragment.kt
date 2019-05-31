@@ -20,6 +20,7 @@ import com.dev.orangebrowser.bloc.setting.viewholder.TileItem
 import com.dev.orangebrowser.bloc.setting.viewholder.base.Action
 import com.dev.orangebrowser.databinding.FragmentWebSettingBinding
 import com.dev.orangebrowser.extension.*
+import com.dev.view.StatusBarUtil
 import java.util.*
 
 class WebSettingFragment : BaseFragment(), BackHandler {
@@ -69,6 +70,7 @@ class WebSettingFragment : BaseFragment(), BackHandler {
         binding.goBack.setOnClickListener {
             onBackPressed()
         }
+        StatusBarUtil.setIconColor(requireActivity(),activityViewModel.theme.value!!.colorPrimary)
         binding.recyclerView.layoutManager = LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
     }
 

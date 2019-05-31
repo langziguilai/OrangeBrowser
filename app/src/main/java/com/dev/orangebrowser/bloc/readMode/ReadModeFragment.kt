@@ -25,6 +25,7 @@ import com.dev.browser.feature.tabs.TabsUseCases
 import com.dev.orangebrowser.bloc.host.MainViewModel
 import com.dev.orangebrowser.utils.html2article.ContentExtractor
 import com.dev.util.StringUtil
+import com.dev.view.StatusBarUtil
 import com.dev.view.dialog.DialogBuilder
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -223,6 +224,7 @@ class ReadModeFragment : BaseFragment(), BackHandler {
     }
 
     override fun initData(savedInstanceState: Bundle?) {
+        StatusBarUtil.setIconColor(requireActivity(),activityViewModel.theme.value!!.colorPrimary)
         header.setBackgroundColor(activityViewModel.theme.value!!.colorPrimary)
         containerWrapper.setBackgroundColor(activityViewModel.theme.value!!.colorPrimary)
         val session = sessionManager.findSessionById(arguments?.getString(BrowserFragment.SESSION_ID) ?: "")

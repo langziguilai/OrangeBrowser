@@ -23,6 +23,7 @@ import com.dev.orangebrowser.extension.appComponent
 import com.dev.orangebrowser.extension.appData
 import com.dev.orangebrowser.extension.getColor
 import com.dev.util.DensityUtil
+import com.dev.view.StatusBarUtil
 import com.dev.view.recyclerview.CustomBaseViewHolder
 import com.dev.view.recyclerview.GridDividerItemDecoration
 import com.dev.view.recyclerview.adapter.base.BaseQuickAdapter
@@ -71,6 +72,7 @@ class ThemeFragment : BaseFragment(), BackHandler {
 
 
     override fun initViewWithDataBinding(savedInstanceState: Bundle?) {
+        StatusBarUtil.setIconColor(requireActivity(),activityViewModel.theme.value!!.colorPrimary)
         binding.goBack.setOnClickListener {
             onBackPressed()
         }

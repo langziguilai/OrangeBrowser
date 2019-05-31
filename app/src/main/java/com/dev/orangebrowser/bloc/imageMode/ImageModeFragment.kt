@@ -30,6 +30,7 @@ import com.dev.orangebrowser.view.contextmenu.Action
 import com.dev.orangebrowser.view.contextmenu.CommonContextMenuAdapter
 import com.dev.orangebrowser.view.contextmenu.MenuItem
 import com.dev.util.StringUtil
+import com.dev.view.StatusBarUtil
 import com.dev.view.dialog.DialogBuilder
 import com.dev.view.recyclerview.CustomBaseViewHolder
 import com.dev.view.recyclerview.adapter.base.BaseQuickAdapter
@@ -131,6 +132,7 @@ class ImageModeModeFragment : BaseFragment(), BackHandler {
 
     private var images = LinkedList<String>()
     override fun initData(savedInstanceState: Bundle?) {
+        StatusBarUtil.setIconColor(requireActivity(),activityViewModel.theme.value!!.colorPrimary)
         header.setBackgroundColor(activityViewModel.theme.value!!.colorPrimary)
         containerWrapper.setBackgroundColor(activityViewModel.theme.value!!.colorPrimary)
         val session = sessionManager.findSessionById(arguments?.getString(BrowserFragment.SESSION_ID) ?: "")

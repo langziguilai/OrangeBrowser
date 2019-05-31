@@ -18,6 +18,7 @@ import com.dev.orangebrowser.extension.getColor
 import com.dev.orangebrowser.utils.FileSizeHelper
 import com.dev.orangebrowser.utils.FileTypeDetect
 import com.dev.util.DensityUtil
+import com.dev.view.StatusBarUtil
 import com.dev.view.recyclerview.CustomBaseViewHolder
 import com.dev.view.recyclerview.GridDividerItemDecoration
 import com.dev.view.recyclerview.adapter.base.BaseQuickAdapter
@@ -59,6 +60,7 @@ class DownloadFragment : BaseFragment() {
     var allItems:LinkedList<Item> = LinkedList()
     var displayItems:LinkedList<Item> = LinkedList()
     override fun initViewWithDataBinding(savedInstanceState: Bundle?) {
+        StatusBarUtil.setIconColor(requireActivity(),activityViewModel.theme.value!!.colorPrimary)
         binding.recyclerView.apply {
             this.layoutManager=LinearLayoutManager(requireContext(),RecyclerView.VERTICAL,false)
             this.addItemDecoration(GridDividerItemDecoration(0,DensityUtil.dip2px(requireContext(),0.5f),getColor(R.color.material_grey_300)))

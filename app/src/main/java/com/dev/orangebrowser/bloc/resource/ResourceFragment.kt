@@ -40,6 +40,7 @@ import com.dev.orangebrowser.view.contextmenu.CommonContextMenuAdapter
 import com.dev.orangebrowser.view.contextmenu.MenuItem
 import com.dev.util.DensityUtil
 import com.dev.util.StringUtil
+import com.dev.view.StatusBarUtil
 import com.dev.view.dialog.DialogBuilder
 import com.dev.view.recyclerview.CustomBaseViewHolder
 import com.dev.view.recyclerview.GridDividerItemDecoration
@@ -168,6 +169,7 @@ class ResourceFragment : BaseFragment(), BackHandler {
     private lateinit var  displayAdapter:BaseQuickAdapter<Resource,CustomBaseViewHolder>
     var session:Session?=null
     override fun initData(savedInstanceState: Bundle?) {
+        StatusBarUtil.setIconColor(requireActivity(),activityViewModel.theme.value!!.colorPrimary)
         header.setBackgroundColor(activityViewModel.theme.value!!.colorPrimary)
         containerWrapper.setBackgroundColor(activityViewModel.theme.value!!.colorPrimary)
         session = sessionManager.findSessionById(arguments?.getString(BrowserFragment.SESSION_ID) ?: "")

@@ -31,6 +31,7 @@ import com.dev.orangebrowser.view.contextmenu.Action
 import com.dev.orangebrowser.view.contextmenu.CommonContextMenuAdapter
 import com.dev.orangebrowser.view.contextmenu.MenuItem
 import com.dev.util.DensityUtil
+import com.dev.view.StatusBarUtil
 import com.dev.view.dialog.DialogBuilder
 import com.dev.view.recyclerview.CustomBaseViewHolder
 import com.dev.view.recyclerview.GridDividerItemDecoration
@@ -101,6 +102,7 @@ class BookMarkFragment : BaseFragment(), BackHandler {
         null
     var bookMarkItems = LinkedList<LeftRightEntity<BookMarkCategoryEntity, BookMarkEntity>>()
     override fun initViewWithDataBinding(savedInstanceState: Bundle?) {
+        StatusBarUtil.setIconColor(requireActivity(),activityViewModel.theme.value!!.colorPrimary)
         offSet = DensityUtil.dip2px(requireContext(), 20f)
         binding.goBack.setOnClickListener {
             onBackPressed()

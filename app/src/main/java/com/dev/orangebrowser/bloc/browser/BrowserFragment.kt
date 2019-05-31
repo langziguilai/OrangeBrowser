@@ -3,6 +3,7 @@ package com.dev.orangebrowser.bloc.browser
 
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.*
 import androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -384,6 +385,14 @@ class BrowserFragment : BaseFragment(), BackHandler, UserInteractionHandler {
     }
 
     override fun onResume() {
+        //set status bar icon color
+
+//        val host = Uri.parse(session.url).host ?: ""
+//        if (session.themeColorMap.containsKey(host)) {
+//            StatusBarUtil.setIconColor(requireActivity(),session.themeColorMap[host]!!)
+//        } else {
+//            StatusBarUtil.setIconColor(requireActivity(),activityViewModel.theme.value!!.colorPrimary)
+//        }
         super.onResume()
         if (session.fullScreenMode){
             StatusBarUtil.hideStatusBar(requireActivity())
