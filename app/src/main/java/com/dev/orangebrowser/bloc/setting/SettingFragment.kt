@@ -19,6 +19,7 @@ import com.dev.orangebrowser.bloc.setting.viewholder.*
 import com.dev.orangebrowser.bloc.setting.viewholder.base.Action
 import com.dev.orangebrowser.databinding.FragmentMainSettingBinding
 import com.dev.orangebrowser.extension.*
+import com.dev.view.StatusBarUtil
 import java.util.*
 import javax.inject.Inject
 
@@ -69,6 +70,7 @@ class SettingFragment : BaseAdBlockSettingFragment(),BackHandler {
 
 
     override fun initViewWithDataBinding(savedInstanceState: Bundle?) {
+        StatusBarUtil.setIconColor(requireActivity(),activityViewModel.theme.value!!.colorPrimary)
         binding.goBack.setOnClickListener {
             onBackPressed()
         }
