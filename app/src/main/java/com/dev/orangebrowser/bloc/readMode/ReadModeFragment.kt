@@ -77,6 +77,7 @@ class ReadModeFragment : BaseFragment(), BackHandler {
     lateinit var backBtn: TextView
     lateinit var menuBtn: TextView
     lateinit var header: View
+    lateinit var containerWrapper:View
     var webView: WebView? = null
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -99,6 +100,7 @@ class ReadModeFragment : BaseFragment(), BackHandler {
         container = view.findViewById(R.id.container)
         initContentView()
         header = view.findViewById<View>(R.id.header)
+        containerWrapper=view.findViewById(R.id.container_wrapper)
         titleTextView = view.findViewById(R.id.title)
         backBtn = view.findViewById<TextView>(R.id.back).apply {
             setOnClickListener {
@@ -227,6 +229,7 @@ class ReadModeFragment : BaseFragment(), BackHandler {
 
     override fun initData(savedInstanceState: Bundle?) {
         header.setBackgroundColor(activityViewModel.theme.value!!.colorPrimary)
+        containerWrapper.setBackgroundColor(activityViewModel.theme.value!!.colorPrimary)
         val session = sessionManager.findSessionById(arguments?.getString(BrowserFragment.SESSION_ID) ?: "")
         if (session == null) {
             RouterActivity?.loadHomeOrBrowserFragment(sessionManager.selectedSession?.id ?: "")

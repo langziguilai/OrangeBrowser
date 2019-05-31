@@ -6,6 +6,7 @@
     </data>
     <androidx.coordinatorlayout.widget.CoordinatorLayout android:layout_width="match_parent"
                                                          android:fitsSystemWindows="true"
+                                                         android:id="@+id/container_wrapper"
                                                          app:bgColor="@{activityViewModel.theme.colorPrimary}"
                                                          android:layout_height="match_parent">
         <LinearLayout

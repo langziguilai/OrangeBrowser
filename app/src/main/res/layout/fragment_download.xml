@@ -5,155 +5,162 @@
     <data>
         <variable name="activityViewModel" type="com.dev.orangebrowser.bloc.host.MainViewModel"/>
     </data>
-    <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-        <LinearLayout android:id="@+id/header"
-                      android:layout_width="0dp"
-                      android:layout_height="44dp"
-                      android:paddingTop="4dp"
-                      android:orientation="horizontal"
-                      android:background="@{activityViewModel.theme.colorPrimary}"
-                      app:layout_constraintTop_toTopOf="parent"
-                      app:layout_constraintStart_toStartOf="parent"
-                      app:layout_constraintEnd_toEndOf="parent">
-            <com.dev.view.IconfontTextView
-                    android:id="@+id/back"
-                    android:layout_width="48dp"
-                    android:layout_height="42dp"
-                    android:textColor="@color/colorWhite"
-                    android:textSize="18sp"
-                    android:text="@string/ic_arrow_left"
-                    android:gravity="center"
-                    android:layout_gravity="start|center_vertical"/>
-            <TextView android:text="@string/detect_resource"
-                      android:id="@+id/title"
-                      android:gravity="center"
-                      android:textSize="18sp"
-                      android:singleLine="true"
-                      android:ellipsize="end"
-                      android:layout_weight="1"
-                      android:textColor="@color/colorWhite"
-                      android:layout_width="0dp"
-                      android:layout_height="match_parent"/>
-            <com.dev.view.IconfontTextView
-                    android:id="@+id/download"
-                    android:layout_width="48dp"
-                    android:layout_height="42dp"
-                    android:textColor="@color/colorWhite"
-                    android:textSize="18sp"
-                    android:text=""
-                    android:gravity="center"
-                    android:layout_gravity="end|center_vertical"/>
-        </LinearLayout>
-        <com.dev.orangebrowser.view.LongClickFrameLayout
-                android:id="@+id/container"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintBottom_toTopOf="@+id/bottomnav"
-                app:layout_constraintTop_toBottomOf="@+id/header">
-            <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/recycler_view"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"/>
-        </com.dev.orangebrowser.view.LongClickFrameLayout>
-        <LinearLayout android:id="@+id/bottomnav"
-                      android:orientation="horizontal"
-                      app:layout_constraintStart_toStartOf="parent"
-                      app:layout_constraintEnd_toEndOf="parent"
-                      app:layout_constraintBottom_toBottomOf="parent"
-                      android:layout_width="0dp"
-                      android:layout_height="46dp">
-            <LinearLayout android:id="@+id/download_path"
-                          android:clickable="true"
-                          android:focusable="true"
+    <androidx.coordinatorlayout.widget.CoordinatorLayout android:layout_width="match_parent"
+                                                         android:fitsSystemWindows="true"
+                                                         android:id="@+id/container_wrapper"
+                                                         android:background="@{activityViewModel.theme.colorPrimary}"
+                                                         android:layout_height="match_parent">
+        <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+            <LinearLayout android:id="@+id/header"
                           android:layout_width="0dp"
-                          android:layout_height="wrap_content"
-                          android:orientation="vertical"
-                          android:layout_weight="1">
-                  <com.dev.view.IconfontTextView android:text="@string/ic_download"
-                                                 android:layout_gravity="center_horizontal"
-                                                 android:textColor="@{activityViewModel.theme.colorPrimary}"
-                                                 android:textSize="20sp"
-                                                 android:gravity="center"
-                                                 android:layout_width="20dp" 
-                                                 android:layout_height="20dp"/>
-                  <TextView  android:textColor="@{activityViewModel.theme.colorPrimary}"
-                             android:textSize="9sp"
-                             android:layout_marginTop="4dp"
-                             android:layout_gravity="center_horizontal"
-                             android:text="@string/download_path"
-                             android:layout_width="wrap_content"
-                             android:layout_height="16dp"/>
-            </LinearLayout>
-            <LinearLayout android:id="@+id/download_image"
-                          android:clickable="true"
-                          android:focusable="true"
+                          android:layout_height="44dp"
+                          android:paddingTop="4dp"
+                          android:orientation="horizontal"
+                          android:background="@{activityViewModel.theme.colorPrimary}"
+                          app:layout_constraintTop_toTopOf="parent"
+                          app:layout_constraintStart_toStartOf="parent"
+                          app:layout_constraintEnd_toEndOf="parent">
+                <com.dev.view.IconfontTextView
+                        android:id="@+id/back"
+                        android:layout_width="48dp"
+                        android:layout_height="42dp"
+                        android:textColor="@color/colorWhite"
+                        android:textSize="18sp"
+                        android:text="@string/ic_arrow_left"
+                        android:gravity="center"
+                        android:layout_gravity="start|center_vertical"/>
+                <TextView android:text="@string/detect_resource"
+                          android:id="@+id/title"
+                          android:gravity="center"
+                          android:textSize="18sp"
+                          android:singleLine="true"
+                          android:ellipsize="end"
+                          android:layout_weight="1"
+                          android:textColor="@color/colorWhite"
                           android:layout_width="0dp"
-                          android:layout_height="wrap_content"
-                          android:orientation="vertical"
-                          android:layout_weight="1">
-                <com.dev.view.IconfontTextView android:text="@string/ic_image"
-                                               android:layout_gravity="center_horizontal"
-                                               android:textColor="@{activityViewModel.theme.colorPrimary}"
-                                               android:textSize="20sp"
-                                               android:gravity="center"
-                                               android:layout_width="20dp"
-                                               android:layout_height="20dp"/>
-                <TextView  android:textColor="@{activityViewModel.theme.colorPrimary}"
-                           android:layout_marginTop="4dp"
-                           android:textSize="9sp"
-                           android:layout_gravity="center_horizontal"
-                           android:text="@string/saved_images"
-                           android:layout_width="wrap_content"
-                           android:layout_height="16dp"/>
+                          android:layout_height="match_parent"/>
+                <com.dev.view.IconfontTextView
+                        android:id="@+id/download"
+                        android:layout_width="48dp"
+                        android:layout_height="42dp"
+                        android:textColor="@color/colorWhite"
+                        android:textSize="18sp"
+                        android:text=""
+                        android:gravity="center"
+                        android:layout_gravity="end|center_vertical"/>
             </LinearLayout>
-            <LinearLayout android:id="@+id/saved_videos"
-                          android:clickable="true"
-                          android:focusable="true"
+            <com.dev.orangebrowser.view.LongClickFrameLayout
+                    android:id="@+id/container"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintBottom_toTopOf="@+id/bottomnav"
+                    app:layout_constraintTop_toBottomOf="@+id/header">
+                <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/recycler_view"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"/>
+            </com.dev.orangebrowser.view.LongClickFrameLayout>
+            <LinearLayout android:id="@+id/bottomnav"
+                          android:orientation="horizontal"
+                          app:layout_constraintStart_toStartOf="parent"
+                          app:layout_constraintEnd_toEndOf="parent"
+                          app:layout_constraintBottom_toBottomOf="parent"
                           android:layout_width="0dp"
-                          android:layout_height="wrap_content"
-                          android:orientation="vertical"
-                          android:layout_weight="1">
-                <com.dev.view.IconfontTextView android:text="@string/ic_video"
-                                               android:layout_gravity="center_horizontal"
-                                               android:textColor="@{activityViewModel.theme.colorPrimary}"
-                                               android:textSize="20sp"
-                                               android:gravity="center"
-                                               android:layout_width="20dp"
-                                               android:layout_height="20dp"/>
-                <TextView  android:textColor="@{activityViewModel.theme.colorPrimary}"
-                           android:layout_marginTop="4dp"
-                           android:textSize="9sp"
-                           android:layout_gravity="center_horizontal"
-                           android:text="@string/saved_videoes"
-                           android:layout_width="wrap_content"
-                           android:layout_height="16dp"/>
+                          android:layout_height="46dp">
+                <LinearLayout android:id="@+id/download_path"
+                              android:clickable="true"
+                              android:focusable="true"
+                              android:layout_width="0dp"
+                              android:layout_height="wrap_content"
+                              android:orientation="vertical"
+                              android:layout_weight="1">
+                    <com.dev.view.IconfontTextView android:text="@string/ic_download"
+                                                   android:layout_gravity="center_horizontal"
+                                                   android:textColor="@{activityViewModel.theme.colorPrimary}"
+                                                   android:textSize="20sp"
+                                                   android:gravity="center"
+                                                   android:layout_width="20dp"
+                                                   android:layout_height="20dp"/>
+                    <TextView  android:textColor="@{activityViewModel.theme.colorPrimary}"
+                               android:textSize="9sp"
+                               android:layout_marginTop="4dp"
+                               android:layout_gravity="center_horizontal"
+                               android:text="@string/download_path"
+                               android:layout_width="wrap_content"
+                               android:layout_height="16dp"/>
+                </LinearLayout>
+                <LinearLayout android:id="@+id/download_image"
+                              android:clickable="true"
+                              android:focusable="true"
+                              android:layout_width="0dp"
+                              android:layout_height="wrap_content"
+                              android:orientation="vertical"
+                              android:layout_weight="1">
+                    <com.dev.view.IconfontTextView android:text="@string/ic_image"
+                                                   android:layout_gravity="center_horizontal"
+                                                   android:textColor="@{activityViewModel.theme.colorPrimary}"
+                                                   android:textSize="20sp"
+                                                   android:gravity="center"
+                                                   android:layout_width="20dp"
+                                                   android:layout_height="20dp"/>
+                    <TextView  android:textColor="@{activityViewModel.theme.colorPrimary}"
+                               android:layout_marginTop="4dp"
+                               android:textSize="9sp"
+                               android:layout_gravity="center_horizontal"
+                               android:text="@string/saved_images"
+                               android:layout_width="wrap_content"
+                               android:layout_height="16dp"/>
+                </LinearLayout>
+                <LinearLayout android:id="@+id/saved_videos"
+                              android:clickable="true"
+                              android:focusable="true"
+                              android:layout_width="0dp"
+                              android:layout_height="wrap_content"
+                              android:orientation="vertical"
+                              android:layout_weight="1">
+                    <com.dev.view.IconfontTextView android:text="@string/ic_video"
+                                                   android:layout_gravity="center_horizontal"
+                                                   android:textColor="@{activityViewModel.theme.colorPrimary}"
+                                                   android:textSize="20sp"
+                                                   android:gravity="center"
+                                                   android:layout_width="20dp"
+                                                   android:layout_height="20dp"/>
+                    <TextView  android:textColor="@{activityViewModel.theme.colorPrimary}"
+                               android:layout_marginTop="4dp"
+                               android:textSize="9sp"
+                               android:layout_gravity="center_horizontal"
+                               android:text="@string/saved_videoes"
+                               android:layout_width="wrap_content"
+                               android:layout_height="16dp"/>
+                </LinearLayout>
+                <LinearLayout android:id="@+id/download_html"
+                              android:clickable="true"
+                              android:focusable="true"
+                              android:layout_width="0dp"
+                              android:layout_height="wrap_content"
+                              android:orientation="vertical"
+                              android:layout_weight="1">
+                    <com.dev.view.IconfontTextView android:text="@string/ic_save"
+                                                   android:layout_gravity="center_horizontal"
+                                                   android:textColor="@{activityViewModel.theme.colorPrimary}"
+                                                   android:textSize="20sp"
+                                                   android:gravity="center"
+                                                   android:layout_width="20dp"
+                                                   android:layout_height="20dp"/>
+                    <TextView  android:textColor="@{activityViewModel.theme.colorPrimary}"
+                               android:layout_marginTop="4dp"
+                               android:textSize="9sp"
+                               android:layout_gravity="center_horizontal"
+                               android:text="@string/saved_pages"
+                               android:layout_width="wrap_content"
+                               android:layout_height="16dp"/>
+                </LinearLayout>
             </LinearLayout>
-            <LinearLayout android:id="@+id/download_html"
-                          android:clickable="true"
-                          android:focusable="true"
-                          android:layout_width="0dp"
-                          android:layout_height="wrap_content"
-                          android:orientation="vertical"
-                          android:layout_weight="1">
-                <com.dev.view.IconfontTextView android:text="@string/ic_save"
-                                               android:layout_gravity="center_horizontal"
-                                               android:textColor="@{activityViewModel.theme.colorPrimary}"
-                                               android:textSize="20sp"
-                                               android:gravity="center"
-                                               android:layout_width="20dp"
-                                               android:layout_height="20dp"/>
-                <TextView  android:textColor="@{activityViewModel.theme.colorPrimary}"
-                           android:layout_marginTop="4dp"
-                           android:textSize="9sp"
-                           android:layout_gravity="center_horizontal"
-                           android:text="@string/saved_pages"
-                           android:layout_width="wrap_content"
-                           android:layout_height="16dp"/>
-            </LinearLayout>
-        </LinearLayout>
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
 </layout>

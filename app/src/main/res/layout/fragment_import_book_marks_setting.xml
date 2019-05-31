@@ -4,71 +4,77 @@
     <data>
         <variable name="activityViewModel" type="com.dev.orangebrowser.bloc.host.MainViewModel"/>
     </data>
-    <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-        <FrameLayout android:id="@+id/header" android:layout_width="0dp" android:layout_height="40dp"
-                     android:paddingTop="4dp"
-                     android:background="@{activityViewModel.theme.colorPrimary}"
-                     app:layout_constraintTop_toTopOf="parent" app:layout_constraintStart_toStartOf="parent"
-                     app:layout_constraintEnd_toEndOf="parent">
-            <com.dev.view.IconfontTextView
-                    android:id="@+id/go_back"
-                    android:layout_width="42dp"
-                    android:layout_height="38dp"
-                    android:textColor="@color/colorWhite"
-                    android:textSize="18sp"
-                    android:text="@string/ic_arrow_left"
-                    android:gravity="center"
-                    android:layout_gravity="start|center_vertical"/>
-            <TextView android:text="@string/choose_file"
-                      android:gravity="center"
-                      android:textSize="18sp"
-                      android:textColor="@color/colorWhite"
-                      android:layout_width="match_parent"
-                      android:layout_height="match_parent"/>
-            <com.dev.view.IconfontTextView
-                    android:id="@+id/add_directory"
-                    android:layout_width="42dp"
-                    android:layout_height="38dp"
-                    android:textColor="@color/colorWhite"
-                    android:textSize="18sp"
-                    android:text="@string/ic_circle_plus"
-                    android:gravity="center"
-                    android:layout_gravity="end|center_vertical"/>
-        </FrameLayout>
-        <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recyclerView"
-                android:background="@color/color_F8F8F8"
-                app:layout_constraintTop_toBottomOf="@+id/header"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintBottom_toTopOf="@+id/choose_directory"
-                android:overScrollMode="never"
-                android:layout_width="0dp"
-                android:layout_height="0dp"/>
-        <LinearLayout app:layout_constraintBottom_toBottomOf="parent"
-                      app:layout_constraintStart_toStartOf="parent"
-                      app:layout_constraintEnd_toEndOf="parent"
-                      android:id="@+id/choose_directory"
-                      android:orientation="vertical"
-                      android:layout_width="match_parent"
-                      android:layout_height="52dp">
-            <View android:layout_width="match_parent" android:layout_height="0.5dp" android:background="#9C9C9C"/>
-            <com.dev.view.IconfontTextView
-                    android:layout_marginTop="5.5dp"
-                    android:layout_width="22dp"
-                    android:layout_height="22dp"
-                    android:textColor="@color/color_393A3F"
-                    android:textSize="18sp"
-                    android:background="@drawable/ic_check"
-                    android:layout_gravity="center"/>
-            <TextView android:layout_width="wrap_content"
-                      android:layout_height="18dp"
-                      android:layout_gravity="center"
-                      android:textColor="@color/color_6C6C6C"
-                      android:text="@string/choose_directory"
-                      android:textSize="10sp"/>
-        </LinearLayout>
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    <androidx.coordinatorlayout.widget.CoordinatorLayout android:layout_width="match_parent"
+                                                         android:fitsSystemWindows="true"
+                                                         android:id="@+id/container_wrapper"
+                                                         android:background="@{activityViewModel.theme.colorPrimary}"
+                                                         android:layout_height="match_parent">
+        <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+            <FrameLayout android:id="@+id/header" android:layout_width="0dp" android:layout_height="40dp"
+                         android:paddingTop="4dp"
+                         android:background="@{activityViewModel.theme.colorPrimary}"
+                         app:layout_constraintTop_toTopOf="parent" app:layout_constraintStart_toStartOf="parent"
+                         app:layout_constraintEnd_toEndOf="parent">
+                <com.dev.view.IconfontTextView
+                        android:id="@+id/go_back"
+                        android:layout_width="42dp"
+                        android:layout_height="38dp"
+                        android:textColor="@color/colorWhite"
+                        android:textSize="18sp"
+                        android:text="@string/ic_arrow_left"
+                        android:gravity="center"
+                        android:layout_gravity="start|center_vertical"/>
+                <TextView android:text="@string/choose_file"
+                          android:gravity="center"
+                          android:textSize="18sp"
+                          android:textColor="@color/colorWhite"
+                          android:layout_width="match_parent"
+                          android:layout_height="match_parent"/>
+                <com.dev.view.IconfontTextView
+                        android:id="@+id/add_directory"
+                        android:layout_width="42dp"
+                        android:layout_height="38dp"
+                        android:textColor="@color/colorWhite"
+                        android:textSize="18sp"
+                        android:text="@string/ic_circle_plus"
+                        android:gravity="center"
+                        android:layout_gravity="end|center_vertical"/>
+            </FrameLayout>
+            <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerView"
+                    android:background="@color/color_F8F8F8"
+                    app:layout_constraintTop_toBottomOf="@+id/header"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintBottom_toTopOf="@+id/choose_directory"
+                    android:overScrollMode="never"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"/>
+            <LinearLayout app:layout_constraintBottom_toBottomOf="parent"
+                          app:layout_constraintStart_toStartOf="parent"
+                          app:layout_constraintEnd_toEndOf="parent"
+                          android:id="@+id/choose_directory"
+                          android:orientation="vertical"
+                          android:layout_width="match_parent"
+                          android:layout_height="52dp">
+                <View android:layout_width="match_parent" android:layout_height="0.5dp" android:background="#9C9C9C"/>
+                <com.dev.view.IconfontTextView
+                        android:layout_marginTop="5.5dp"
+                        android:layout_width="22dp"
+                        android:layout_height="22dp"
+                        android:textColor="@color/color_393A3F"
+                        android:textSize="18sp"
+                        android:background="@drawable/ic_check"
+                        android:layout_gravity="center"/>
+                <TextView android:layout_width="wrap_content"
+                          android:layout_height="18dp"
+                          android:layout_gravity="center"
+                          android:textColor="@color/color_6C6C6C"
+                          android:text="@string/choose_directory"
+                          android:textSize="10sp"/>
+            </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

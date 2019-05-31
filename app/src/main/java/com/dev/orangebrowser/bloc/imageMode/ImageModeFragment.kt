@@ -41,17 +41,18 @@ import org.jsoup.Jsoup
 import java.util.*
 import javax.inject.Inject
 
-class ImageModeModeFragment : BaseFragment(),BackHandler {
+class ImageModeModeFragment : BaseFragment(), BackHandler {
 
 
     companion object {
-        val Tag="ImageModeModeFragment"
-        fun newInstance(sessionId:String) = ImageModeModeFragment().apply {
+        val Tag = "ImageModeModeFragment"
+        fun newInstance(sessionId: String) = ImageModeModeFragment().apply {
             arguments = Bundle().apply {
                 putString(BrowserFragment.SESSION_ID, sessionId)
             }
         }
     }
+
     override fun onBackPressed(): Boolean {
         val session = sessionManager.findSessionById(arguments?.getString(BrowserFragment.SESSION_ID) ?: "")
         if (session == null) {
@@ -61,28 +62,33 @@ class ImageModeModeFragment : BaseFragment(),BackHandler {
         }
         return true
     }
+
     @Inject
     lateinit var sessionManager: SessionManager
     lateinit var viewModel: ImageModeViewModel
     lateinit var activityViewModel: MainViewModel
 
     lateinit var recyclerView: RecyclerView
-    lateinit var header:View
-    lateinit var container:LongClickFrameLayout
+    lateinit var header: View
+    lateinit var containerWrapper: View
+    lateinit var container: LongClickFrameLayout
     override fun onAttach(context: Context) {
         super.onAttach(context)
         //注入
         appComponent.inject(this)
-        viewModel=ViewModelProviders.of(this,factory).get(ImageModeViewModel::class.java)
+        viewModel = ViewModelProviders.of(this, factory).get(ImageModeViewModel::class.java)
     }
+
     //获取layoutResourceId
     override fun getLayoutResId(): Int {
         return R.layout.fragment_image_mode
     }
-    override fun initView(view: View,savedInstanceState: Bundle?) {
-        recyclerView=view.findViewById(R.id.recycler_view)
-        recyclerView.layoutManager=LinearLayoutManager(requireContext(),RecyclerView.VERTICAL,false)
-         header=view.findViewById(R.id.header)
+
+    override fun initView(view: View, savedInstanceState: Bundle?) {
+        recyclerView = view.findViewById(R.id.recycler_view)
+        recyclerView.layoutManager = LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
+        header = view.findViewById(R.id.header)
+        containerWrapper = view.findViewById(R.id.container_wrapper)
         view.findViewById<View>(R.id.download)?.apply {
             setOnClickListener {
                 showDialog()
@@ -93,10 +99,11 @@ class ImageModeModeFragment : BaseFragment(),BackHandler {
                 onBackPressed()
             }
         }
-        container=view.findViewById(R.id.container)
+        container = view.findViewById(R.id.container)
     }
-    var downloadDialog: Dialog?=null
-    private fun showDialog(){
+
+    var downloadDialog: Dialog? = null
+    private fun showDialog() {
         downloadDialog = DialogBuilder()
             .setLayoutId(R.layout.dialog_download_all_images)
             .setGravity(Gravity.CENTER)
@@ -126,9 +133,11 @@ class ImageModeModeFragment : BaseFragment(),BackHandler {
         activityViewModel = ViewModelProviders.of(activity!!, factory).get(MainViewModel::class.java)
         super.onActivityCreated(savedInstanceState)
     }
-    private var images= LinkedList<String>()
+
+    private var images = LinkedList<String>()
     override fun initData(savedInstanceState: Bundle?) {
         header.setBackgroundColor(activityViewModel.theme.value!!.colorPrimary)
+        containerWrapper.setBackgroundColor(activityViewModel.theme.value!!.colorPrimary)
         val session = sessionManager.findSessionById(arguments?.getString(BrowserFragment.SESSION_ID) ?: "")
         if (session == null) {
             RouterActivity?.loadHomeOrBrowserFragment(sessionManager.selectedSession?.id ?: "")
@@ -139,70 +148,76 @@ class ImageModeModeFragment : BaseFragment(),BackHandler {
                 launch(Dispatchers.IO) {
                     val html = StringUtil.unEscapeString(value)
                     val article = ContentExtractor.getArticleByHtml(html)
-                    val elements=Jsoup.parse(article.contentHtml).select("img")
-                    for (ele in elements){
-                        val imageSrc=ele.attr("abs:src").trim()
+                    val elements = Jsoup.parse(article.contentHtml).select("img")
+                    for (ele in elements) {
+                        val imageSrc = ele.attr("abs:src").trim()
                         //如果不是直接设置数据的，就添加
-                        if (!imageSrc.startsWith("data:") && imageSrc.isNotBlank()){
+                        if (!imageSrc.startsWith("data:") && imageSrc.isNotBlank()) {
                             images.add(imageSrc)
                         }
                     }
                     launch(Dispatchers.Main) {
-                        val adapter=object:BaseQuickAdapter<String,CustomBaseViewHolder>(R.layout.item_image_display,images){
+                        val adapter = object :
+                            BaseQuickAdapter<String, CustomBaseViewHolder>(R.layout.item_image_display, images) {
                             override fun convert(helper: CustomBaseViewHolder, item: String) {
-                               helper.loadNoCropImage(R.id.image,url=item,referer = session.url)
-                               helper.itemView.findViewById<ScrollParallaxImageView>(R.id.image).setParallaxStyles(
-                                   VerticalMovingStyle()
-                               )
+                                helper.loadNoCropImage(R.id.image, url = item, referer = session.url)
+                                helper.itemView.findViewById<ScrollParallaxImageView>(R.id.image).setParallaxStyles(
+                                    VerticalMovingStyle()
+                                )
                             }
                         }
                         initImageItemContextMenu(adapter)
-                        recyclerView.adapter=adapter
+                        recyclerView.adapter = adapter
                     }
                 }
             })
     }
 
-    var imageItemContextMenu:Dialog?=null
+    var imageItemContextMenu: Dialog? = null
     private fun initImageItemContextMenu(adapter: BaseQuickAdapter<String, CustomBaseViewHolder>?) {
         adapter?.setOnItemLongClickListener { _, _, position ->
-                imageItemContextMenu=  DialogBuilder()
-                    .setLayoutId(R.layout.dialog_context_menu)
-                    .setHeightParent(1f)
-                    .setWidthPercent(1f)
-                    .setOnViewCreateListener(object : DialogBuilder.OnViewCreateListener {
-                        override fun onViewCreated(view: View) {
-                            initImageItemContextMenuView(view,position)
-                        }
-                    })
-                    .setGravity(Gravity.TOP)
-                    .build(requireContext())
-                imageItemContextMenu?.show()
+            imageItemContextMenu = DialogBuilder()
+                .setLayoutId(R.layout.dialog_context_menu)
+                .setHeightParent(1f)
+                .setWidthPercent(1f)
+                .setOnViewCreateListener(object : DialogBuilder.OnViewCreateListener {
+                    override fun onViewCreated(view: View) {
+                        initImageItemContextMenuView(view, position)
+                    }
+                })
+                .setGravity(Gravity.TOP)
+                .build(requireContext())
+            imageItemContextMenu?.show()
             true
         }
     }
-    private fun initImageItemContextMenuView(view:View,position:Int){
+
+    private fun initImageItemContextMenuView(view: View, position: Int) {
         val recyclerView = view.findViewById<RecyclerView>(R.id.recyclerView).apply {
             this.layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
             this.adapter = CommonContextMenuAdapter(
                 R.layout.mozac_feature_contextmenu_item, listOf(
-                    MenuItem(label = getString(R.string.menu_download),action = object: Action<MenuItem> {
+                    MenuItem(label = getString(R.string.menu_download), action = object : Action<MenuItem> {
                         override fun execute(data: MenuItem) {
-                            downloadImage(url=images[position],referer = sessionManager.selectedSession?.url ?: "")
+                            downloadImage(url = images[position], referer = sessionManager.selectedSession?.url ?: "")
                             imageItemContextMenu?.dismiss()
                         }
                     }),
-                    MenuItem(label = getString(R.string.menu_share),action = object: Action<MenuItem> {
+                    MenuItem(label = getString(R.string.menu_share), action = object : Action<MenuItem> {
                         override fun execute(data: MenuItem) {
-                            if(!requireContext().shareLink(title =getString(R.string.share_image),url = images[position])){
+                            if (!requireContext().shareLink(
+                                    title = getString(R.string.share_image),
+                                    url = images[position]
+                                )
+                            ) {
                                 requireContext().showToast(getString(R.string.tip_share_fail))
                             }
                             imageItemContextMenu?.dismiss()
                         }
                     }),
-                    MenuItem(label = getString(R.string.menu_copy_link),action = object: Action<MenuItem> {
+                    MenuItem(label = getString(R.string.menu_copy_link), action = object : Action<MenuItem> {
                         override fun execute(data: MenuItem) {
-                            requireContext().copyText(getString(R.string.link),images[position])
+                            requireContext().copyText(getString(R.string.link), images[position])
                             requireContext().showToast(getString(R.string.tip_copy_link))
                             imageItemContextMenu?.dismiss()
                         }
@@ -225,12 +240,14 @@ class ImageModeModeFragment : BaseFragment(),BackHandler {
             }
         }
     }
+
     //TODO:下载一个
-    private fun downloadImage(url:String,referer:String){
+    private fun downloadImage(url: String, referer: String) {
 
     }
+
     //TODO:下载所有
-    private fun downloadAllImages(){
+    private fun downloadAllImages() {
 
     }
 }

@@ -104,6 +104,7 @@ class ThemeFragment : BaseFragment(), BackHandler {
                     val newTheme=item.toTheme()
                     activityViewModel.theme.postValue(newTheme)
                     binding.header.setBackgroundColor(newTheme.colorPrimary)
+                    binding.containerWrapper.setBackgroundColor(newTheme.colorPrimary)
                 }
             }
         }

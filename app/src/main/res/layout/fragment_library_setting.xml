@@ -4,6 +4,11 @@
     <data>
         <variable name="activityViewModel" type="com.dev.orangebrowser.bloc.host.MainViewModel"/>
     </data>
+    <androidx.coordinatorlayout.widget.CoordinatorLayout android:layout_width="match_parent"
+                                                         android:fitsSystemWindows="true"
+                                                         android:id="@+id/container_wrapper"
+                                                         android:background="@{activityViewModel.theme.colorPrimary}"
+                                                         android:layout_height="match_parent">
     <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
@@ -39,4 +44,5 @@
                 android:layout_width="0dp"
                 android:layout_height="0dp"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

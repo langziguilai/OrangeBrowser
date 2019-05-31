@@ -96,9 +96,11 @@ class ResourceFragment : BaseFragment(), BackHandler {
     var selectorRecyclerView:RecyclerView?=null
     private lateinit var container:LongClickFrameLayout
     private lateinit var header:View
+    private lateinit var containerWrapper:View
     override fun initView(view: View,savedInstanceState: Bundle?) {
         container=view.findViewById(R.id.container)
         header=view.findViewById(R.id.header)
+        containerWrapper=view.findViewById(R.id.container_wrapper)
         selectorRecyclerView= view.findViewById<RecyclerView>(R.id.selector)?.apply {
             this.layoutManager = LinearLayoutManager(context, RecyclerView.HORIZONTAL, false)
             this.addItemDecoration(GridDividerItemDecoration(DensityUtil.dip2px(requireContext(),3f),0,getColor(R.color.transparent)))
@@ -172,6 +174,7 @@ class ResourceFragment : BaseFragment(), BackHandler {
     var session:Session?=null
     override fun initData(savedInstanceState: Bundle?) {
         header.setBackgroundColor(activityViewModel.theme.value!!.colorPrimary)
+        containerWrapper.setBackgroundColor(activityViewModel.theme.value!!.colorPrimary)
         session = sessionManager.findSessionById(arguments?.getString(BrowserFragment.SESSION_ID) ?: "")
         if (session == null) {
             RouterActivity?.loadHomeOrBrowserFragment(sessionManager.selectedSession?.id ?: "")
