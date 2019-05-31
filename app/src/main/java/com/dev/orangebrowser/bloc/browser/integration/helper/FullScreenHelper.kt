@@ -46,7 +46,7 @@ class FullScreenHelper(var binding:FragmentBrowserBinding,var activity: Activity
                if (activity.resources.configuration.orientation==ActivityInfo.SCREEN_ORIENTATION_PORTRAIT){
                    activity.requestedOrientation= ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
                }
-               binding.fragmentContainer.fitsSystemWindows=false
+               binding.browserContainer.fitsSystemWindows=false
            }else{ //退出全局视野
                StatusBarUtil.showStatusBar(activity)
                //退出全屏模式
@@ -73,7 +73,7 @@ class FullScreenHelper(var binding:FragmentBrowserBinding,var activity: Activity
                if (activity.resources.configuration.orientation!=ActivityInfo.SCREEN_ORIENTATION_PORTRAIT){
                    activity.requestedOrientation= ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
                }
-               binding.fragmentContainer.fitsSystemWindows=true
+               binding.browserContainer.fitsSystemWindows=true
            }
     }
 }

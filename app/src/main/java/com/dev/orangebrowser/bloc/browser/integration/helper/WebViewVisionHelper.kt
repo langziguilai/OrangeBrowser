@@ -32,7 +32,7 @@ class WebViewVisionHelper(var binding:FragmentBrowserBinding){
             ).start()
     }
     fun animateHideTopBar(){
-        if (binding.topBar.height >= 0) {
+        if (binding.topBar.top >= 0) {
             ValueAnimator.ofInt(0, -binding.topBar.height).apply {
                 duration = FAST_ANIMATION
                 addUpdateListener {

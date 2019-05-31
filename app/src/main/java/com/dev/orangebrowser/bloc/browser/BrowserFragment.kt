@@ -389,7 +389,7 @@ class BrowserFragment : BaseFragment(), BackHandler, UserInteractionHandler {
             StatusBarUtil.hideStatusBar(requireActivity())
             //隐藏下部导航栏
             requireActivity().enterToImmersiveMode()
-            binding.fragmentContainer.fitsSystemWindows=false
+            binding.browserContainer.fitsSystemWindows=false
         }
     }
     override fun initData(savedInstanceState: Bundle?) {
