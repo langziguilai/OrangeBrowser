@@ -15,6 +15,7 @@ import com.dev.base.BaseFragment
 import com.dev.base.support.BackHandler
 import com.dev.browser.session.SessionManager
 import com.dev.orangebrowser.R
+import com.dev.orangebrowser.bloc.home.HomeFragment
 import com.dev.orangebrowser.bloc.host.MainViewModel
 import com.dev.orangebrowser.data.model.ThemeSource
 import com.dev.orangebrowser.databinding.FragmentThemeBinding
@@ -45,7 +46,13 @@ class ThemeFragment : BaseFragment(), BackHandler {
     lateinit var activityViewModel: MainViewModel
     lateinit var binding: FragmentThemeBinding
     override fun onBackPressed(): Boolean {
-        RouterActivity?.popUpToHomeOrBrowserFragment()
+        val session=sessionManager.selectedSession
+        if (session==null){
+            RouterActivity?.loadHomeFragment(sessionId = HomeFragment.NO_SESSION_ID,enterAnimationId = R.anim.slide_right_in,exitAnimationId = R.anim.slide_right_out)
+            return true
+        }else{
+            RouterActivity?.loadHomeOrBrowserFragment(sessionId = session.id,enterAnimationId = R.anim.slide_right_in,exitAnimationId = R.anim.slide_right_out)
+        }
         return true
     }
 

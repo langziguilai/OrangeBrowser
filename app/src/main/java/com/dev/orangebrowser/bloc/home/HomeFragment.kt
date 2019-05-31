@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.dev.base.BaseLazyFragment
 import com.dev.base.support.BackHandler
@@ -20,6 +21,7 @@ import com.dev.orangebrowser.bloc.home.helper.TopBarHelper
 import com.dev.orangebrowser.bloc.home.intergration.ThumbnailIntergration
 import com.dev.orangebrowser.bloc.host.MainViewModel
 import com.dev.orangebrowser.data.model.Site
+import com.dev.orangebrowser.data.model.Theme
 import com.dev.orangebrowser.databinding.FragmentHomeBinding
 import com.dev.orangebrowser.extension.RouterActivity
 import com.dev.orangebrowser.extension.appComponent
@@ -93,6 +95,7 @@ class HomeFragment : BaseLazyFragment(), BackHandler {
     }
 
     override fun initViewWithDataBinding(savedInstanceState: Bundle?) {
+
         initSession()
         StatusBarUtil.setLightIcon(requireActivity())
         val bottomBarHelper= BottomBarHelper(binding, this, savedInstanceState)

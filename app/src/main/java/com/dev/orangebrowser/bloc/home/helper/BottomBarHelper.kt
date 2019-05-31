@@ -38,7 +38,25 @@ class BottomBarHelper(private var binding: FragmentHomeBinding, var fragment: Ho
                 binding.forward.isEnabled=false
             }
         }
-
+        //监听更新主题
+//        fragment.activityViewModel.theme.observe(fragment, Observer<Theme> {
+//            binding.containerWrapper.setBackgroundColor(it.colorPrimary)
+//            binding.topBar.setBackgroundColor(it.colorPrimary)
+//            binding.back.setBackgroundColor(it.colorPrimaryDisable)
+//            fragment.sessionManager.findSessionById(fragment.sessionId)?.apply {
+//                if (this.url!= Session.NO_EXIST_URL){
+//                    binding.forward.setTextColor(it.colorPrimary)
+//                    binding.forward.isEnabled=true
+//                }else{
+//                    binding.forward.setTextColor(it.colorPrimaryDisable)
+//                    binding.forward.isEnabled=false
+//                }
+//            }
+//            binding.search.setBackgroundColor(it.colorPrimary)
+//            binding.counterNumber.setBackgroundColor(it.colorPrimary)
+//            binding.menu.setBackgroundColor(it.colorPrimary)
+//            binding.bottomMenuGridView.adapter?.notifyDataSetChanged()
+//        })
         binding.forward.setOnClickListener {
              fragment.RouterActivity?.loadBrowserFragment(fragment.sessionId)
         }
@@ -168,7 +186,7 @@ class BottomBarHelper(private var binding: FragmentHomeBinding, var fragment: Ho
             //主题
             R.string.ic_theme->{
                 toggleBottomPanel(Runnable {
-                    fragment.RouterActivity?.addThemeFragment()
+                    fragment.RouterActivity?.loadThemeFragment()
                 })
 
             }

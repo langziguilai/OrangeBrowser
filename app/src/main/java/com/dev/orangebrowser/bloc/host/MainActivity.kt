@@ -343,12 +343,11 @@ class MainActivity : BaseActivity(), DownloadManager.OnAutoInstallDownloadAppLis
     }
 
     //加载主题页面
-    fun addThemeFragment() {
+    fun loadThemeFragment() {
         val fragment = ThemeFragment.newInstance()
         supportFragmentManager.beginTransaction()
-            .setCustomAnimations(R.anim.slide_left_in, R.anim.holder, R.anim.holder, R.anim.slide_right_out)
-            .add(R.id.root_container, fragment)
-            .addToBackStack(null)
+            .setCustomAnimations(R.anim.slide_left_in, R.anim.slide_left_out)
+            .replace(R.id.root_container, fragment)
             .commit()
     }
 

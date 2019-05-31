@@ -275,7 +275,7 @@ class BottomPanelMenuIntegration(
             R.string.ic_theme -> {
                 bottomPanelHelper.toggleBottomPanel(Runnable {
                     redirect(binding = binding, session = session, runnable = Runnable {
-                        fragment.RouterActivity?.addThemeFragment()
+                        fragment.RouterActivity?.loadThemeFragment()
                     })
                 })
 

@@ -4,6 +4,8 @@ import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
 import android.view.View;
 import androidx.databinding.BindingAdapter;
+import androidx.lifecycle.LiveData;
+import com.dev.orangebrowser.data.model.Theme;
 import com.dev.util.DensityUtil;
 
 public class Util {
