@@ -23,7 +23,6 @@ import com.dev.orangebrowser.databinding.FragmentBrowserBinding
 import com.dev.orangebrowser.extension.RouterActivity
 import com.dev.orangebrowser.extension.appData
 import com.dev.orangebrowser.extension.getSpBool
-import com.dev.orangebrowser.extension.setSpBool
 import com.dev.view.GridView
 import com.dev.view.recyclerview.CustomBaseViewHolder
 import com.dev.view.recyclerview.adapter.base.BaseQuickAdapter
@@ -139,13 +138,13 @@ class TopPanelMenuIntegration(
             R.string.ic_read -> {
 
                 redirect(binding = binding, session = fragment.session, runnable = Runnable {
-                    fragment.RouterActivity?.loadReadModeFragment(fragment.sessionId)
+                    fragment.RouterActivity?.addReadModeFragment(fragment.sessionId)
                 })
             }
             //看图模式
             R.string.ic_image -> {
                 redirect(binding = binding, session = fragment.session, runnable = Runnable {
-                    fragment.RouterActivity?.loadImageModeFragment(fragment.sessionId)
+                    fragment.RouterActivity?.addImageModeFragment(fragment.sessionId)
                 })
             }
 
@@ -197,7 +196,7 @@ class TopPanelMenuIntegration(
             //资源嗅探
             R.string.ic_resources_fang -> {
                 redirect(binding = binding, session = fragment.session, runnable = Runnable {
-                    fragment.RouterActivity?.loadResourceFragment(fragment.sessionId)
+                    fragment.RouterActivity?.addResourceFragment(fragment.sessionId)
                 })
             }
             //TODO:添加到主页

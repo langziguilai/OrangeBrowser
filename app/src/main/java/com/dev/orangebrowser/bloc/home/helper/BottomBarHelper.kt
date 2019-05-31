@@ -144,20 +144,20 @@ class BottomBarHelper(private var binding: FragmentHomeBinding, var fragment: Ho
             //发现
             R.string.ic_found->{
                 toggleBottomPanel(Runnable {
-                    fragment.RouterActivity?.loadFoundFragment()
+                    fragment.RouterActivity?.addFoundFragment()
                 })
             }
             //历史
             R.string.ic_history->{
                 toggleBottomPanel(Runnable {
-                    fragment.RouterActivity?.loadHistoryFragment()
+                    fragment.RouterActivity?.addHistoryFragment()
                 })
 
             }
             //书签
             R.string.ic_bookmark->{
                 toggleBottomPanel(Runnable {
-                    fragment.RouterActivity?.loadBookMarkFragment()
+                    fragment.RouterActivity?.addBookMarkFragment()
                 })
 
             }
@@ -168,21 +168,21 @@ class BottomBarHelper(private var binding: FragmentHomeBinding, var fragment: Ho
             //主题
             R.string.ic_theme->{
                 toggleBottomPanel(Runnable {
-                    fragment.RouterActivity?.loadThemeFragment()
+                    fragment.RouterActivity?.addThemeFragment()
                 })
 
             }
             //下载
             R.string.ic_download->{
                 toggleBottomPanel(Runnable {
-                    fragment.RouterActivity?.loadDownloadFragment()
+                    fragment.RouterActivity?.addDownloadFragment()
                 })
 
             }
             //设置
             R.string.ic_setting->{
                 toggleBottomPanel(Runnable {
-                    fragment.RouterActivity?.loadSettingFragment()
+                    fragment.RouterActivity?.addSettingFragment()
                 })
 
             }

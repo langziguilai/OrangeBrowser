@@ -35,10 +35,11 @@ class SettingFragment : BaseAdBlockSettingFragment(),BackHandler {
     lateinit var activityViewModel: MainViewModel
     lateinit var binding:FragmentMainSettingBinding
     override fun onBackPressed(): Boolean {
-        sessionManager.selectedSession?.apply {
-            RouterActivity?.loadHomeOrBrowserFragment(this.id,enterAnimationId=R.anim.slide_right_in,exitAnimationId=R.anim.slide_right_out)
-            return true
-        }
+//        sessionManager.selectedSession?.apply {
+//            RouterActivity?.loadHomeOrBrowserFragment(this.id,enterAnimationId=R.anim.slide_right_in,exitAnimationId=R.anim.slide_right_out)
+//            return true
+//        }
+        fragmentManager?.popBackStack()
         return true
     }
     //获取layoutResourceId
@@ -87,23 +88,23 @@ class SettingFragment : BaseAdBlockSettingFragment(),BackHandler {
         }
         list.add(TileItem(title=getString(R.string.cloud_sync),tip=loginTip,icon = getString(R.string.ic_right),action = object:Action<TileItem>{
             override fun invoke(data: TileItem) {
-                 RouterActivity?.loadAccountFragment(enterAnimationId=R.anim.slide_left_in,exitAnimationId=R.anim.slide_left_out)
+                 RouterActivity?.addAccountFragment()
             }
         }))
         list.add(DividerItem(height=24,background =getColor(R.color.color_F8F8F8)))
         list.add(TileItem(title=getString(R.string.general_setting),tip="",icon = getString(R.string.ic_right),action = object:Action<TileItem>{
             override fun invoke(data: TileItem) {
-                  RouterActivity?.loadGeneralSettingFragment(enterAnimationId=R.anim.slide_left_in,exitAnimationId=R.anim.slide_left_out)
+                  RouterActivity?.addGeneralSettingFragment()
             }
         }))
         list.add(TileItem(title=getString(R.string.web_setting),tip="",icon = getString(R.string.ic_right),action = object:Action<TileItem>{
             override fun invoke(data: TileItem) {
-                RouterActivity?.loadWebSettingFragment(enterAnimationId=R.anim.slide_left_in,exitAnimationId=R.anim.slide_left_out)
+                RouterActivity?.addWebSettingFragment()
             }
         }))
         list.add(TileItem(title=getString(R.string.clear_cache),tip="",icon = getString(R.string.ic_right),action = object:Action<TileItem>{
             override fun invoke(data: TileItem) {
-                  RouterActivity?.loadCacheSettingFragment(enterAnimationId=R.anim.slide_left_in,exitAnimationId=R.anim.slide_left_out)
+                  RouterActivity?.addCacheSettingFragment()
             }
         }))
         var adBlockTip=getString(R.string.closed)
@@ -115,14 +116,14 @@ class SettingFragment : BaseAdBlockSettingFragment(),BackHandler {
 
         list.add(TileItem(title=getString(R.string.ad_block),tip=adBlockTip,icon = getString(R.string.ic_right),action = object:Action<TileItem>{
             override fun invoke(data: TileItem) {
-                       RouterActivity?.loadAdBlockSettingFragment(enterAnimationId=R.anim.slide_left_in,exitAnimationId=R.anim.slide_left_out)
+                       RouterActivity?.addAdBlockSettingFragment()
             }
         }))
         //
         list.add(DividerItem(height=24,background =getColor(R.color.color_F8F8F8)))
         list.add(TileItem(title=getString(R.string.library),tip=getString(R.string.custom_config),icon = getString(R.string.ic_right),action = object:Action<TileItem>{
             override fun invoke(data: TileItem) {
-                   RouterActivity?.loadLibrarySettingFragment()
+                   RouterActivity?.addLibrarySettingFragment()
             }
         }))
         //TODO:手势支持
@@ -141,13 +142,13 @@ class SettingFragment : BaseAdBlockSettingFragment(),BackHandler {
 
         list.add(TileItem(title=getString(R.string.search_engine),tip=searchEngineName,icon = getString(R.string.ic_right),action = object:Action<TileItem>{
             override fun invoke(data: TileItem) {
-                 RouterActivity?.loadSearchEngineSettingFragment(enterAnimationId=R.anim.slide_left_in,exitAnimationId=R.anim.slide_left_out)
+                 RouterActivity?.addSearchEngineSettingFragment()
             }
         }))
 
         list.add(TileItem(title=getString(R.string.download_setting),tip="",icon = getString(R.string.ic_right),action = object:Action<TileItem>{
             override fun invoke(data: TileItem) {
-                RouterActivity?.loadDownloadSettingFragment(enterAnimationId=R.anim.slide_left_in,exitAnimationId=R.anim.slide_left_out)
+                RouterActivity?.addDownloadSettingFragment()
             }
         }))
         list.add(DividerItem(height=24,background =getColor(R.color.color_F8F8F8)))

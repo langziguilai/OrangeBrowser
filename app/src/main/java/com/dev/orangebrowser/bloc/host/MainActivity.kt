@@ -52,18 +52,19 @@ import java.io.File
 import javax.inject.Inject
 
 
-const val APPLICATION_DATA="application_data"
+const val APPLICATION_DATA = "application_data"
 
 @RuntimePermissions
 class MainActivity : BaseActivity(), DownloadManager.OnAutoInstallDownloadAppListener {
     override fun isStatusBarTransparent(): Boolean {
         return true
     }
-    private var installAppInstance: InstallAppInstance?=null
+
+    private var installAppInstance: InstallAppInstance? = null
     //自动安装应用
     override fun onAutoInstallDownloadApp(download: Download) {
-        Log.d("get download path is",download.destinationDirectory+ File.separator+ download.fileName)
-        installAppInstance= InstallAppInstance(
+        Log.d("get download path is", download.destinationDirectory + File.separator + download.fileName)
+        installAppInstance = InstallAppInstance(
             this,
             Environment.getExternalStorageDirectory().absolutePath + File.separator + download.destinationDirectory + File.separator + download.fileName
         ).apply {
@@ -71,8 +72,8 @@ class MainActivity : BaseActivity(), DownloadManager.OnAutoInstallDownloadAppLis
         }
     }
 
-    companion object{
-        const val REQUEST_CODE_SCAN=0x1234
+    companion object {
+        const val REQUEST_CODE_SCAN = 0x1234
     }
 
     @Inject
@@ -119,7 +120,7 @@ class MainActivity : BaseActivity(), DownloadManager.OnAutoInstallDownloadAppLis
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
-        if (appData!=null){
+        if (appData != null) {
             outState.putParcelable(APPLICATION_DATA, appData)
         }
         super.onSaveInstanceState(outState)
@@ -212,524 +213,410 @@ class MainActivity : BaseActivity(), DownloadManager.OnAutoInstallDownloadAppLis
     }
 
     //加载浏览器页面
-    fun loadBrowserFragment(sessionId: String,enterAnimationId:Int?=null,exitAnimationId:Int?=null) {
-        if(enterAnimationId!=null && exitAnimationId!=null){
+    fun loadBrowserFragment(sessionId: String, enterAnimationId: Int? = null, exitAnimationId: Int? = null) {
+        if (enterAnimationId != null && exitAnimationId != null) {
             supportFragmentManager.beginTransaction()
-                .setCustomAnimations(enterAnimationId,exitAnimationId)
+                .setCustomAnimations(enterAnimationId, exitAnimationId)
                 .replace(R.id.root_container, BrowserFragment.newInstance(sessionId))
                 .commit()
-        }else{
-            supportFragmentManager.beginTransaction().replace(R.id.root_container, BrowserFragment.newInstance(sessionId))
+        } else {
+            supportFragmentManager.beginTransaction()
+                .replace(R.id.root_container, BrowserFragment.newInstance(sessionId))
                 .commit()
         }
     }
 
     //加载HomeFragment
-    fun loadHomeFragment(sessionId: String,enterAnimationId:Int?=null,exitAnimationId:Int?=null) {
+    fun loadHomeFragment(sessionId: String, enterAnimationId: Int? = null, exitAnimationId: Int? = null) {
         //跳转的时候恢复状态
         val fragment = HomeFragment.newInstance(sessionId)
         sessionManager.findSessionById(sessionId)?.apply {
             fragment.setInitialSavedState(this.homeScreenState)
         }
-        if(enterAnimationId!=null && exitAnimationId!=null){
+        if (enterAnimationId != null && exitAnimationId != null) {
             supportFragmentManager.beginTransaction()
-                .setCustomAnimations(enterAnimationId,exitAnimationId)
+                .setCustomAnimations(enterAnimationId, exitAnimationId)
                 .replace(R.id.root_container, fragment)
                 .commit()
-        }else{
+        } else {
             supportFragmentManager.beginTransaction().replace(R.id.root_container, fragment)
                 .commit()
         }
     }
 
-    fun loadHomeOrBrowserFragment(sessionId: String,enterAnimationId:Int?=null,exitAnimationId:Int?=null) {
+    fun loadHomeOrBrowserFragment(sessionId: String, enterAnimationId: Int? = null, exitAnimationId: Int? = null) {
         val session = sessionManager.findSessionById(sessionId)
         if (session != null) {
             if (session.screenNumber == Session.HOME_SCREEN) {
-                loadHomeFragment(sessionId,enterAnimationId,exitAnimationId)
+                loadHomeFragment(sessionId, enterAnimationId, exitAnimationId)
             } else {
-                loadBrowserFragment(sessionId,enterAnimationId,exitAnimationId)
+                loadBrowserFragment(sessionId, enterAnimationId, exitAnimationId)
             }
         } else {
-            loadHomeFragment(HomeFragment.NO_SESSION_ID,enterAnimationId,exitAnimationId)
+            loadHomeFragment(HomeFragment.NO_SESSION_ID, enterAnimationId, exitAnimationId)
         }
     }
 
     //加载TabFragment
-    fun loadTabFragment(sessionId: String, ratio: Float,enterAnimationId:Int?=null,exitAnimationId:Int?=null) {
-        if(enterAnimationId!=null && exitAnimationId!=null){
+    fun loadTabFragment(sessionId: String, ratio: Float, enterAnimationId: Int? = null, exitAnimationId: Int? = null) {
+        if (enterAnimationId != null && exitAnimationId != null) {
             supportFragmentManager.beginTransaction()
-                .setCustomAnimations(enterAnimationId,exitAnimationId)
+                .setCustomAnimations(enterAnimationId, exitAnimationId)
                 .replace(R.id.root_container, TabFragment.newInstance(sessionId, ratio))
                 .commit()
-        }else{
-            supportFragmentManager.beginTransaction().replace(R.id.root_container, TabFragment.newInstance(sessionId, ratio))
+        } else {
+            supportFragmentManager.beginTransaction()
+                .replace(R.id.root_container, TabFragment.newInstance(sessionId, ratio))
                 .commit()
         }
     }
 
     //
-    fun loadNewsFragment(enterAnimationId:Int?=null,exitAnimationId:Int?=null) {
-        if(enterAnimationId!=null && exitAnimationId!=null){
+    fun loadNewsFragment(enterAnimationId: Int? = null, exitAnimationId: Int? = null) {
+        if (enterAnimationId != null && exitAnimationId != null) {
             supportFragmentManager.beginTransaction()
-                .setCustomAnimations(enterAnimationId,exitAnimationId)
+                .setCustomAnimations(enterAnimationId, exitAnimationId)
                 .replace(R.id.root_container, NewsFragment.newInstance())
                 .commit()
-        }else{
+        } else {
             supportFragmentManager.beginTransaction().replace(R.id.root_container, NewsFragment.newInstance())
                 .commit()
         }
     }
 
     //加载搜索页面
-    fun loadSearchFragment(sessionId: String,enterAnimationId:Int?=null,exitAnimationId:Int?=null) {
-        if(enterAnimationId!=null && exitAnimationId!=null){
+    fun loadSearchFragment(sessionId: String, enterAnimationId: Int? = null, exitAnimationId: Int? = null) {
+        if (enterAnimationId != null && exitAnimationId != null) {
             supportFragmentManager.beginTransaction()
-                .setCustomAnimations(enterAnimationId,exitAnimationId)
+                .setCustomAnimations(enterAnimationId, exitAnimationId)
                 .replace(R.id.root_container, SearchFragment.newInstance(sessionId))
                 .commit()
-        }else{
-            supportFragmentManager.beginTransaction().replace(R.id.root_container, SearchFragment.newInstance(sessionId))
+        } else {
+            supportFragmentManager.beginTransaction()
+                .replace(R.id.root_container, SearchFragment.newInstance(sessionId))
                 .commit()
         }
     }
 
     //加载发现页面
-    fun loadFoundFragment(enterAnimationId:Int?=null,exitAnimationId:Int?=null) {
-        val fragment=FoundFragment.newInstance()
-        if(enterAnimationId!=null && exitAnimationId!=null){
-            supportFragmentManager.beginTransaction()
-                .setCustomAnimations(enterAnimationId,exitAnimationId)
-                .replace(R.id.root_container, fragment)
-                .commit()
-        }else{
-            supportFragmentManager.beginTransaction().replace(R.id.root_container, fragment)
-                .commit()
-        }
+    fun addFoundFragment() {
+        val fragment = FoundFragment.newInstance()
+        supportFragmentManager.beginTransaction()
+            .setCustomAnimations(R.anim.slide_left_in, R.anim.holder,R.anim.holder,R.anim.slide_right_out)
+            .add(R.id.root_container, fragment)
+            .addToBackStack(null)
+            .commit()
     }
 
     //加载历史页面
-    fun loadHistoryFragment(enterAnimationId:Int?=R.anim.slide_left_in,exitAnimationId:Int?=R.anim.slide_left_out) {
-        val fragment=HistoryFragment.newInstance()
-        if(enterAnimationId!=null && exitAnimationId!=null){
-            supportFragmentManager.beginTransaction()
-                .setCustomAnimations(enterAnimationId,exitAnimationId)
-                .replace(R.id.root_container, fragment)
-                .commit()
-        }else{
-            supportFragmentManager.beginTransaction().replace(R.id.root_container, fragment)
-                .commit()
-        }
+    fun addHistoryFragment() {
+        val fragment = HistoryFragment.newInstance()
+        supportFragmentManager.beginTransaction()
+            .setCustomAnimations(R.anim.slide_left_in, R.anim.holder,R.anim.holder,R.anim.slide_right_out)
+            .add(R.id.root_container, fragment)
+            .addToBackStack(null)
+            .commit()
     }
 
     //加载书签页面
-    fun loadBookMarkFragment(enterAnimationId:Int?=R.anim.slide_left_in,exitAnimationId:Int?=R.anim.slide_left_out) {
-        val fragment= BookMarkFragment.newInstance()
-        if(enterAnimationId!=null && exitAnimationId!=null){
-            supportFragmentManager.beginTransaction()
-                .setCustomAnimations(enterAnimationId,exitAnimationId)
-                .replace(R.id.root_container, fragment)
-                .commit()
-        }else{
-            supportFragmentManager.beginTransaction().replace(R.id.root_container, fragment)
-                .commit()
-        }
+    fun addBookMarkFragment() {
+        val fragment = BookMarkFragment.newInstance()
+        supportFragmentManager.beginTransaction()
+            .setCustomAnimations(R.anim.slide_left_in, R.anim.holder,R.anim.holder,R.anim.slide_right_out)
+            .add(R.id.root_container, fragment)
+            .addToBackStack(null)
+            .commit()
     }
 
     //加载主题页面
-    fun loadThemeFragment(enterAnimationId:Int?=R.anim.slide_left_in,exitAnimationId:Int?=R.anim.slide_left_out) {
-        val fragment= ThemeFragment.newInstance()
-        if(enterAnimationId!=null && exitAnimationId!=null){
-            supportFragmentManager.beginTransaction()
-                .setCustomAnimations(enterAnimationId,exitAnimationId)
-                .replace(R.id.root_container, fragment)
-                .commit()
-        }else{
-            supportFragmentManager.beginTransaction().replace(R.id.root_container, fragment)
-                .commit()
-        }
+    fun addThemeFragment() {
+        val fragment = ThemeFragment.newInstance()
+        supportFragmentManager.beginTransaction()
+            .setCustomAnimations(R.anim.slide_left_in, R.anim.holder,R.anim.holder,R.anim.slide_right_out)
+            .add(R.id.root_container, fragment)
+            .addToBackStack(null)
+            .commit()
     }
 
     //加载下载页面
-    fun loadDownloadFragment(enterAnimationId:Int?=R.anim.slide_left_in,exitAnimationId:Int?=R.anim.slide_left_out) {
-        val fragment= DownloadFragment.newInstance()
-        if(enterAnimationId!=null && exitAnimationId!=null){
-            supportFragmentManager.beginTransaction()
-                .setCustomAnimations(enterAnimationId,exitAnimationId)
-                .replace(R.id.root_container, fragment)
-                .commit()
-        }else{
-            supportFragmentManager.beginTransaction().replace(R.id.root_container, fragment)
-                .commit()
-        }
+    fun addDownloadFragment() {
+        val fragment = DownloadFragment.newInstance()
+        supportFragmentManager.beginTransaction()
+            .setCustomAnimations(R.anim.slide_left_in, R.anim.holder,R.anim.holder,R.anim.slide_right_out)
+            .add(R.id.root_container, fragment)
+            .addToBackStack(null)
+            .commit()
     }
 
     //加载设置页面
-    fun loadSettingFragment(enterAnimationId:Int?=R.anim.slide_left_in,exitAnimationId:Int?=R.anim.slide_left_out) {
-        val fragment= SettingFragment.newInstance()
-        if(enterAnimationId!=null && exitAnimationId!=null){
-            supportFragmentManager.beginTransaction()
-                .setCustomAnimations(enterAnimationId,exitAnimationId)
-                .replace(R.id.root_container, fragment)
-                .commit()
-        }else{
-            supportFragmentManager.beginTransaction().replace(R.id.root_container, fragment)
-                .commit()
-        }
+    fun addSettingFragment() {
+        val fragment = SettingFragment.newInstance()
+        supportFragmentManager.beginTransaction()
+            .setCustomAnimations(R.anim.slide_left_in, R.anim.holder,R.anim.holder,R.anim.slide_right_out)
+            .add(R.id.root_container, fragment)
+            .addToBackStack(null)
+            .commit()
+
     }
 
     //加载阅读模式页面
-    fun loadReadModeFragment(sessionId: String,enterAnimationId:Int?=R.anim.slide_left_in,exitAnimationId:Int?=R.anim.slide_left_out) {
-        val fragment= ReadModeFragment.newInstance(sessionId)
-        if(enterAnimationId!=null && exitAnimationId!=null){
-            supportFragmentManager.beginTransaction()
-                .setCustomAnimations(enterAnimationId,exitAnimationId)
-                .replace(R.id.root_container, fragment)
-                .commit()
-        }else{
-            supportFragmentManager.beginTransaction().replace(R.id.root_container, fragment)
-                .commit()
-        }
+    fun addReadModeFragment(
+        sessionId: String
+    ) {
+        val fragment = ReadModeFragment.newInstance(sessionId)
+        supportFragmentManager.beginTransaction()
+            .setCustomAnimations(R.anim.slide_left_in, R.anim.holder,R.anim.holder,R.anim.slide_right_out)
+            .add(R.id.root_container, fragment)
+            .addToBackStack(null)
+            .commit()
     }
 
     //加载图片模式页面
-    fun loadImageModeFragment(sessionId: String,enterAnimationId:Int?=R.anim.slide_left_in,exitAnimationId:Int?=R.anim.slide_left_out) {
-        val fragment= ImageModeModeFragment.newInstance(sessionId)
-        if(enterAnimationId!=null && exitAnimationId!=null){
-            supportFragmentManager.beginTransaction()
-                .setCustomAnimations(enterAnimationId,exitAnimationId)
-                .replace(R.id.root_container, fragment)
-                .commit()
-        }else{
-            supportFragmentManager.beginTransaction().replace(R.id.root_container, fragment)
-                .commit()
-        }
-
+    fun addImageModeFragment(
+        sessionId: String
+    ) {
+        val fragment = ImageModeModeFragment.newInstance(sessionId)
+        supportFragmentManager.beginTransaction()
+            .setCustomAnimations(R.anim.slide_left_in, R.anim.holder,R.anim.holder,R.anim.slide_right_out)
+            .add(R.id.root_container, fragment)
+            .addToBackStack(null)
+            .commit()
     }
 
     //资源嗅探页面
-    fun loadResourceFragment(sessionId: String,enterAnimationId:Int?=R.anim.slide_left_in,exitAnimationId:Int?=R.anim.slide_left_out) {
-        val fragment= ResourceFragment.newInstance(sessionId)
-        if(enterAnimationId!=null && exitAnimationId!=null){
-            supportFragmentManager.beginTransaction()
-                .setCustomAnimations(enterAnimationId,exitAnimationId)
-                .replace(R.id.root_container, fragment)
-                .commit()
-        }else{
-            supportFragmentManager.beginTransaction().replace(R.id.root_container, fragment)
-                .commit()
-        }
+    fun addResourceFragment(
+        sessionId: String
+    ) {
+        val fragment = ResourceFragment.newInstance(sessionId)
+        supportFragmentManager.beginTransaction()
+            .setCustomAnimations(R.anim.slide_left_in, R.anim.holder,R.anim.holder,R.anim.slide_right_out)
+            .add(R.id.root_container, fragment)
+            .addToBackStack(null)
+            .commit()
     }
 
     //Account界面
-    fun loadAccountFragment(enterAnimationId:Int?=R.anim.slide_left_in,exitAnimationId:Int?=R.anim.slide_left_out) {
-        val fragment= AccountFragment.newInstance()
-        if(enterAnimationId!=null && exitAnimationId!=null){
-            supportFragmentManager.beginTransaction()
-                .setCustomAnimations(enterAnimationId,exitAnimationId)
-                .replace(R.id.root_container, fragment)
-                .commit()
-        }else{
-            supportFragmentManager.beginTransaction().replace(R.id.root_container, fragment)
-                .commit()
-        }
+    fun addAccountFragment() {
+        val fragment = AccountFragment.newInstance()
+        supportFragmentManager.beginTransaction()
+            .setCustomAnimations(R.anim.slide_left_in, R.anim.holder,R.anim.holder,R.anim.slide_right_out)
+            .add(R.id.root_container, fragment)
+            .addToBackStack(null)
+            .commit()
     }
 
     //通用设置界面
-    fun loadGeneralSettingFragment(enterAnimationId:Int?=R.anim.slide_left_in,exitAnimationId:Int?=R.anim.slide_left_out) {
-        val fragment= GeneralSettingFragment.newInstance()
-        if(enterAnimationId!=null && exitAnimationId!=null){
-            supportFragmentManager.beginTransaction()
-                .setCustomAnimations(enterAnimationId,exitAnimationId)
-                .replace(R.id.root_container, fragment)
-                .commit()
-        }else{
-            supportFragmentManager.beginTransaction().replace(R.id.root_container, fragment)
-                .commit()
-        }
+    fun addGeneralSettingFragment() {
+        val fragment = GeneralSettingFragment.newInstance()
+        supportFragmentManager.beginTransaction()
+            .setCustomAnimations(R.anim.slide_left_in, R.anim.holder,R.anim.holder,R.anim.slide_right_out)
+            .add(R.id.root_container, fragment)
+            .addToBackStack(null)
+            .commit()
     }
 
     //网页设置界面
-    fun loadWebSettingFragment(enterAnimationId:Int?=R.anim.slide_left_in,exitAnimationId:Int?=R.anim.slide_left_out) {
-        val fragment= WebSettingFragment.newInstance()
-        if(enterAnimationId!=null && exitAnimationId!=null){
-            supportFragmentManager.beginTransaction()
-                .setCustomAnimations(enterAnimationId,exitAnimationId)
-                .replace(R.id.root_container, fragment)
-                .commit()
-        }else{
-            supportFragmentManager.beginTransaction().replace(R.id.root_container, fragment)
-                .commit()
-        }
+    fun addWebSettingFragment() {
+        val fragment = WebSettingFragment.newInstance()
+        supportFragmentManager.beginTransaction()
+            .setCustomAnimations(R.anim.slide_left_in, R.anim.holder,R.anim.holder,R.anim.slide_right_out)
+            .add(R.id.root_container, fragment)
+            .addToBackStack(null)
+            .commit()
     }
 
     //缓存设置界面
-    fun loadCacheSettingFragment(enterAnimationId:Int?=R.anim.slide_left_in,exitAnimationId:Int?=R.anim.slide_left_out) {
-        val fragment= CacheSettingFragment.newInstance()
-        if(enterAnimationId!=null && exitAnimationId!=null){
-            supportFragmentManager.beginTransaction()
-                .setCustomAnimations(enterAnimationId,exitAnimationId)
-                .replace(R.id.root_container, fragment)
-                .commit()
-        }else{
-            supportFragmentManager.beginTransaction().replace(R.id.root_container, fragment)
-                .commit()
-        }
+    fun addCacheSettingFragment() {
+        val fragment = CacheSettingFragment.newInstance()
+        supportFragmentManager.beginTransaction()
+            .setCustomAnimations(R.anim.slide_left_in, R.anim.holder,R.anim.holder,R.anim.slide_right_out)
+            .add(R.id.root_container, fragment)
+            .addToBackStack(null)
+            .commit()
     }
 
     //广告拦截设置界面
-    fun loadAdBlockSettingFragment(enterAnimationId:Int?=R.anim.slide_left_in,exitAnimationId:Int?=R.anim.slide_left_out) {
-        val fragment= AdBlockSettingFragment.newInstance()
-        if(enterAnimationId!=null && exitAnimationId!=null){
-            supportFragmentManager.beginTransaction()
-                .setCustomAnimations(enterAnimationId,exitAnimationId)
-                .replace(R.id.root_container, fragment)
-                .commit()
-        }else{
-            supportFragmentManager.beginTransaction().replace(R.id.root_container, fragment)
-                .commit()
-        }
+    fun addAdBlockSettingFragment() {
+        val fragment = AdBlockSettingFragment.newInstance()
+        supportFragmentManager.beginTransaction()
+            .setCustomAnimations(R.anim.slide_left_in, R.anim.holder,R.anim.holder,R.anim.slide_right_out)
+            .add(R.id.root_container, fragment)
+            .addToBackStack(null)
+            .commit()
     }
 
     //实验室功能设置界面
-    fun loadLibrarySettingFragment(enterAnimationId:Int?=R.anim.slide_left_in,exitAnimationId:Int?=R.anim.slide_left_out) {
-        val fragment= LibrarySettingFragment.newInstance()
-        if(enterAnimationId!=null && exitAnimationId!=null){
-            supportFragmentManager.beginTransaction()
-                .setCustomAnimations(enterAnimationId,exitAnimationId)
-                .replace(R.id.root_container, fragment)
-                .commit()
-        }else{
-            supportFragmentManager.beginTransaction().replace(R.id.root_container, fragment)
-                .commit()
-        }
+    fun addLibrarySettingFragment() {
+        val fragment = LibrarySettingFragment.newInstance()
+        supportFragmentManager.beginTransaction()
+            .setCustomAnimations(R.anim.slide_left_in, R.anim.holder,R.anim.holder,R.anim.slide_right_out)
+            .add(R.id.root_container, fragment)
+            .addToBackStack(null)
+            .commit()
     }
 
     //手势设置界面
-    fun loadGestureSettingFragment(enterAnimationId:Int?=R.anim.slide_left_in,exitAnimationId:Int?=R.anim.slide_left_out) {
-        val fragment= GestureSettingFragment.newInstance()
-        if(enterAnimationId!=null && exitAnimationId!=null){
-            supportFragmentManager.beginTransaction()
-                .setCustomAnimations(enterAnimationId,exitAnimationId)
-                .replace(R.id.root_container, fragment)
-                .commit()
-        }else{
-            supportFragmentManager.beginTransaction().replace(R.id.root_container, fragment)
-                .commit()
-        }
+    fun addGestureSettingFragment() {
+        val fragment = GestureSettingFragment.newInstance()
+        supportFragmentManager.beginTransaction()
+            .setCustomAnimations(R.anim.slide_left_in, R.anim.holder,R.anim.holder,R.anim.slide_right_out)
+            .add(R.id.root_container, fragment)
+            .addToBackStack(null)
+            .commit()
     }
 
     //搜索引擎设置界面
-    fun loadSearchEngineSettingFragment(enterAnimationId:Int?=R.anim.slide_left_in,exitAnimationId:Int?=R.anim.slide_left_out) {
-        val fragment= SearchEngineSettingFragment.newInstance()
-        if(enterAnimationId!=null && exitAnimationId!=null){
-            supportFragmentManager.beginTransaction()
-                .setCustomAnimations(enterAnimationId,exitAnimationId)
-                .replace(R.id.root_container, fragment)
-                .commit()
-        }else{
-            supportFragmentManager.beginTransaction().replace(R.id.root_container, fragment)
-                .commit()
-        }
+    fun addSearchEngineSettingFragment() {
+        val fragment = SearchEngineSettingFragment.newInstance()
+        supportFragmentManager.beginTransaction()
+            .setCustomAnimations(R.anim.slide_left_in, R.anim.holder,R.anim.holder,R.anim.slide_right_out)
+            .add(R.id.root_container, fragment)
+            .addToBackStack(null)
+            .commit()
     }
 
     //下载引擎设置界面
-    fun loadDownloadSettingFragment(enterAnimationId:Int?=null,exitAnimationId:Int?=null) {
-        val fragment= DownloadSettingFragment.newInstance()
-        if(enterAnimationId!=null && exitAnimationId!=null){
-            supportFragmentManager.beginTransaction()
-                .setCustomAnimations(enterAnimationId,exitAnimationId)
-                .replace(R.id.root_container, fragment)
-                .commit()
-        }else{
-            supportFragmentManager.beginTransaction().replace(R.id.root_container, fragment)
-                .commit()
-        }
+    fun addDownloadSettingFragment() {
+        val fragment = DownloadSettingFragment.newInstance()
+        supportFragmentManager.beginTransaction()
+            .setCustomAnimations(R.anim.slide_left_in, R.anim.holder,R.anim.holder,R.anim.slide_right_out)
+            .add(R.id.root_container, fragment)
+            .addToBackStack(null)
+            .commit()
     }
 
     //地址栏展示设置界面
-    fun loadAddressBarSettingFragment(enterAnimationId:Int?=R.anim.slide_left_in,exitAnimationId:Int?=R.anim.slide_left_out) {
-        val fragment= AddressBarSettingFragment.newInstance()
-        if(enterAnimationId!=null && exitAnimationId!=null){
-            supportFragmentManager.beginTransaction()
-                .setCustomAnimations(enterAnimationId,exitAnimationId)
-                .replace(R.id.root_container, fragment)
-                .commit()
-        }else{
-            supportFragmentManager.beginTransaction().replace(R.id.root_container, fragment)
-                .commit()
-        }
+    fun addAddressBarSettingFragment() {
+        val fragment = AddressBarSettingFragment.newInstance()
+        supportFragmentManager.beginTransaction()
+            .setCustomAnimations(R.anim.slide_left_in, R.anim.holder,R.anim.holder,R.anim.slide_right_out)
+            .add(R.id.root_container, fragment)
+            .addToBackStack(null)
+            .commit()
     }
 
     //视野模式设置界面
-    fun loadVisionModeSettingFragment(enterAnimationId:Int?=R.anim.slide_left_in,exitAnimationId:Int?=R.anim.slide_left_out) {
-        val fragment= VisionModeSettingFragment.newInstance()
-        if(enterAnimationId!=null && exitAnimationId!=null){
-            supportFragmentManager.beginTransaction()
-                .setCustomAnimations(enterAnimationId,exitAnimationId)
-                .replace(R.id.root_container, fragment)
-                .commit()
-        }else{
-            supportFragmentManager.beginTransaction().replace(R.id.root_container, fragment)
-                .commit()
-        }
+    fun addVisionModeSettingFragment() {
+        val fragment = VisionModeSettingFragment.newInstance()
+        supportFragmentManager.beginTransaction()
+            .setCustomAnimations(R.anim.slide_left_in, R.anim.holder,R.anim.holder,R.anim.slide_right_out)
+            .add(R.id.root_container, fragment)
+            .addToBackStack(null)
+            .commit()
     }
 
     //字体大小设置界面
-    fun loadFontSizeSettingFragment(enterAnimationId:Int?=R.anim.slide_left_in,exitAnimationId:Int?=R.anim.slide_left_out) {
-        val fragment= FontSizeSettingFragment.newInstance()
-        if(enterAnimationId!=null && exitAnimationId!=null){
-            supportFragmentManager.beginTransaction()
-                .setCustomAnimations(enterAnimationId,exitAnimationId)
-                .replace(R.id.root_container, fragment)
-                .commit()
-        }else{
-            supportFragmentManager.beginTransaction().replace(R.id.root_container, fragment)
-                .commit()
-        }
+    fun addFontSizeSettingFragment() {
+        val fragment = FontSizeSettingFragment.newInstance()
+        supportFragmentManager.beginTransaction()
+            .setCustomAnimations(R.anim.slide_left_in, R.anim.holder,R.anim.holder,R.anim.slide_right_out)
+            .add(R.id.root_container, fragment)
+            .addToBackStack(null)
+            .commit()
     }
 
     //语言设置界面
-    fun loadLanguageSettingFragment(enterAnimationId:Int?=R.anim.slide_left_in,exitAnimationId:Int?=R.anim.slide_left_out) {
-        val fragment=  LanguageSettingFragment.newInstance()
-        if(enterAnimationId!=null && exitAnimationId!=null){
-            supportFragmentManager.beginTransaction()
-                .setCustomAnimations(enterAnimationId,exitAnimationId)
-                .replace(R.id.root_container, fragment)
-                .commit()
-        }else{
-            supportFragmentManager.beginTransaction().replace(R.id.root_container, fragment)
-                .commit()
-        }
+    fun addLanguageSettingFragment() {
+        val fragment = LanguageSettingFragment.newInstance()
+        supportFragmentManager.beginTransaction()
+            .setCustomAnimations(R.anim.slide_left_in, R.anim.holder,R.anim.holder,R.anim.slide_right_out)
+            .add(R.id.root_container, fragment)
+            .addToBackStack(null)
+            .commit()
     }
 
     //色彩风格设置界面
-    fun loadColorStyleSettingFragment(enterAnimationId:Int?=R.anim.slide_left_in,exitAnimationId:Int?=R.anim.slide_left_out) {
-        val fragment=   ColorStyleSettingFragment.newInstance()
-        if(enterAnimationId!=null && exitAnimationId!=null){
-            supportFragmentManager.beginTransaction()
-                .setCustomAnimations(enterAnimationId,exitAnimationId)
-                .replace(R.id.root_container, fragment)
-                .commit()
-        }else{
-            supportFragmentManager.beginTransaction().replace(R.id.root_container, fragment)
-                .commit()
-        }
+    fun addColorStyleSettingFragment() {
+        val fragment = ColorStyleSettingFragment.newInstance()
+        supportFragmentManager.beginTransaction()
+            .setCustomAnimations(R.anim.slide_left_in, R.anim.holder,R.anim.holder,R.anim.slide_right_out)
+            .add(R.id.root_container, fragment)
+            .addToBackStack(null)
+            .commit()
     }
 
     //UA设置界面
-    fun loadUaSettingFragment(enterAnimationId:Int?=R.anim.slide_left_in,exitAnimationId:Int?=R.anim.slide_left_out) {
-        val fragment=   UaSettingFragment.newInstance()
-        if(enterAnimationId!=null && exitAnimationId!=null){
-            supportFragmentManager.beginTransaction()
-                .setCustomAnimations(enterAnimationId,exitAnimationId)
-                .replace(R.id.root_container, fragment)
-                .commit()
-        }else{
-            supportFragmentManager.beginTransaction().replace(R.id.root_container, fragment)
-                .commit()
-        }
+    fun addUaSettingFragment() {
+        val fragment = UaSettingFragment.newInstance()
+        supportFragmentManager.beginTransaction()
+            .setCustomAnimations(R.anim.slide_left_in, R.anim.holder,R.anim.holder,R.anim.slide_right_out)
+            .add(R.id.root_container, fragment)
+            .addToBackStack(null)
+            .commit()
     }
 
     //打开应用设置界面
-    fun loadOpenAppSettingFragment(enterAnimationId:Int?=R.anim.slide_left_in,exitAnimationId:Int?=R.anim.slide_left_out) {
-        val fragment=   OpenAppSettingFragment.newInstance()
-        if(enterAnimationId!=null && exitAnimationId!=null){
-            supportFragmentManager.beginTransaction()
-                .setCustomAnimations(enterAnimationId,exitAnimationId)
-                .replace(R.id.root_container, fragment)
-                .commit()
-        }else{
-            supportFragmentManager.beginTransaction().replace(R.id.root_container, fragment)
-                .commit()
-        }
+    fun addOpenAppSettingFragment() {
+        val fragment = OpenAppSettingFragment.newInstance()
+        supportFragmentManager.beginTransaction()
+            .setCustomAnimations(R.anim.slide_left_in, R.anim.holder,R.anim.holder,R.anim.slide_right_out)
+            .add(R.id.root_container, fragment)
+            .addToBackStack(null)
+            .commit()
     }
 
 
     //设置AdBlock的订阅
-    fun loadAdBlockSubscriptionSettingFragment(enterAnimationId:Int?=R.anim.slide_left_in,exitAnimationId:Int?=R.anim.slide_left_out) {
-        val fragment=   AdBlockSubscriptionSettingFragment.newInstance()
-        if(enterAnimationId!=null && exitAnimationId!=null){
-            supportFragmentManager.beginTransaction()
-                .setCustomAnimations(enterAnimationId,exitAnimationId)
-                .replace(R.id.root_container, fragment)
-                .commit()
-        }else{
-            supportFragmentManager.beginTransaction().replace(R.id.root_container, fragment)
-                .commit()
-        }
+    fun addAdBlockSubscriptionSettingFragment() {
+        val fragment = AdBlockSubscriptionSettingFragment.newInstance()
+        supportFragmentManager.beginTransaction()
+            .setCustomAnimations(R.anim.slide_left_in, R.anim.holder,R.anim.holder,R.anim.slide_right_out)
+            .add(R.id.root_container, fragment)
+            .addToBackStack(null)
+            .commit()
     }
 
     //设置AdBlock的自定义过滤规则
-    fun loadAdBlockFilterSettingFragment(enterAnimationId:Int?=R.anim.slide_left_in,exitAnimationId:Int?=R.anim.slide_left_out) {
-        val fragment=   AdBlockFilterSettingFragment.newInstance()
-        if(enterAnimationId!=null && exitAnimationId!=null){
-            supportFragmentManager.beginTransaction()
-                .setCustomAnimations(enterAnimationId,exitAnimationId)
-                .replace(R.id.root_container, fragment)
-                .commit()
-        }else{
-            supportFragmentManager.beginTransaction().replace(R.id.root_container, fragment)
-                .commit()
-        }
+    fun addAdBlockFilterSettingFragment() {
+        val fragment = AdBlockFilterSettingFragment.newInstance()
+        supportFragmentManager.beginTransaction()
+            .setCustomAnimations(R.anim.slide_left_in, R.anim.holder,R.anim.holder,R.anim.slide_right_out)
+            .add(R.id.root_container, fragment)
+            .addToBackStack(null)
+            .commit()
     }
 
     //设置AdBlock的白名单
-    fun loadAdBlockWhiteListSettingFragment(enterAnimationId:Int?=R.anim.slide_left_in,exitAnimationId:Int?=R.anim.slide_left_out) {
-        val fragment=    AdBlockWhiteListSettingFragment.newInstance()
-        if(enterAnimationId!=null && exitAnimationId!=null){
-            supportFragmentManager.beginTransaction()
-                .setCustomAnimations(enterAnimationId,exitAnimationId)
-                .replace(R.id.root_container, fragment)
-                .commit()
-        }else{
-            supportFragmentManager.beginTransaction().replace(R.id.root_container, fragment)
-                .commit()
-        }
+    fun addAdBlockWhiteListSettingFragment() {
+        val fragment = AdBlockWhiteListSettingFragment.newInstance()
+        supportFragmentManager.beginTransaction()
+            .setCustomAnimations(R.anim.slide_left_in, R.anim.holder,R.anim.holder,R.anim.slide_right_out)
+            .add(R.id.root_container, fragment)
+            .addToBackStack(null)
+            .commit()
     }
 
     //设置AdBlock的更新选择
-    fun loadAdBlockConnectionSettingFragment(enterAnimationId:Int?=R.anim.slide_left_in,exitAnimationId:Int?=R.anim.slide_left_out) {
-        val fragment=    AdBlockConnectionSettingFragment.newInstance()
-        if(enterAnimationId!=null && exitAnimationId!=null){
-            supportFragmentManager.beginTransaction()
-                .setCustomAnimations(enterAnimationId,exitAnimationId)
-                .replace(R.id.root_container, fragment)
-                .commit()
-        }else{
-            supportFragmentManager.beginTransaction().replace(R.id.root_container, fragment)
-                .commit()
-        }
+    fun addAdBlockConnectionSettingFragment() {
+        val fragment = AdBlockConnectionSettingFragment.newInstance()
+        supportFragmentManager.beginTransaction()
+            .setCustomAnimations(R.anim.slide_left_in, R.anim.holder,R.anim.holder,R.anim.slide_right_out)
+            .add(R.id.root_container, fragment)
+            .addToBackStack(null)
+            .commit()
     }
 
     //下载器设置
-    fun loadDownloadManagerSettingFragment(enterAnimationId:Int?=R.anim.slide_left_in,exitAnimationId:Int?=R.anim.slide_left_out) {
-        val fragment=   DownloadManagerSettingFragment.newInstance()
-        if(enterAnimationId!=null && exitAnimationId!=null){
-            supportFragmentManager.beginTransaction()
-                .setCustomAnimations(enterAnimationId,exitAnimationId)
-                .replace(R.id.root_container, fragment)
-                .commit()
-        }else{
-            supportFragmentManager.beginTransaction().replace(R.id.root_container, fragment)
-                .commit()
-        }
+    fun addDownloadManagerSettingFragment() {
+        val fragment = DownloadManagerSettingFragment.newInstance()
+        supportFragmentManager.beginTransaction()
+            .setCustomAnimations(R.anim.slide_left_in, R.anim.holder,R.anim.holder,R.anim.slide_right_out)
+            .add(R.id.root_container, fragment)
+            .addToBackStack(null)
+            .commit()
     }
 
     //下载路径设置
-    fun loadDownloadPathSettingFragment(enterAnimationId:Int?=R.anim.slide_left_in,exitAnimationId:Int?=R.anim.slide_left_out) {
-        val fragment=   DownloadPathSettingFragment.newInstance()
-        if(enterAnimationId!=null && exitAnimationId!=null){
-            supportFragmentManager.beginTransaction()
-                .setCustomAnimations(enterAnimationId,exitAnimationId)
-                .replace(R.id.root_container, fragment)
-                .commit()
-        }else{
-            supportFragmentManager.beginTransaction().replace(R.id.root_container, fragment)
-                .commit()
-        }
+    fun addDownloadPathSettingFragment() {
+        val fragment = DownloadPathSettingFragment.newInstance()
+        supportFragmentManager.beginTransaction()
+            .setCustomAnimations(R.anim.slide_left_in, R.anim.holder,R.anim.holder,R.anim.slide_right_out)
+            .add(R.id.root_container, fragment)
+            .addToBackStack(null)
+            .commit()
     }
-    fun loadScanActivity(){
+
+    fun loadScanActivity() {
         val intent = Intent(this, CaptureActivity::class.java)
         val config = ZxingConfig()
         config.isPlayBeep = true//是否播放扫描声音 默认为true
@@ -742,6 +629,7 @@ class MainActivity : BaseActivity(), DownloadManager.OnAutoInstallDownloadAppLis
         intent.putExtra(Constant.INTENT_ZXING_CONFIG, config)
         startActivityForResult(intent, REQUEST_CODE_SCAN)
     }
+
     var quitSignal: Boolean = false
     //双击退出
     fun quit() {
@@ -761,16 +649,21 @@ class MainActivity : BaseActivity(), DownloadManager.OnAutoInstallDownloadAppLis
         if (requestCode == REQUEST_CODE_SCAN && resultCode == Activity.RESULT_OK) {
             if (data != null) {
                 val content = data.getStringExtra(Constant.CODED_CONTENT)
-                if(!content.isUrl()){
+                if (!content.isUrl()) {
                     showToast(content)
-                }else{
-                    tabsUseCases.addTab.invoke(url=content,selectTab = true,startLoading = true,parent = sessionManager.selectedSession)
+                } else {
+                    tabsUseCases.addTab.invoke(
+                        url = content,
+                        selectTab = true,
+                        startLoading = true,
+                        parent = sessionManager.selectedSession
+                    )
                     loadBrowserFragment(sessionManager.selectedSession!!.id)
                 }
             }
         }
         //如果是安装应用
-        if (requestCode == InstallAppInstance.UNKNOWN_CODE && resultCode==Activity.RESULT_OK){
+        if (requestCode == InstallAppInstance.UNKNOWN_CODE && resultCode == Activity.RESULT_OK) {
             installAppInstance?.install()
         }
     }

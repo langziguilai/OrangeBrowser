@@ -44,10 +44,7 @@ class ThemeFragment : BaseFragment(), BackHandler {
     lateinit var activityViewModel: MainViewModel
     lateinit var binding: FragmentThemeBinding
     override fun onBackPressed(): Boolean {
-        sessionManager.selectedSession?.apply {
-            RouterActivity?.loadHomeOrBrowserFragment(this.id,enterAnimationId=R.anim.slide_right_in,exitAnimationId=R.anim.slide_right_out)
-            return true
-        }
+        fragmentManager?.popBackStack()
         return true
     }
 

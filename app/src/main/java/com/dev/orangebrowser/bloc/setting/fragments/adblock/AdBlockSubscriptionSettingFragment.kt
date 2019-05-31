@@ -38,7 +38,7 @@ class AdBlockSubscriptionSettingFragment : BaseAdBlockSettingFragment(), BackHan
     lateinit var activityViewModel: MainViewModel
     lateinit var binding: FragmentAdBlockSubscriptionSettingBinding
     override fun onBackPressed(): Boolean {
-        RouterActivity?.loadAdBlockSettingFragment()
+        fragmentManager?.popBackStack()
         return true
 
     }

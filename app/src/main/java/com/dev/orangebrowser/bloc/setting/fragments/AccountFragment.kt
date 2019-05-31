@@ -6,26 +6,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProviders
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.dev.base.BaseFragment
 import com.dev.base.extension.hide
 import com.dev.base.extension.show
 import com.dev.base.support.BackHandler
-import com.dev.browser.search.SearchEngineManager
-import com.dev.browser.session.SessionManager
 import com.dev.orangebrowser.R
 import com.dev.orangebrowser.bloc.host.MainViewModel
-import com.dev.orangebrowser.bloc.setting.adapter.Adapter
-import com.dev.orangebrowser.bloc.setting.viewholder.*
-import com.dev.orangebrowser.bloc.setting.viewholder.base.Action
 import com.dev.orangebrowser.databinding.FragmentAccountSettingBinding
-import com.dev.orangebrowser.databinding.FragmentMainSettingBinding
 import com.dev.orangebrowser.extension.*
 import com.dev.view.extension.loadRemoteImage
 import es.dmoral.toasty.Toasty
-import java.util.*
-import javax.inject.Inject
 
 class AccountFragment : BaseFragment(), BackHandler {
 
@@ -38,7 +28,7 @@ class AccountFragment : BaseFragment(), BackHandler {
     lateinit var activityViewModel: MainViewModel
     lateinit var binding: FragmentAccountSettingBinding
     override fun onBackPressed(): Boolean {
-        RouterActivity?.loadSettingFragment(enterAnimationId=R.anim.slide_right_in,exitAnimationId=R.anim.slide_right_out)
+        fragmentManager?.popBackStack()
         return true
     }
 
@@ -116,7 +106,7 @@ class AccountFragment : BaseFragment(), BackHandler {
         binding.quitLogin.setOnClickListener {
             setSpString(R.string.pref_user_email,"")
             setSpString(R.string.pref_user_avatar,"")
-            RouterActivity?.loadSettingFragment()
+            fragmentManager?.popBackStack()
         }
     }
 

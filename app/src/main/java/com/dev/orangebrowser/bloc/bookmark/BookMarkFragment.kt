@@ -64,15 +64,7 @@ class BookMarkFragment : BaseFragment(), BackHandler {
     lateinit var binding: FragmentBookmarkBinding
 
     override fun onBackPressed(): Boolean {
-        if (arguments?.getString(CATEGORY).isNullOrBlank()){
-            sessionManager.selectedSession?.apply {
-                RouterActivity?.loadHomeOrBrowserFragment(this.id,enterAnimationId=R.anim.slide_right_in,exitAnimationId=R.anim.slide_right_out)
-                return true
-            }
-        }else{
-            RouterActivity?.loadBookMarkFragment(enterAnimationId=R.anim.slide_right_in,exitAnimationId=R.anim.slide_right_out)
-            return true
-        }
+        fragmentManager?.popBackStack()
         return true
     }
 

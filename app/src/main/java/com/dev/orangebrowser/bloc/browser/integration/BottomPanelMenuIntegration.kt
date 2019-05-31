@@ -235,7 +235,7 @@ class BottomPanelMenuIntegration(
             R.string.ic_found -> {
                 bottomPanelHelper.toggleBottomPanel(Runnable {
                     redirect(binding = binding, session = session, runnable = Runnable {
-                        fragment.RouterActivity?.loadFoundFragment()
+                        fragment.RouterActivity?.addFoundFragment()
                     })
                 })
             }
@@ -243,7 +243,7 @@ class BottomPanelMenuIntegration(
             R.string.ic_history -> {
                 bottomPanelHelper.toggleBottomPanel(Runnable {
                     redirect(binding = binding, session = session, runnable = Runnable {
-                        fragment.RouterActivity?.loadHistoryFragment()
+                        fragment.RouterActivity?.addHistoryFragment()
                     })
                 })
 
@@ -252,7 +252,7 @@ class BottomPanelMenuIntegration(
             R.string.ic_bookmark -> {
                 bottomPanelHelper.toggleBottomPanel(Runnable {
                     redirect(binding = binding, session = session, runnable = Runnable {
-                        fragment.RouterActivity?.loadBookMarkFragment()
+                        fragment.RouterActivity?.addBookMarkFragment()
                     })
                 })
 
@@ -275,7 +275,7 @@ class BottomPanelMenuIntegration(
             R.string.ic_theme -> {
                 bottomPanelHelper.toggleBottomPanel(Runnable {
                     redirect(binding = binding, session = session, runnable = Runnable {
-                        fragment.RouterActivity?.loadThemeFragment()
+                        fragment.RouterActivity?.addThemeFragment()
                     })
                 })
 
@@ -284,7 +284,7 @@ class BottomPanelMenuIntegration(
             R.string.ic_download -> {
                 bottomPanelHelper.toggleBottomPanel(Runnable {
                     redirect(binding = binding, session = session, runnable = Runnable {
-                        fragment.RouterActivity?.loadDownloadFragment()
+                        fragment.RouterActivity?.addDownloadFragment()
                     })
                 })
 
@@ -293,7 +293,7 @@ class BottomPanelMenuIntegration(
             R.string.ic_setting -> {
                 bottomPanelHelper.toggleBottomPanel(Runnable {
                     redirect(binding = binding, session = session, runnable = Runnable {
-                        fragment.RouterActivity?.loadSettingFragment()
+                        fragment.RouterActivity?.addSettingFragment()
                     })
                 })
 

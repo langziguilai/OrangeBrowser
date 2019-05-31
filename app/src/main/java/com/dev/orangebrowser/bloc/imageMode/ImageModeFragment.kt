@@ -54,12 +54,7 @@ class ImageModeModeFragment : BaseFragment(), BackHandler {
     }
 
     override fun onBackPressed(): Boolean {
-        val session = sessionManager.findSessionById(arguments?.getString(BrowserFragment.SESSION_ID) ?: "")
-        if (session == null) {
-            RouterActivity?.loadHomeOrBrowserFragment(sessionManager.selectedSession?.id ?: "",enterAnimationId=R.anim.slide_right_in,exitAnimationId=R.anim.slide_right_out)
-        } else {
-            RouterActivity?.loadHomeOrBrowserFragment(session.id,enterAnimationId=R.anim.slide_right_in,exitAnimationId=R.anim.slide_right_out)
-        }
+        fragmentManager?.popBackStack()
         return true
     }
 

@@ -1,16 +1,13 @@
 package com.dev.orangebrowser.bloc.setting.fragments
 
 import android.Manifest
-import android.app.Dialog
 import android.content.Context
 import android.content.pm.PackageManager.PERMISSION_DENIED
 import android.os.Bundle
 import android.os.Environment
-import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.EditText
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProviders
@@ -28,7 +25,6 @@ import com.dev.orangebrowser.bloc.setting.viewholder.base.Action
 import com.dev.orangebrowser.databinding.FragmentDownloadPathSettingBinding
 import com.dev.orangebrowser.extension.*
 import com.dev.util.DensityUtil
-import com.dev.view.dialog.DialogBuilder
 import com.evernote.android.state.State
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -63,7 +59,7 @@ class DownloadPathSettingFragment : BaseFragment(), BackHandler {
             )
             return true
         }
-        RouterActivity?.loadDownloadSettingFragment(enterAnimationId=R.anim.slide_right_in,exitAnimationId=R.anim.slide_right_out)
+        fragmentManager?.popBackStack()
         return true
 
     }
@@ -112,7 +108,7 @@ class DownloadPathSettingFragment : BaseFragment(), BackHandler {
                 DownloadManager.getInstance(requireContext().applicationContext).setCustomDownloadPath(currentDirectoryPath)
                 //setSpString(R.string.pref_setting_download_relative_path, currentDirectoryPath.removePrefix(START_PATH))
                 launch(Dispatchers.Main) {
-                    RouterActivity?.loadDownloadSettingFragment()
+                    fragmentManager?.popBackStack()
                 }
             }
         }

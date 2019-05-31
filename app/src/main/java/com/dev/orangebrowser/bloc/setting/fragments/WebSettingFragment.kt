@@ -33,7 +33,7 @@ class WebSettingFragment : BaseFragment(), BackHandler {
     lateinit var activityViewModel: MainViewModel
     lateinit var binding: FragmentWebSettingBinding
     override fun onBackPressed(): Boolean {
-       RouterActivity?.loadSettingFragment(enterAnimationId=R.anim.slide_right_in,exitAnimationId=R.anim.slide_right_out)
+        fragmentManager?.popBackStack()
         return true
 
     }
@@ -88,7 +88,7 @@ class WebSettingFragment : BaseFragment(), BackHandler {
                 icon = getString(R.string.ic_right),
                 action = object : Action<TileItem> {
                     override fun invoke(data: TileItem) {
-                        RouterActivity?.loadUaSettingFragment()
+                        RouterActivity?.addUaSettingFragment()
                     }
                 })
         )
@@ -137,7 +137,7 @@ class WebSettingFragment : BaseFragment(), BackHandler {
                 icon = getString(R.string.ic_right),
                 action = object : Action<TileItem> {
                     override fun invoke(data: TileItem) {
-                        RouterActivity?.loadOpenAppSettingFragment()
+                        RouterActivity?.addOpenAppSettingFragment()
                     }
                 })
         )
