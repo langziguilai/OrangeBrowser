@@ -15,7 +15,6 @@ import com.dev.orangebrowser.bloc.host.MainViewModel
 import com.dev.orangebrowser.bloc.setting.adapter.Adapter
 import com.dev.orangebrowser.bloc.setting.viewholder.*
 import com.dev.orangebrowser.bloc.setting.viewholder.base.Action
-import com.dev.orangebrowser.databinding.FragmentLanguageSettingBinding
 import com.dev.orangebrowser.databinding.FragmentOpenAppSettingBinding
 import com.dev.orangebrowser.extension.*
 import java.util.*
@@ -31,7 +30,7 @@ class OpenAppSettingFragment : BaseFragment(), BackHandler {
     lateinit var activityViewModel: MainViewModel
     lateinit var binding: FragmentOpenAppSettingBinding
     override fun onBackPressed(): Boolean {
-       RouterActivity?.loadWebSettinglFragment()
+       RouterActivity?.loadWebSettingFragment(enterAnimationId=R.anim.slide_right_in,exitAnimationId=R.anim.slide_right_out)
         return true
 
     }

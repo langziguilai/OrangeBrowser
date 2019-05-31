@@ -35,7 +35,7 @@ class AdBlockWhiteListSettingFragment : BaseAdBlockSettingFragment(), BackHandle
     lateinit var activityViewModel: MainViewModel
     lateinit var binding: FragmentAdBlockWhiteListSettingBinding
     override fun onBackPressed(): Boolean {
-        RouterActivity?.loadAdBlockSettinglFragment()
+        RouterActivity?.loadAdBlockSettingFragment()
         return true
 
     }

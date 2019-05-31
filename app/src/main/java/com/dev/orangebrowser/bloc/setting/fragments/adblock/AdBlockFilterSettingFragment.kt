@@ -12,7 +12,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.dev.base.extension.*
 import com.dev.base.support.BackHandler
-import com.dev.base.support.isUrl
 import com.dev.orangebrowser.R
 import com.dev.orangebrowser.bloc.host.MainViewModel
 import com.dev.orangebrowser.bloc.setting.adapter.Adapter
@@ -24,10 +23,8 @@ import com.dev.orangebrowser.databinding.FragmentAdBlockFilterSettingBinding
 import com.dev.orangebrowser.extension.RouterActivity
 import com.dev.orangebrowser.extension.appComponent
 import com.dev.util.DensityUtil
-import kotlinx.android.synthetic.main.fragment_ad_block_subscription_setting.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import org.adblockplus.libadblockplus.android.Subscription
 import java.util.*
 import javax.inject.Inject
 
@@ -42,7 +39,7 @@ class AdBlockFilterSettingFragment : BaseAdBlockSettingFragment(), BackHandler {
     lateinit var activityViewModel: MainViewModel
     lateinit var binding: FragmentAdBlockFilterSettingBinding
     override fun onBackPressed(): Boolean {
-        RouterActivity?.loadAdBlockSettinglFragment()
+        RouterActivity?.loadAdBlockSettingFragment()
         return true
 
     }

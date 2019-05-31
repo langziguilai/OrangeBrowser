@@ -69,7 +69,7 @@ class HistoryFragment : BaseFragment(), BackHandler {
     lateinit var binding: FragmentHistoryBinding
     override fun onBackPressed(): Boolean {
         sessionManager.selectedSession?.apply {
-            RouterActivity?.loadHomeOrBrowserFragment(this.id)
+            RouterActivity?.loadHomeOrBrowserFragment(this.id,enterAnimationId=R.anim.slide_right_in,exitAnimationId=R.anim.slide_right_out)
             return true
         }
         return true

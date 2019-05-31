@@ -10,6 +10,7 @@
                                                          android:background="@{activityViewModel.theme.colorPrimary}"
                                                          android:layout_height="match_parent">
         <androidx.constraintlayout.widget.ConstraintLayout
+                android:background="@color/colorWhite"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
             <FrameLayout android:id="@+id/header" android:layout_width="0dp" android:layout_height="40dp"

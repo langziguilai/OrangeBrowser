@@ -31,7 +31,7 @@ class DownloadManagerSettingFragment : BaseFragment(), BackHandler {
     lateinit var activityViewModel: MainViewModel
     lateinit var binding: FragmentDownloadManagerSettingBinding
     override fun onBackPressed(): Boolean {
-        RouterActivity?.loadDownloadSettingFragment()
+        RouterActivity?.loadDownloadSettingFragment(enterAnimationId=R.anim.slide_right_in,exitAnimationId=R.anim.slide_right_out)
         return true
 
     }

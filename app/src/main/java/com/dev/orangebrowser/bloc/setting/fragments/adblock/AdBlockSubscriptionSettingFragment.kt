@@ -2,13 +2,10 @@ package com.dev.orangebrowser.bloc.setting.fragments.adblock
 
 import android.content.Context
 import android.os.Bundle
-import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.EditText
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatDialog
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -41,7 +38,7 @@ class AdBlockSubscriptionSettingFragment : BaseAdBlockSettingFragment(), BackHan
     lateinit var activityViewModel: MainViewModel
     lateinit var binding: FragmentAdBlockSubscriptionSettingBinding
     override fun onBackPressed(): Boolean {
-        RouterActivity?.loadAdBlockSettinglFragment()
+        RouterActivity?.loadAdBlockSettingFragment()
         return true
 
     }

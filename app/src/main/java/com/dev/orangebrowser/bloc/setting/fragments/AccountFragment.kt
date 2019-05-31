@@ -38,7 +38,7 @@ class AccountFragment : BaseFragment(), BackHandler {
     lateinit var activityViewModel: MainViewModel
     lateinit var binding: FragmentAccountSettingBinding
     override fun onBackPressed(): Boolean {
-        RouterActivity?.loadSettingFragment()
+        RouterActivity?.loadSettingFragment(enterAnimationId=R.anim.slide_right_in,exitAnimationId=R.anim.slide_right_out)
         return true
     }
 
