@@ -248,10 +248,10 @@ class MainActivity : BaseActivity(), DownloadManager.OnAutoInstallDownloadAppLis
             if (session.screenNumber == Session.HOME_SCREEN) {
                 loadHomeFragment(sessionId)
             } else {
-                loadBrowserFragment(sessionId)
+                loadBrowserFragment(sessionId,enterAnimationId,exitAnimationId)
             }
         } else {
-            loadHomeFragment(HomeFragment.NO_SESSION_ID)
+            loadHomeFragment(HomeFragment.NO_SESSION_ID,enterAnimationId,exitAnimationId)
         }
     }
 
@@ -309,7 +309,7 @@ class MainActivity : BaseActivity(), DownloadManager.OnAutoInstallDownloadAppLis
     }
 
     //加载历史页面
-    fun loadHistoryFragment(enterAnimationId:Int?=null,exitAnimationId:Int?=null) {
+    fun loadHistoryFragment(enterAnimationId:Int?=R.anim.slide_left_in,exitAnimationId:Int?=R.anim.slide_left_out) {
         val fragment=HistoryFragment.newInstance()
         if(enterAnimationId!=null && exitAnimationId!=null){
             supportFragmentManager.beginTransaction()
@@ -323,7 +323,7 @@ class MainActivity : BaseActivity(), DownloadManager.OnAutoInstallDownloadAppLis
     }
 
     //加载书签页面
-    fun loadBookMarkFragment(enterAnimationId:Int?=null,exitAnimationId:Int?=null) {
+    fun loadBookMarkFragment(enterAnimationId:Int?=R.anim.slide_left_in,exitAnimationId:Int?=R.anim.slide_left_out) {
         val fragment= BookMarkFragment.newInstance()
         if(enterAnimationId!=null && exitAnimationId!=null){
             supportFragmentManager.beginTransaction()
@@ -337,7 +337,7 @@ class MainActivity : BaseActivity(), DownloadManager.OnAutoInstallDownloadAppLis
     }
 
     //加载主题页面
-    fun loadThemeFragment(enterAnimationId:Int?=null,exitAnimationId:Int?=null) {
+    fun loadThemeFragment(enterAnimationId:Int?=R.anim.slide_left_in,exitAnimationId:Int?=R.anim.slide_left_out) {
         val fragment= ThemeFragment.newInstance()
         if(enterAnimationId!=null && exitAnimationId!=null){
             supportFragmentManager.beginTransaction()
@@ -351,7 +351,7 @@ class MainActivity : BaseActivity(), DownloadManager.OnAutoInstallDownloadAppLis
     }
 
     //加载下载页面
-    fun loadDownloadFragment(enterAnimationId:Int?=null,exitAnimationId:Int?=null) {
+    fun loadDownloadFragment(enterAnimationId:Int?=R.anim.slide_left_in,exitAnimationId:Int?=R.anim.slide_left_out) {
         val fragment= DownloadFragment.newInstance()
         if(enterAnimationId!=null && exitAnimationId!=null){
             supportFragmentManager.beginTransaction()
@@ -365,7 +365,7 @@ class MainActivity : BaseActivity(), DownloadManager.OnAutoInstallDownloadAppLis
     }
 
     //加载设置页面
-    fun loadSettingFragment(enterAnimationId:Int?=null,exitAnimationId:Int?=null) {
+    fun loadSettingFragment(enterAnimationId:Int?=R.anim.slide_left_in,exitAnimationId:Int?=R.anim.slide_left_out) {
         val fragment= SettingFragment.newInstance()
         if(enterAnimationId!=null && exitAnimationId!=null){
             supportFragmentManager.beginTransaction()
@@ -379,7 +379,7 @@ class MainActivity : BaseActivity(), DownloadManager.OnAutoInstallDownloadAppLis
     }
 
     //加载阅读模式页面
-    fun loadReadModeFragment(sessionId: String,enterAnimationId:Int?=null,exitAnimationId:Int?=null) {
+    fun loadReadModeFragment(sessionId: String,enterAnimationId:Int?=R.anim.slide_left_in,exitAnimationId:Int?=R.anim.slide_left_out) {
         val fragment= ReadModeFragment.newInstance(sessionId)
         if(enterAnimationId!=null && exitAnimationId!=null){
             supportFragmentManager.beginTransaction()
@@ -393,7 +393,7 @@ class MainActivity : BaseActivity(), DownloadManager.OnAutoInstallDownloadAppLis
     }
 
     //加载图片模式页面
-    fun loadImageModeFragment(sessionId: String,enterAnimationId:Int?=null,exitAnimationId:Int?=null) {
+    fun loadImageModeFragment(sessionId: String,enterAnimationId:Int?=R.anim.slide_left_in,exitAnimationId:Int?=R.anim.slide_left_out) {
         val fragment= ImageModeModeFragment.newInstance(sessionId)
         if(enterAnimationId!=null && exitAnimationId!=null){
             supportFragmentManager.beginTransaction()
@@ -408,7 +408,7 @@ class MainActivity : BaseActivity(), DownloadManager.OnAutoInstallDownloadAppLis
     }
 
     //资源嗅探页面
-    fun loadResourceFragment(sessionId: String,enterAnimationId:Int?=null,exitAnimationId:Int?=null) {
+    fun loadResourceFragment(sessionId: String,enterAnimationId:Int?=R.anim.slide_left_in,exitAnimationId:Int?=R.anim.slide_left_out) {
         val fragment= ResourceFragment.newInstance(sessionId)
         if(enterAnimationId!=null && exitAnimationId!=null){
             supportFragmentManager.beginTransaction()
@@ -436,7 +436,7 @@ class MainActivity : BaseActivity(), DownloadManager.OnAutoInstallDownloadAppLis
     }
 
     //通用设置界面
-    fun loadGeneralSettingFragment(enterAnimationId:Int?=null, exitAnimationId:Int?=null) {
+    fun loadGeneralSettingFragment(enterAnimationId:Int?=R.anim.slide_left_in,exitAnimationId:Int?=R.anim.slide_left_out) {
         val fragment= GeneralSettingFragment.newInstance()
         if(enterAnimationId!=null && exitAnimationId!=null){
             supportFragmentManager.beginTransaction()
@@ -450,7 +450,7 @@ class MainActivity : BaseActivity(), DownloadManager.OnAutoInstallDownloadAppLis
     }
 
     //网页设置界面
-    fun loadWebSettingFragment(enterAnimationId:Int?=null,exitAnimationId:Int?=null) {
+    fun loadWebSettingFragment(enterAnimationId:Int?=R.anim.slide_left_in,exitAnimationId:Int?=R.anim.slide_left_out) {
         val fragment= WebSettingFragment.newInstance()
         if(enterAnimationId!=null && exitAnimationId!=null){
             supportFragmentManager.beginTransaction()
@@ -478,7 +478,7 @@ class MainActivity : BaseActivity(), DownloadManager.OnAutoInstallDownloadAppLis
     }
 
     //广告拦截设置界面
-    fun loadAdBlockSettingFragment(enterAnimationId:Int?=null,exitAnimationId:Int?=null) {
+    fun loadAdBlockSettingFragment(enterAnimationId:Int?=R.anim.slide_left_in,exitAnimationId:Int?=R.anim.slide_left_out) {
         val fragment= AdBlockSettingFragment.newInstance()
         if(enterAnimationId!=null && exitAnimationId!=null){
             supportFragmentManager.beginTransaction()
