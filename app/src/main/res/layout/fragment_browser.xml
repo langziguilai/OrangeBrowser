@@ -91,6 +91,7 @@
                                  android:gravity="center" android:layout_width="0dp" android:layout_weight="1"
                                  android:layout_height="42dp">
                         <View android:layout_height="16dp" android:layout_width="16dp"
+                              android:id="@+id/counterNumberBox"
                               app:borderColor="@{activityViewModel.theme.colorPrimary}"
                               app:borderWidth="@{1.3f}"
                               android:layout_gravity="center"/>

@@ -175,9 +175,9 @@ class BottomPanelMenuIntegration(
                 var newVisionMode = Session.SCROLL_FULL_SCREEN_MODE
                 when {
                     session.visionMode == Session.NORMAL_SCREEN_MODE -> {
-
                         newVisionMode = Session.SCROLL_FULL_SCREEN_MODE
-                        actionItem.active = !actionItem.active
+                        actionItem.active = true
+                        actionItem.iconRes=R.string.ic_auto_fullscreen
                         view.findViewById<TextView>(R.id.icon)
                             .setTextColor(fragment.activityViewModel.theme.value!!.colorPrimaryActive)
                         view.findViewById<TextView>(R.id.icon).setText(R.string.ic_auto_fullscreen)
@@ -186,11 +186,14 @@ class BottomPanelMenuIntegration(
                     }
                     session.visionMode == Session.SCROLL_FULL_SCREEN_MODE -> {
                         newVisionMode = Session.MAX_SCREEN_MODE
+                        actionItem.active = true
+                        actionItem.iconRes=R.string.ic_fullscreen
                         view.findViewById<TextView>(R.id.icon).setText(R.string.ic_fullscreen)
                     }
                     session.visionMode == Session.MAX_SCREEN_MODE -> {
                         newVisionMode = Session.NORMAL_SCREEN_MODE
-                        actionItem.active = !actionItem.active
+                        actionItem.active = false
+                        actionItem.iconRes=R.string.ic_normal_screen
                         view.findViewById<TextView>(R.id.icon)
                             .setTextColor(fragment.activityViewModel.theme.value!!.colorPrimary)
                         view.findViewById<TextView>(R.id.icon).setText(R.string.ic_normal_screen)
@@ -234,26 +237,21 @@ class BottomPanelMenuIntegration(
             //发现
             R.string.ic_found -> {
                 bottomPanelHelper.toggleBottomPanel(Runnable {
-                    redirect(binding = binding, session = session, runnable = Runnable {
                         fragment.RouterActivity?.addFoundFragment()
-                    })
+
                 })
             }
             //历史
             R.string.ic_history -> {
                 bottomPanelHelper.toggleBottomPanel(Runnable {
-                    redirect(binding = binding, session = session, runnable = Runnable {
                         fragment.RouterActivity?.addHistoryFragment()
-                    })
                 })
 
             }
             //书签
             R.string.ic_bookmark -> {
                 bottomPanelHelper.toggleBottomPanel(Runnable {
-                    redirect(binding = binding, session = session, runnable = Runnable {
                         fragment.RouterActivity?.addBookMarkFragment()
-                    })
                 })
 
             }
@@ -274,27 +272,21 @@ class BottomPanelMenuIntegration(
             //主题
             R.string.ic_theme -> {
                 bottomPanelHelper.toggleBottomPanel(Runnable {
-                    redirect(binding = binding, session = session, runnable = Runnable {
-                        fragment.RouterActivity?.loadThemeFragment()
-                    })
+                        fragment.RouterActivity?.addThemeFragment()
                 })
 
             }
             //下载
             R.string.ic_download -> {
                 bottomPanelHelper.toggleBottomPanel(Runnable {
-                    redirect(binding = binding, session = session, runnable = Runnable {
                         fragment.RouterActivity?.addDownloadFragment()
-                    })
                 })
 
             }
             //设置
             R.string.ic_setting -> {
                 bottomPanelHelper.toggleBottomPanel(Runnable {
-                    redirect(binding = binding, session = session, runnable = Runnable {
                         fragment.RouterActivity?.addSettingFragment()
-                    })
                 })
 
             }

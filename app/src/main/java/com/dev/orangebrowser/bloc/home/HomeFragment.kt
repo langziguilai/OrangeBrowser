@@ -61,6 +61,7 @@ class HomeFragment : BaseLazyFragment(), BackHandler {
     }
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding= FragmentHomeBinding.bind(super.onCreateView(inflater, container, savedInstanceState))
+        binding.lifecycleOwner=this
         return binding.root
     }
     override fun onActivityCreated(savedInstanceState: Bundle?) {

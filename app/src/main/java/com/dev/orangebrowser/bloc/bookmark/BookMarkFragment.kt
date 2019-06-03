@@ -80,19 +80,20 @@ class BookMarkFragment : BaseFragment(), BackHandler {
         return true
     }
 
-    //获取layoutResourceId
     override fun getLayoutResId(): Int {
         return R.layout.fragment_bookmark
     }
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = FragmentBookmarkBinding.bind(super.onCreateView(inflater, container, savedInstanceState))
+        binding.lifecycleOwner=this
         return binding.root
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         activityViewModel = ViewModelProviders.of(activity!!, factory).get(MainViewModel::class.java)
         binding.activityViewModel = activityViewModel
+        binding.backHandler=this
+        binding.fragment=this
         super.onActivityCreated(savedInstanceState)
     }
 
@@ -104,26 +105,6 @@ class BookMarkFragment : BaseFragment(), BackHandler {
     override fun initViewWithDataBinding(savedInstanceState: Bundle?) {
         StatusBarUtil.setIconColor(requireActivity(),activityViewModel.theme.value!!.colorPrimary)
         offSet = DensityUtil.dip2px(requireContext(), 20f)
-        binding.goBack.setOnClickListener {
-            onBackPressed()
-        }
-        binding.add.setOnClickListener {
-            if (editBookMarkDialog != null) {
-                if (!editBookMarkDialog!!.isShowing) editBookMarkDialog?.show()
-            } else {
-                editBookMarkDialog = DialogBuilder()
-                    .setLayoutId(R.layout.dialog_add_bookmark)
-                    .setGravity(Gravity.BOTTOM)
-                    .setCanceledOnTouchOutside(true)
-                    .setOnViewCreateListener(object : DialogBuilder.OnViewCreateListener {
-                        override fun onViewCreated(view: View) {
-                            initEditBookMarkDialog(view)
-                        }
-                    }).build(requireContext())
-                editBookMarkDialog?.show()
-            }
-
-        }
         binding.recyclerView.layoutManager = LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
         bookMarkAdapter =
             object : BaseQuickAdapter<LeftRightEntity<BookMarkCategoryEntity, BookMarkEntity>, CustomBaseViewHolder>(
@@ -162,7 +143,22 @@ class BookMarkFragment : BaseFragment(), BackHandler {
 
         initContextMenu(bookMarkAdapter)
     }
-
+    fun openBookMarkEditDialog(){
+        if (editBookMarkDialog != null) {
+            if (!editBookMarkDialog!!.isShowing) editBookMarkDialog?.show()
+        } else {
+            editBookMarkDialog = DialogBuilder()
+                .setLayoutId(R.layout.dialog_add_bookmark)
+                .setGravity(Gravity.BOTTOM)
+                .setCanceledOnTouchOutside(true)
+                .setOnViewCreateListener(object : DialogBuilder.OnViewCreateListener {
+                    override fun onViewCreated(view: View) {
+                        initEditBookMarkDialog(view)
+                    }
+                }).build(requireContext())
+            editBookMarkDialog?.show()
+        }
+    }
     private fun openCategory(categoryEntity: BookMarkCategoryEntity) {
            val fragment= newInstance()
            fragment.arguments=Bundle().apply {

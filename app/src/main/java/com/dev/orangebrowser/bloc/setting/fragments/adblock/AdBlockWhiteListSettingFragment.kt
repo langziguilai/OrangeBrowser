@@ -40,11 +40,6 @@ class AdBlockWhiteListSettingFragment : BaseAdBlockSettingFragment(), BackHandle
 
     }
 
-    //获取layoutResourceId
-    override fun getLayoutResId(): Int {
-        return R.layout.fragment_ad_block_white_list_setting
-    }
-
     override fun useDataBinding(): Boolean {
         return true
     }
@@ -54,23 +49,26 @@ class AdBlockWhiteListSettingFragment : BaseAdBlockSettingFragment(), BackHandle
         //注入
         appComponent.inject(this)
     }
-
+    override fun getLayoutResId(): Int {
+        return R.layout.fragment_ad_block_white_list_setting
+    }
     override  fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = FragmentAdBlockWhiteListSettingBinding.bind(super.onCreateView(inflater, container, savedInstanceState))
+        binding.lifecycleOwner=this
         return binding.root
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         activityViewModel = ViewModelProviders.of(activity!!, factory).get(MainViewModel::class.java)
         binding.activityViewModel = activityViewModel
+        binding.backHandler = this
+        binding.fragment=this
         super.onActivityCreated(savedInstanceState)
     }
 
 
     override fun initViewWithDataBinding(savedInstanceState: Bundle?) {
-        binding.goBack.setOnClickListener {
-            onBackPressed()
-        }
+
         binding.recyclerView.layoutManager = LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
         ItemTouchHelper(object:ItemTouchHelper.Callback(){
             override fun getMovementFlags(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder): Int {
@@ -96,27 +94,20 @@ class AdBlockWhiteListSettingFragment : BaseAdBlockSettingFragment(), BackHandle
             }
 
         }).attachToRecyclerView(binding.recyclerView)
-        binding.add.setOnClickListener {
-            showAddWhiteListDialog()
-        }
+
         binding.addWhiteListContainer.onGlobalLayoutComplete{
             it.translationY=(it.measuredHeight+DensityUtil.dip2px(requireContext(),8f)).toFloat()
             binding.bottomOverlay.hide()
         }
-        binding.bottomOverlay.setOnClickListener {
+
+    }
+    fun addToWhiteList(){
+        val text=binding.addWhiteListText.text.toString().trim()
+        if (isValidSite(text)){
+            addWhiteListDomain(text)
             hideAddWhiteListDialog()
-        }
-        binding.cancelAddWhiteListBtn.setOnClickListener {
-            hideAddWhiteListDialog()
-        }
-        binding.addWhiteListBtn.setOnClickListener {
-            val text=binding.addWhiteListText.text.toString().trim()
-            if (isValidSite(text)){
-                addWhiteListDomain(text)
-                hideAddWhiteListDialog()
-            }else{
-                Toast.makeText(requireContext(),getString(R.string.input_valid_rule),Toast.LENGTH_SHORT).show()
-            }
+        }else{
+            Toast.makeText(requireContext(),getString(R.string.input_valid_rule),Toast.LENGTH_SHORT).show()
         }
     }
     //TODO:判断规则是否准确
@@ -124,12 +115,12 @@ class AdBlockWhiteListSettingFragment : BaseAdBlockSettingFragment(), BackHandle
         return true
     }
     //
-    private fun showAddWhiteListDialog(){
+     fun showAddWhiteListDialog(){
         binding.bottomOverlay.show()
         binding.addWhiteListContainer.animate().alpha(1f).translationY(0f)
             .setInterpolator(DEFAULT_INTERPOLATOR).setDuration(NORMAL_ANIMATION).start()
     }
-    private fun hideAddWhiteListDialog(){
+     fun hideAddWhiteListDialog(){
         binding.addWhiteListText.hideKeyboard()
         val view=binding.addWhiteListContainer
         view.animate().alpha(0f).translationY((view.measuredHeight+DensityUtil.dip2px(requireContext(),8f)).toFloat())

@@ -36,11 +36,6 @@ class AdBlockSettingFragment : BaseAdBlockSettingFragment(), BackHandler {
 
     }
 
-    //获取layoutResourceId
-    override fun getLayoutResId(): Int {
-        return R.layout.fragment_adblock_setting
-    }
-
     override fun useDataBinding(): Boolean {
         return true
     }
@@ -51,23 +46,25 @@ class AdBlockSettingFragment : BaseAdBlockSettingFragment(), BackHandler {
         appComponent.inject(this)
     }
 
-
+    override fun getLayoutResId(): Int {
+        return R.layout.fragment_adblock_setting
+    }
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = FragmentAdblockSettingBinding.bind(super.onCreateView(inflater, container, savedInstanceState))
+        binding.lifecycleOwner=this
         return binding.root
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         activityViewModel = ViewModelProviders.of(activity!!, factory).get(MainViewModel::class.java)
         binding.activityViewModel = activityViewModel
+        binding.fragment=this
+        binding.backHandler=this
         super.onActivityCreated(savedInstanceState)
     }
 
 
     override fun initViewWithDataBinding(savedInstanceState: Bundle?) {
-        binding.goBack.setOnClickListener {
-            onBackPressed()
-        }
         binding.recyclerView.layoutManager = LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
     }
 

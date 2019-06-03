@@ -88,20 +88,12 @@ class BrowserFragment : BaseFragment(), BackHandler, UserInteractionHandler {
     private val fullScreenProgressIntegration = ViewBoundFeatureWrapper<FullScreenProgressIntegration>()
     private val webSettingIntegration = ViewBoundFeatureWrapper<WebViewSettingIntegration>()
     val thumbnailIntergration= ViewBoundFeatureWrapper<ThumbnailIntergration>()
-    private val backButtonHandler: List<ViewBoundFeatureWrapper<*>> = listOf(
-//        fullScreenFeature,
-//        findInPageIntegration,
-////    toolbarIntegration,
-//        sessionFeature,
-//        customTabsIntegration
-    )
 
     lateinit var binding: FragmentBrowserBinding
     //
     val backHandlers = LinkedList<BackHandler>()
     //
     lateinit var fullScreenHelper: FullScreenHelper
-    val colorStore=ColorStore()
     //
     init {
         backHandlers.add(adaptToBackHandler(fullScreenFeature))
@@ -130,9 +122,9 @@ class BrowserFragment : BaseFragment(), BackHandler, UserInteractionHandler {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = FragmentBrowserBinding.bind(super.onCreateView(inflater, container, savedInstanceState))
+        binding.lifecycleOwner=this
         return binding.root
     }
-
     override fun getLayoutResId(): Int {
         return R.layout.fragment_browser
     }

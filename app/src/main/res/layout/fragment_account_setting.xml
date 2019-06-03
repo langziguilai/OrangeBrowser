@@ -3,18 +3,20 @@
         xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:tools="http://schemas.android.com/tools">
     <data>
         <variable name="activityViewModel" type="com.dev.orangebrowser.bloc.host.MainViewModel"/>
+        <variable name="backHandler" type="com.dev.base.support.BackHandler"/>
+        <variable name="fragment" type="com.dev.orangebrowser.bloc.setting.fragments.AccountFragment"/>
     </data>
     <androidx.coordinatorlayout.widget.CoordinatorLayout android:layout_width="match_parent"
                                                          android:fitsSystemWindows="true"
                                                          android:id="@+id/container_wrapper"
-                                                         android:background="@{activityViewModel.theme.colorPrimary}"
+                                                         bgColor="@{activityViewModel.theme.colorPrimary}"
                                                          android:layout_height="match_parent">
         <androidx.constraintlayout.widget.ConstraintLayout
                 android:background="@color/color_F8F8F8"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
             <FrameLayout android:id="@+id/header" android:layout_width="0dp" android:layout_height="44dp"
-                         android:background="@{activityViewModel.theme.colorPrimary}"
+                         bgColor="@{activityViewModel.theme.colorPrimary}"
                          app:layout_constraintTop_toTopOf="parent" app:layout_constraintStart_toStartOf="parent"
                          app:layout_constraintEnd_toEndOf="parent">
                 <com.dev.view.IconfontTextView
@@ -24,6 +26,9 @@
                         android:textColor="@color/colorWhite"
                         android:textSize="18sp"
                         android:text="@string/ic_arrow_left"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:onClick="@{() -> backHandler.onBackPressed()}"
                         android:gravity="center"
                         android:layout_gravity="start|center_vertical"/>
                 <TextView android:text="@string/setting"
@@ -80,11 +85,12 @@
                           android:paddingStart="14dp"
                           android:paddingEnd="14dp"
                           android:ellipsize="end"
-                          android:clickable="true"
-                          android:focusable="true"
                           android:layout_marginTop="24dp"
                           android:gravity="center"
                           android:hint="@string/login_register"
+                          android:clickable="true"
+                          android:focusable="true"
+                          android:onClick="@{() -> fragment.loginOrRegister()}"
                           android:textColor="@color/color_393A3F"
                           android:textSize="16sp"/>
                 <TextView
@@ -101,6 +107,7 @@
                         android:id="@+id/find_password"
                         android:clickable="true"
                         android:focusable="true"
+                        android:onClick="@{() -> fragment.findPassword()}"
                         android:layout_width="match_parent"
                         android:layout_height="20dp"
                         android:layout_marginBottom="18dp"

@@ -43,11 +43,6 @@ class AdBlockSubscriptionSettingFragment : BaseAdBlockSettingFragment(), BackHan
 
     }
 
-    //获取layoutResourceId
-    override fun getLayoutResId(): Int {
-        return R.layout.fragment_ad_block_subscription_setting
-    }
-
     override fun useDataBinding(): Boolean {
         return true
     }
@@ -57,54 +52,47 @@ class AdBlockSubscriptionSettingFragment : BaseAdBlockSettingFragment(), BackHan
         //注入
         appComponent.inject(this)
     }
-
+    override fun getLayoutResId(): Int {
+        return R.layout.fragment_ad_block_subscription_setting
+    }
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = FragmentAdBlockSubscriptionSettingBinding.bind(super.onCreateView(inflater, container, savedInstanceState))
+        binding.lifecycleOwner=this
         return binding.root
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         activityViewModel = ViewModelProviders.of(activity!!, factory).get(MainViewModel::class.java)
         binding.activityViewModel = activityViewModel
+        binding.backHandler=this
+        binding.fragment=this
         super.onActivityCreated(savedInstanceState)
     }
 
 
     override fun initViewWithDataBinding(savedInstanceState: Bundle?) {
-        binding.goBack.setOnClickListener {
-            onBackPressed()
-        }
         binding.recyclerView.layoutManager = LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
-        binding.add.setOnClickListener {
-            showAddSubscriptionDialog()
-        }
         binding.addSubscriptionContainer.onGlobalLayoutComplete{
             it.translationY=(it.measuredHeight+DensityUtil.dip2px(requireContext(),8f)).toFloat()
             binding.bottomOverlay.hide()
         }
-        binding.bottomOverlay.setOnClickListener {
+    }
+    fun addSubscription(){
+        val text=binding.addRuleText.text.toString()
+        if (text.isUrl()){
+            addSubscription(text)
             hideAddSubscriptionDialog()
-        }
-        binding.cancelAddRuleBtn.setOnClickListener {
-            hideAddSubscriptionDialog()
-        }
-        binding.addRuleBtn.setOnClickListener {
-            val text=binding.addRuleText.text.toString()
-            if (text.isUrl()){
-                addSubscription(text)
-                hideAddSubscriptionDialog()
-            }else{
-                Toast.makeText(requireContext(),getString(R.string.input_valid_url),Toast.LENGTH_SHORT).show()
-            }
+        }else{
+            Toast.makeText(requireContext(),getString(R.string.input_valid_url),Toast.LENGTH_SHORT).show()
         }
     }
     //
-    private fun showAddSubscriptionDialog(){
+    fun showAddSubscriptionDialog(){
         binding.bottomOverlay.show()
         binding.addSubscriptionContainer.animate().alpha(1f).translationY(0f)
             .setInterpolator(DEFAULT_INTERPOLATOR).setDuration(NORMAL_ANIMATION).start()
     }
-    private fun hideAddSubscriptionDialog(){
+    fun hideAddSubscriptionDialog(){
         binding.addRuleText.hideKeyboard()
         val view=binding.addSubscriptionContainer
         view.animate().alpha(0f).translationY((view.measuredHeight+DensityUtil.dip2px(requireContext(),8f)).toFloat())

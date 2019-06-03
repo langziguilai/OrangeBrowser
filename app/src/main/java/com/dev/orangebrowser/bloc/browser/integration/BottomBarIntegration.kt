@@ -45,17 +45,6 @@ class BottomBarIntegration(
     }
 
     private fun initBottomBar(savedInstanceState: Bundle?) {
-        //后退
-//        binding.back.setOnClickListener {
-//            fragment.onBackPressed()
-//        }
-//        //设置forward颜色
-//        if (session.canGoForward){
-//            binding.forward.setTextColor(fragment.activityViewModel.theme.value!!.colorPrimary)
-//        }else{
-//            binding.forward.setTextColor(fragment.activityViewModel.theme.value!!.colorPrimaryDisable)
-//        }
-//        binding.counterNumber.text=sessionManager.size.toString()
         setBottomBarInitialState(savedInstanceState)
         binding.forward.setOnClickListener {
             if (session.canGoForward) {

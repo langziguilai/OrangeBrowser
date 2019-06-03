@@ -31,6 +31,12 @@ class WebViewBlinkFixIntegration(binding: FragmentBrowserBinding,fragment:Browse
                 },300)
             }
         }
+        if (session.webPageThumbnailRef==null){
+            binding.webViewContainer.postDelayed({
+                session.visionMode=fragment.getSpInt(R.string.pref_setting_view_mode,Session.NORMAL_SCREEN_MODE)
+                binding.fragmentContainer.requestLayout()
+            },300)
+        }
         if (session.webPageThumbnailRef!=null && session.webPageThumbnailRef!!.get()!=null){
 
         }

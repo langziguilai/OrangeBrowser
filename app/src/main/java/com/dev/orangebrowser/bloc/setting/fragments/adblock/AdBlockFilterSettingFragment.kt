@@ -44,11 +44,6 @@ class AdBlockFilterSettingFragment : BaseAdBlockSettingFragment(), BackHandler {
 
     }
 
-    //获取layoutResourceId
-    override fun getLayoutResId(): Int {
-        return R.layout.fragment_ad_block_filter_setting
-    }
-
     override fun useDataBinding(): Boolean {
         return true
     }
@@ -58,23 +53,26 @@ class AdBlockFilterSettingFragment : BaseAdBlockSettingFragment(), BackHandler {
         //注入
         appComponent.inject(this)
     }
-
+    override fun getLayoutResId(): Int {
+        return R.layout.fragment_ad_block_filter_setting
+    }
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = FragmentAdBlockFilterSettingBinding.bind(super.onCreateView(inflater, container, savedInstanceState))
+        binding.lifecycleOwner=this
         return binding.root
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         activityViewModel = ViewModelProviders.of(activity!!, factory).get(MainViewModel::class.java)
         binding.activityViewModel = activityViewModel
+        binding.backHandler=this
+        binding.fragment=this
         super.onActivityCreated(savedInstanceState)
     }
 
 
     override fun initViewWithDataBinding(savedInstanceState: Bundle?) {
-        binding.goBack.setOnClickListener {
-            onBackPressed()
-        }
+
         binding.recyclerView.layoutManager = LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
         ItemTouchHelper(object:ItemTouchHelper.Callback(){
             override fun getMovementFlags(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder): Int {
@@ -100,27 +98,19 @@ class AdBlockFilterSettingFragment : BaseAdBlockSettingFragment(), BackHandler {
             }
 
         }).attachToRecyclerView(binding.recyclerView)
-        binding.add.setOnClickListener {
-            showAddFilterDialog()
-        }
+
         binding.addFilterContainer.onGlobalLayoutComplete{
             it.translationY=(it.measuredHeight+DensityUtil.dip2px(requireContext(),8f)).toFloat()
             binding.bottomOverlay.hide()
         }
-        binding.bottomOverlay.setOnClickListener {
+    }
+    fun addFilter(){
+        val text=binding.addFilterText.text.toString().trim()
+        if (isValidRule(text)){
+            addFilter(text)
             hideAddFilterDialog()
-        }
-        binding.cancelAddFilterBtn.setOnClickListener {
-            hideAddFilterDialog()
-        }
-        binding.addFilterBtn.setOnClickListener {
-            val text=binding.addFilterText.text.toString().trim()
-            if (isValidRule(text)){
-                addFilter(text)
-                hideAddFilterDialog()
-            }else{
-                Toast.makeText(requireContext(),getString(R.string.input_valid_rule),Toast.LENGTH_SHORT).show()
-            }
+        }else{
+            Toast.makeText(requireContext(),getString(R.string.input_valid_rule),Toast.LENGTH_SHORT).show()
         }
     }
     //TODO:判断规则是否准确
@@ -128,12 +118,12 @@ class AdBlockFilterSettingFragment : BaseAdBlockSettingFragment(), BackHandler {
         return true
     }
     //
-    private fun showAddFilterDialog(){
+    fun showAddFilterDialog(){
         binding.bottomOverlay.show()
         binding.addFilterContainer.animate().alpha(1f).translationY(0f)
             .setInterpolator(DEFAULT_INTERPOLATOR).setDuration(NORMAL_ANIMATION).start()
     }
-    private fun hideAddFilterDialog(){
+    fun hideAddFilterDialog(){
         binding.addFilterText.hideKeyboard()
         val view=binding.addFilterContainer
         view.animate().alpha(0f).translationY((view.measuredHeight+DensityUtil.dip2px(requireContext(),8f)).toFloat())

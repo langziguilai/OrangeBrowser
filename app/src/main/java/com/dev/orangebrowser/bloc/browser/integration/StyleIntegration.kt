@@ -1,17 +1,22 @@
 package com.dev.orangebrowser.bloc.browser.integration
 
 
+import android.content.res.Resources
 import android.graphics.Bitmap
 import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import androidx.annotation.ColorInt
+import androidx.lifecycle.Observer
 import com.dev.base.support.LifecycleAwareFeature
 import com.dev.browser.engine.system.SystemEngineSession
 import com.dev.browser.session.Session
 import com.dev.browser.session.SessionManager
 import com.dev.orangebrowser.R
 import com.dev.orangebrowser.bloc.browser.BrowserFragment
+import com.dev.orangebrowser.data.model.Theme
 import com.dev.orangebrowser.databinding.FragmentBrowserBinding
+import com.dev.orangebrowser.databinding.Util
+import com.dev.orangebrowser.extension.appData
 import com.dev.util.ColorKitUtil
 import com.dev.view.NavigationBarUtil
 import com.dev.view.StatusBarUtil
@@ -55,6 +60,27 @@ class StyleIntegration(
                 }
             }
         }
+        fragment.activityViewModel.theme.observe(fragment,
+            Observer<Theme> { updateTheme(it) })
+    }
+
+    private fun updateTheme(theme: Theme){
+        //更新bottom bar
+        //后退
+        binding.back.setTextColor(theme.colorPrimary)
+        //设置forward颜色
+        if (session.canGoForward) {
+            binding.forward.setTextColor(theme.colorPrimary)
+            binding.miniForward.setTextColor(theme.colorPrimary)
+        } else {
+            binding.forward.setTextColor(theme.colorPrimaryDisable)
+            binding.miniForward.setTextColor(theme.colorPrimaryDisable)
+        }
+        binding.counterNumber.setTextColor(theme.colorPrimary)
+        binding.menu.setTextColor(theme.colorPrimary)
+        binding.home.setTextColor(theme.colorPrimary)
+        Util.setViewBorderColor(binding.counterNumberBox,theme.colorPrimary,1.3f)
+        binding.bottomMenuGridView.adapter?.notifyDataSetChanged()
     }
 
     private fun updateStyle(@ColorInt color: Int) {
@@ -65,6 +91,7 @@ class StyleIntegration(
         NavigationBarUtil.setNavigationBarColor(fragment.requireActivity(), color)
         setTextColor(color)
     }
+
 
     private fun setTextColor(color: Int) {
         //如果时亮色背景，就设置字体颜色为暗色

@@ -32,10 +32,6 @@ class AccountFragment : BaseFragment(), BackHandler {
         return true
     }
 
-    //获取layoutResourceId
-    override fun getLayoutResId(): Int {
-        return R.layout.fragment_account_setting
-    }
 
     override fun useDataBinding(): Boolean {
         return true
@@ -47,27 +43,29 @@ class AccountFragment : BaseFragment(), BackHandler {
         appComponent.inject(this)
     }
 
+    override fun getLayoutResId(): Int {
+        return R.layout.fragment_account_setting
+    }
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = FragmentAccountSettingBinding.bind(super.onCreateView(inflater, container, savedInstanceState))
+        binding.lifecycleOwner=this
         return binding.root
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         activityViewModel = ViewModelProviders.of(activity!!, factory).get(MainViewModel::class.java)
         binding.activityViewModel = activityViewModel
+        binding.backHandler = this
+        binding.fragment=this
         super.onActivityCreated(savedInstanceState)
     }
 
 
     override fun initViewWithDataBinding(savedInstanceState: Bundle?) {
         val isLogin = getSpBool(R.string.pref_setting_is_login, false)
-        binding.goBack.setOnClickListener {
-           onBackPressed()
-        }
         if (isLogin){
             binding.registerOrLogin.hide()
             binding.userInfo.show()
-            initRegisterOrLoginView()
         }else{
             binding.registerOrLogin.show()
             binding.userInfo.hide()
@@ -75,24 +73,20 @@ class AccountFragment : BaseFragment(), BackHandler {
         }
     }
 
-
-    private fun initRegisterOrLoginView() {
-        binding.clickTextView.setOnClickListener {
-            val email = binding.email.text.toString()
-            val password = binding.password.toString()
-            when {
-                email.isBlank() -> Toasty.warning(requireContext(), R.string.tip_email_not_empty).show()
-                password.isBlank() -> Toasty.warning(requireContext(), R.string.tip_password_not_empty).show()
-                else -> {
-                    //TODO:注册或者登录
-                }
+    fun loginOrRegister(){
+        val email = binding.email.text.toString()
+        val password = binding.password.toString()
+        when {
+            email.isBlank() -> Toasty.warning(requireContext(), R.string.tip_email_not_empty).show()
+            password.isBlank() -> Toasty.warning(requireContext(), R.string.tip_password_not_empty).show()
+            else -> {
+                //TODO:注册或者登录
             }
         }
-        binding.findPassword.setOnClickListener {
-            //TODO:加载找回密码界面
-        }
     }
+    fun findPassword(){
 
+    }
     private fun initUserInfoView() {
         val avatar = getSpString(R.string.pref_user_avatar, "")
         if (avatar.isNotBlank()) {

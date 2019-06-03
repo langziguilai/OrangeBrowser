@@ -136,16 +136,11 @@ class TopPanelMenuIntegration(
             }
             //阅读模式
             R.string.ic_read -> {
-
-                redirect(binding = binding, session = fragment.session, runnable = Runnable {
                     fragment.RouterActivity?.addReadModeFragment(fragment.sessionId)
-                })
             }
             //看图模式
             R.string.ic_image -> {
-                redirect(binding = binding, session = fragment.session, runnable = Runnable {
                     fragment.RouterActivity?.addImageModeFragment(fragment.sessionId)
-                })
             }
 
             R.string.ic_search -> {
@@ -195,9 +190,7 @@ class TopPanelMenuIntegration(
             }
             //资源嗅探
             R.string.ic_resources_fang -> {
-                redirect(binding = binding, session = fragment.session, runnable = Runnable {
                     fragment.RouterActivity?.addResourceFragment(fragment.sessionId)
-                })
             }
             //TODO:添加到主页
             R.string.ic_store -> {

@@ -186,7 +186,7 @@ class BottomBarHelper(private var binding: FragmentHomeBinding, var fragment: Ho
             //主题
             R.string.ic_theme->{
                 toggleBottomPanel(Runnable {
-                    fragment.RouterActivity?.loadThemeFragment()
+                    fragment.RouterActivity?.addThemeFragment()
                 })
 
             }

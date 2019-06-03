@@ -35,11 +35,6 @@ class AddressBarSettingFragment : BaseFragment(), BackHandler {
 
     }
 
-    //获取layoutResourceId
-    override fun getLayoutResId(): Int {
-        return R.layout.fragment_address_bar_show_item_setting
-    }
-
     override fun useDataBinding(): Boolean {
         return true
     }
@@ -49,24 +44,25 @@ class AddressBarSettingFragment : BaseFragment(), BackHandler {
         //注入
         appComponent.inject(this)
     }
-
+    override fun getLayoutResId(): Int {
+        return R.layout.fragment_address_bar_show_item_setting
+    }
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding =
             FragmentAddressBarShowItemSettingBinding.bind(super.onCreateView(inflater, container, savedInstanceState))
+        binding.lifecycleOwner=this
         return binding.root
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         activityViewModel = ViewModelProviders.of(activity!!, factory).get(MainViewModel::class.java)
         binding.activityViewModel = activityViewModel
+        binding.backHandler=this
         super.onActivityCreated(savedInstanceState)
     }
 
 
     override fun initViewWithDataBinding(savedInstanceState: Bundle?) {
-        binding.goBack.setOnClickListener {
-            onBackPressed()
-        }
         binding.recyclerView.layoutManager = LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
     }
 
