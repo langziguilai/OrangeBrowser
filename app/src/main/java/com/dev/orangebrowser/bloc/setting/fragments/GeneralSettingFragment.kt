@@ -95,18 +95,6 @@ class GeneralSettingFragment : BaseFragment(), BackHandler {
                     }
                 })
         )
-        val viewMode = getString(R.string.normal_vision_mode)
-        list.add(
-            TileItem(
-                title = getString(R.string.view_mode),
-                tip = getSpString(R.string.pref_setting_view_mode_title, viewMode),
-                icon = getString(R.string.ic_right),
-                action = object : Action<TileItem> {
-                    override fun invoke(data: TileItem) {
-                        RouterActivity?.loadVisionModeSettingFragment()
-                    }
-                })
-        )
         list.add(SwitchItem(title = getString(R.string.record_search_history), action = object : Action<Boolean> {
             override fun invoke(data: Boolean) {
                 setSpBool(R.string.pref_setting_record_search_history, data)
