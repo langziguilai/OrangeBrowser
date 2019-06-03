@@ -5,6 +5,7 @@ import androidx.room.Room
 import com.dev.browser.database.BrowserDatabase
 import com.dev.browser.database.bookmark.BookMarkCategoryDao
 import com.dev.browser.database.bookmark.BookMarkDao
+import com.dev.browser.database.download.DownloadDao
 import com.dev.browser.database.history.VisitHistoryDao
 import com.dev.orangebrowser.data.AppDatabase
 import com.dev.orangebrowser.data.dao.AdBlockFilterDao
@@ -54,5 +55,10 @@ class DatabaseModule {
     @Singleton
     fun provideBookMarkCategoryDao(browserDatabase: BrowserDatabase): BookMarkCategoryDao {
         return browserDatabase.bookMarkCategoryDao()
+    }
+    @Provides
+    @Singleton
+    fun provideDownloadDao(browserDatabase: BrowserDatabase): DownloadDao {
+        return browserDatabase.downloadDao()
     }
 }

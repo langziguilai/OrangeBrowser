@@ -9,6 +9,7 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.dev.base.BaseFragment
+import com.dev.browser.database.download.*
 import com.dev.browser.feature.downloads.DownloadManager
 import com.dev.orangebrowser.R
 import com.dev.orangebrowser.bloc.host.MainViewModel
@@ -26,66 +27,62 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.io.File
 import java.util.*
+import javax.inject.Inject
 
 class DownloadFragment : BaseFragment() {
 
 
     companion object {
-        val Tag="DownloadFragment"
+        val Tag = "DownloadFragment"
         fun newInstance() = DownloadFragment()
     }
 
+    @Inject
+    lateinit var downloadDao: DownloadDao
     lateinit var viewModel: DownloadViewModel
     lateinit var activityViewModel: MainViewModel
-    lateinit var binding:FragmentDownloadBinding
+    lateinit var binding: FragmentDownloadBinding
     override fun onAttach(context: Context) {
         super.onAttach(context)
         //注入
         appComponent.inject(this)
-        viewModel=ViewModelProviders.of(this,factory).get(DownloadViewModel::class.java)
+        viewModel = ViewModelProviders.of(this, factory).get(DownloadViewModel::class.java)
+    }
+
+    override fun getLayoutResId(): Int {
+        return R.layout.fragment_download
     }
 
     override fun useDataBinding(): Boolean {
         return true
     }
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        binding= FragmentDownloadBinding.bind(super.onCreateView(inflater, container, savedInstanceState))
+        binding = FragmentDownloadBinding.bind(super.onCreateView(inflater, container, savedInstanceState))
+        binding.lifecycleOwner = this
         return binding.root
     }
+
     override fun onActivityCreated(savedInstanceState: Bundle?) {
-        activityViewModel=ViewModelProviders.of(this.requireActivity(),factory).get(MainViewModel::class.java)
-        binding.activityViewModel=activityViewModel
+        activityViewModel = ViewModelProviders.of(this.requireActivity(), factory).get(MainViewModel::class.java)
+        binding.activityViewModel = activityViewModel
         super.onActivityCreated(savedInstanceState)
     }
-    var allItems:LinkedList<Item> = LinkedList()
-    var displayItems:LinkedList<Item> = LinkedList()
+
+    var allItems: LinkedList<Item> = LinkedList()
+    var displayItems: LinkedList<Item> = LinkedList()
     override fun initViewWithDataBinding(savedInstanceState: Bundle?) {
-        StatusBarUtil.setIconColor(requireActivity(),activityViewModel.theme.value!!.colorPrimary)
+        StatusBarUtil.setIconColor(requireActivity(), activityViewModel.theme.value!!.colorPrimary)
         binding.recyclerView.apply {
-            this.layoutManager=LinearLayoutManager(requireContext(),RecyclerView.VERTICAL,false)
-            this.addItemDecoration(GridDividerItemDecoration(0,DensityUtil.dip2px(requireContext(),0.5f),getColor(R.color.material_grey_300)))
-            this.adapter=object:BaseQuickAdapter<Item,CustomBaseViewHolder>(R.layout.item_resource,displayItems){
-                override fun convert(helper: CustomBaseViewHolder, item: Item) {
-                    helper.setTextColor(R.id.icon,activityViewModel.theme.value!!.colorPrimary)
-                    helper.setText(R.id.title,item.name)
-                    helper.setText(R.id.size,item.size)
-                    when(item.type){
-                        Type.VIDEO->{
+            this.layoutManager = LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
+            this.addItemDecoration(
+                GridDividerItemDecoration(
+                    0,
+                    DensityUtil.dip2px(requireContext(), 0.5f),
+                    getColor(R.color.material_grey_300)
+                )
+            )
 
-                        }
-                        Type.IMAGE->{
-
-                        }
-                        Type.WEB->{
-
-                        }
-                        Type.OTHER->{
-
-                        }
-                    }
-                }
-
-            }
         }
         binding.savedVideos.setOnClickListener {
 
@@ -102,38 +99,40 @@ class DownloadFragment : BaseFragment() {
     }
 
     override fun initData(savedInstanceState: Bundle?) {
-
         launch(Dispatchers.IO) {
-             val downloadPath=DownloadManager.getInstance(requireContext().applicationContext).downloadPath
-             val dir=File(downloadPath)
-             if(dir.isDirectory){
-                 val items= dir.listFiles().filter { !it.isDirectory }.map {
-                     var type=Type.OTHER
-                     if (FileTypeDetect.isImage(it.path)){
-                         type=Type.IMAGE
-                     }else if(FileTypeDetect.isVideo(it.path)){
-                         type=Type.VIDEO
-                     }
-                     Item(
-                         name=it.name,
-                         path = it.absolutePath,
-                         size=FileSizeHelper.ShowLongFileSize(it.totalSpace),
-                         date = Date(it.lastModified()),
-                         type = type
-                     )
+            val downloads = downloadDao.getAll()
+            binding.recyclerView.adapter = object :
+                BaseQuickAdapter<DownloadEntity, CustomBaseViewHolder>(R.layout.item_download_item, downloads) {
+                override fun convert(helper: CustomBaseViewHolder, item: DownloadEntity) {
+                    helper.setTextColor(R.id.icon, activityViewModel.theme.value!!.colorPrimary)
+                    helper.setText(R.id.title, item.fileName)
+                    helper.setText(R.id.size, FileSizeHelper.ShowLongFileSize(item.contentLength))
+                    when (item.type) {
+                        IMAGE -> {
+                           helper.setText(R.id.icon,getString(R.string.ic_image))
+                        }
+                        VIDEO -> {
+                            helper.setText(R.id.icon,getString(R.string.ic_video))
+                        }
+                        AUDIO -> {
+                            helper.setText(R.id.icon,getString(R.string.ic_audio))
+                        }
+                        COMMON -> {
+                            helper.setText(R.id.icon,getString(R.string.ic_file))
+                        }
+                        APK -> {
+                            helper.setText(R.id.icon,getString(R.string.ic_store))
+                        }
+                    }
+                }
 
-                 }
-                 allItems.addAll(items)
-                 displayItems.addAll(items)
-                 launch(Dispatchers.Main) {
-                     binding.recyclerView.adapter?.notifyDataSetChanged()
-                 }
-             }
+            }
         }
     }
 
 }
-data class Item(var name:String,var path:String,var size:String,var type:Type,var date: Date)
-enum class Type{
-    VIDEO,IMAGE,WEB,OTHER
+
+data class Item(var name: String, var path: String, var size: String, var type: Type, var date: Date)
+enum class Type {
+    VIDEO, IMAGE, WEB, OTHER
 }

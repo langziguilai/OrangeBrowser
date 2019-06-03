@@ -21,10 +21,17 @@ import android.os.Environment
 import android.widget.Toast
 import androidx.annotation.RequiresPermission
 import com.dev.browser.R
+import com.dev.browser.database.BrowserDatabase
+import com.dev.browser.database.download.DownloadEntity
+import com.dev.browser.database.download.STATUS_FINISH
+import com.dev.browser.database.download.STATUS_NOT_FINISH
+import com.dev.browser.database.download.STATUS_OTHER_DOWNLOADER
 import com.dev.browser.extension.isPermissionGranted
 import com.dev.browser.session.Download
 import com.dev.browser.support.DownloadUtils
+import kotlinx.coroutines.*
 import java.io.File
+import kotlin.coroutines.CoroutineContext
 
 typealias OnDownloadCompleted = (Download, Long) -> Unit
 typealias AndroidDownloadManager = android.app.DownloadManager
@@ -39,7 +46,10 @@ internal const val FILE_NOT_SUPPORTED = -1L
 class DownloadManager(
     private val applicationContext: Context,
     var onDownloadCompleted: OnDownloadCompleted = { _, _ -> }
-) {
+): CoroutineScope {
+    private val job= SupervisorJob()
+    override val coroutineContext: CoroutineContext
+    get() = Dispatchers.Main+job
     interface OnAutoInstallDownloadAppListener{
         fun onAutoInstallDownloadApp(download: Download)
     }
@@ -50,7 +60,7 @@ class DownloadManager(
     var autoInstallDownloadApp:Boolean=false
     var downloadPath:String= Environment.DIRECTORY_DOWNLOADS
     var mOnAutoInstallDownloadAppListener:OnAutoInstallDownloadAppListener?=null
-
+    val downloadDao=BrowserDatabase.get(applicationContext).downloadDao()
     fun setOnAutoInstallDownloadAppListener(onAutoInstallDownloadAppListener:OnAutoInstallDownloadAppListener){
         this.mOnAutoInstallDownloadAppListener=onAutoInstallDownloadAppListener
     }
@@ -89,6 +99,11 @@ class DownloadManager(
     ): Long {
         //如果是不支持的格式，或者是使用第三方下载
         if (download.isNotSupportedProtocol() || !useSystemDownloadManager) {
+            launch(Dispatchers.IO) {
+                val entity=DownloadEntity.fromDownload(download)
+                entity.status= STATUS_OTHER_DOWNLOADER
+                downloadDao.insert(entity)
+            }
             val intent = Intent(ACTION_VIEW,Uri.parse(download.url)).apply {
                 flags = Intent.FLAG_ACTIVITY_NEW_TASK
             }
@@ -133,7 +148,11 @@ class DownloadManager(
         if (!isSubscribedReceiver) {
             registerBroadcastReceiver(applicationContext)
         }
-
+        launch(Dispatchers.IO) {
+            val entity=DownloadEntity.fromDownload(download)
+            entity.status= STATUS_NOT_FINISH
+            downloadDao.insert(entity)
+        }
         return downloadID
     }
 
@@ -184,12 +203,17 @@ class DownloadManager(
                         mOnAutoInstallDownloadAppListener?.onAutoInstallDownloadApp(download=download)
                     }
                     onDownloadCompleted.invoke(download, downloadID)
+                    //更新下载状态
+                    launch(Dispatchers.IO) {
+                        downloadDao.updateStatus(download.url, STATUS_FINISH)
+                    }
                 }
                 queuedDownloads -= (downloadID)
 
                 if (queuedDownloads.isEmpty()) {
                     unregisterListener()
                 }
+
             }
         }
     }

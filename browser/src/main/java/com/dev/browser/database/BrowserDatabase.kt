@@ -11,6 +11,8 @@ import com.dev.browser.database.bookmark.BookMarkCategoryDao
 import com.dev.browser.database.bookmark.BookMarkCategoryEntity
 import com.dev.browser.database.bookmark.BookMarkDao
 import com.dev.browser.database.bookmark.BookMarkEntity
+import com.dev.browser.database.download.DownloadDao
+import com.dev.browser.database.download.DownloadEntity
 import com.dev.browser.database.history.VisitHistoryDao
 import com.dev.browser.database.history.VisitHistoryEntity
 import com.dev.browser.database.sitepermission.SitePermissionsDao
@@ -20,13 +22,18 @@ import com.dev.browser.feature.sitepermissions.SitePermissions
 /**
  * Internal database for saving site permissions.
  */
-@Database(entities = [SitePermissionsEntity::class,VisitHistoryEntity::class, BookMarkEntity::class,BookMarkCategoryEntity::class], version = 1,exportSchema = false)
+@Database(entities = [SitePermissionsEntity::class,
+    VisitHistoryEntity::class,
+    DownloadEntity::class,
+    BookMarkEntity::class,
+    BookMarkCategoryEntity::class], version = 1,exportSchema = false)
 @TypeConverters(StatusConverter::class)
 abstract class BrowserDatabase : RoomDatabase() {
     abstract fun sitePermissionsDao(): SitePermissionsDao
     abstract fun historyDao():VisitHistoryDao
     abstract fun bookMarkDao():BookMarkDao
     abstract fun bookMarkCategoryDao():BookMarkCategoryDao
+    abstract fun downloadDao():DownloadDao
     companion object {
         @Volatile
         private var instance: BrowserDatabase? = null

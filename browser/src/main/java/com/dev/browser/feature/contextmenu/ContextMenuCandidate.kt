@@ -123,6 +123,7 @@ data class ContextMenuCandidate(
                         url=hitResult.src,
                         fileName = DownloadUtils.guessFileName(null, hitResult.src, null),
                         referer = session.url,
+                        contentType = "image/*",
                         cookies = session.getCookies(hitResult.src),
                         destinationDirectory = OFFLINE_IMAGE_PATH
                     )
