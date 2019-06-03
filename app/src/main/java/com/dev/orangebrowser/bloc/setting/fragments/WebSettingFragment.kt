@@ -56,20 +56,19 @@ class WebSettingFragment : BaseFragment(), BackHandler {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = FragmentWebSettingBinding.bind(super.onCreateView(inflater, container, savedInstanceState))
+        binding.lifecycleOwner=this
         return binding.root
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         activityViewModel = ViewModelProviders.of(activity!!, factory).get(MainViewModel::class.java)
         binding.activityViewModel = activityViewModel
+        binding.backHandler=this
         super.onActivityCreated(savedInstanceState)
     }
 
 
     override fun initViewWithDataBinding(savedInstanceState: Bundle?) {
-        binding.goBack.setOnClickListener {
-            onBackPressed()
-        }
         StatusBarUtil.setIconColor(requireActivity(),activityViewModel.theme.value!!.colorPrimary)
         binding.recyclerView.layoutManager = LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
     }

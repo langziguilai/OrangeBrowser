@@ -86,12 +86,15 @@ class HistoryFragment : BaseFragment(), BackHandler {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = FragmentHistoryBinding.bind(super.onCreateView(inflater, container, savedInstanceState))
+        binding.lifecycleOwner=this
         return binding.root
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         activityViewModel = ViewModelProviders.of(activity!!, factory).get(MainViewModel::class.java)
         binding.activityViewModel = activityViewModel
+        binding.backHandler=this
+        binding.fragment=this
         super.onActivityCreated(savedInstanceState)
     }
 
@@ -100,37 +103,6 @@ class HistoryFragment : BaseFragment(), BackHandler {
     override fun initViewWithDataBinding(savedInstanceState: Bundle?) {
         StatusBarUtil.setIconColor(requireActivity(),activityViewModel.theme.value!!.colorPrimary)
         offSet = DensityUtil.dip2px(requireContext(), 20f)
-        binding.goBack.setOnClickListener {
-            onBackPressed()
-        }
-        binding.clear.setOnClickListener {
-            if (clearHistoryDialog != null) {
-               if(!clearHistoryDialog!!.isShowing) clearHistoryDialog?.show()
-            }else{
-                clearHistoryDialog = DialogBuilder()
-                    .setLayoutId(R.layout.dialog_delete_history)
-                    .setGravity(Gravity.CENTER)
-                    .setWidthPercent(0.9f)
-                    .setCanceledOnTouchOutside(true)
-                    .setOnViewCreateListener(object : DialogBuilder.OnViewCreateListener {
-                        override fun onViewCreated(view: View) {
-                            view.findViewById<View>(R.id.cancel).setOnClickListener {
-                                if (clearHistoryDialog!=null && clearHistoryDialog!!.isShowing){
-                                    clearHistoryDialog?.dismiss()
-                                }
-                            }
-                            view.findViewById<View>(R.id.sure).setOnClickListener {
-                                if (clearHistoryDialog!=null && clearHistoryDialog!!.isShowing){
-                                    clearHistoryDialog?.dismiss()
-                                }
-                                clearHistory()
-                            }
-                        }
-                    }).build(requireContext())
-                clearHistoryDialog?.show()
-            }
-
-        }
         binding.recyclerView.layoutManager = LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
         adapter = object : BaseSectionQuickAdapter<MySectionEntity, CustomBaseViewHolder>(
             R.layout.item_history,
@@ -178,6 +150,33 @@ class HistoryFragment : BaseFragment(), BackHandler {
             }
         }
         initHistoryItemDialog(adapter)
+    }
+    fun showClearHistoryDialog(){
+        if (clearHistoryDialog != null) {
+            if(!clearHistoryDialog!!.isShowing) clearHistoryDialog?.show()
+        }else{
+            clearHistoryDialog = DialogBuilder()
+                .setLayoutId(R.layout.dialog_delete_history)
+                .setGravity(Gravity.CENTER)
+                .setWidthPercent(0.9f)
+                .setCanceledOnTouchOutside(true)
+                .setOnViewCreateListener(object : DialogBuilder.OnViewCreateListener {
+                    override fun onViewCreated(view: View) {
+                        view.findViewById<View>(R.id.cancel).setOnClickListener {
+                            if (clearHistoryDialog!=null && clearHistoryDialog!!.isShowing){
+                                clearHistoryDialog?.dismiss()
+                            }
+                        }
+                        view.findViewById<View>(R.id.sure).setOnClickListener {
+                            if (clearHistoryDialog!=null && clearHistoryDialog!!.isShowing){
+                                clearHistoryDialog?.dismiss()
+                            }
+                            clearHistory()
+                        }
+                    }
+                }).build(requireContext())
+            clearHistoryDialog?.show()
+        }
     }
     var historyItemDialog:Dialog?=null
     private fun initHistoryItemDialog(adapter: BaseQuickAdapter<MySectionEntity, CustomBaseViewHolder>?) {

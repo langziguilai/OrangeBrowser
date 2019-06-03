@@ -66,9 +66,6 @@ class DownloadManagerSettingFragment : BaseFragment(), BackHandler {
 
 
     override fun initViewWithDataBinding(savedInstanceState: Bundle?) {
-        binding.goBack.setOnClickListener {
-            onBackPressed()
-        }
         binding.recyclerView.layoutManager = LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
     }
 

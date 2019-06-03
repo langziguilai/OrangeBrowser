@@ -16,7 +16,7 @@
                 android:layout_height="match_parent">
             <!--顶部bar-->
             <LinearLayout android:id="@+id/top_bar"
-                          app:bgColor="@{activityViewModel.theme.colorPrimary}" android:layout_width="match_parent"
+                          bgColor="@{activityViewModel.theme.colorPrimary}" android:layout_width="match_parent"
                           android:layout_height="44dp"
                           android:orientation="horizontal">
                 <LinearLayout android:background="@drawable/bg_transparent_round"

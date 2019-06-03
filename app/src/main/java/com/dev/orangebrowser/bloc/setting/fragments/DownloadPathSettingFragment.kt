@@ -86,62 +86,53 @@ class DownloadPathSettingFragment : BaseFragment(), BackHandler {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = FragmentDownloadPathSettingBinding.bind(super.onCreateView(inflater, container, savedInstanceState))
+        binding.lifecycleOwner=this
         return binding.root
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         activityViewModel = ViewModelProviders.of(activity!!, factory).get(MainViewModel::class.java)
         binding.activityViewModel = activityViewModel
+        binding.backHandler=this
+        binding.fragment=this
         super.onActivityCreated(savedInstanceState)
     }
 
     private val pathLinkedList = LinkedList<Any>()
 
     override fun initViewWithDataBinding(savedInstanceState: Bundle?) {
-        binding.goBack.setOnClickListener {
-            onBackPressed()
-        }
         binding.recyclerView.layoutManager = LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
         binding.parentPath.layoutManager = LinearLayoutManager(requireContext(), RecyclerView.HORIZONTAL, false)
-        binding.chooseDirectory.setOnClickListener {
-            launch(Dispatchers.IO) {
-                DownloadManager.getInstance(requireContext().applicationContext).setCustomDownloadPath(currentDirectoryPath)
-                //setSpString(R.string.pref_setting_download_relative_path, currentDirectoryPath.removePrefix(START_PATH))
-                launch(Dispatchers.Main) {
-                    fragmentManager?.popBackStack()
-                }
-            }
-        }
-
-        binding.addDirectory.setOnClickListener {
-            showAddFolderDialog()
-        }
         binding.addFolderContainer.onGlobalLayoutComplete{
             it.translationY=(it.measuredHeight+DensityUtil.dip2px(requireContext(),8f)).toFloat()
             binding.bottomOverlay.hide()
         }
-        binding.bottomOverlay.setOnClickListener {
-            hideAddFolderDialog()
-        }
-        binding.cancelAddFolderBtn.setOnClickListener {
-            hideAddFolderDialog()
-        }
-        binding.addFolderBtn.setOnClickListener {
-            val text=binding.addFolderText.text.toString()
-            if (!text.isBlank()){
-                addFolder(text)
-                hideAddFolderDialog()
-            }else{
-                Toast.makeText(requireContext(),getString(R.string.tip_correct_folder_name),Toast.LENGTH_SHORT).show()
+
+    }
+    fun chooseDirectory(){
+        launch(Dispatchers.IO) {
+            DownloadManager.getInstance(requireContext().applicationContext).setCustomDownloadPath(currentDirectoryPath)
+            //setSpString(R.string.pref_setting_download_relative_path, currentDirectoryPath.removePrefix(START_PATH))
+            launch(Dispatchers.Main) {
+                fragmentManager?.popBackStack()
             }
         }
     }
-    private fun showAddFolderDialog(){
+    fun addFolder(){
+        val text=binding.addFolderText.text.toString()
+        if (!text.isBlank()){
+            addFolder(text)
+            hideAddFolderDialog()
+        }else{
+            Toast.makeText(requireContext(),getString(R.string.tip_correct_folder_name),Toast.LENGTH_SHORT).show()
+        }
+    }
+     fun showAddFolderDialog(){
         binding.bottomOverlay.show()
         binding.addFolderContainer.animate().alpha(1f).translationY(0f)
             .setInterpolator(DEFAULT_INTERPOLATOR).setDuration(NORMAL_ANIMATION).start()
     }
-    private fun hideAddFolderDialog(){
+     fun hideAddFolderDialog(){
         binding.addFolderText.hideKeyboard()
         val view=binding.addFolderContainer
         view.animate().alpha(0f).translationY((view.measuredHeight+ DensityUtil.dip2px(requireContext(),8f)).toFloat())
