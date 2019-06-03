@@ -55,7 +55,9 @@ class ImageModeModeFragment : BaseFragment(), BackHandler {
     }
 
     override fun onBackPressed(): Boolean {
-        RouterActivity?.popUpToHomeOrBrowserFragment()
+        sessionManager.selectedSession?.apply {
+            RouterActivity?.loadHomeOrBrowserFragment(this.id,R.anim.slide_right_in,R.anim.slide_right_out)
+        }
         return true
     }
 

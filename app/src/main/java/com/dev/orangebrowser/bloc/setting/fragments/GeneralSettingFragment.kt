@@ -30,7 +30,7 @@ class GeneralSettingFragment : BaseFragment(), BackHandler {
     lateinit var activityViewModel: MainViewModel
     lateinit var binding: FragmentGeneralSettingBinding
     override fun onBackPressed(): Boolean {
-        fragmentManager?.popBackStack()
+        RouterActivity?.loadSettingFragment(enterAnimationId = R.anim.slide_right_in,exitAnimationId = R.anim.slide_right_out)
         return true
 
     }
@@ -91,7 +91,7 @@ class GeneralSettingFragment : BaseFragment(), BackHandler {
                 icon = getString(R.string.ic_right),
                 action = object : Action<TileItem> {
                     override fun invoke(data: TileItem) {
-                        RouterActivity?.addAddressBarSettingFragment()
+                        RouterActivity?.loadAddressBarSettingFragment()
                     }
                 })
         )
@@ -103,7 +103,7 @@ class GeneralSettingFragment : BaseFragment(), BackHandler {
                 icon = getString(R.string.ic_right),
                 action = object : Action<TileItem> {
                     override fun invoke(data: TileItem) {
-                        RouterActivity?.addVisionModeSettingFragment()
+                        RouterActivity?.loadVisionModeSettingFragment()
                     }
                 })
         )
@@ -178,7 +178,7 @@ class GeneralSettingFragment : BaseFragment(), BackHandler {
                 icon = getString(R.string.ic_right),
                 action = object : Action<TileItem> {
                     override fun invoke(data: TileItem) {
-                       RouterActivity?.addFontSizeSettingFragment()
+                       RouterActivity?.loadFontSizeSettingFragment()
                     }
                 })
         )
@@ -189,7 +189,7 @@ class GeneralSettingFragment : BaseFragment(), BackHandler {
                 icon = getString(R.string.ic_right),
                 action = object : Action<TileItem> {
                     override fun invoke(data: TileItem) {
-                        RouterActivity?.addLanguageSettingFragment()
+                        RouterActivity?.loadLanguageSettingFragment()
                     }
                 })
         )

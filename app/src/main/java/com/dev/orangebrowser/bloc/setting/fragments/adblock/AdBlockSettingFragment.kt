@@ -31,7 +31,7 @@ class AdBlockSettingFragment : BaseAdBlockSettingFragment(), BackHandler {
     lateinit var activityViewModel: MainViewModel
     lateinit var binding: FragmentAdblockSettingBinding
     override fun onBackPressed(): Boolean {
-        fragmentManager?.popBackStack()
+        RouterActivity?.loadSettingFragment(enterAnimationId = R.anim.slide_right_in,exitAnimationId = R.anim.slide_right_out)
         return true
 
     }
@@ -122,7 +122,7 @@ class AdBlockSettingFragment : BaseAdBlockSettingFragment(), BackHandler {
                 icon = getString(R.string.ic_right),
                 action = object : Action<TileItem> {
                     override fun invoke(data: TileItem) {
-                        RouterActivity?.addAdBlockConnectionSettingFragment()
+                        RouterActivity?.loadAdBlockConnectionSettingFragment()
                     }
                 })
         )
@@ -142,7 +142,7 @@ class AdBlockSettingFragment : BaseAdBlockSettingFragment(), BackHandler {
                 icon = getString(R.string.ic_right),
                 action = object : Action<TileItem> {
                     override fun invoke(data: TileItem) {
-                        RouterActivity?.addAdBlockSubscriptionSettingFragment()
+                        RouterActivity?.loadAdBlockSubscriptionSettingFragment()
                     }
                 })
         )
@@ -155,7 +155,7 @@ class AdBlockSettingFragment : BaseAdBlockSettingFragment(), BackHandler {
                 icon = getString(R.string.ic_right),
                 action = object : Action<TileItem> {
                     override fun invoke(data: TileItem) {
-                        RouterActivity?.addAdBlockFilterSettingFragment()
+                        RouterActivity?.loadAdBlockFilterSettingFragment()
                     }
                 })
         )
@@ -167,7 +167,7 @@ class AdBlockSettingFragment : BaseAdBlockSettingFragment(), BackHandler {
                 icon = getString(R.string.ic_right),
                 action = object : Action<TileItem> {
                     override fun invoke(data: TileItem) {
-                        RouterActivity?.addAdBlockWhiteListSettingFragment()
+                        RouterActivity?.loadAdBlockWhiteListSettingFragment()
                     }
                 })
         )

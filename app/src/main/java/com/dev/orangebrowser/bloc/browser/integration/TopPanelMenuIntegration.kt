@@ -15,7 +15,6 @@ import com.dev.browser.session.SessionManager
 import com.dev.orangebrowser.R
 import com.dev.orangebrowser.bloc.browser.BrowserFragment
 import com.dev.orangebrowser.bloc.browser.integration.helper.TopPanelHelper
-import com.dev.orangebrowser.bloc.browser.integration.helper.redirect
 import com.dev.orangebrowser.data.dao.SavedFileDao
 import com.dev.orangebrowser.data.model.ActionItem
 import com.dev.orangebrowser.data.model.SavedFile
@@ -136,11 +135,11 @@ class TopPanelMenuIntegration(
             }
             //阅读模式
             R.string.ic_read -> {
-                    fragment.RouterActivity?.addReadModeFragment(fragment.sessionId)
+                    fragment.RouterActivity?.loadReadModeFragment(fragment.sessionId)
             }
             //看图模式
             R.string.ic_image -> {
-                    fragment.RouterActivity?.addImageModeFragment(fragment.sessionId)
+                    fragment.RouterActivity?.loadImageModeFragment(fragment.sessionId)
             }
 
             R.string.ic_search -> {
@@ -190,7 +189,7 @@ class TopPanelMenuIntegration(
             }
             //资源嗅探
             R.string.ic_resources_fang -> {
-                    fragment.RouterActivity?.addResourceFragment(fragment.sessionId)
+                    fragment.RouterActivity?.loadResourceFragment(fragment.sessionId)
             }
             //TODO:添加到主页
             R.string.ic_store -> {

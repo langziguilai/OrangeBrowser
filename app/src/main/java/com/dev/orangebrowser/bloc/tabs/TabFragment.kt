@@ -10,18 +10,27 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.dev.base.BaseFragment
+import com.dev.base.support.BackHandler
 import com.dev.browser.session.SessionManager
 import com.dev.orangebrowser.R
 import com.dev.orangebrowser.bloc.browser.BrowserFragment
 import com.dev.orangebrowser.bloc.host.MainViewModel
 import com.dev.orangebrowser.bloc.tabs.integration.*
 import com.dev.orangebrowser.databinding.FragmentTabBinding
+import com.dev.orangebrowser.extension.RouterActivity
 import com.dev.orangebrowser.extension.appComponent
 import com.dev.util.DensityUtil
 import javax.inject.Inject
 
 
-class TabFragment : BaseFragment() {
+class TabFragment : BaseFragment(),BackHandler {
+    override fun onBackPressed(): Boolean {
+        sessionManager.selectedSession?.apply {
+            RouterActivity?.loadHomeOrBrowserFragment(this.id)
+        }
+        return true
+    }
+
     @Inject
     lateinit var sessionManager: SessionManager
     val sessionId: String

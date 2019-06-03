@@ -34,7 +34,7 @@ class DownloadSettingFragment : BaseFragment(), BackHandler {
     lateinit var activityViewModel: MainViewModel
     lateinit var binding: FragmentDownloadSettingBinding
     override fun onBackPressed(): Boolean {
-        fragmentManager?.popBackStack()
+        RouterActivity?.loadSettingFragment(enterAnimationId = R.anim.slide_right_in,exitAnimationId = R.anim.slide_right_out)
         return true
 
     }
@@ -99,7 +99,7 @@ class DownloadSettingFragment : BaseFragment(), BackHandler {
                 icon = getString(R.string.ic_right),
                 action = object : Action<TileItem> {
                     override fun invoke(data: TileItem) {
-                        RouterActivity?.addDownloadManagerSettingFragment()
+                        RouterActivity?.loadDownloadManagerSettingFragment()
                     }
                 })
         )
@@ -111,7 +111,7 @@ class DownloadSettingFragment : BaseFragment(), BackHandler {
                 icon = getString(R.string.ic_right),
                 action = object : Action<TileItem> {
                     override fun invoke(data: TileItem) {
-                        RouterActivity?.addDownloadPathSettingFragment()
+                        RouterActivity?.loadDownloadPathSettingFragment()
                     }
                 })
         )

@@ -313,320 +313,289 @@ class MainActivity : BaseActivity(), DownloadManager.OnAutoInstallDownloadAppLis
     }
 
     //加载发现页面
-    fun addFoundFragment() {
+    fun loadFoundFragment() {
         val fragment = FoundFragment.newInstance()
         supportFragmentManager.beginTransaction()
-            .setCustomAnimations(R.anim.slide_left_in, R.anim.holder, R.anim.holder, R.anim.slide_right_out)
-            .add(R.id.root_container, fragment)
-            .addToBackStack(null)
+            .setCustomAnimations(R.anim.slide_left_in, R.anim.slide_left_out)
+            .replace(R.id.root_container, fragment)
             .commit()
     }
 
     //加载历史页面
-    fun addHistoryFragment() {
+    fun loadHistoryFragment() {
         val fragment = HistoryFragment.newInstance()
         supportFragmentManager.beginTransaction()
-            .setCustomAnimations(R.anim.slide_left_in, R.anim.holder, R.anim.holder, R.anim.slide_right_out)
-            .add(R.id.root_container, fragment)
-            .addToBackStack(null)
+            .setCustomAnimations(R.anim.slide_left_in, R.anim.slide_left_out)
+            .replace(R.id.root_container, fragment)
             .commit()
     }
 
     //加载书签页面
-    fun addBookMarkFragment() {
+    fun loadBookMarkFragment() {
         val fragment = BookMarkFragment.newInstance()
         supportFragmentManager.beginTransaction()
-            .setCustomAnimations(R.anim.slide_left_in, R.anim.holder, R.anim.holder, R.anim.slide_right_out)
-            .add(R.id.root_container, fragment)
-            .addToBackStack(null)
+            .setCustomAnimations(R.anim.slide_left_in, R.anim.slide_left_out)
+            .replace(R.id.root_container, fragment)
             .commit()
     }
 
     //加载主题页面
-    fun addThemeFragment() {
+    fun loadThemeFragment() {
         val fragment = ThemeFragment.newInstance()
         supportFragmentManager.beginTransaction()
-            .setCustomAnimations(R.anim.slide_left_in, R.anim.holder, R.anim.holder, R.anim.slide_right_out)
-            .add(R.id.root_container, fragment)
-            .addToBackStack(null)
+            .setCustomAnimations(R.anim.slide_left_in, R.anim.slide_left_out)
+            .replace(R.id.root_container, fragment)
             .commit()
     }
 
     //加载下载页面
-    fun addDownloadFragment() {
+    fun loadDownloadFragment() {
         val fragment = DownloadFragment.newInstance()
         supportFragmentManager.beginTransaction()
-            .setCustomAnimations(R.anim.slide_left_in, R.anim.holder, R.anim.holder, R.anim.slide_right_out)
-            .add(R.id.root_container, fragment)
-            .addToBackStack(null)
+            .setCustomAnimations(R.anim.slide_left_in, R.anim.slide_left_out)
+            .replace(R.id.root_container, fragment)
             .commit()
     }
 
     //加载设置页面
-    fun addSettingFragment() {
+    fun loadSettingFragment(enterAnimationId: Int=R.anim.slide_left_in,exitAnimationId: Int=R.anim.slide_left_out) {
         val fragment = SettingFragment.newInstance()
         supportFragmentManager.beginTransaction()
-            .setCustomAnimations(R.anim.slide_left_in, R.anim.holder, R.anim.holder, R.anim.slide_right_out)
-            .add(R.id.root_container, fragment)
-            .addToBackStack(null)
+            .setCustomAnimations(enterAnimationId, exitAnimationId)
+            .replace(R.id.root_container, fragment)
             .commit()
 
     }
 
     //加载阅读模式页面
-    fun addReadModeFragment(
+    fun loadReadModeFragment(
         sessionId: String
     ) {
         val fragment = ReadModeFragment.newInstance(sessionId)
         supportFragmentManager.beginTransaction()
-            .setCustomAnimations(R.anim.slide_left_in, R.anim.holder, R.anim.holder, R.anim.slide_right_out)
-            .add(R.id.root_container, fragment)
-            .addToBackStack(null)
+            .setCustomAnimations(R.anim.slide_left_in, R.anim.slide_left_out)
+            .replace(R.id.root_container, fragment)
             .commit()
     }
 
     //加载图片模式页面
-    fun addImageModeFragment(
+    fun loadImageModeFragment(
         sessionId: String
     ) {
         val fragment = ImageModeModeFragment.newInstance(sessionId)
         supportFragmentManager.beginTransaction()
-            .setCustomAnimations(R.anim.slide_left_in, R.anim.holder, R.anim.holder, R.anim.slide_right_out)
-            .add(R.id.root_container, fragment)
-            .addToBackStack(null)
+            .setCustomAnimations(R.anim.slide_left_in, R.anim.slide_left_out)
+            .replace(R.id.root_container, fragment)
             .commit()
     }
 
     //资源嗅探页面
-    fun addResourceFragment(
+    fun loadResourceFragment(
         sessionId: String
     ) {
         val fragment = ResourceFragment.newInstance(sessionId)
         supportFragmentManager.beginTransaction()
-            .setCustomAnimations(R.anim.slide_left_in, R.anim.holder, R.anim.holder, R.anim.slide_right_out)
-            .add(R.id.root_container, fragment)
-            .addToBackStack(null)
+            .setCustomAnimations(R.anim.slide_left_in, R.anim.slide_left_out)
+            .replace(R.id.root_container, fragment)
             .commit()
     }
 
     //Account界面
-    fun addAccountFragment() {
+    fun loadAccountFragment() {
         val fragment = AccountFragment.newInstance()
         supportFragmentManager.beginTransaction()
-            .setCustomAnimations(R.anim.slide_left_in, R.anim.holder, R.anim.holder, R.anim.slide_right_out)
-            .add(R.id.root_container, fragment)
-            .addToBackStack(null)
+            .setCustomAnimations(R.anim.slide_left_in, R.anim.slide_left_out)
+            .replace(R.id.root_container, fragment)
             .commit()
     }
 
     //通用设置界面
-    fun addGeneralSettingFragment() {
+    fun loadGeneralSettingFragment(enterAnimationId: Int=R.anim.slide_left_in,exitAnimationId: Int=R.anim.slide_left_out) {
         val fragment = GeneralSettingFragment.newInstance()
         supportFragmentManager.beginTransaction()
-            .setCustomAnimations(R.anim.slide_left_in, R.anim.holder, R.anim.holder, R.anim.slide_right_out)
-            .add(R.id.root_container, fragment)
-            .addToBackStack(null)
+            .setCustomAnimations(enterAnimationId, exitAnimationId)
+            .replace(R.id.root_container, fragment)
             .commit()
     }
 
     //网页设置界面
-    fun addWebSettingFragment() {
+    fun loadWebSettingFragment(enterAnimationId: Int=R.anim.slide_left_in,exitAnimationId: Int=R.anim.slide_left_out) {
         val fragment = WebSettingFragment.newInstance()
         supportFragmentManager.beginTransaction()
-            .setCustomAnimations(R.anim.slide_left_in, R.anim.holder, R.anim.holder, R.anim.slide_right_out)
-            .add(R.id.root_container, fragment)
-            .addToBackStack(null)
+            .setCustomAnimations(enterAnimationId, exitAnimationId)
+            .replace(R.id.root_container, fragment)
             .commit()
     }
 
     //缓存设置界面
-    fun addCacheSettingFragment() {
+    fun loadCacheSettingFragment() {
         val fragment = CacheSettingFragment.newInstance()
         supportFragmentManager.beginTransaction()
-            .setCustomAnimations(R.anim.slide_left_in, R.anim.holder, R.anim.holder, R.anim.slide_right_out)
-            .add(R.id.root_container, fragment)
-            .addToBackStack(null)
+            .setCustomAnimations(R.anim.slide_left_in, R.anim.slide_left_out)
+            .replace(R.id.root_container, fragment)
             .commit()
     }
 
     //广告拦截设置界面
-    fun addAdBlockSettingFragment() {
+    fun loadAdBlockSettingFragment(enterAnimationId: Int=R.anim.slide_left_in,exitAnimationId: Int=R.anim.slide_left_out) {
         val fragment = AdBlockSettingFragment.newInstance()
         supportFragmentManager.beginTransaction()
-            .setCustomAnimations(R.anim.slide_left_in, R.anim.holder, R.anim.holder, R.anim.slide_right_out)
-            .add(R.id.root_container, fragment)
-            .addToBackStack(null)
+            .setCustomAnimations(enterAnimationId, exitAnimationId)
+            .replace(R.id.root_container, fragment)
             .commit()
     }
 
     //实验室功能设置界面
-    fun addLibrarySettingFragment() {
+    fun loadLibrarySettingFragment() {
         val fragment = LibrarySettingFragment.newInstance()
         supportFragmentManager.beginTransaction()
-            .setCustomAnimations(R.anim.slide_left_in, R.anim.holder, R.anim.holder, R.anim.slide_right_out)
-            .add(R.id.root_container, fragment)
-            .addToBackStack(null)
+            .setCustomAnimations(R.anim.slide_left_in, R.anim.slide_left_out)
+            .replace(R.id.root_container, fragment)
             .commit()
     }
 
     //手势设置界面
-    fun addGestureSettingFragment() {
+    fun loadGestureSettingFragment() {
         val fragment = GestureSettingFragment.newInstance()
         supportFragmentManager.beginTransaction()
-            .setCustomAnimations(R.anim.slide_left_in, R.anim.holder, R.anim.holder, R.anim.slide_right_out)
-            .add(R.id.root_container, fragment)
-            .addToBackStack(null)
+            .setCustomAnimations(R.anim.slide_left_in, R.anim.slide_left_out)
+            .replace(R.id.root_container, fragment)
             .commit()
     }
 
     //搜索引擎设置界面
-    fun addSearchEngineSettingFragment() {
+    fun loadSearchEngineSettingFragment() {
         val fragment = SearchEngineSettingFragment.newInstance()
         supportFragmentManager.beginTransaction()
-            .setCustomAnimations(R.anim.slide_left_in, R.anim.holder, R.anim.holder, R.anim.slide_right_out)
-            .add(R.id.root_container, fragment)
-            .addToBackStack(null)
+            .setCustomAnimations(R.anim.slide_left_in, R.anim.slide_left_out)
+            .replace(R.id.root_container, fragment)
             .commit()
     }
 
     //下载引擎设置界面
-    fun addDownloadSettingFragment() {
+    fun loadDownloadSettingFragment(enterAnimationId: Int=R.anim.slide_left_in,exitAnimationId: Int=R.anim.slide_left_out) {
         val fragment = DownloadSettingFragment.newInstance()
         supportFragmentManager.beginTransaction()
-            .setCustomAnimations(R.anim.slide_left_in, R.anim.holder, R.anim.holder, R.anim.slide_right_out)
-            .add(R.id.root_container, fragment)
-            .addToBackStack(null)
+            .setCustomAnimations(enterAnimationId, exitAnimationId)
+            .replace(R.id.root_container, fragment)
             .commit()
     }
 
     //地址栏展示设置界面
-    fun addAddressBarSettingFragment() {
+    fun loadAddressBarSettingFragment() {
         val fragment = AddressBarSettingFragment.newInstance()
         supportFragmentManager.beginTransaction()
-            .setCustomAnimations(R.anim.slide_left_in, R.anim.holder, R.anim.holder, R.anim.slide_right_out)
-            .add(R.id.root_container, fragment)
-            .addToBackStack(null)
+            .setCustomAnimations(R.anim.slide_left_in, R.anim.slide_left_out)
+            .replace(R.id.root_container, fragment)
             .commit()
     }
 
     //视野模式设置界面
-    fun addVisionModeSettingFragment() {
+    fun loadVisionModeSettingFragment() {
         val fragment = VisionModeSettingFragment.newInstance()
         supportFragmentManager.beginTransaction()
-            .setCustomAnimations(R.anim.slide_left_in, R.anim.holder, R.anim.holder, R.anim.slide_right_out)
-            .add(R.id.root_container, fragment)
-            .addToBackStack(null)
+            .setCustomAnimations(R.anim.slide_left_in, R.anim.slide_left_out)
+            .replace(R.id.root_container, fragment)
             .commit()
     }
 
     //字体大小设置界面
-    fun addFontSizeSettingFragment() {
+    fun loadFontSizeSettingFragment() {
         val fragment = FontSizeSettingFragment.newInstance()
         supportFragmentManager.beginTransaction()
-            .setCustomAnimations(R.anim.slide_left_in, R.anim.holder, R.anim.holder, R.anim.slide_right_out)
-            .add(R.id.root_container, fragment)
-            .addToBackStack(null)
+            .setCustomAnimations(R.anim.slide_left_in, R.anim.slide_left_out)
+            .replace(R.id.root_container, fragment)
             .commit()
     }
 
     //语言设置界面
-    fun addLanguageSettingFragment() {
+    fun loadLanguageSettingFragment() {
         val fragment = LanguageSettingFragment.newInstance()
         supportFragmentManager.beginTransaction()
-            .setCustomAnimations(R.anim.slide_left_in, R.anim.holder, R.anim.holder, R.anim.slide_right_out)
-            .add(R.id.root_container, fragment)
-            .addToBackStack(null)
+            .setCustomAnimations(R.anim.slide_left_in, R.anim.slide_left_out)
+            .replace(R.id.root_container, fragment)
             .commit()
     }
 
     //色彩风格设置界面
-    fun addColorStyleSettingFragment() {
+    fun loadColorStyleSettingFragment() {
         val fragment = ColorStyleSettingFragment.newInstance()
         supportFragmentManager.beginTransaction()
-            .setCustomAnimations(R.anim.slide_left_in, R.anim.holder, R.anim.holder, R.anim.slide_right_out)
-            .add(R.id.root_container, fragment)
-            .addToBackStack(null)
+            .setCustomAnimations(R.anim.slide_left_in, R.anim.slide_left_out)
+            .replace(R.id.root_container, fragment)
             .commit()
     }
 
     //UA设置界面
-    fun addUaSettingFragment() {
+    fun loadUaSettingFragment() {
         val fragment = UaSettingFragment.newInstance()
         supportFragmentManager.beginTransaction()
-            .setCustomAnimations(R.anim.slide_left_in, R.anim.holder, R.anim.holder, R.anim.slide_right_out)
-            .add(R.id.root_container, fragment)
-            .addToBackStack(null)
+            .setCustomAnimations(R.anim.slide_left_in, R.anim.slide_left_out)
+            .replace(R.id.root_container, fragment)
             .commit()
     }
 
     //打开应用设置界面
-    fun addOpenAppSettingFragment() {
+    fun loadOpenAppSettingFragment() {
         val fragment = OpenAppSettingFragment.newInstance()
         supportFragmentManager.beginTransaction()
-            .setCustomAnimations(R.anim.slide_left_in, R.anim.holder, R.anim.holder, R.anim.slide_right_out)
-            .add(R.id.root_container, fragment)
-            .addToBackStack(null)
+            .setCustomAnimations(R.anim.slide_left_in, R.anim.slide_left_out)
+            .replace(R.id.root_container, fragment)
             .commit()
     }
 
 
     //设置AdBlock的订阅
-    fun addAdBlockSubscriptionSettingFragment() {
+    fun loadAdBlockSubscriptionSettingFragment() {
         val fragment = AdBlockSubscriptionSettingFragment.newInstance()
         supportFragmentManager.beginTransaction()
-            .setCustomAnimations(R.anim.slide_left_in, R.anim.holder, R.anim.holder, R.anim.slide_right_out)
-            .add(R.id.root_container, fragment)
-            .addToBackStack(null)
+            .setCustomAnimations(R.anim.slide_left_in, R.anim.slide_left_out)
+            .replace(R.id.root_container, fragment)
             .commit()
     }
 
     //设置AdBlock的自定义过滤规则
-    fun addAdBlockFilterSettingFragment() {
+    fun loadAdBlockFilterSettingFragment() {
         val fragment = AdBlockFilterSettingFragment.newInstance()
         supportFragmentManager.beginTransaction()
-            .setCustomAnimations(R.anim.slide_left_in, R.anim.holder, R.anim.holder, R.anim.slide_right_out)
-            .add(R.id.root_container, fragment)
-            .addToBackStack(null)
+            .setCustomAnimations(R.anim.slide_left_in, R.anim.slide_left_out)
+            .replace(R.id.root_container, fragment)
             .commit()
     }
 
     //设置AdBlock的白名单
-    fun addAdBlockWhiteListSettingFragment() {
+    fun loadAdBlockWhiteListSettingFragment() {
         val fragment = AdBlockWhiteListSettingFragment.newInstance()
         supportFragmentManager.beginTransaction()
-            .setCustomAnimations(R.anim.slide_left_in, R.anim.holder, R.anim.holder, R.anim.slide_right_out)
-            .add(R.id.root_container, fragment)
-            .addToBackStack(null)
+            .setCustomAnimations(R.anim.slide_left_in, R.anim.slide_left_out)
+            .replace(R.id.root_container, fragment)
             .commit()
     }
 
     //设置AdBlock的更新选择
-    fun addAdBlockConnectionSettingFragment() {
+    fun loadAdBlockConnectionSettingFragment() {
         val fragment = AdBlockConnectionSettingFragment.newInstance()
         supportFragmentManager.beginTransaction()
-            .setCustomAnimations(R.anim.slide_left_in, R.anim.holder, R.anim.holder, R.anim.slide_right_out)
-            .add(R.id.root_container, fragment)
-            .addToBackStack(null)
+            .setCustomAnimations(R.anim.slide_left_in, R.anim.slide_left_out)
+            .replace(R.id.root_container, fragment)
             .commit()
     }
 
     //下载器设置
-    fun addDownloadManagerSettingFragment() {
+    fun loadDownloadManagerSettingFragment() {
         val fragment = DownloadManagerSettingFragment.newInstance()
         supportFragmentManager.beginTransaction()
-            .setCustomAnimations(R.anim.slide_left_in, R.anim.holder, R.anim.holder, R.anim.slide_right_out)
-            .add(R.id.root_container, fragment)
-            .addToBackStack(null)
+            .setCustomAnimations(R.anim.slide_left_in, R.anim.slide_left_out)
+            .replace(R.id.root_container, fragment)
             .commit()
     }
 
     //下载路径设置
-    fun addDownloadPathSettingFragment() {
+    fun loadDownloadPathSettingFragment() {
         val fragment = DownloadPathSettingFragment.newInstance()
         supportFragmentManager.beginTransaction()
-            .setCustomAnimations(R.anim.slide_left_in, R.anim.holder, R.anim.holder, R.anim.slide_right_out)
-            .add(R.id.root_container, fragment)
-            .addToBackStack(null)
+            .setCustomAnimations(R.anim.slide_left_in, R.anim.slide_left_out)
+            .replace(R.id.root_container, fragment)
             .commit()
     }
 

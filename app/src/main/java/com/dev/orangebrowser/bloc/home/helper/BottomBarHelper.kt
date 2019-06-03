@@ -3,7 +3,6 @@ package com.dev.orangebrowser.bloc.home.helper
 import android.os.Bundle
 import android.view.View
 import android.view.animation.AccelerateInterpolator
-import android.widget.TextView
 import android.widget.Toast
 import androidx.lifecycle.Observer
 import com.dev.base.extension.*
@@ -16,7 +15,6 @@ import com.dev.orangebrowser.data.model.Theme
 import com.dev.orangebrowser.data.model.getBottomMenuActionItems
 import com.dev.orangebrowser.databinding.FragmentHomeBinding
 import com.dev.orangebrowser.extension.RouterActivity
-import com.dev.orangebrowser.extension.appData
 import com.dev.util.DensityUtil
 import com.dev.view.GridView
 import com.dev.view.recyclerview.CustomBaseViewHolder
@@ -119,20 +117,20 @@ class BottomBarHelper(private var binding: FragmentHomeBinding, var fragment: Ho
             //发现
             R.string.ic_found->{
                 toggleBottomPanel(Runnable {
-                    fragment.RouterActivity?.addFoundFragment()
+                    fragment.RouterActivity?.loadFoundFragment()
                 })
             }
             //历史
             R.string.ic_history->{
                 toggleBottomPanel(Runnable {
-                    fragment.RouterActivity?.addHistoryFragment()
+                    fragment.RouterActivity?.loadHistoryFragment()
                 })
 
             }
             //书签
             R.string.ic_bookmark->{
                 toggleBottomPanel(Runnable {
-                    fragment.RouterActivity?.addBookMarkFragment()
+                    fragment.RouterActivity?.loadBookMarkFragment()
                 })
 
             }
@@ -143,21 +141,21 @@ class BottomBarHelper(private var binding: FragmentHomeBinding, var fragment: Ho
             //主题
             R.string.ic_theme->{
                 toggleBottomPanel(Runnable {
-                    fragment.RouterActivity?.addThemeFragment()
+                    fragment.RouterActivity?.loadThemeFragment()
                 })
 
             }
             //下载
             R.string.ic_download->{
                 toggleBottomPanel(Runnable {
-                    fragment.RouterActivity?.addDownloadFragment()
+                    fragment.RouterActivity?.loadDownloadFragment()
                 })
 
             }
             //设置
             R.string.ic_setting->{
                 toggleBottomPanel(Runnable {
-                    fragment.RouterActivity?.addSettingFragment()
+                    fragment.RouterActivity?.loadSettingFragment()
                 })
 
             }
