@@ -62,7 +62,7 @@ fun getBottomMenuActionItems(): List<ActionItem> {
             id = R.string.ic_forbid_image
         )
     )
-    result.add(ActionItem(nameRes = R.string.privacy, iconRes = R.string.ic_privacy))
+    result.add(ActionItem(nameRes = R.string.privacy, iconRes = R.string.ic_privacy,id = R.string.ic_privacy))
     result.add(
         ActionItem(
             nameRes = R.string.vision,

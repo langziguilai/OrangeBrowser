@@ -106,9 +106,21 @@ class BottomPanelMenuIntegration(
 
         //设置UserAgent
         fragment.appData.bottomMenuActionItems.find { it.id== R.string.ic_desktop  }?.apply {
-            if(fragment.getSpString(R.string.pref_setting_ua_title)==fragment.requireContext().getString(R.string.ua_pc)){
+                this.active=session.desktopMode
+        }
+        //设置无图模式
+        fragment.appData.bottomMenuActionItems.find { it.id== R.string.ic_forbid_image  }?.apply {
+            if(session.forbidImageMode){
                 this.active=true
+                this.iconRes=R.string.ic_forbid_image
+            }else{
+                this.active=false
+                this.iconRes=R.string.ic_image
             }
+        }
+        //设置隐私模式
+        fragment.appData.bottomMenuActionItems.find { it.id== R.string.ic_privacy  }?.apply {
+            this.active = session.private
         }
     }
     private fun initBottomMenuGridView(bottomMenuGridView: GridView) {
@@ -212,6 +224,7 @@ class BottomPanelMenuIntegration(
             //电脑
             R.string.ic_desktop -> {
                 actionItem.active = !actionItem.active
+                session.desktopMode=actionItem.active
                 if (actionItem.active) {
                     sessionUseCases.setUserAgent.invoke(fragment.requireContext().getString(R.string.user_agent_pc),session)
                     sessionUseCases.requestDesktopSite.invoke(true, session)

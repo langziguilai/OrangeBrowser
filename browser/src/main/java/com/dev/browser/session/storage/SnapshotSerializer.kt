@@ -73,6 +73,8 @@ internal fun serializeSession(session: Session): JSONObject {
         put(Keys.SESSION_URL_KEY, session.url)
         put(Keys.SESSION_FORBID_IMAGE, session.forbidImageMode)
         put(Keys.SESSION_SCREEN_NUMBER, session.screenNumber)
+        put(Keys.SESSION_PRIVATE, session.private)
+        put(Keys.SESSION_DESKTOP_MODE, session.desktopMode)
         put(Keys.SESSION_WEB_PAGE_THUMBNAIL_PATH, session.webPageThumbnailPath)
         put(Keys.SESSION_MAIN_PAGE_THUMBNAIL_PATH, session.mainPageThumbnailPath)
         put(Keys.SESSION_SOURCE_KEY, session.source.name)
@@ -100,6 +102,8 @@ internal fun deserializeSession(json: JSONObject): Session {
     session.parentId = json.getString(Keys.SESSION_PARENT_UUID_KEY).takeIf { it != "" }
     session.title = if (json.has(Keys.SESSION_TITLE)) json.getString(Keys.SESSION_TITLE) else ""
     session.forbidImageMode = if (json.has(Keys.SESSION_FORBID_IMAGE)) json.getBoolean(Keys.SESSION_FORBID_IMAGE) else false
+    session.private=if (json.has(Keys.SESSION_PRIVATE)) json.getBoolean(Keys.SESSION_PRIVATE) else false
+    session.desktopMode=if (json.has(Keys.SESSION_DESKTOP_MODE)) json.getBoolean(Keys.SESSION_DESKTOP_MODE) else false
     session.screenNumber = if (json.has(Keys.SESSION_SCREEN_NUMBER)) json.getInt(Keys.SESSION_SCREEN_NUMBER) else Session.HOME_SCREEN
     session.title = if (json.has(Keys.SESSION_TITLE)) json.getString(Keys.SESSION_TITLE) else ""
     session.webPageThumbnailPath = if (json.has(Keys.SESSION_WEB_PAGE_THUMBNAIL_PATH)) json.getString(Keys.SESSION_WEB_PAGE_THUMBNAIL_PATH) else ""
@@ -116,6 +120,8 @@ private object Keys {
     const val SESSION_PARENT_UUID_KEY = "parentUuid"
     const val SESSION_TITLE = "title"
     const val SESSION_FORBID_IMAGE="forbidImageMode"
+    const val SESSION_PRIVATE="private"
+    const val SESSION_DESKTOP_MODE="desktopMode"
     const val SESSION_SCREEN_NUMBER="screenNumber"
     const val SESSION_WEB_PAGE_THUMBNAIL_PATH="webPageThumbnailPath"
     const val SESSION_MAIN_PAGE_THUMBNAIL_PATH="mainPageThumbnailPath"

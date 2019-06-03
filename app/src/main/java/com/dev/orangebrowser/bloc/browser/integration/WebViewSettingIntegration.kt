@@ -31,6 +31,19 @@ class WebViewSettingIntegration(
         }
         //设置UserAgent并且隐藏设备信息
         engineSession.setUserAgent(fragment.getSpString(R.string.pref_setting_ua))
+        //设置是否是禁止图片模式
+        engineSession.forbidLoadingImage(session.forbidImageMode,false)
+        //设置是否是桌面模式
+        if (session.desktopMode){
+            engineSession.setUserAgent(fragment.requireContext().getString(R.string.user_agent_pc))
+        }else{
+            val ua=fragment.getSpString(R.string.pref_setting_ua)
+            if (ua!=fragment.requireContext().getString(R.string.user_agent_pc)){
+                engineSession.setUserAgent(ua)
+            }else{
+                engineSession.setUserAgent(fragment.requireContext().getString(R.string.user_agent_android))
+            }
+        }
     }
 
     override fun stop() {

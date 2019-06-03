@@ -5,12 +5,15 @@ import android.view.View
 import android.view.animation.AccelerateInterpolator
 import android.widget.TextView
 import android.widget.Toast
+import androidx.lifecycle.Observer
 import com.dev.base.extension.*
 import com.dev.base.support.BackHandler
 import com.dev.browser.session.Session
 import com.dev.orangebrowser.R
 import com.dev.orangebrowser.bloc.home.HomeFragment
 import com.dev.orangebrowser.data.model.ActionItem
+import com.dev.orangebrowser.data.model.Theme
+import com.dev.orangebrowser.data.model.getBottomMenuActionItems
 import com.dev.orangebrowser.databinding.FragmentHomeBinding
 import com.dev.orangebrowser.extension.RouterActivity
 import com.dev.orangebrowser.extension.appData
@@ -39,24 +42,18 @@ class BottomBarHelper(private var binding: FragmentHomeBinding, var fragment: Ho
             }
         }
         //监听更新主题
-//        fragment.activityViewModel.theme.observe(fragment, Observer<Theme> {
-//            binding.containerWrapper.setBackgroundColor(it.colorPrimary)
-//            binding.topBar.setBackgroundColor(it.colorPrimary)
-//            binding.back.setBackgroundColor(it.colorPrimaryDisable)
-//            fragment.sessionManager.findSessionById(fragment.sessionId)?.apply {
-//                if (this.url!= Session.NO_EXIST_URL){
-//                    binding.forward.setTextColor(it.colorPrimary)
-//                    binding.forward.isEnabled=true
-//                }else{
-//                    binding.forward.setTextColor(it.colorPrimaryDisable)
-//                    binding.forward.isEnabled=false
-//                }
-//            }
-//            binding.search.setBackgroundColor(it.colorPrimary)
-//            binding.counterNumber.setBackgroundColor(it.colorPrimary)
-//            binding.menu.setBackgroundColor(it.colorPrimary)
-//            binding.bottomMenuGridView.adapter?.notifyDataSetChanged()
-//        })
+        fragment.activityViewModel.theme.observe(fragment, Observer<Theme> {
+            fragment.sessionManager.findSessionById(fragment.sessionId)?.apply {
+                if (this.url!= Session.NO_EXIST_URL){
+                    binding.forward.setTextColor(it.colorPrimary)
+                    binding.forward.isEnabled=true
+                }else{
+                    binding.forward.setTextColor(it.colorPrimaryDisable)
+                    binding.forward.isEnabled=false
+                }
+            }
+            binding.bottomMenuGridView.adapter?.notifyDataSetChanged()
+        })
         binding.forward.setOnClickListener {
              fragment.RouterActivity?.loadBrowserFragment(fragment.sessionId)
         }
@@ -95,7 +92,11 @@ class BottomBarHelper(private var binding: FragmentHomeBinding, var fragment: Ho
         }
     }
     private fun initBottomMenuGridView(bottomMenuGridView: GridView) {
-        val adapter=object: BaseQuickAdapter<ActionItem, CustomBaseViewHolder>(R.layout.item_bottom_action_item,fragment.appData.bottomMenuActionItems){
+        //过滤掉无用过的选项
+        val data=getBottomMenuActionItems().filter {
+            !(it.id==R.string.ic_forbid_image || it.id==R.string.ic_privacy || it.id==R.string.ic_normal_screen || it.id==R.string.ic_desktop)
+        }
+        val adapter=object: BaseQuickAdapter<ActionItem, CustomBaseViewHolder>(R.layout.item_bottom_action_item,data){
             override fun convert(helper: CustomBaseViewHolder, item: ActionItem) {
                 if (item.active){
                     helper.setTextColor(R.id.icon,fragment.activityViewModel.theme.value!!.colorPrimaryActive)
@@ -115,50 +116,6 @@ class BottomBarHelper(private var binding: FragmentHomeBinding, var fragment: Ho
     }
     private fun onBottomMenuActionItemClick(view: View, actionItem: ActionItem) {
         when(actionItem.iconRes){
-            //无图模式
-            R.string.ic_forbid_image->{
-                actionItem.active= !actionItem.active
-                if (actionItem.active){
-                    view.findViewById<TextView>(R.id.icon).setTextColor(fragment.activityViewModel.theme.value!!.colorPrimaryActive)
-                    view.findViewById<TextView>(R.id.name).setTextColor(fragment.activityViewModel.theme.value!!.colorPrimaryActive)
-                }else{
-                    view.findViewById<TextView>(R.id.icon).setTextColor(fragment.activityViewModel.theme.value!!.colorPrimary)
-                    view.findViewById<TextView>(R.id.name).setTextColor(fragment.activityViewModel.theme.value!!.colorPrimary)
-                }
-            }
-            //隐身
-            R.string.ic_desktop->{
-                actionItem.active= !actionItem.active
-                if (actionItem.active){
-                    view.findViewById<TextView>(R.id.icon).setTextColor(fragment.activityViewModel.theme.value!!.colorPrimaryActive)
-                    view.findViewById<TextView>(R.id.name).setTextColor(fragment.activityViewModel.theme.value!!.colorPrimaryActive)
-                }else{
-                    view.findViewById<TextView>(R.id.icon).setTextColor(fragment.activityViewModel.theme.value!!.colorPrimary)
-                    view.findViewById<TextView>(R.id.name).setTextColor(fragment.activityViewModel.theme.value!!.colorPrimary)
-                }
-            }
-            //全局视野
-            R.string.ic_fullscreen->{
-                actionItem.active= !actionItem.active
-                if (actionItem.active){
-                    view.findViewById<TextView>(R.id.icon).setTextColor(fragment.activityViewModel.theme.value!!.colorPrimaryActive)
-                    view.findViewById<TextView>(R.id.name).setTextColor(fragment.activityViewModel.theme.value!!.colorPrimaryActive)
-                }else{
-                    view.findViewById<TextView>(R.id.icon).setTextColor(fragment.activityViewModel.theme.value!!.colorPrimary)
-                    view.findViewById<TextView>(R.id.name).setTextColor(fragment.activityViewModel.theme.value!!.colorPrimary)
-                }
-            }
-            //电脑
-            R.string.ic_privacy->{
-                actionItem.active= !actionItem.active
-                if (actionItem.active){
-                    view.findViewById<TextView>(R.id.icon).setTextColor(fragment.activityViewModel.theme.value!!.colorPrimaryActive)
-                    view.findViewById<TextView>(R.id.name).setTextColor(fragment.activityViewModel.theme.value!!.colorPrimaryActive)
-                }else{
-                    view.findViewById<TextView>(R.id.icon).setTextColor(fragment.activityViewModel.theme.value!!.colorPrimary)
-                    view.findViewById<TextView>(R.id.name).setTextColor(fragment.activityViewModel.theme.value!!.colorPrimary)
-                }
-            }
             //发现
             R.string.ic_found->{
                 toggleBottomPanel(Runnable {
