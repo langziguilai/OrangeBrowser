@@ -110,7 +110,7 @@ class BottomBarHelper(private var binding: FragmentHomeBinding, var fragment: Ho
             }
         }
         adapter.setOnItemClickListener { _, view, position ->
-            onBottomMenuActionItemClick(view,fragment.appData.bottomMenuActionItems[position])
+            onBottomMenuActionItemClick(view,data[position])
         }
         bottomMenuGridView.adapter=adapter
     }

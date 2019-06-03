@@ -52,8 +52,7 @@ class AndroidApplication:BaseApplication(),CoroutineScope {
                     val thumbnailPath=this
                     launch(Dispatchers.IO) {
                         try {
-                            val path=Environment.getExternalStorageDirectory().path+thumbnailPath
-                            FileUtil.delete(path)
+                            FileUtil.delete(thumbnailPath)
                         }catch (e:Exception){
                             Log.e("delete thumb error",e.message)
                         }
@@ -63,8 +62,7 @@ class AndroidApplication:BaseApplication(),CoroutineScope {
                     val thumbnailPath=this
                     launch(Dispatchers.IO) {
                         try {
-                            val path=Environment.getExternalStorageDirectory().path+thumbnailPath
-                            FileUtil.delete(path)
+                            FileUtil.delete(thumbnailPath)
                         }catch (e:Exception){
                             Log.e("delete thumb error",e.message)
                         }

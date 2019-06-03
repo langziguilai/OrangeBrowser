@@ -44,7 +44,7 @@ class ThumbnailIntergration(
                             val fileName = "main_$sessionId.webp"
                             val file = File(FileUtil.getOrCreateDir(context, Session.THUMBNAIL_DIR), fileName)
                             bitmap.compress(Bitmap.CompressFormat.WEBP, 80, FileOutputStream(file))
-                            session.mainPageThumbnailPath = File.separator + Session.THUMBNAIL_DIR + File.separator + fileName
+                            session.mainPageThumbnailPath = file.absolutePath
                         } catch (e: Exception) {
                             Log.e("save thumbnail fail", e.message)
                         } finally {

@@ -8,8 +8,8 @@ import java.io.File
 
 fun ImageView.loadLocalImage(path:String){
     val mRequestOptions = RequestOptions.centerCropTransform()
-    val imagePath= this.context.filesDir.path+path
-    Glide.with(context).load(File(imagePath))
+    //val imagePath= this.context.filesDir.path+path
+    Glide.with(context).load(File(path))
         .apply(mRequestOptions).into(this)
 }
 fun ImageView.loadBitmap(bitmap: Bitmap){
