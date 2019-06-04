@@ -29,6 +29,7 @@ import com.dev.browser.database.download.STATUS_OTHER_DOWNLOADER
 import com.dev.browser.extension.isPermissionGranted
 import com.dev.browser.session.Download
 import com.dev.browser.support.DownloadUtils
+import com.dev.util.FileUtil
 import kotlinx.coroutines.*
 import java.io.File
 import kotlin.coroutines.CoroutineContext
@@ -205,7 +206,8 @@ class DownloadManager(
                     onDownloadCompleted.invoke(download, downloadID)
                     //更新下载状态
                     launch(Dispatchers.IO) {
-                        downloadDao.updateStatus(download.url, STATUS_FINISH)
+                        val size=FileUtil.getSize(Environment.getExternalStorageDirectory().absolutePath + File.separator + download.destinationDirectory + File.separator + download.fileName)
+                        downloadDao.updateStatus(download.url, STATUS_FINISH,size)
                     }
                 }
                 queuedDownloads -= (downloadID)

@@ -6,6 +6,7 @@ import com.dev.base.BaseApplication
 import com.dev.browser.adblock.setting.AdblockHelper
 import com.dev.browser.session.Session
 import com.dev.browser.session.SessionManager
+import com.dev.browser.session.storage.SessionStorage
 import com.dev.orangebrowser.data.dao.AdBlockFilterDao
 import com.dev.orangebrowser.data.model.ApplicationData
 import com.dev.orangebrowser.di.ApplicationComponent
@@ -29,6 +30,8 @@ class AndroidApplication:BaseApplication(),CoroutineScope {
     lateinit var adBlockFilterDao: AdBlockFilterDao
     @Inject
     lateinit var sessionManager:SessionManager
+    @Inject
+    lateinit var sessionStorage:SessionStorage
     val appComponent: ApplicationComponent by lazy(mode = LazyThreadSafetyMode.NONE) {
         DaggerApplicationComponent
             .builder()
@@ -76,8 +79,7 @@ class AndroidApplication:BaseApplication(),CoroutineScope {
                         val thumbnailPath=this
                         launch(Dispatchers.IO) {
                             try {
-                                val path=Environment.getExternalStorageDirectory().path+thumbnailPath
-                                FileUtil.delete(path)
+                                FileUtil.delete(thumbnailPath)
                             }catch (e:Exception){
                                 Log.e("delete thumb error",e.message)
                             }
@@ -87,8 +89,7 @@ class AndroidApplication:BaseApplication(),CoroutineScope {
                         val thumbnailPath=this
                         launch(Dispatchers.IO) {
                             try {
-                                val path=Environment.getExternalStorageDirectory().path+thumbnailPath
-                                FileUtil.delete(path)
+                                FileUtil.delete(thumbnailPath)
                             }catch (e:Exception){
                                 Log.e("delete thumb error",e.message)
                             }
@@ -121,6 +122,7 @@ class AndroidApplication:BaseApplication(),CoroutineScope {
         }
     }
     override fun onTerminate() {
+        sessionStorage.autoSave(sessionManager).triggerSave(false)
         sessionManager.unregister(sessionClearObserver)
         super.onTerminate()
         coroutineContext.cancelChildren()

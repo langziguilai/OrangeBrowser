@@ -30,17 +30,21 @@ class BrowserModule {
 
     @Provides
     @Singleton
-    fun provideSessionManager(context: Context,engine: Engine): SessionManager {
-        val sessionStorage = SessionStorage(context, engine)
+    fun provideSessionManager(context: Context,engine: Engine,sessionStorage: SessionStorage): SessionManager {
         return SessionManager(engine).apply {
             sessionStorage.restore()?.let { snapshot -> restore(snapshot) }
-
             sessionStorage.autoSave(this)
                 .periodicallyInForeground(interval = 30, unit = TimeUnit.SECONDS)
                 .whenGoingToBackground()
                 .whenSessionsChange()
         }
     }
+    @Provides
+    @Singleton
+    fun provideSessionStorage(context: Context,engine: Engine):SessionStorage{
+        return SessionStorage(context, engine)
+    }
+
     @Provides
     @Singleton
     fun provideEngine(context: Context,historyTrackingDelegate:HistoryTrackingDelegate):Engine{

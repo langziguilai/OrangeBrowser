@@ -150,7 +150,11 @@ class MainActivity : BaseActivity(), DownloadManager.OnAutoInstallDownloadAppLis
         Manifest.permission.RECORD_AUDIO
     )
     fun loadFirstInFragment() {
-        loadHomeFragment("")
+        if(sessionManager.selectedSession!=null){
+            loadHomeOrBrowserFragment(sessionId =sessionManager.selectedSession!!.id )
+        }else{
+            loadHomeFragment("")
+        }
     }
 
     @OnShowRationale(

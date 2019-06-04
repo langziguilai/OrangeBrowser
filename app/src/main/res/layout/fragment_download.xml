@@ -34,7 +34,7 @@
                         android:onClick="@{() -> backHandler.onBackPressed()}"
                         android:gravity="center"
                         android:layout_gravity="start|center_vertical"/>
-                <TextView android:text="@string/detect_resource"
+                <TextView android:text="@string/download_file"
                           android:id="@+id/title"
                           android:gravity="center"
                           android:textSize="18sp"
@@ -60,20 +60,33 @@
                     android:layout_height="0dp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintBottom_toTopOf="@+id/bottomnav"
+                    android:background="@color/colorWhite"
+                    app:layout_constraintBottom_toTopOf="@+id/divider"
                     app:layout_constraintTop_toBottomOf="@+id/header">
                 <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/recycler_view"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"/>
             </com.dev.orangebrowser.view.LongClickFrameLayout>
+            <View   android:id="@+id/divider"
+                    android:layout_height="0.5dp"
+                    android:layout_width="0dp"
+                    android:background="@color/color_EEEEEE"
+                    app:layout_constraintTop_toBottomOf="@id/container"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintBottom_toTopOf="@+id/bottomnav"
+            />
             <LinearLayout android:id="@+id/bottomnav"
                           android:orientation="horizontal"
+                          android:background="@color/colorWhite"
                           app:layout_constraintStart_toStartOf="parent"
                           app:layout_constraintEnd_toEndOf="parent"
                           app:layout_constraintBottom_toBottomOf="parent"
+                          android:paddingTop="4dp"
+                          android:paddingBottom="4dp"
                           android:layout_width="0dp"
-                          android:layout_height="46dp">
+                          android:layout_height="wrap_content">
                 <LinearLayout android:id="@+id/download_path"
                               android:clickable="true"
                               android:focusable="true"

@@ -86,7 +86,7 @@ class AutoSave(
      * @param delaySave Whether to delay the save job to obey the interval passed to [SessionStorage.autoSave].
      */
     @Synchronized
-    internal fun triggerSave(delaySave: Boolean = true): Job {
+    fun triggerSave(delaySave: Boolean = true): Job {
         val currentJob = saveJob
 
         if (currentJob != null && currentJob.isActive) {
@@ -167,7 +167,6 @@ private class AutoSaveBackground(
     @OnLifecycleEvent(Lifecycle.Event.ON_STOP)
     fun stop() {
         autoSave.logger.info("Save: Background")
-
         autoSave.triggerSave(delaySave = false)
     }
 }

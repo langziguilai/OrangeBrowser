@@ -4,10 +4,12 @@
 
 package com.dev.browser.database.download
 
+import android.os.Environment
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.dev.browser.session.Download
+import java.io.File
 import java.util.*
 
 const val COMMON=1
@@ -47,7 +49,9 @@ data class DownloadEntity(
     @ColumnInfo(name = "user_agent")
     var userAgent: String="",
     @ColumnInfo(name = "destination_directory")
-    var destinationDirectory: String=""
+    var destinationDirectory: String="",
+    @ColumnInfo(name = "path")
+    var path: String=""
 ){
     companion object{
         fun fromDownload(download: Download):DownloadEntity{
@@ -71,7 +75,8 @@ data class DownloadEntity(
                 contentType = download.contentType ?: "",
                 contentLength = download.contentLength ?: 0,
                 userAgent = download.userAgent ?: "",
-                destinationDirectory = download.destinationDirectory ?: ""
+                destinationDirectory = download.destinationDirectory,
+                path = Environment.getExternalStorageDirectory().absolutePath + File.separator + download.destinationDirectory + File.separator + download.fileName
             )
         }
     }

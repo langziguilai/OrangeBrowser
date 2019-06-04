@@ -339,4 +339,5 @@
     <string name="saved_images">保存的图片</string>
     <string name="saved_pages">离线网页</string>
     <string name="saved_videoes">保存的视频</string>
+    <string name="download_file">下载文件</string>
 </resources>

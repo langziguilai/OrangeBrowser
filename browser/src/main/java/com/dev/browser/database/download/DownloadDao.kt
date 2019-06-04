@@ -18,8 +18,8 @@ interface DownloadDao {
 
     @Update
     fun update(entity: DownloadEntity)
-    @Query("UPDATE download  SET status=:status WHERE url=:url")
-    fun updateStatus(url:String,status:Int)
+    @Query("UPDATE download  SET status=:status , content_length=:length WHERE url=:url")
+    fun updateStatus(url:String,status:Int,length:Long)
     @Query("SELECT * FROM download WHERE file_type=:type ORDER BY date DESC")
     fun getDownloadByType(type:Int): List<DownloadEntity>
     @Query("SELECT * FROM download ORDER BY date DESC")
