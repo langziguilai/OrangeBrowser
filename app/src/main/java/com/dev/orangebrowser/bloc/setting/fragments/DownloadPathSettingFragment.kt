@@ -59,7 +59,7 @@ class DownloadPathSettingFragment : BaseFragment(), BackHandler {
             )
             return true
         }
-        RouterActivity?.loadDownloadSettingFragment(enterAnimationId = R.anim.slide_right_in,exitAnimationId = R.anim.slide_right_out)
+        RouterActivity?.loadDownloadSettingFragment(enterAnimationId = R.anim.slide_right_in,exitAnimationId = R.anim.holder)
         return true
 
     }

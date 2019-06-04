@@ -30,7 +30,7 @@ class OpenAppSettingFragment : BaseFragment(), BackHandler {
     lateinit var activityViewModel: MainViewModel
     lateinit var binding: FragmentOpenAppSettingBinding
     override fun onBackPressed(): Boolean {
-        RouterActivity?.loadDownloadSettingFragment(enterAnimationId = R.anim.slide_right_in,exitAnimationId = R.anim.slide_right_out)
+        RouterActivity?.loadDownloadSettingFragment(enterAnimationId = R.anim.slide_right_in,exitAnimationId = R.anim.holder)
         return true
 
     }

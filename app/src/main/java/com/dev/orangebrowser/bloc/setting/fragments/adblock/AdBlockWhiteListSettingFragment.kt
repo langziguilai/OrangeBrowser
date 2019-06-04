@@ -35,7 +35,7 @@ class AdBlockWhiteListSettingFragment : BaseAdBlockSettingFragment(), BackHandle
     lateinit var activityViewModel: MainViewModel
     lateinit var binding: FragmentAdBlockWhiteListSettingBinding
     override fun onBackPressed(): Boolean {
-        RouterActivity?.loadAdBlockSettingFragment(enterAnimationId = R.anim.slide_right_in,exitAnimationId = R.anim.slide_right_out)
+        RouterActivity?.loadAdBlockSettingFragment(enterAnimationId = R.anim.slide_right_in,exitAnimationId = R.anim.holder)
         return true
 
     }

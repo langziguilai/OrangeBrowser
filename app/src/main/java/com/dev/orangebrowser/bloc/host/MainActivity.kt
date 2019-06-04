@@ -316,7 +316,7 @@ class MainActivity : BaseActivity(), DownloadManager.OnAutoInstallDownloadAppLis
     fun loadFoundFragment() {
         val fragment = FoundFragment.newInstance()
         supportFragmentManager.beginTransaction()
-            .setCustomAnimations(R.anim.slide_left_in, R.anim.slide_left_out)
+            .setCustomAnimations(R.anim.slide_left_in, R.anim.holder)
             .replace(R.id.root_container, fragment)
             .commit()
     }
@@ -325,7 +325,7 @@ class MainActivity : BaseActivity(), DownloadManager.OnAutoInstallDownloadAppLis
     fun loadHistoryFragment() {
         val fragment = HistoryFragment.newInstance()
         supportFragmentManager.beginTransaction()
-            .setCustomAnimations(R.anim.slide_left_in, R.anim.slide_left_out)
+            .setCustomAnimations(R.anim.slide_left_in, R.anim.holder)
             .replace(R.id.root_container, fragment)
             .commit()
     }
@@ -334,7 +334,7 @@ class MainActivity : BaseActivity(), DownloadManager.OnAutoInstallDownloadAppLis
     fun loadBookMarkFragment() {
         val fragment = BookMarkFragment.newInstance()
         supportFragmentManager.beginTransaction()
-            .setCustomAnimations(R.anim.slide_left_in, R.anim.slide_left_out)
+            .setCustomAnimations(R.anim.slide_left_in, R.anim.holder)
             .replace(R.id.root_container, fragment)
             .commit()
     }
@@ -343,7 +343,7 @@ class MainActivity : BaseActivity(), DownloadManager.OnAutoInstallDownloadAppLis
     fun loadThemeFragment() {
         val fragment = ThemeFragment.newInstance()
         supportFragmentManager.beginTransaction()
-            .setCustomAnimations(R.anim.slide_left_in, R.anim.slide_left_out)
+            .setCustomAnimations(R.anim.slide_left_in, R.anim.holder)
             .replace(R.id.root_container, fragment)
             .commit()
     }
@@ -352,13 +352,13 @@ class MainActivity : BaseActivity(), DownloadManager.OnAutoInstallDownloadAppLis
     fun loadDownloadFragment() {
         val fragment = DownloadFragment.newInstance()
         supportFragmentManager.beginTransaction()
-            .setCustomAnimations(R.anim.slide_left_in, R.anim.slide_left_out)
+            .setCustomAnimations(R.anim.slide_left_in, R.anim.holder)
             .replace(R.id.root_container, fragment)
             .commit()
     }
 
     //加载设置页面
-    fun loadSettingFragment(enterAnimationId: Int=R.anim.slide_left_in,exitAnimationId: Int=R.anim.slide_left_out) {
+    fun loadSettingFragment(enterAnimationId: Int=R.anim.slide_left_in,exitAnimationId: Int=R.anim.holder) {
         val fragment = SettingFragment.newInstance()
         supportFragmentManager.beginTransaction()
             .setCustomAnimations(enterAnimationId, exitAnimationId)
@@ -373,7 +373,7 @@ class MainActivity : BaseActivity(), DownloadManager.OnAutoInstallDownloadAppLis
     ) {
         val fragment = ReadModeFragment.newInstance(sessionId)
         supportFragmentManager.beginTransaction()
-            .setCustomAnimations(R.anim.slide_left_in, R.anim.slide_left_out)
+            .setCustomAnimations(R.anim.slide_left_in, R.anim.holder)
             .replace(R.id.root_container, fragment)
             .commit()
     }
@@ -384,7 +384,7 @@ class MainActivity : BaseActivity(), DownloadManager.OnAutoInstallDownloadAppLis
     ) {
         val fragment = ImageModeModeFragment.newInstance(sessionId)
         supportFragmentManager.beginTransaction()
-            .setCustomAnimations(R.anim.slide_left_in, R.anim.slide_left_out)
+            .setCustomAnimations(R.anim.slide_left_in, R.anim.holder)
             .replace(R.id.root_container, fragment)
             .commit()
     }
@@ -395,7 +395,7 @@ class MainActivity : BaseActivity(), DownloadManager.OnAutoInstallDownloadAppLis
     ) {
         val fragment = ResourceFragment.newInstance(sessionId)
         supportFragmentManager.beginTransaction()
-            .setCustomAnimations(R.anim.slide_left_in, R.anim.slide_left_out)
+            .setCustomAnimations(R.anim.slide_left_in, R.anim.holder)
             .replace(R.id.root_container, fragment)
             .commit()
     }
@@ -404,13 +404,13 @@ class MainActivity : BaseActivity(), DownloadManager.OnAutoInstallDownloadAppLis
     fun loadAccountFragment() {
         val fragment = AccountFragment.newInstance()
         supportFragmentManager.beginTransaction()
-            .setCustomAnimations(R.anim.slide_left_in, R.anim.slide_left_out)
+            .setCustomAnimations(R.anim.slide_left_in, R.anim.holder)
             .replace(R.id.root_container, fragment)
             .commit()
     }
 
     //通用设置界面
-    fun loadGeneralSettingFragment(enterAnimationId: Int=R.anim.slide_left_in,exitAnimationId: Int=R.anim.slide_left_out) {
+    fun loadGeneralSettingFragment(enterAnimationId: Int=R.anim.slide_left_in,exitAnimationId: Int=R.anim.holder) {
         val fragment = GeneralSettingFragment.newInstance()
         supportFragmentManager.beginTransaction()
             .setCustomAnimations(enterAnimationId, exitAnimationId)
@@ -419,7 +419,7 @@ class MainActivity : BaseActivity(), DownloadManager.OnAutoInstallDownloadAppLis
     }
 
     //网页设置界面
-    fun loadWebSettingFragment(enterAnimationId: Int=R.anim.slide_left_in,exitAnimationId: Int=R.anim.slide_left_out) {
+    fun loadWebSettingFragment(enterAnimationId: Int=R.anim.slide_left_in,exitAnimationId: Int=R.anim.holder) {
         val fragment = WebSettingFragment.newInstance()
         supportFragmentManager.beginTransaction()
             .setCustomAnimations(enterAnimationId, exitAnimationId)
@@ -431,13 +431,13 @@ class MainActivity : BaseActivity(), DownloadManager.OnAutoInstallDownloadAppLis
     fun loadCacheSettingFragment() {
         val fragment = CacheSettingFragment.newInstance()
         supportFragmentManager.beginTransaction()
-            .setCustomAnimations(R.anim.slide_left_in, R.anim.slide_left_out)
+            .setCustomAnimations(R.anim.slide_left_in, R.anim.holder)
             .replace(R.id.root_container, fragment)
             .commit()
     }
 
     //广告拦截设置界面
-    fun loadAdBlockSettingFragment(enterAnimationId: Int=R.anim.slide_left_in,exitAnimationId: Int=R.anim.slide_left_out) {
+    fun loadAdBlockSettingFragment(enterAnimationId: Int=R.anim.slide_left_in,exitAnimationId: Int=R.anim.holder) {
         val fragment = AdBlockSettingFragment.newInstance()
         supportFragmentManager.beginTransaction()
             .setCustomAnimations(enterAnimationId, exitAnimationId)
@@ -449,7 +449,7 @@ class MainActivity : BaseActivity(), DownloadManager.OnAutoInstallDownloadAppLis
     fun loadLibrarySettingFragment() {
         val fragment = LibrarySettingFragment.newInstance()
         supportFragmentManager.beginTransaction()
-            .setCustomAnimations(R.anim.slide_left_in, R.anim.slide_left_out)
+            .setCustomAnimations(R.anim.slide_left_in, R.anim.holder)
             .replace(R.id.root_container, fragment)
             .commit()
     }
@@ -458,7 +458,7 @@ class MainActivity : BaseActivity(), DownloadManager.OnAutoInstallDownloadAppLis
     fun loadGestureSettingFragment() {
         val fragment = GestureSettingFragment.newInstance()
         supportFragmentManager.beginTransaction()
-            .setCustomAnimations(R.anim.slide_left_in, R.anim.slide_left_out)
+            .setCustomAnimations(R.anim.slide_left_in, R.anim.holder)
             .replace(R.id.root_container, fragment)
             .commit()
     }
@@ -467,13 +467,13 @@ class MainActivity : BaseActivity(), DownloadManager.OnAutoInstallDownloadAppLis
     fun loadSearchEngineSettingFragment() {
         val fragment = SearchEngineSettingFragment.newInstance()
         supportFragmentManager.beginTransaction()
-            .setCustomAnimations(R.anim.slide_left_in, R.anim.slide_left_out)
+            .setCustomAnimations(R.anim.slide_left_in, R.anim.holder)
             .replace(R.id.root_container, fragment)
             .commit()
     }
 
     //下载引擎设置界面
-    fun loadDownloadSettingFragment(enterAnimationId: Int=R.anim.slide_left_in,exitAnimationId: Int=R.anim.slide_left_out) {
+    fun loadDownloadSettingFragment(enterAnimationId: Int=R.anim.slide_left_in,exitAnimationId: Int=R.anim.holder) {
         val fragment = DownloadSettingFragment.newInstance()
         supportFragmentManager.beginTransaction()
             .setCustomAnimations(enterAnimationId, exitAnimationId)
@@ -485,7 +485,7 @@ class MainActivity : BaseActivity(), DownloadManager.OnAutoInstallDownloadAppLis
     fun loadAddressBarSettingFragment() {
         val fragment = AddressBarSettingFragment.newInstance()
         supportFragmentManager.beginTransaction()
-            .setCustomAnimations(R.anim.slide_left_in, R.anim.slide_left_out)
+            .setCustomAnimations(R.anim.slide_left_in, R.anim.holder)
             .replace(R.id.root_container, fragment)
             .commit()
     }
@@ -494,7 +494,7 @@ class MainActivity : BaseActivity(), DownloadManager.OnAutoInstallDownloadAppLis
     fun loadVisionModeSettingFragment() {
         val fragment = VisionModeSettingFragment.newInstance()
         supportFragmentManager.beginTransaction()
-            .setCustomAnimations(R.anim.slide_left_in, R.anim.slide_left_out)
+            .setCustomAnimations(R.anim.slide_left_in, R.anim.holder)
             .replace(R.id.root_container, fragment)
             .commit()
     }
@@ -503,7 +503,7 @@ class MainActivity : BaseActivity(), DownloadManager.OnAutoInstallDownloadAppLis
     fun loadFontSizeSettingFragment() {
         val fragment = FontSizeSettingFragment.newInstance()
         supportFragmentManager.beginTransaction()
-            .setCustomAnimations(R.anim.slide_left_in, R.anim.slide_left_out)
+            .setCustomAnimations(R.anim.slide_left_in, R.anim.holder)
             .replace(R.id.root_container, fragment)
             .commit()
     }
@@ -512,7 +512,7 @@ class MainActivity : BaseActivity(), DownloadManager.OnAutoInstallDownloadAppLis
     fun loadLanguageSettingFragment() {
         val fragment = LanguageSettingFragment.newInstance()
         supportFragmentManager.beginTransaction()
-            .setCustomAnimations(R.anim.slide_left_in, R.anim.slide_left_out)
+            .setCustomAnimations(R.anim.slide_left_in, R.anim.holder)
             .replace(R.id.root_container, fragment)
             .commit()
     }
@@ -521,7 +521,7 @@ class MainActivity : BaseActivity(), DownloadManager.OnAutoInstallDownloadAppLis
     fun loadColorStyleSettingFragment() {
         val fragment = ColorStyleSettingFragment.newInstance()
         supportFragmentManager.beginTransaction()
-            .setCustomAnimations(R.anim.slide_left_in, R.anim.slide_left_out)
+            .setCustomAnimations(R.anim.slide_left_in, R.anim.holder)
             .replace(R.id.root_container, fragment)
             .commit()
     }
@@ -530,7 +530,7 @@ class MainActivity : BaseActivity(), DownloadManager.OnAutoInstallDownloadAppLis
     fun loadUaSettingFragment() {
         val fragment = UaSettingFragment.newInstance()
         supportFragmentManager.beginTransaction()
-            .setCustomAnimations(R.anim.slide_left_in, R.anim.slide_left_out)
+            .setCustomAnimations(R.anim.slide_left_in, R.anim.holder)
             .replace(R.id.root_container, fragment)
             .commit()
     }
@@ -539,7 +539,7 @@ class MainActivity : BaseActivity(), DownloadManager.OnAutoInstallDownloadAppLis
     fun loadOpenAppSettingFragment() {
         val fragment = OpenAppSettingFragment.newInstance()
         supportFragmentManager.beginTransaction()
-            .setCustomAnimations(R.anim.slide_left_in, R.anim.slide_left_out)
+            .setCustomAnimations(R.anim.slide_left_in, R.anim.holder)
             .replace(R.id.root_container, fragment)
             .commit()
     }
@@ -549,7 +549,7 @@ class MainActivity : BaseActivity(), DownloadManager.OnAutoInstallDownloadAppLis
     fun loadAdBlockSubscriptionSettingFragment() {
         val fragment = AdBlockSubscriptionSettingFragment.newInstance()
         supportFragmentManager.beginTransaction()
-            .setCustomAnimations(R.anim.slide_left_in, R.anim.slide_left_out)
+            .setCustomAnimations(R.anim.slide_left_in, R.anim.holder)
             .replace(R.id.root_container, fragment)
             .commit()
     }
@@ -558,7 +558,7 @@ class MainActivity : BaseActivity(), DownloadManager.OnAutoInstallDownloadAppLis
     fun loadAdBlockFilterSettingFragment() {
         val fragment = AdBlockFilterSettingFragment.newInstance()
         supportFragmentManager.beginTransaction()
-            .setCustomAnimations(R.anim.slide_left_in, R.anim.slide_left_out)
+            .setCustomAnimations(R.anim.slide_left_in, R.anim.holder)
             .replace(R.id.root_container, fragment)
             .commit()
     }
@@ -567,7 +567,7 @@ class MainActivity : BaseActivity(), DownloadManager.OnAutoInstallDownloadAppLis
     fun loadAdBlockWhiteListSettingFragment() {
         val fragment = AdBlockWhiteListSettingFragment.newInstance()
         supportFragmentManager.beginTransaction()
-            .setCustomAnimations(R.anim.slide_left_in, R.anim.slide_left_out)
+            .setCustomAnimations(R.anim.slide_left_in, R.anim.holder)
             .replace(R.id.root_container, fragment)
             .commit()
     }
@@ -576,7 +576,7 @@ class MainActivity : BaseActivity(), DownloadManager.OnAutoInstallDownloadAppLis
     fun loadAdBlockConnectionSettingFragment() {
         val fragment = AdBlockConnectionSettingFragment.newInstance()
         supportFragmentManager.beginTransaction()
-            .setCustomAnimations(R.anim.slide_left_in, R.anim.slide_left_out)
+            .setCustomAnimations(R.anim.slide_left_in, R.anim.holder)
             .replace(R.id.root_container, fragment)
             .commit()
     }
@@ -585,7 +585,7 @@ class MainActivity : BaseActivity(), DownloadManager.OnAutoInstallDownloadAppLis
     fun loadDownloadManagerSettingFragment() {
         val fragment = DownloadManagerSettingFragment.newInstance()
         supportFragmentManager.beginTransaction()
-            .setCustomAnimations(R.anim.slide_left_in, R.anim.slide_left_out)
+            .setCustomAnimations(R.anim.slide_left_in, R.anim.holder)
             .replace(R.id.root_container, fragment)
             .commit()
     }
@@ -594,7 +594,7 @@ class MainActivity : BaseActivity(), DownloadManager.OnAutoInstallDownloadAppLis
     fun loadDownloadPathSettingFragment() {
         val fragment = DownloadPathSettingFragment.newInstance()
         supportFragmentManager.beginTransaction()
-            .setCustomAnimations(R.anim.slide_left_in, R.anim.slide_left_out)
+            .setCustomAnimations(R.anim.slide_left_in, R.anim.holder)
             .replace(R.id.root_container, fragment)
             .commit()
     }

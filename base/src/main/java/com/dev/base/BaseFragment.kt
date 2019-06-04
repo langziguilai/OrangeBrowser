@@ -5,6 +5,8 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.Animation
+import androidx.core.view.ViewCompat
 import androidx.lifecycle.ViewModelProvider
 import com.dev.util.DensityUtil
 import javax.inject.Inject
@@ -48,6 +50,13 @@ abstract class BaseFragment : LogLifeCycleEventFragment() {
         initData(savedInstanceState)
     }
 
-
+    override fun onCreateAnimation(transit: Int, enter: Boolean, nextAnim: Int): Animation? {
+        if (nextAnim == R.anim.holder) {
+            ViewCompat.setTranslationZ(view!!, 0f)
+        } else {
+            ViewCompat.setTranslationZ(view!!, 1f)
+        }
+        return super.onCreateAnimation(transit, enter, nextAnim)
+    }
     abstract fun initData(savedInstanceState: Bundle?)
 }

@@ -34,7 +34,7 @@ class WebSettingFragment : BaseFragment(), BackHandler {
     lateinit var activityViewModel: MainViewModel
     lateinit var binding: FragmentWebSettingBinding
     override fun onBackPressed(): Boolean {
-        RouterActivity?.loadSettingFragment(enterAnimationId = R.anim.slide_right_in,exitAnimationId = R.anim.slide_right_out)
+        RouterActivity?.loadSettingFragment(enterAnimationId = R.anim.slide_right_in,exitAnimationId = R.anim.holder)
         return true
     }
 
