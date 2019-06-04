@@ -9,7 +9,7 @@ import com.dev.orangebrowser.bloc.tabs.TabFragment
 import com.dev.orangebrowser.databinding.FragmentTabBinding
 import com.dev.orangebrowser.extension.RouterActivity
 
-class BottomBarIntegration(var binding: FragmentTabBinding,var sessionManager: SessionManager,var fragment:TabFragment,var sessionId:String){
+class BottomBarIntegration(var binding: FragmentTabBinding,var sessionManager: SessionManager,var fragment:TabFragment){
     init {
 
         //清空
@@ -24,7 +24,7 @@ class BottomBarIntegration(var binding: FragmentTabBinding,var sessionManager: S
         //返回
         binding.goBack.setOnClickListener {
             fragment.exitAnimate(runnable = Runnable {
-                fragment.RouterActivity?.loadHomeOrBrowserFragment(sessionId)
+                fragment.RouterActivity?.loadHomeOrBrowserFragment(fragment.selectedSessionId)
             })
         }
     }

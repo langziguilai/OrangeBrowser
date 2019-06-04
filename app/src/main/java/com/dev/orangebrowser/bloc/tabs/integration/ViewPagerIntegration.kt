@@ -102,6 +102,7 @@ class ViewPagerIntegration(
             } else {
                 binding.title.text = data[index].url
             }
+            fragment.selectedSessionId=data[index].id
         }
     }
 
@@ -116,6 +117,7 @@ class ViewPagerIntegration(
             } else {
                 binding.title.text = data[index].url
             }
+            fragment.selectedSessionId=data[index].id
         }
     }
 

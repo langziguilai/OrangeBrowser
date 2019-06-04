@@ -25,9 +25,9 @@ import javax.inject.Inject
 
 class TabFragment : BaseFragment(),BackHandler {
     override fun onBackPressed(): Boolean {
-        sessionManager.selectedSession?.apply {
-            RouterActivity?.loadHomeOrBrowserFragment(this.id)
-        }
+        exitAnimate(runnable = Runnable {
+            RouterActivity?.loadHomeOrBrowserFragment(selectedSessionId)
+        })
         return true
     }
 
@@ -38,6 +38,7 @@ class TabFragment : BaseFragment(),BackHandler {
     lateinit var viewModel: TabViewModel
     lateinit var activityViewModel: MainViewModel
     lateinit var binding: FragmentTabBinding
+    lateinit var selectedSessionId:String
     override fun onAttach(context: Context) {
         super.onAttach(context)
         //注入
@@ -74,6 +75,7 @@ class TabFragment : BaseFragment(),BackHandler {
       var cardHeight:Int=0
       var cardWidth:Int=0
     override fun initViewWithDataBinding(savedInstanceState: Bundle?) {
+        selectedSessionId=sessionId
         super.initViewWithDataBinding(savedInstanceState)
         //更新高度
          cardHeight = (DensityUtil.dip2px(requireContext(), 252f) * arguments!!.getFloat(TabFragment.RATIO)).toInt()
@@ -99,8 +101,7 @@ class TabFragment : BaseFragment(),BackHandler {
             bottomBarIntegration = BottomBarIntegration(
                 binding = binding,
                 sessionManager = sessionManager,
-                fragment = this@TabFragment,
-                sessionId = sessionId
+                fragment = this@TabFragment
             )
             viewPagerIntegration = ViewPagerIntegration(
                 binding = binding,
