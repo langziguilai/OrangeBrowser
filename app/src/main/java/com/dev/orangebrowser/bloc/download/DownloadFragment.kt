@@ -41,6 +41,7 @@ import com.dev.view.recyclerview.adapter.base.BaseQuickAdapter
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.io.File
+import java.lang.Exception
 import java.util.*
 import javax.inject.Inject
 
@@ -240,8 +241,18 @@ class DownloadFragment : BaseFragment(),BackHandler {
     //删除下载文件
     fun deleteDownloadItem(downloadItem:DownloadEntity){
          launch(Dispatchers.IO) {
-             downloadDao.delete(downloadItem)
-             FileUtil.deleteFile(downloadItem.path)
+             try {
+                 downloadDao.delete(downloadItem)
+                 FileUtil.deleteFile(downloadItem.path)
+             }catch (e:Exception){
+                  launch(Dispatchers.Main){
+                      requireContext().showToast(getString(R.string.tip_delete_fail))
+                  }
+             }finally {
+                 requireContext().showToast(getString(R.string.tip_delete_success))
+             }
+
+
          }
     }
 }

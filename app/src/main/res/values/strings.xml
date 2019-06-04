@@ -340,4 +340,6 @@
     <string name="saved_pages">离线网页</string>
     <string name="saved_videoes">保存的视频</string>
     <string name="download_file">下载文件</string>
+    <string name="tip_delete_fail">删除失败</string>
+    <string name="tip_delete_success">删除成功</string>
 </resources>
