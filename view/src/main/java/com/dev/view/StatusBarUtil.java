@@ -168,7 +168,7 @@ public class StatusBarUtil {
 
     //设置StatusBar背景颜色和Icon的颜色
     public static void setIconColor(@NonNull Activity activity, @ColorInt int color) {
-        if(ColorKitUtil.isBackGroundLightMode(color)){
+        if(ColorKitUtil.isBackGroundWhiteMode(color)){
             setDarkIcon(activity);
         }else{
             setLightIcon(activity);
@@ -181,7 +181,7 @@ public class StatusBarUtil {
 //            activity.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
 //            activity.getWindow().setStatusBarColor(color);
 //        }
-//        if(ColorKitUtil.isBackGroundLightMode(color)){
+//        if(ColorKitUtil.isBackGroundWhiteMode(color)){
 //            setDarkIcon(activity);
 //        }else{
 //            setLightIcon(activity);
@@ -194,7 +194,7 @@ public class StatusBarUtil {
             window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
             window.setStatusBarColor(color);
         }
-        if(ColorKitUtil.isBackGroundLightMode(color)){
+        if(ColorKitUtil.isBackGroundWhiteMode(color)){
             setDarkIcon(window);
         }else{
             setLightIcon(window);

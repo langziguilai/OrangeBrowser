@@ -7,7 +7,6 @@
     <androidx.coordinatorlayout.widget.CoordinatorLayout android:layout_width="match_parent"
                                                          android:fitsSystemWindows="true"
                                                          android:id="@+id/container_wrapper"
-                                                         app:bgColor="@{activityViewModel.theme.colorPrimary}"
                                                          android:layout_height="match_parent">
         <LinearLayout
                 android:id="@+id/container"
@@ -16,7 +15,7 @@
                 android:layout_height="match_parent">
             <!--顶部bar-->
             <LinearLayout android:id="@+id/top_bar"
-                          bgColor="@{activityViewModel.theme.colorPrimary}" android:layout_width="match_parent"
+                          android:layout_width="match_parent"
                           android:layout_height="44dp"
                           android:orientation="horizontal">
                 <LinearLayout android:background="@drawable/bg_transparent_round"
@@ -35,7 +34,8 @@
                             android:inputType="text"
                             android:textSize="14sp"
                             android:hint="@string/search_or_input" android:gravity="start|center_vertical"
-                            android:textColor="@color/colorWhite" android:textColorHint="@color/colorWhite"
+                            android:textColor="@color/colorWhite"
+                            android:textColorHint="@color/colorWhite"
                             android:layout_marginStart="12dp" android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1"/>
 
 

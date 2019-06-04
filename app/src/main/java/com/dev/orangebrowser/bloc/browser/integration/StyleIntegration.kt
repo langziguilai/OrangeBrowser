@@ -1,7 +1,6 @@
 package com.dev.orangebrowser.bloc.browser.integration
 
 
-import android.content.res.Resources
 import android.graphics.Bitmap
 import android.graphics.drawable.ColorDrawable
 import android.net.Uri
@@ -16,7 +15,6 @@ import com.dev.orangebrowser.bloc.browser.BrowserFragment
 import com.dev.orangebrowser.data.model.Theme
 import com.dev.orangebrowser.databinding.FragmentBrowserBinding
 import com.dev.orangebrowser.databinding.Util
-import com.dev.orangebrowser.extension.appData
 import com.dev.util.ColorKitUtil
 import com.dev.view.NavigationBarUtil
 import com.dev.view.StatusBarUtil
@@ -95,7 +93,7 @@ class StyleIntegration(
 
     private fun setTextColor(color: Int) {
         //如果时亮色背景，就设置字体颜色为暗色
-        if (ColorKitUtil.isBackGroundLightMode(color)) {
+        if (ColorKitUtil.isBackGroundWhiteMode(color)) {
             setTextDarkMode()
         } else {
             setTextLightMode()

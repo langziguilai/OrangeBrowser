@@ -66,11 +66,10 @@ class DownloadFragment : BaseFragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         activityViewModel = ViewModelProviders.of(this.requireActivity(), factory).get(MainViewModel::class.java)
         binding.activityViewModel = activityViewModel
+
         super.onActivityCreated(savedInstanceState)
     }
 
-    var allItems: LinkedList<Item> = LinkedList()
-    var displayItems: LinkedList<Item> = LinkedList()
     override fun initViewWithDataBinding(savedInstanceState: Bundle?) {
         StatusBarUtil.setIconColor(requireActivity(), activityViewModel.theme.value!!.colorPrimary)
         binding.recyclerView.apply {
@@ -101,38 +100,36 @@ class DownloadFragment : BaseFragment() {
     override fun initData(savedInstanceState: Bundle?) {
         launch(Dispatchers.IO) {
             val downloads = downloadDao.getAll()
-            binding.recyclerView.adapter = object :
-                BaseQuickAdapter<DownloadEntity, CustomBaseViewHolder>(R.layout.item_download_item, downloads) {
-                override fun convert(helper: CustomBaseViewHolder, item: DownloadEntity) {
-                    helper.setTextColor(R.id.icon, activityViewModel.theme.value!!.colorPrimary)
-                    helper.setText(R.id.title, item.fileName)
-                    helper.setText(R.id.size, FileSizeHelper.ShowLongFileSize(item.contentLength))
-                    when (item.type) {
-                        IMAGE -> {
-                           helper.setText(R.id.icon,getString(R.string.ic_image))
-                        }
-                        VIDEO -> {
-                            helper.setText(R.id.icon,getString(R.string.ic_video))
-                        }
-                        AUDIO -> {
-                            helper.setText(R.id.icon,getString(R.string.ic_audio))
-                        }
-                        COMMON -> {
-                            helper.setText(R.id.icon,getString(R.string.ic_file))
-                        }
-                        APK -> {
-                            helper.setText(R.id.icon,getString(R.string.ic_store))
+            launch(Dispatchers.Main) {
+                binding.recyclerView.adapter = object :
+                    BaseQuickAdapter<DownloadEntity, CustomBaseViewHolder>(R.layout.item_download_item, downloads) {
+                    override fun convert(helper: CustomBaseViewHolder, item: DownloadEntity) {
+                        helper.setTextColor(R.id.icon, activityViewModel.theme.value!!.colorPrimary)
+                        helper.setText(R.id.title, item.fileName)
+                        helper.setText(R.id.size, FileSizeHelper.ShowLongFileSize(item.contentLength))
+                        when (item.type) {
+                            IMAGE -> {
+                                helper.setText(R.id.icon,getString(R.string.ic_image))
+                            }
+                            VIDEO -> {
+                                helper.setText(R.id.icon,getString(R.string.ic_video))
+                            }
+                            AUDIO -> {
+                                helper.setText(R.id.icon,getString(R.string.ic_audio))
+                            }
+                            COMMON -> {
+                                helper.setText(R.id.icon,getString(R.string.ic_file))
+                            }
+                            APK -> {
+                                helper.setText(R.id.icon,getString(R.string.ic_store))
+                            }
                         }
                     }
-                }
 
+                }
             }
+
         }
     }
 
-}
-
-data class Item(var name: String, var path: String, var size: String, var type: Type, var date: Date)
-enum class Type {
-    VIDEO, IMAGE, WEB, OTHER
 }

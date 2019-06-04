@@ -1,6 +1,5 @@
 package com.dev.orangebrowser.bloc.search
 
-import android.content.ClipboardManager
 import android.content.Context
 import android.os.Bundle
 import android.text.*
@@ -38,7 +37,11 @@ import com.dev.orangebrowser.bloc.host.MainViewModel
 import com.dev.orangebrowser.databinding.FragmentSearchBinding
 import com.dev.orangebrowser.extension.RouterActivity
 import com.dev.orangebrowser.extension.appComponent
+import com.dev.orangebrowser.extension.getColor
 import com.dev.orangebrowser.extension.getSpString
+import com.dev.util.ColorKitUtil
+import com.dev.view.NavigationBarUtil
+import com.dev.view.StatusBarUtil
 import javax.inject.Inject
 
 class SearchFragment : BaseFragment(), SearchBar, BackHandler {
@@ -65,6 +68,8 @@ class SearchFragment : BaseFragment(), SearchBar, BackHandler {
     private val originalSessionId: String
         get() = arguments?.getString(BrowserFragment.SESSION_ID) ?: ""
 
+    private val primaryColor:Int
+        get() = arguments?.getInt(COLOR_PRIMARY,activityViewModel.theme.value!!.colorPrimary) ?:activityViewModel.theme.value!!.colorPrimary
 
     private val awesomeBarFeature = ViewBoundFeatureWrapper<AwesomeBarFeature>()
 
@@ -97,8 +102,31 @@ class SearchFragment : BaseFragment(), SearchBar, BackHandler {
     override fun useDataBinding(): Boolean {
         return true
     }
-
+    private fun updateStyle(color:Int){
+        binding.topBar.setBackgroundColor(color)
+        binding.containerWrapper.setBackgroundColor(color)
+        StatusBarUtil.setIconColor(requireActivity(),color)
+        NavigationBarUtil.setNavigationBarColor(requireActivity(),color)
+        //如果是白色背景
+        if(ColorKitUtil.isBackGroundWhiteMode(color)){
+             binding.clear.setTextColor(getColor(R.color.colorBlack))
+             binding.cancel.setTextColor(getColor(R.color.colorBlack))
+             binding.go.setTextColor(getColor(R.color.colorBlack))
+             binding.search.setTextColor(getColor(R.color.colorBlack))
+             binding.searchText.setTextColor(getColor(R.color.colorBlack))
+             binding.searchText.setHintTextColor(getColor(R.color.colorBlack))
+        }else{
+            binding.clear.setTextColor(getColor(R.color.colorWhite))
+            binding.cancel.setTextColor(getColor(R.color.colorWhite))
+            binding.go.setTextColor(getColor(R.color.colorWhite))
+            binding.search.setTextColor(getColor(R.color.colorWhite))
+            binding.searchText.setTextColor(getColor(R.color.colorWhite))
+            binding.searchText.setHintTextColor(getColor(R.color.colorWhite))
+        }
+    }
     override fun initViewWithDataBinding(savedInstanceState: Bundle?) {
+        //update style
+        updateStyle(primaryColor)
         //设置跳转到本页面的时候就弹出键盘，并且光标闪烁
         binding.searchText.isFocusable = true
         binding.searchText.isFocusableInTouchMode = true
@@ -332,9 +360,13 @@ class SearchFragment : BaseFragment(), SearchBar, BackHandler {
 
     companion object {
         val Tag = "SearchFragment"
-        fun newInstance(sessionId: String) = SearchFragment().apply {
+        const val COLOR_PRIMARY="color_primary"
+        fun newInstance(sessionId: String,color:Int?=null) = SearchFragment().apply {
             arguments = Bundle().apply {
                 putString(BrowserFragment.SESSION_ID, sessionId)
+                if (color!=null){
+                    putInt(COLOR_PRIMARY,color)
+                }
             }
         }
     }

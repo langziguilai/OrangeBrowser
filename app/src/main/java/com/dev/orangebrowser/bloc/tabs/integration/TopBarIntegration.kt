@@ -84,7 +84,7 @@ class TopBarIntegration(
     }
     private fun updateTextColor(color:Int){
        var textColor=fragment.requireContext().resources.getColor(R.color.colorWhite)
-       if(ColorKitUtil.isBackGroundLightMode(color)){
+       if(ColorKitUtil.isBackGroundWhiteMode(color)){
             textColor=fragment.requireContext().resources.getColor(R.color.colorBlack)
        }
         binding.searchText.setTextColor(textColor)

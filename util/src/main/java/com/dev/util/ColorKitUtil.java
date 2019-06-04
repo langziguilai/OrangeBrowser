@@ -1,7 +1,7 @@
 package com.dev.util;
 
 public class ColorKitUtil{
-    public static boolean isBackGroundLightMode(int color) {
+    public static boolean isBackGroundWhiteMode(int color) {
         int red = (color & 0xff0000) >> 16;
         int green = (color & 0xff00) >> 8;
         int blue = color & 0xff;

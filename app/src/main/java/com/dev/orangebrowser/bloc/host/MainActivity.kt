@@ -299,15 +299,15 @@ class MainActivity : BaseActivity(), DownloadManager.OnAutoInstallDownloadAppLis
     }
 
     //加载搜索页面
-    fun loadSearchFragment(sessionId: String, enterAnimationId: Int? = null, exitAnimationId: Int? = null) {
+    fun loadSearchFragment(sessionId: String,color:Int?=null, enterAnimationId: Int? = null, exitAnimationId: Int? = null) {
         if (enterAnimationId != null && exitAnimationId != null) {
             supportFragmentManager.beginTransaction()
                 .setCustomAnimations(enterAnimationId, exitAnimationId)
-                .replace(R.id.root_container, SearchFragment.newInstance(sessionId))
+                .replace(R.id.root_container, SearchFragment.newInstance(sessionId,color))
                 .commit()
         } else {
             supportFragmentManager.beginTransaction()
-                .replace(R.id.root_container, SearchFragment.newInstance(sessionId))
+                .replace(R.id.root_container, SearchFragment.newInstance(sessionId,color))
                 .commit()
         }
     }

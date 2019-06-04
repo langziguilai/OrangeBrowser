@@ -41,15 +41,16 @@ class TopBarIntegration(
     private fun initTopBar(savedInstanceState: Bundle?) {
         setTopBarInitialState(savedInstanceState)
         binding.searchText.setOnClickListener {
+            val host=Uri.parse(session.url).host ?: ""
             if (!binding.overLayerTopPanel.isHidden()) {
                 topPanelHelper.toggleTopPanel(Runnable {
                     redirect(binding=binding,session = session,runnable = Runnable {
-                        fragment.RouterActivity?.loadSearchFragment(fragment.sessionId)
+                        fragment.RouterActivity?.loadSearchFragment(fragment.sessionId,session.themeColorMap[host])
                     })
                 })
             } else {
                 redirect(binding=binding,session = session,runnable = Runnable {
-                    fragment.RouterActivity?.loadSearchFragment(fragment.sessionId)
+                    fragment.RouterActivity?.loadSearchFragment(fragment.sessionId,session.themeColorMap[host])
                 })
             }
         }
