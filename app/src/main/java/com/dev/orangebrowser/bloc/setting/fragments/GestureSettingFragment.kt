@@ -30,7 +30,7 @@ class GestureSettingFragment : BaseFragment(), BackHandler {
     lateinit var activityViewModel: MainViewModel
     lateinit var binding: FragmentGestureSettingBinding
     override fun onBackPressed(): Boolean {
-        RouterActivity?.loadSettingFragment(enterAnimationId = R.anim.slide_right_in,exitAnimationId = R.anim.holder)
+        RouterActivity?.loadSettingFragment(R.anim.holder,R.anim.slide_right_out)
         return true
 
     }

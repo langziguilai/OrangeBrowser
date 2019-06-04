@@ -30,7 +30,7 @@ class AddressBarSettingFragment : BaseFragment(), BackHandler {
     lateinit var activityViewModel: MainViewModel
     lateinit var binding: FragmentAddressBarShowItemSettingBinding
     override fun onBackPressed(): Boolean {
-        RouterActivity?.loadGeneralSettingFragment(enterAnimationId = R.anim.slide_right_in,exitAnimationId = R.anim.holder)
+        RouterActivity?.loadGeneralSettingFragment(R.anim.holder,R.anim.slide_right_out)
         return true
 
     }

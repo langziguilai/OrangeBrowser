@@ -45,7 +45,7 @@ class CacheSettingFragment : BaseFragment(), BackHandler {
     @Inject
     lateinit var historyDao: VisitHistoryDao
     override fun onBackPressed(): Boolean {
-        RouterActivity?.loadSettingFragment(enterAnimationId = R.anim.slide_right_in,exitAnimationId = R.anim.holder)
+        RouterActivity?.loadSettingFragment(R.anim.holder,R.anim.slide_right_out)
         return true
 
     }
