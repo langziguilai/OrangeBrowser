@@ -115,6 +115,7 @@ class SearchFragment : BaseFragment(), SearchBar, BackHandler {
              binding.search.setTextColor(getColor(R.color.colorBlack))
              binding.searchText.setTextColor(getColor(R.color.colorBlack))
              binding.searchText.setHintTextColor(getColor(R.color.colorBlack))
+             binding.searchText.autoCompleteBackgroundColor=getColor(R.color.color_AFAFAF)
         }else{
             binding.clear.setTextColor(getColor(R.color.colorWhite))
             binding.cancel.setTextColor(getColor(R.color.colorWhite))
