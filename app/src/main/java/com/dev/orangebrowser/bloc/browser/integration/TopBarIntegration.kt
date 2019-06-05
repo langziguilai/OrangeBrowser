@@ -18,6 +18,7 @@ import com.dev.orangebrowser.extension.RouterActivity
 import com.dev.orangebrowser.extension.appData
 import com.dev.orangebrowser.extension.getSpInt
 import com.dev.orangebrowser.extension.getSpString
+import com.dev.util.StringUtil
 
 
 class TopBarIntegration(
@@ -30,10 +31,11 @@ class TopBarIntegration(
 ) :
     LifecycleAwareFeature {
     lateinit var sessionObserver: Session.Observer
-    val showTitle= fragment.requireContext().getString(R.string.show_title)
-    val showAddress= fragment.requireContext().getString(R.string.show_address)
-    val showDomain= fragment.requireContext().getString(R.string.show_domain)
-    val titleSelection= fragment.getSpString(R.string.pref_setting_address_bar_show_title,showTitle)
+    val showTitle = fragment.requireContext().getString(R.string.show_title)
+    val showAddress = fragment.requireContext().getString(R.string.show_address)
+    val showDomain = fragment.requireContext().getString(R.string.show_domain)
+    val titleSelection = fragment.getSpString(R.string.pref_setting_address_bar_show_title, showTitle)
+
     init {
         initTopBar(savedInstanceState)
     }
@@ -41,23 +43,24 @@ class TopBarIntegration(
     private fun initTopBar(savedInstanceState: Bundle?) {
         setTopBarInitialState(savedInstanceState)
         binding.searchText.setOnClickListener {
-            val host=Uri.parse(session.url).host ?: ""
+            val host = Uri.parse(session.url).host ?: ""
             if (!binding.overLayerTopPanel.isHidden()) {
                 topPanelHelper.toggleTopPanel(Runnable {
-                    redirect(binding=binding,session = session,runnable = Runnable {
-                        fragment.RouterActivity?.loadSearchFragment(fragment.sessionId,session.themeColorMap[host])
+                    redirect(binding = binding, session = session, runnable = Runnable {
+                        fragment.RouterActivity?.loadSearchFragment(fragment.sessionId, session.themeColorMap[host])
                     })
                 })
             } else {
-                redirect(binding=binding,session = session,runnable = Runnable {
-                    fragment.RouterActivity?.loadSearchFragment(fragment.sessionId,session.themeColorMap[host])
+                redirect(binding = binding, session = session, runnable = Runnable {
+                    fragment.RouterActivity?.loadSearchFragment(fragment.sessionId, session.themeColorMap[host])
                 })
             }
         }
         binding.topMenu.setOnClickListener {
-            if (fragment.appData.topMenuActionItems.isEmpty()){
-                fragment.requireContext().showToast(fragment.requireContext().getString(R.string.tip_no_library_function_selected))
-            }else{
+            if (fragment.appData.topMenuActionItems.isEmpty()) {
+                fragment.requireContext()
+                    .showToast(fragment.requireContext().getString(R.string.tip_no_library_function_selected))
+            } else {
                 topPanelHelper.toggleTopPanel()
             }
         }
@@ -99,20 +102,22 @@ class TopBarIntegration(
 
             //title改变
             override fun onTitleChanged(session: Session, title: String) {
-                if (!title.isBlank()){
-                    if (titleSelection==showTitle){
+                if (titleSelection == showTitle) {
+                    if (title.isNotBlank()) {
                         binding.searchText.text = title
+                    } else {
+                        binding.searchText.text = StringUtil.getHost(session.url)
                     }
                 }
             }
 
             //url改变
             override fun onUrlChanged(session: Session, url: String) {
-                if (!url.isBlank()){
-                    if (titleSelection==showAddress){
+                if (!url.isBlank()) {
+                    if (titleSelection == showAddress) {
                         binding.searchText.text = url
                     }
-                    if (titleSelection==showDomain){
+                    if (titleSelection == showDomain) {
                         binding.searchText.text = Uri.parse(url).host
                     }
                 }
@@ -120,24 +125,34 @@ class TopBarIntegration(
 
             //加载状态改变
             override fun onProgress(session: Session, progress: Int) {
-                binding.progress.progress=progress
+                binding.progress.progress = progress
             }
         }
     }
 
-    private fun setTopBarInitialState(savedInstanceState:Bundle?){
+    private fun setTopBarInitialState(savedInstanceState: Bundle?) {
         //优先设置为title，其次为url
-        when(titleSelection){
-            showTitle->binding.searchText.text = session.title
-            showDomain->binding.searchText.text = Uri.parse(session.url).host
-            showAddress->binding.searchText.text = session.url
+        when (titleSelection) {
+            showTitle -> {
+                if (session.title.isNotBlank()) {
+                    binding.searchText.text = session.title
+                } else {
+                    binding.searchText.text = StringUtil.getHost(session.url)
+                }
+            }
+            showDomain -> {
+                binding.searchText.text = StringUtil.getHost(session.url)
+            }
+            showAddress -> {
+                binding.searchText.text = session.url
+            }
         }
-        if (session.securityInfo.secure){
+        if (session.securityInfo.secure) {
             binding.securityIcon.show()
-        }else{
+        } else {
             binding.securityIcon.hide()
         }
-        if(session.loading){
+        if (session.loading) {
             binding.reloadIcon.hide()
             binding.stopIcon.show()
             binding.progress.show()

@@ -1,5 +1,6 @@
 package com.dev.util;
 
+import android.net.Uri;
 import android.util.JsonReader;
 import android.util.JsonToken;
 
@@ -54,5 +55,12 @@ public class StringUtil {
 
         }
         return "";
+    }
+    public static String getHost(String url){
+        String host= Uri.parse(url).getHost();
+        if (host==null || host.trim().length()==0){
+            return "";
+        }
+        return host;
     }
 }
