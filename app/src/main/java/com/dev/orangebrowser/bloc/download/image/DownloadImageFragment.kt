@@ -107,7 +107,7 @@ class DownloadImageFragment : BaseFragment(),BackHandler {
     lateinit var downloads: LinkedList<DownloadEntity>
     override fun initData(savedInstanceState: Bundle?) {
         launch(Dispatchers.IO) {
-            downloads = LinkedList(downloadDao.getAll())
+            downloads = LinkedList(downloadDao.getDownloadByType(IMAGE))
             launch(Dispatchers.Main) {
                 val adapter = object :
                     BaseQuickAdapter<DownloadEntity, CustomBaseViewHolder>(R.layout.item_download_image, downloads) {
