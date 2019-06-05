@@ -1,4 +1,4 @@
-package com.dev.orangebrowser.bloc.download
+package com.dev.orangebrowser.bloc.download.html
 
 import android.app.Dialog
 import android.content.Context
@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.dev.base.BaseFragment
@@ -18,16 +19,16 @@ import com.dev.base.extension.shareLink
 import com.dev.base.extension.showToast
 import com.dev.base.support.BackHandler
 import com.dev.browser.database.download.*
-import com.dev.browser.session.Download
+import com.dev.browser.feature.session.SessionUseCases
 import com.dev.browser.session.SessionManager
 import com.dev.orangebrowser.R
 import com.dev.orangebrowser.bloc.host.MainViewModel
-import com.dev.orangebrowser.databinding.FragmentDownloadBinding
+import com.dev.orangebrowser.data.dao.SavedFileDao
+import com.dev.orangebrowser.data.model.SavedFile
+import com.dev.orangebrowser.databinding.FragmentDownloadImageBinding
 import com.dev.orangebrowser.extension.RouterActivity
 import com.dev.orangebrowser.extension.appComponent
 import com.dev.orangebrowser.extension.getColor
-import com.dev.orangebrowser.utils.FileSizeHelper
-import com.dev.orangebrowser.utils.PositionUtils.calculateRecyclerViewTopMargin
 import com.dev.orangebrowser.view.contextmenu.Action
 import com.dev.orangebrowser.view.contextmenu.CommonContextMenuAdapter
 import com.dev.orangebrowser.view.contextmenu.MenuItem
@@ -45,35 +46,36 @@ import java.lang.Exception
 import java.util.*
 import javax.inject.Inject
 
-class DownloadFragment : BaseFragment(),BackHandler {
+class DownloadHtmlFragment : BaseFragment(),BackHandler {
     override fun onBackPressed(): Boolean {
-        sessoinManager.selectedSession?.apply {
-            RouterActivity?.loadHomeOrBrowserFragment(this.id,enterAnimationId = R.anim.holder,exitAnimationId = R.anim.slide_right_out)
-        }
+        RouterActivity?.loadDownloadFragment(enterAnimationId = R.anim.holder,exitAnimationId = R.anim.slide_right_out)
         return true
     }
 
 
     companion object {
-        val Tag = "DownloadFragment"
-        fun newInstance() = DownloadFragment()
+        val Tag = "DownloadHtmlFragment"
+        fun newInstance() = DownloadHtmlFragment()
     }
+
     @Inject
-    lateinit var sessoinManager:SessionManager
+    lateinit var savedFileDao: SavedFileDao
     @Inject
-    lateinit var downloadDao: DownloadDao
-    lateinit var viewModel: DownloadViewModel
+    lateinit var sessionUseCases: SessionUseCases
+    @Inject
+    lateinit var sessionManager:SessionManager
+    lateinit var viewModel: DownloadHtmlViewModel
     lateinit var activityViewModel: MainViewModel
-    lateinit var binding: FragmentDownloadBinding
+    lateinit var binding: FragmentDownloadImageBinding
     override fun onAttach(context: Context) {
         super.onAttach(context)
         //注入
         appComponent.inject(this)
-        viewModel = ViewModelProviders.of(this, factory).get(DownloadViewModel::class.java)
+        viewModel = ViewModelProviders.of(this, factory).get(DownloadHtmlViewModel::class.java)
     }
 
     override fun getLayoutResId(): Int {
-        return R.layout.fragment_download
+        return R.layout.fragment_download_image
     }
 
     override fun useDataBinding(): Boolean {
@@ -81,7 +83,7 @@ class DownloadFragment : BaseFragment(),BackHandler {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        binding = FragmentDownloadBinding.bind(super.onCreateView(inflater, container, savedInstanceState))
+        binding = FragmentDownloadImageBinding.bind(super.onCreateView(inflater, container, savedInstanceState))
         binding.lifecycleOwner = this
         return binding.root
     }
@@ -101,62 +103,45 @@ class DownloadFragment : BaseFragment(),BackHandler {
             this.addItemDecoration(
                 GridDividerItemDecoration(
                     0,
-                    DensityUtil.dip2px(requireContext(), 0.5f),
-                    getColor(R.color.material_grey_300)
+                    DensityUtil.dip2px(requireContext(), 1f),
+                    getColor(R.color.white)
                 )
             )
 
         }
-        binding.savedVideos.setOnClickListener {
-
-        }
-
-        binding.downloadHtml.setOnClickListener {
-            RouterActivity?.loadDownloadHtmlFragment()
-        }
-        binding.downloadImage.setOnClickListener {
-           RouterActivity?.loadDownloadImageFragment()
-        }
     }
-    lateinit var downloads: LinkedList<DownloadEntity>
+    lateinit var saveFiles: LinkedList<SavedFile>
     override fun initData(savedInstanceState: Bundle?) {
         launch(Dispatchers.IO) {
-            downloads = LinkedList(downloadDao.getAll())
+            saveFiles = LinkedList(savedFileDao.getAll())
             launch(Dispatchers.Main) {
                 val adapter = object :
-                    BaseQuickAdapter<DownloadEntity, CustomBaseViewHolder>(R.layout.item_download_item, downloads) {
-                    override fun convert(helper: CustomBaseViewHolder, item: DownloadEntity) {
+                    BaseQuickAdapter<SavedFile, CustomBaseViewHolder>(R.layout.item_download_html, saveFiles) {
+                    override fun convert(helper: CustomBaseViewHolder, item: SavedFile) {
                         helper.setTextColor(R.id.icon, activityViewModel.theme.value!!.colorPrimary)
-                        helper.setText(R.id.title, item.fileName)
-                        helper.setText(R.id.size, FileSizeHelper.ShowLongFileSize(item.contentLength))
-                        when (item.type) {
-                            IMAGE -> {
-                                helper.setText(R.id.icon,getString(R.string.ic_image))
-                            }
-                            VIDEO -> {
-                                helper.setText(R.id.icon,getString(R.string.ic_video))
-                            }
-                            AUDIO -> {
-                                helper.setText(R.id.icon,getString(R.string.ic_audio))
-                            }
-                            COMMON -> {
-                                helper.setText(R.id.icon,getString(R.string.ic_file))
-                            }
-                            APK -> {
-                                helper.setText(R.id.icon,getString(R.string.ic_store))
-                            }
-                        }
+                        helper.setText(R.id.title, item.name)
+                        helper.setText(R.id.icon,getString(R.string.ic_internet))
                     }
                 }
                 initDownloadItemDialog(adapter)
+                adapter.setOnItemClickListener{
+                    _,_,position ->
+                    saveFiles[position].path?.apply {
+                        val path=this
+                        sessionManager.selectedSession?.apply {
+                            val session=this
+                            sessionUseCases.loadUrl.invoke(url="file://$path",session=session)
+                            RouterActivity?.loadHomeOrBrowserFragment(sessionId = session.id)
+                        }
+                    }
+                }
                 binding.recyclerView.adapter=adapter
-
             }
 
         }
     }
     var downloadItemDialog: Dialog?=null
-    private fun initDownloadItemDialog(adapter: BaseQuickAdapter<DownloadEntity, CustomBaseViewHolder>?) {
+    private fun initDownloadItemDialog(adapter: BaseQuickAdapter<SavedFile, CustomBaseViewHolder>?) {
         adapter?.setOnItemLongClickListener { _, _, position ->
                 downloadItemDialog=  DialogBuilder()
                     .setLayoutId(R.layout.dialog_context_menu)
@@ -180,9 +165,9 @@ class DownloadFragment : BaseFragment(),BackHandler {
                 R.layout.mozac_feature_contextmenu_item, listOf(
                     MenuItem(label = getString(R.string.menu_delete),action = object: Action<MenuItem> {
                         override fun execute(data: MenuItem) {
-                            val item=downloads[position]
-                            deleteDownloadItem(item)
-                            downloads.remove(item)
+                            val item=saveFiles[position]
+                            deleteDownloadHtmlItem(item)
+                            saveFiles.remove(item)
                             binding.recyclerView.adapter?.notifyItemRemoved(position)
                             downloadItemDialog?.dismiss()
                         }
@@ -190,8 +175,8 @@ class DownloadFragment : BaseFragment(),BackHandler {
                     MenuItem(label = getString(R.string.menu_share),action = object:Action<MenuItem>{
                         override fun execute(data: MenuItem) {
                             downloadItemDialog?.dismiss()
-                            val item= downloads[position]
-                            if(!requireContext().shareLink(title =item.fileName,url =item.url)){
+                            val item= saveFiles[position]
+                            if(!requireContext().shareLink(title =item.name ?: "",url =item.url ?: "")){
                                 requireContext().showToast(getString(R.string.tip_share_fail))
                             }
                         }
@@ -199,8 +184,8 @@ class DownloadFragment : BaseFragment(),BackHandler {
                     MenuItem(label = getString(R.string.menu_copy_link),action = object:Action<MenuItem>{
                         override fun execute(data: MenuItem) {
                             downloadItemDialog?.dismiss()
-                            val item= downloads[position]
-                            requireContext().copyText(getString(R.string.link),item.url)
+                            val item= saveFiles[position]
+                            requireContext().copyText(getString(R.string.link),item.url ?: "")
                             requireContext().showToast(getString(R.string.tip_copy_link))
                         }
                     })
@@ -239,11 +224,11 @@ class DownloadFragment : BaseFragment(),BackHandler {
     }
 
     //删除下载文件
-    fun deleteDownloadItem(downloadItem:DownloadEntity){
+    fun deleteDownloadHtmlItem(savedFile:SavedFile){
          launch(Dispatchers.IO) {
              try {
-                 downloadDao.delete(downloadItem)
-                 FileUtil.deleteFile(downloadItem.path)
+                 savedFileDao.delete(savedFile.uid)
+                 FileUtil.deleteFile(savedFile.path)
              }catch (e:Exception){
                   launch(Dispatchers.Main){
                       requireContext().showToast(getString(R.string.tip_delete_fail))
@@ -253,8 +238,6 @@ class DownloadFragment : BaseFragment(),BackHandler {
                      requireContext().showToast(getString(R.string.tip_delete_success))
                  }
              }
-
-
          }
     }
 }

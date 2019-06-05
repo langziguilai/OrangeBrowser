@@ -52,7 +52,7 @@ class DownloadImageFragment : BaseFragment(),BackHandler {
 
 
     companion object {
-        val Tag = "DownloadImageFragment"
+        val Tag = "DownloadHtmlFragment"
         fun newInstance() = DownloadImageFragment()
     }
 

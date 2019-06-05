@@ -24,6 +24,7 @@ import com.dev.orangebrowser.R
 import com.dev.orangebrowser.bloc.bookmark.BookMarkFragment
 import com.dev.orangebrowser.bloc.browser.BrowserFragment
 import com.dev.orangebrowser.bloc.download.DownloadFragment
+import com.dev.orangebrowser.bloc.download.html.DownloadHtmlFragment
 import com.dev.orangebrowser.bloc.download.image.DownloadImageFragment
 import com.dev.orangebrowser.bloc.found.FoundFragment
 import com.dev.orangebrowser.bloc.history.HistoryFragment
@@ -361,12 +362,19 @@ class MainActivity : BaseActivity(), DownloadManager.OnAutoInstallDownloadAppLis
     }
 
     //加载下载页面
-    fun loadDownloadFragment() {
-        val fragment = DownloadFragment.newInstance()
-        supportFragmentManager.beginTransaction()
-            .setCustomAnimations(R.anim.slide_left_in, R.anim.holder)
-            .replace(R.id.root_container, fragment)
-            .commit()
+    fun loadDownloadFragment(enterAnimationId: Int? = R.anim.slide_left_in, exitAnimationId: Int? = R.anim.holder) {
+        if(enterAnimationId!=null && exitAnimationId!=null){
+            val fragment = DownloadFragment.newInstance()
+            supportFragmentManager.beginTransaction()
+                .setCustomAnimations(enterAnimationId, exitAnimationId)
+                .replace(R.id.root_container, fragment)
+                .commit()
+        }else{
+            val fragment = DownloadFragment.newInstance()
+            supportFragmentManager.beginTransaction()
+                .replace(R.id.root_container, fragment)
+                .commit()
+        }
     }
     //加载下载页面
     fun loadDownloadImageFragment() {
@@ -375,6 +383,14 @@ class MainActivity : BaseActivity(), DownloadManager.OnAutoInstallDownloadAppLis
             .setCustomAnimations(R.anim.slide_left_in, R.anim.holder,R.anim.holder,R.anim.slide_right_out)
             .add(R.id.root_container, fragment)
             .addToBackStack(null)
+            .commit()
+    }
+    //加载下载页面
+    fun loadDownloadHtmlFragment() {
+        val fragment = DownloadHtmlFragment.newInstance()
+        supportFragmentManager.beginTransaction()
+            .setCustomAnimations(R.anim.slide_left_in, R.anim.holder)
+            .replace(R.id.root_container, fragment)
             .commit()
     }
     //加载设置页面
