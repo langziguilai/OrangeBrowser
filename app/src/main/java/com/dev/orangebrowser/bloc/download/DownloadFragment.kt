@@ -48,7 +48,7 @@ import javax.inject.Inject
 class DownloadFragment : BaseFragment(),BackHandler {
     override fun onBackPressed(): Boolean {
         sessoinManager.selectedSession?.apply {
-            RouterActivity?.loadHomeFragment(this.id,enterAnimationId = R.anim.holder,exitAnimationId = R.anim.slide_right_out)
+            RouterActivity?.loadHomeOrBrowserFragment(this.id,enterAnimationId = R.anim.holder,exitAnimationId = R.anim.slide_right_out)
         }
         return true
     }
