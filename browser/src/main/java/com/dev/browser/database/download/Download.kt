@@ -49,6 +49,8 @@ data class DownloadEntity(
     var contentLength: Long=0,
     @ColumnInfo(name = "user_agent")
     var userAgent: String="",
+    @ColumnInfo(name = "poster")
+    var poster: String="",
     @ColumnInfo(name = "destination_directory")
     var destinationDirectory: String="",
     @ColumnInfo(name = "path")
@@ -78,6 +80,7 @@ data class DownloadEntity(
                 contentType = download.contentType ?: "",
                 contentLength = download.contentLength ?: 0,
                 userAgent = download.userAgent ?: "",
+                poster = download.poster ?: "",
                 destinationDirectory = download.destinationDirectory,
                 path = path
             )

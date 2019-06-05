@@ -192,6 +192,7 @@ class ResourceFragment : BaseFragment(), BackHandler {
                         ImageResource(link=it.attr("abs:src").trim())
                     }.filter { it.link.isNotBlank()}
                     videoResource= doc.select("video").map {
+                        val poster=it.attr("poster")
                         val src=it.attr("src")
                         if(src.startsWith("//")){
                             it.attr("src", "http:$src")
@@ -206,7 +207,7 @@ class ResourceFragment : BaseFragment(), BackHandler {
                                 }
                             }
                         }
-                        VideoResource(link=link)
+                       VideoResource(link=link,poster = poster)
                     }.filter { it.link.isNotBlank() }
                     audioResource= doc.select("audio").map {
                         val src=it.attr("src")
@@ -301,7 +302,7 @@ class ResourceFragment : BaseFragment(), BackHandler {
             this.layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
             this.adapter = CommonContextMenuAdapter(
                 R.layout.mozac_feature_contextmenu_item, listOf(
-                    MenuItem(label = getString(R.string.menu_download_image),action = object: Action<MenuItem> {
+                    MenuItem(label = getString(R.string.menu_download),action = object: Action<MenuItem> {
                         @SuppressLint("MissingPermission")
                         override fun execute(data: MenuItem) {
                             resourceItemDialog?.dismiss()
@@ -313,17 +314,9 @@ class ResourceFragment : BaseFragment(), BackHandler {
                                 referer = session?.url,
                                 cookies = session?.getCookies(resource.link)
                             )
-//                            when(resource){
-//                                is ImageResource->{
-//                                    download.destinationDirectory=EngineSession.OFFLINE_IMAGE_PATH
-//                                }
-//                                is VideoResource->{
-//                                    download.destinationDirectory=EngineSession.OFFLINE_VIDEO_PATH
-//                                }
-//                                is AudioResource->{
-//                                    download.destinationDirectory=EngineSession.OFFLINE_AUDIO_PATH
-//                                }
-//                            }
+                            if(resource is VideoResource){
+                                download.poster= resource.poster
+                            }
                             if (requireContext().applicationContext.isPermissionGranted(
                                     Manifest.permission.INTERNET,
                                     Manifest.permission.WRITE_EXTERNAL_STORAGE
@@ -371,9 +364,6 @@ class ResourceFragment : BaseFragment(), BackHandler {
 }
 
 abstract class Resource(var link:String="")
-class ImageResource(link:String):Resource(link){
-}
-class VideoResource(link:String):Resource(link){
-}
-class AudioResource(link:String):Resource(link){
-}
+class ImageResource(link:String):Resource(link)
+class VideoResource(link:String,var poster:String=""):Resource(link)
+class AudioResource(link:String):Resource(link)

@@ -24,5 +24,6 @@ data class Download(
     val contentType: String? = null,
     val contentLength: Long? = null,
     val userAgent: String? = null,
+    var poster:String?=null,//封面
     var destinationDirectory: String = Environment.DIRECTORY_DOWNLOADS
 )
