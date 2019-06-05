@@ -21,6 +21,7 @@ import android.os.Environment
 import android.util.Log
 import android.widget.Toast
 import androidx.annotation.RequiresPermission
+import com.dev.base.util.EncodeUtil
 import com.dev.browser.R
 import com.dev.browser.database.BrowserDatabase
 import com.dev.browser.database.download.DownloadEntity
@@ -89,6 +90,10 @@ class DownloadManager(
         applicationContext.getSharedPreferences(DOWNLOAD_MANAGER_STORE, Context.MODE_PRIVATE)
             .edit().putString(DOWNLOAD_PATH,path).apply()
     }
+    private fun getMd5Name(download: Download):String{
+        val name=download.fileName.split(".")[0]
+        return  download.fileName.replaceFirst(name, EncodeUtil.md5(download.url))
+    }
     /**
      * Schedule a download through the [AndroidDownloadManager].
      * @param download metadata related to the download.
@@ -100,6 +105,8 @@ class DownloadManager(
     fun download(
         download: Download
     ): Long {
+        //重置文件名称：与url对应的md5
+        download.fileName=getMd5Name(download)
         //如果是不支持的格式，或者是使用第三方下载
         if (download.isNotSupportedProtocol() || !useSystemDownloadManager) {
             launch(Dispatchers.IO) {
@@ -122,12 +129,7 @@ class DownloadManager(
             //showUnSupportFileErrorMessage()
             return FILE_NOT_SUPPORTED
         }
-        //如果是应用下载
-        if (download.fileName.toLowerCase().endsWith(".apk")){
-            download.destinationDirectory="orange_download_apks"
-        }else{
-            download.destinationDirectory=downloadPath
-        }
+        download.destinationDirectory=downloadPath
         if (!applicationContext.isPermissionGranted(INTERNET, WRITE_EXTERNAL_STORAGE)) {
             throw SecurityException("You must be granted INTERNET and WRITE_EXTERNAL_STORAGE permissions")
         }

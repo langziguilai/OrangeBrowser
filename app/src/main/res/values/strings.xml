@@ -345,4 +345,5 @@
     <string name="menu_download_all_image">下载所有图片</string>
     <string name="tip_switch_to_show_all_images">已切换到查看所有图片</string>
     <string name="tip_switch_to_show_main_images">已切换到查看主要图片</string>
+    <string name="tip_choose_directory">已选中文件夹</string>
 </resources>

@@ -8,6 +8,7 @@ import android.os.Environment
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.dev.base.util.EncodeUtil
 import com.dev.browser.session.Download
 import java.io.File
 import java.util.*
@@ -66,6 +67,8 @@ data class DownloadEntity(
             if (download.fileName.toLowerCase().endsWith(".apk")){
                 type= APK
             }
+
+            val path=Environment.getExternalStorageDirectory().absolutePath + File.separator + download.destinationDirectory + File.separator + download.fileName
             return DownloadEntity(
                 url = download.url,
                 type = type,
@@ -76,7 +79,7 @@ data class DownloadEntity(
                 contentLength = download.contentLength ?: 0,
                 userAgent = download.userAgent ?: "",
                 destinationDirectory = download.destinationDirectory,
-                path = Environment.getExternalStorageDirectory().absolutePath + File.separator + download.destinationDirectory + File.separator + download.fileName
+                path = path
             )
         }
     }

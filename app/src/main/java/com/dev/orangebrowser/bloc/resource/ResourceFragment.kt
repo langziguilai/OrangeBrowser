@@ -313,17 +313,17 @@ class ResourceFragment : BaseFragment(), BackHandler {
                                 referer = session?.url,
                                 cookies = session?.getCookies(resource.link)
                             )
-                            when(resource){
-                                is ImageResource->{
-                                    download.destinationDirectory=EngineSession.OFFLINE_IMAGE_PATH
-                                }
-                                is VideoResource->{
-                                    download.destinationDirectory=EngineSession.OFFLINE_VIDEO_PATH
-                                }
-                                is AudioResource->{
-                                    download.destinationDirectory=EngineSession.OFFLINE_AUDIO_PATH
-                                }
-                            }
+//                            when(resource){
+//                                is ImageResource->{
+//                                    download.destinationDirectory=EngineSession.OFFLINE_IMAGE_PATH
+//                                }
+//                                is VideoResource->{
+//                                    download.destinationDirectory=EngineSession.OFFLINE_VIDEO_PATH
+//                                }
+//                                is AudioResource->{
+//                                    download.destinationDirectory=EngineSession.OFFLINE_AUDIO_PATH
+//                                }
+//                            }
                             if (requireContext().applicationContext.isPermissionGranted(
                                     Manifest.permission.INTERNET,
                                     Manifest.permission.WRITE_EXTERNAL_STORAGE

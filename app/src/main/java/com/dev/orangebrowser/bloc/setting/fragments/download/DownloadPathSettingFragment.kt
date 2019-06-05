@@ -114,7 +114,7 @@ class DownloadPathSettingFragment : BaseFragment(), BackHandler {
             DownloadManager.getInstance(requireContext().applicationContext).setCustomDownloadPath(currentDirectoryPath)
             //setSpString(R.string.pref_setting_download_relative_path, currentDirectoryPath.removePrefix(START_PATH))
             launch(Dispatchers.Main) {
-                fragmentManager?.popBackStack()
+                requireContext().showToast(getString(R.string.tip_choose_directory))
             }
         }
     }
