@@ -309,7 +309,7 @@
     <string name="color_grey">灰</string>
     <string name="color_black">黑</string>
     <string name="tip_download_all_images">确认保存所有图片?</string>
-    <string name="menu_download">下载</string>
+    <string name="menu_download_image">下载图片</string>
     <string name="share_image">分享图片</string>
     <string name="not_finish">此功能暂未完成</string>
     <string name="all_resource">所有资源</string>
@@ -342,4 +342,7 @@
     <string name="download_file">下载文件</string>
     <string name="tip_delete_fail">删除失败</string>
     <string name="tip_delete_success">删除成功</string>
+    <string name="menu_download_all_image">下载所有图片</string>
+    <string name="tip_switch_to_show_all_images">已切换到查看所有图片</string>
+    <string name="tip_switch_to_show_main_images">已切换到查看主要图片</string>
 </resources>

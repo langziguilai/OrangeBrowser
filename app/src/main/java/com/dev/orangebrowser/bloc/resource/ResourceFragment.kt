@@ -10,7 +10,6 @@ import android.view.Gravity
 import android.view.View
 import android.webkit.ValueCallback
 import android.widget.FrameLayout
-import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -302,7 +301,7 @@ class ResourceFragment : BaseFragment(), BackHandler {
             this.layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
             this.adapter = CommonContextMenuAdapter(
                 R.layout.mozac_feature_contextmenu_item, listOf(
-                    MenuItem(label = getString(R.string.menu_download),action = object: Action<MenuItem> {
+                    MenuItem(label = getString(R.string.menu_download_image),action = object: Action<MenuItem> {
                         @SuppressLint("MissingPermission")
                         override fun execute(data: MenuItem) {
                             resourceItemDialog?.dismiss()

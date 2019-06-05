@@ -94,7 +94,9 @@ fun <T> Context.loadJsonArray(path: String, clazz: Class<T>): List<T> {
 }
 
 fun Context.showToast(content:String){
-    Toast.makeText(this,content,Toast.LENGTH_SHORT).show()
+    val toast=Toast.makeText(this,null,Toast.LENGTH_SHORT)
+    toast.setText(content)
+    toast.show()
 }
 
 fun Context.shareText(title:String,text:String):Boolean{

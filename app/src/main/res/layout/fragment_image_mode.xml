@@ -10,6 +10,19 @@
             android:background="@color/colorWhite"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                android:focusable="true"
+                app:backgroundTint="@color/color_AFAFAF"
+                app:rippleColor="@color/color_8F8F8F"
+                app:srcCompat="@drawable/ic_switch"
+                android:id="@+id/switchToggle"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="16dp"
+                app:layout_constraintBottom_toBottomOf="parent"/>
         <LinearLayout android:id="@+id/header"
                       android:layout_width="0dp"
                       android:layout_height="44dp"

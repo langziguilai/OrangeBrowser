@@ -10,6 +10,7 @@ import com.dev.browser.concept.storage.HistoryStorage
 import com.dev.browser.domain.autocomplete.CustomDomainsProvider
 import com.dev.browser.domain.autocomplete.ShippedDomainsProvider
 import com.dev.browser.engine.system.SystemEngine
+import com.dev.browser.feature.downloads.DownloadManager
 import com.dev.browser.feature.search.SearchUseCases
 import com.dev.browser.feature.session.HistoryDelegate
 import com.dev.browser.feature.session.SessionUseCases
@@ -122,5 +123,10 @@ class BrowserModule {
     @Singleton
     fun provideAdBlockSettingStorage(context: Context): AdblockSettingsStorage {
         return AdblockHelper.get().storage
+    }
+    @Provides
+    @Singleton
+    fun provideDownloadManager(context: Context): DownloadManager {
+        return DownloadManager.getInstance(context)
     }
 }

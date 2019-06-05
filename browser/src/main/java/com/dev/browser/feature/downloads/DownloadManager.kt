@@ -18,6 +18,7 @@ import android.content.Intent.ACTION_VIEW
 import android.content.IntentFilter
 import android.net.Uri
 import android.os.Environment
+import android.util.Log
 import android.widget.Toast
 import androidx.annotation.RequiresPermission
 import com.dev.browser.R
@@ -32,6 +33,7 @@ import com.dev.browser.support.DownloadUtils
 import com.dev.util.FileUtil
 import kotlinx.coroutines.*
 import java.io.File
+import java.lang.Exception
 import kotlin.coroutines.CoroutineContext
 
 typealias OnDownloadCompleted = (Download, Long) -> Unit
@@ -103,7 +105,12 @@ class DownloadManager(
             launch(Dispatchers.IO) {
                 val entity=DownloadEntity.fromDownload(download)
                 entity.status= STATUS_OTHER_DOWNLOADER
-                downloadDao.insert(entity)
+                try {
+                    downloadDao.insert(entity)
+                }catch (e:Exception){
+                    Log.d("downloadDao.insert",e.toString())
+                }
+
             }
             val intent = Intent(ACTION_VIEW,Uri.parse(download.url)).apply {
                 flags = Intent.FLAG_ACTIVITY_NEW_TASK
@@ -152,7 +159,11 @@ class DownloadManager(
         launch(Dispatchers.IO) {
             val entity=DownloadEntity.fromDownload(download)
             entity.status= STATUS_NOT_FINISH
-            downloadDao.insert(entity)
+            try {
+                downloadDao.insert(entity)
+            }catch (e:Exception){
+                Log.d("downloadDao.insert",e.toString())
+            }
         }
         return downloadID
     }

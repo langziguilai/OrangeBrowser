@@ -249,7 +249,9 @@ class DownloadFragment : BaseFragment(),BackHandler {
                       requireContext().showToast(getString(R.string.tip_delete_fail))
                   }
              }finally {
-                 requireContext().showToast(getString(R.string.tip_delete_success))
+                 launch(Dispatchers.Main) {
+                     requireContext().showToast(getString(R.string.tip_delete_success))
+                 }
              }
 
 

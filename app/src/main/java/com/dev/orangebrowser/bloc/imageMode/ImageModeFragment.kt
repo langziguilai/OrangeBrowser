@@ -1,5 +1,6 @@
 package com.dev.orangebrowser.bloc.imageMode
 
+import android.annotation.SuppressLint
 import android.app.Dialog
 import android.content.Context
 import android.os.Bundle
@@ -13,14 +14,16 @@ import androidx.recyclerview.widget.RecyclerView
 import com.dev.base.BaseFragment
 import com.dev.base.extension.*
 import com.dev.base.support.BackHandler
+import com.dev.browser.feature.downloads.DownloadManager
+import com.dev.browser.session.Download
+import com.dev.browser.session.Session
 import com.dev.browser.session.SessionManager
+import com.dev.browser.support.DownloadUtils
 import com.dev.orangebrowser.R
 import com.dev.orangebrowser.bloc.browser.BrowserFragment
-import com.dev.orangebrowser.bloc.history.MySectionEntity
 import com.dev.orangebrowser.bloc.host.MainViewModel
 import com.dev.orangebrowser.extension.RouterActivity
 import com.dev.orangebrowser.extension.appComponent
-import com.dev.orangebrowser.extension.getColor
 import com.dev.orangebrowser.utils.PositionUtils
 import com.dev.orangebrowser.utils.PositionUtils.calculateRecyclerViewLeftMargin
 import com.dev.orangebrowser.utils.PositionUtils.calculateRecyclerViewTopMargin
@@ -39,6 +42,7 @@ import com.gjiazhe.scrollparallaximageview.parallaxstyle.VerticalMovingStyle
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.jsoup.Jsoup
+import org.jsoup.select.Elements
 import java.util.*
 import javax.inject.Inject
 
@@ -63,6 +67,8 @@ class ImageModeModeFragment : BaseFragment(), BackHandler {
 
     @Inject
     lateinit var sessionManager: SessionManager
+    @Inject
+    lateinit var downloadManager:DownloadManager
     lateinit var viewModel: ImageModeViewModel
     lateinit var activityViewModel: MainViewModel
 
@@ -98,6 +104,19 @@ class ImageModeModeFragment : BaseFragment(), BackHandler {
             }
         }
         container = view.findViewById(R.id.container)
+        view.findViewById<View>(R.id.switchToggle)?.apply {
+            setOnClickListener {
+                showAllImages=!showAllImages
+                if(showAllImages){
+                    requireContext().showToast(getString(R.string.tip_switch_to_show_all_images))
+                }else{
+                    requireContext().showToast(getString(R.string.tip_switch_to_show_main_images))
+                }
+                sessionManager.selectedSession?.apply {
+                    getImages(this)
+                }
+            }
+        }
     }
 
     var downloadDialog: Dialog? = null
@@ -133,6 +152,8 @@ class ImageModeModeFragment : BaseFragment(), BackHandler {
     }
 
     private var images = LinkedList<String>()
+    lateinit var adapter: BaseQuickAdapter<String, CustomBaseViewHolder>
+    var showAllImages:Boolean=false
     override fun initData(savedInstanceState: Bundle?) {
         StatusBarUtil.setIconColor(requireActivity(),activityViewModel.theme.value!!.colorPrimary)
         header.setBackgroundColor(activityViewModel.theme.value!!.colorPrimary)
@@ -142,12 +163,33 @@ class ImageModeModeFragment : BaseFragment(), BackHandler {
             RouterActivity?.loadHomeOrBrowserFragment(sessionManager.selectedSession?.id ?: "")
             return
         }
+        adapter = object :
+            BaseQuickAdapter<String, CustomBaseViewHolder>(R.layout.item_image_display, images) {
+            override fun convert(helper: CustomBaseViewHolder, item: String) {
+                helper.loadNoCropImage(R.id.image, url = item, referer = session.url)
+                helper.itemView.findViewById<ScrollParallaxImageView>(R.id.image).setParallaxStyles(
+                    VerticalMovingStyle()
+                )
+            }
+        }
+        initImageItemContextMenu(adapter)
+        recyclerView.adapter = adapter
+        getImages(session)
+    }
+    private fun getImages(session:Session){
         sessionManager.getOrCreateEngineSession(session).executeJsFunction("javascript:getHtml();",
             ValueCallback<String> { value ->
                 launch(Dispatchers.IO) {
                     val html = StringUtil.unEscapeString(value)
-                    val article = ContentExtractor.getArticleByHtml(html)
-                    val elements = Jsoup.parse(article.contentHtml).select("img")
+                    val elements: Elements
+                    elements = if (!showAllImages){
+                        val article = ContentExtractor.getArticleByHtml(html)
+                        Jsoup.parse(article.contentHtml).select("img")
+                    }else{
+                        Jsoup.parse(html).select("img")
+                    }
+
+                    images.clear()
                     for (ele in elements) {
                         val imageSrc = ele.attr("abs:src").trim()
                         //如果不是直接设置数据的，就添加
@@ -156,22 +198,11 @@ class ImageModeModeFragment : BaseFragment(), BackHandler {
                         }
                     }
                     launch(Dispatchers.Main) {
-                        val adapter = object :
-                            BaseQuickAdapter<String, CustomBaseViewHolder>(R.layout.item_image_display, images) {
-                            override fun convert(helper: CustomBaseViewHolder, item: String) {
-                                helper.loadNoCropImage(R.id.image, url = item, referer = session.url)
-                                helper.itemView.findViewById<ScrollParallaxImageView>(R.id.image).setParallaxStyles(
-                                    VerticalMovingStyle()
-                                )
-                            }
-                        }
-                        initImageItemContextMenu(adapter)
-                        recyclerView.adapter = adapter
+                        adapter.notifyDataSetChanged()
                     }
                 }
             })
     }
-
     var imageItemContextMenu: Dialog? = null
     private fun initImageItemContextMenu(adapter: BaseQuickAdapter<String, CustomBaseViewHolder>?) {
         adapter?.setOnItemLongClickListener { _, _, position ->
@@ -196,7 +227,7 @@ class ImageModeModeFragment : BaseFragment(), BackHandler {
             this.layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
             this.adapter = CommonContextMenuAdapter(
                 R.layout.mozac_feature_contextmenu_item, listOf(
-                    MenuItem(label = getString(R.string.menu_download), action = object : Action<MenuItem> {
+                    MenuItem(label = getString(R.string.menu_download_image), action = object : Action<MenuItem> {
                         override fun execute(data: MenuItem) {
                             downloadImage(url = images[position], referer = sessionManager.selectedSession?.url ?: "")
                             imageItemContextMenu?.dismiss()
@@ -240,13 +271,20 @@ class ImageModeModeFragment : BaseFragment(), BackHandler {
         }
     }
 
-    //TODO:下载一个
-    private fun downloadImage(url: String, referer: String) {
 
+    @SuppressLint("MissingPermission")
+    private fun downloadImage(url: String, referer: String) {
+        val fileName=DownloadUtils.guessFileName("", url,"")
+        downloadManager.download(Download(url=url,fileName=fileName,referer=referer,contentType = "image/*"))
     }
 
-    //TODO:下载所有
-    private fun downloadAllImages() {
 
+    @SuppressLint("MissingPermission")
+    private fun downloadAllImages() {
+        val referer=sessionManager.selectedSession?.url ?: ""
+         for (url in images){
+             val fileName=DownloadUtils.guessFileName("", url,"")
+             downloadManager.download(Download(url=url,fileName=fileName,referer=referer,contentType = "image/*"))
+         }
     }
 }
