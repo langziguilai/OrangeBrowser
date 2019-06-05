@@ -17,6 +17,13 @@ import com.dev.orangebrowser.bloc.search.SearchFragment
 import com.dev.orangebrowser.bloc.setting.SettingFragment
 import com.dev.orangebrowser.bloc.setting.fragments.*
 import com.dev.orangebrowser.bloc.setting.fragments.adblock.*
+import com.dev.orangebrowser.bloc.setting.fragments.download.DownloadManagerSettingFragment
+import com.dev.orangebrowser.bloc.setting.fragments.download.DownloadPathSettingFragment
+import com.dev.orangebrowser.bloc.setting.fragments.download.DownloadSettingFragment
+import com.dev.orangebrowser.bloc.setting.fragments.general.*
+import com.dev.orangebrowser.bloc.setting.fragments.web.OpenAppSettingFragment
+import com.dev.orangebrowser.bloc.setting.fragments.web.UaSettingFragment
+import com.dev.orangebrowser.bloc.setting.fragments.web.WebSettingFragment
 import com.dev.orangebrowser.bloc.tabs.TabFragment
 import com.dev.orangebrowser.bloc.theme.ThemeFragment
 import com.dev.orangebrowser.di.viewmodel.ViewModelModule

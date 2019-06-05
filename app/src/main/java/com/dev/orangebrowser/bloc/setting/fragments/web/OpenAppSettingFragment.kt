@@ -1,4 +1,4 @@
-package com.dev.orangebrowser.bloc.setting.fragments
+package com.dev.orangebrowser.bloc.setting.fragments.web
 
 import android.content.Context
 import android.os.Bundle
@@ -13,31 +13,32 @@ import com.dev.base.support.BackHandler
 import com.dev.orangebrowser.R
 import com.dev.orangebrowser.bloc.host.MainViewModel
 import com.dev.orangebrowser.bloc.setting.adapter.Adapter
-import com.dev.orangebrowser.bloc.setting.viewholder.*
+import com.dev.orangebrowser.bloc.setting.viewholder.DividerItem
+import com.dev.orangebrowser.bloc.setting.viewholder.TickItem
 import com.dev.orangebrowser.bloc.setting.viewholder.base.Action
-import com.dev.orangebrowser.databinding.FragmentFontSizeSettingBinding
+import com.dev.orangebrowser.databinding.FragmentSettingOpenAppBinding
 import com.dev.orangebrowser.extension.*
 import java.util.*
 
-class FontSizeSettingFragment : BaseFragment(), BackHandler {
+class OpenAppSettingFragment : BaseFragment(), BackHandler {
 
 
     companion object {
-        const val Tag = "FontSizeSettingFragment"
-        fun newInstance() = FontSizeSettingFragment()
+        const val Tag = "OpenAppSettingFragment"
+        fun newInstance() = OpenAppSettingFragment()
     }
 
     lateinit var activityViewModel: MainViewModel
-    lateinit var binding: FragmentFontSizeSettingBinding
+    lateinit var binding: FragmentSettingOpenAppBinding
     override fun onBackPressed(): Boolean {
-        RouterActivity?.loadGeneralSettingFragment(R.anim.holder,R.anim.slide_right_out)
+        RouterActivity?.loadDownloadSettingFragment(R.anim.holder,R.anim.slide_right_out)
         return true
 
     }
 
     //获取layoutResourceId
     override fun getLayoutResId(): Int {
-        return R.layout.fragment_font_size_setting
+        return R.layout.fragment_setting_open_app
     }
 
     override fun useDataBinding(): Boolean {
@@ -51,7 +52,7 @@ class FontSizeSettingFragment : BaseFragment(), BackHandler {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        binding = FragmentFontSizeSettingBinding.bind(super.onCreateView(inflater, container, savedInstanceState))
+        binding = FragmentSettingOpenAppBinding.bind(super.onCreateView(inflater, container, savedInstanceState))
         binding.lifecycleOwner=this
         return binding.root
     }
@@ -92,57 +93,30 @@ class FontSizeSettingFragment : BaseFragment(), BackHandler {
         val index=dataList.indexOf(data)
         if (index>=0){
             data.value=true
-            setSpString(R.string.pref_setting_font_size_title,data.title)
-            when(data.title){
-                getString(R.string.font_size_super_small)->{
-                    setSpInt(R.string.pref_setting_font_size,60)
-                }
-                getString(R.string.font_size_small)->{
-                    setSpInt(R.string.pref_setting_font_size,80)
-                }
-                getString(R.string.font_size_middle)->{
-                    setSpInt(R.string.pref_setting_font_size,100)
-                }
-                getString(R.string.font_size_large)->{
-                    setSpInt(R.string.pref_setting_font_size,150)
-                }
-                getString(R.string.font_size_super_large)->{
-                    setSpInt(R.string.pref_setting_font_size,200)
-                }
-            }
+            setSpString(R.string.pref_setting_need_intercept_open_app_title,data.title)
             binding.recyclerView.adapter?.notifyItemChanged(index)
         }
     }
 
     private fun getData(): List<Any> {
-        val fontSize = getSpString(R.string.pref_setting_font_size_title,getString(R.string.font_size_middle))
+        val interceptApp = getSpString(R.string.pref_setting_need_intercept_open_app_title,getString(R.string.give_tip))
         val list = LinkedList<Any>()
         list.add(DividerItem(height = 24, background = getColor(R.color.color_F8F8F8)))
-        list.add(TickItem(title = getString(R.string.font_size_super_small), action = object : Action<TickItem> {
+        list.add(TickItem(title = getString(R.string.not_intercept), action = object : Action<TickItem> {
             override fun invoke(data: TickItem) {
                 onSelect(data)
             }
-        }, value = fontSize==getString(R.string.font_size_super_small)))
-        list.add(TickItem(title = getString(R.string.font_size_small), action = object : Action<TickItem> {
+        }, value = interceptApp==getString(R.string.not_intercept)))
+        list.add(TickItem(title = getString(R.string.give_tip), action = object : Action<TickItem> {
             override fun invoke(data: TickItem) {
                 onSelect(data)
             }
-        }, value = fontSize==getString(R.string.font_size_small)))
-        list.add(TickItem(title = getString(R.string.font_size_middle), action = object : Action<TickItem> {
+        }, value = interceptApp==getString(R.string.give_tip)))
+        list.add(TickItem(title = getString(R.string.intercept_all), action = object : Action<TickItem> {
             override fun invoke(data: TickItem) {
                 onSelect(data)
             }
-        }, value = fontSize==getString(R.string.font_size_middle)))
-        list.add(TickItem(title = getString(R.string.font_size_large), action = object : Action<TickItem> {
-            override fun invoke(data: TickItem) {
-                onSelect(data)
-            }
-        }, value = fontSize==getString(R.string.font_size_large)))
-        list.add(TickItem(title = getString(R.string.font_size_super_large), action = object : Action<TickItem> {
-            override fun invoke(data: TickItem) {
-                onSelect(data)
-            }
-        }, value = fontSize==getString(R.string.font_size_super_large)))
+        }, value = interceptApp==getString(R.string.intercept_all)))
         return list
     }
 }

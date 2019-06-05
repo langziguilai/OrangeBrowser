@@ -19,7 +19,7 @@ import com.dev.orangebrowser.bloc.setting.viewholder.TickItem
 import com.dev.orangebrowser.bloc.setting.viewholder.base.Action
 import com.dev.orangebrowser.data.dao.AdBlockFilterDao
 import com.dev.orangebrowser.data.model.AdBlockFilter
-import com.dev.orangebrowser.databinding.FragmentAdBlockFilterSettingBinding
+import com.dev.orangebrowser.databinding.FragmentSettingAdBlockFilterBinding
 import com.dev.orangebrowser.extension.RouterActivity
 import com.dev.orangebrowser.extension.appComponent
 import com.dev.util.DensityUtil
@@ -37,7 +37,7 @@ class AdBlockFilterSettingFragment : BaseAdBlockSettingFragment(), BackHandler {
     @Inject
     lateinit var dao:AdBlockFilterDao
     lateinit var activityViewModel: MainViewModel
-    lateinit var binding: FragmentAdBlockFilterSettingBinding
+    lateinit var binding: FragmentSettingAdBlockFilterBinding
     override fun onBackPressed(): Boolean {
         RouterActivity?.loadAdBlockSettingFragment(enterAnimationId = R.anim.holder,exitAnimationId = R.anim.slide_right_out)
         return true
@@ -54,10 +54,10 @@ class AdBlockFilterSettingFragment : BaseAdBlockSettingFragment(), BackHandler {
         appComponent.inject(this)
     }
     override fun getLayoutResId(): Int {
-        return R.layout.fragment_ad_block_filter_setting
+        return R.layout.fragment_setting_ad_block_filter
     }
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        binding = FragmentAdBlockFilterSettingBinding.bind(super.onCreateView(inflater, container, savedInstanceState))
+        binding = FragmentSettingAdBlockFilterBinding.bind(super.onCreateView(inflater, container, savedInstanceState))
         binding.lifecycleOwner=this
         return binding.root
     }

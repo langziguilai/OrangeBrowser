@@ -18,7 +18,7 @@ import com.dev.orangebrowser.bloc.setting.adapter.Adapter
 import com.dev.orangebrowser.bloc.setting.viewholder.DividerItem
 import com.dev.orangebrowser.bloc.setting.viewholder.TickItem
 import com.dev.orangebrowser.bloc.setting.viewholder.base.Action
-import com.dev.orangebrowser.databinding.FragmentAdBlockSubscriptionSettingBinding
+import com.dev.orangebrowser.databinding.FragmentSettingAdBlockSubscriptionBinding
 import com.dev.orangebrowser.extension.RouterActivity
 import com.dev.orangebrowser.extension.appComponent
 import com.dev.orangebrowser.extension.getColor
@@ -36,7 +36,7 @@ class AdBlockSubscriptionSettingFragment : BaseAdBlockSettingFragment(), BackHan
     }
 
     lateinit var activityViewModel: MainViewModel
-    lateinit var binding: FragmentAdBlockSubscriptionSettingBinding
+    lateinit var binding: FragmentSettingAdBlockSubscriptionBinding
     override fun onBackPressed(): Boolean {
         RouterActivity?.loadAdBlockSettingFragment(enterAnimationId = R.anim.holder,exitAnimationId = R.anim.slide_right_out)
         return true
@@ -53,10 +53,10 @@ class AdBlockSubscriptionSettingFragment : BaseAdBlockSettingFragment(), BackHan
         appComponent.inject(this)
     }
     override fun getLayoutResId(): Int {
-        return R.layout.fragment_ad_block_subscription_setting
+        return R.layout.fragment_setting_ad_block_subscription
     }
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        binding = FragmentAdBlockSubscriptionSettingBinding.bind(super.onCreateView(inflater, container, savedInstanceState))
+        binding = FragmentSettingAdBlockSubscriptionBinding.bind(super.onCreateView(inflater, container, savedInstanceState))
         binding.lifecycleOwner=this
         return binding.root
     }

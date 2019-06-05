@@ -1,4 +1,4 @@
-package com.dev.orangebrowser.bloc.setting.fragments
+package com.dev.orangebrowser.bloc.setting.fragments.general
 
 import android.content.Context
 import android.os.Bundle
@@ -13,9 +13,12 @@ import com.dev.base.support.BackHandler
 import com.dev.orangebrowser.R
 import com.dev.orangebrowser.bloc.host.MainViewModel
 import com.dev.orangebrowser.bloc.setting.adapter.Adapter
-import com.dev.orangebrowser.bloc.setting.viewholder.*
+import com.dev.orangebrowser.bloc.setting.viewholder.CategoryHeaderItem
+import com.dev.orangebrowser.bloc.setting.viewholder.DividerItem
+import com.dev.orangebrowser.bloc.setting.viewholder.SwitchItem
+import com.dev.orangebrowser.bloc.setting.viewholder.TileItem
 import com.dev.orangebrowser.bloc.setting.viewholder.base.Action
-import com.dev.orangebrowser.databinding.FragmentGeneralSettingBinding
+import com.dev.orangebrowser.databinding.FragmentSettingGeneralBinding
 import com.dev.orangebrowser.extension.*
 import java.util.*
 
@@ -28,7 +31,7 @@ class GeneralSettingFragment : BaseFragment(), BackHandler {
     }
 
     lateinit var activityViewModel: MainViewModel
-    lateinit var binding: FragmentGeneralSettingBinding
+    lateinit var binding: FragmentSettingGeneralBinding
     override fun onBackPressed(): Boolean {
         RouterActivity?.loadSettingFragment(R.anim.holder,R.anim.slide_right_out)
         return true
@@ -37,7 +40,7 @@ class GeneralSettingFragment : BaseFragment(), BackHandler {
 
     //获取layoutResourceId
     override fun getLayoutResId(): Int {
-        return R.layout.fragment_general_setting
+        return R.layout.fragment_setting_general
     }
 
     override fun useDataBinding(): Boolean {
@@ -51,7 +54,7 @@ class GeneralSettingFragment : BaseFragment(), BackHandler {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        binding = FragmentGeneralSettingBinding.bind(super.onCreateView(inflater, container, savedInstanceState))
+        binding = FragmentSettingGeneralBinding.bind(super.onCreateView(inflater, container, savedInstanceState))
         binding.lifecycleOwner=this
         return binding.root
     }

@@ -1,4 +1,4 @@
-package com.dev.orangebrowser.bloc.setting.fragments
+package com.dev.orangebrowser.bloc.setting.fragments.general
 
 import android.content.Context
 import android.os.Bundle
@@ -10,35 +10,35 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.dev.base.BaseFragment
 import com.dev.base.support.BackHandler
-import com.dev.browser.feature.downloads.DownloadManager
 import com.dev.orangebrowser.R
 import com.dev.orangebrowser.bloc.host.MainViewModel
 import com.dev.orangebrowser.bloc.setting.adapter.Adapter
-import com.dev.orangebrowser.bloc.setting.viewholder.*
+import com.dev.orangebrowser.bloc.setting.viewholder.DividerItem
+import com.dev.orangebrowser.bloc.setting.viewholder.TickItem
 import com.dev.orangebrowser.bloc.setting.viewholder.base.Action
-import com.dev.orangebrowser.databinding.FragmentDownloadManagerSettingBinding
+import com.dev.orangebrowser.databinding.FragmentSettingFontSizeBinding
 import com.dev.orangebrowser.extension.*
 import java.util.*
 
-class DownloadManagerSettingFragment : BaseFragment(), BackHandler {
+class FontSizeSettingFragment : BaseFragment(), BackHandler {
 
 
     companion object {
-        const val Tag = "DownloadManagerSettingFragment"
-        fun newInstance() = DownloadManagerSettingFragment()
+        const val Tag = "FontSizeSettingFragment"
+        fun newInstance() = FontSizeSettingFragment()
     }
 
     lateinit var activityViewModel: MainViewModel
-    lateinit var binding: FragmentDownloadManagerSettingBinding
+    lateinit var binding: FragmentSettingFontSizeBinding
     override fun onBackPressed(): Boolean {
-        RouterActivity?.loadDownloadSettingFragment(R.anim.holder,R.anim.slide_right_out)
+        RouterActivity?.loadGeneralSettingFragment(R.anim.holder,R.anim.slide_right_out)
         return true
 
     }
 
     //获取layoutResourceId
     override fun getLayoutResId(): Int {
-        return R.layout.fragment_download_manager_setting
+        return R.layout.fragment_setting_font_size
     }
 
     override fun useDataBinding(): Boolean {
@@ -52,7 +52,7 @@ class DownloadManagerSettingFragment : BaseFragment(), BackHandler {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        binding = FragmentDownloadManagerSettingBinding.bind(super.onCreateView(inflater, container, savedInstanceState))
+        binding = FragmentSettingFontSizeBinding.bind(super.onCreateView(inflater, container, savedInstanceState))
         binding.lifecycleOwner=this
         return binding.root
     }
@@ -93,33 +93,57 @@ class DownloadManagerSettingFragment : BaseFragment(), BackHandler {
         val index=dataList.indexOf(data)
         if (index>=0){
             data.value=true
-            setSpString(R.string.pref_setting_download_manager,data.title)
-            //如果使用系统下载器
-            if (data.title==getString(R.string.system_download_manager)){
-                DownloadManager.getInstance(requireContext().applicationContext).setDownloadManager(useSystemDownloadManager = true)
-            }else{
-                DownloadManager.getInstance(requireContext().applicationContext).setDownloadManager(useSystemDownloadManager = false)
+            setSpString(R.string.pref_setting_font_size_title,data.title)
+            when(data.title){
+                getString(R.string.font_size_super_small)->{
+                    setSpInt(R.string.pref_setting_font_size,60)
+                }
+                getString(R.string.font_size_small)->{
+                    setSpInt(R.string.pref_setting_font_size,80)
+                }
+                getString(R.string.font_size_middle)->{
+                    setSpInt(R.string.pref_setting_font_size,100)
+                }
+                getString(R.string.font_size_large)->{
+                    setSpInt(R.string.pref_setting_font_size,150)
+                }
+                getString(R.string.font_size_super_large)->{
+                    setSpInt(R.string.pref_setting_font_size,200)
+                }
             }
             binding.recyclerView.adapter?.notifyItemChanged(index)
         }
     }
 
     private fun getData(): List<Any> {
-        //是否使用系统下载器
-        val useSystemDownloadManager=DownloadManager.getInstance(requireContext().applicationContext).useSystemDownloadManager
+        val fontSize = getSpString(R.string.pref_setting_font_size_title,getString(R.string.font_size_middle))
         val list = LinkedList<Any>()
         list.add(DividerItem(height = 24, background = getColor(R.color.color_F8F8F8)))
-        list.add(TickItem(title = getString(R.string.system_download_manager), action = object : Action<TickItem> {
+        list.add(TickItem(title = getString(R.string.font_size_super_small), action = object : Action<TickItem> {
             override fun invoke(data: TickItem) {
                 onSelect(data)
             }
-        }, value = useSystemDownloadManager))
-        //使用第三方下载器
-        list.add(TickItem(title = getString(R.string.other_download_manager), action = object : Action<TickItem> {
+        }, value = fontSize==getString(R.string.font_size_super_small)))
+        list.add(TickItem(title = getString(R.string.font_size_small), action = object : Action<TickItem> {
             override fun invoke(data: TickItem) {
                 onSelect(data)
             }
-        }, value = !useSystemDownloadManager))
+        }, value = fontSize==getString(R.string.font_size_small)))
+        list.add(TickItem(title = getString(R.string.font_size_middle), action = object : Action<TickItem> {
+            override fun invoke(data: TickItem) {
+                onSelect(data)
+            }
+        }, value = fontSize==getString(R.string.font_size_middle)))
+        list.add(TickItem(title = getString(R.string.font_size_large), action = object : Action<TickItem> {
+            override fun invoke(data: TickItem) {
+                onSelect(data)
+            }
+        }, value = fontSize==getString(R.string.font_size_large)))
+        list.add(TickItem(title = getString(R.string.font_size_super_large), action = object : Action<TickItem> {
+            override fun invoke(data: TickItem) {
+                onSelect(data)
+            }
+        }, value = fontSize==getString(R.string.font_size_super_large)))
         return list
     }
 }

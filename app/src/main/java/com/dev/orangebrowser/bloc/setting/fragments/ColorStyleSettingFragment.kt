@@ -13,9 +13,10 @@ import com.dev.base.support.BackHandler
 import com.dev.orangebrowser.R
 import com.dev.orangebrowser.bloc.host.MainViewModel
 import com.dev.orangebrowser.bloc.setting.adapter.Adapter
-import com.dev.orangebrowser.bloc.setting.viewholder.*
+import com.dev.orangebrowser.bloc.setting.viewholder.DividerItem
+import com.dev.orangebrowser.bloc.setting.viewholder.TickItem
 import com.dev.orangebrowser.bloc.setting.viewholder.base.Action
-import com.dev.orangebrowser.databinding.FragmentColorStyleSettingBinding
+import com.dev.orangebrowser.databinding.FragmentSettingColorStyleBinding
 import com.dev.orangebrowser.extension.*
 import java.util.*
 
@@ -28,7 +29,7 @@ class ColorStyleSettingFragment : BaseFragment(), BackHandler {
     }
 
     lateinit var activityViewModel: MainViewModel
-    lateinit var binding: FragmentColorStyleSettingBinding
+    lateinit var binding: FragmentSettingColorStyleBinding
     override fun onBackPressed(): Boolean {
         RouterActivity?.loadSettingFragment(R.anim.holder,R.anim.slide_right_out)
         return true
@@ -37,7 +38,7 @@ class ColorStyleSettingFragment : BaseFragment(), BackHandler {
 
     //获取layoutResourceId
     override fun getLayoutResId(): Int {
-        return R.layout.fragment_color_style_setting
+        return R.layout.fragment_setting_color_style
     }
 
     override fun useDataBinding(): Boolean {
@@ -51,7 +52,7 @@ class ColorStyleSettingFragment : BaseFragment(), BackHandler {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        binding = FragmentColorStyleSettingBinding.bind(super.onCreateView(inflater, container, savedInstanceState))
+        binding = FragmentSettingColorStyleBinding.bind(super.onCreateView(inflater, container, savedInstanceState))
         binding.lifecycleOwner=this
         return binding.root
     }

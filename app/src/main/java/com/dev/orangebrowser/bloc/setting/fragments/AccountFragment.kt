@@ -12,7 +12,7 @@ import com.dev.base.extension.show
 import com.dev.base.support.BackHandler
 import com.dev.orangebrowser.R
 import com.dev.orangebrowser.bloc.host.MainViewModel
-import com.dev.orangebrowser.databinding.FragmentAccountSettingBinding
+import com.dev.orangebrowser.databinding.FragmentSettingAccountBinding
 import com.dev.orangebrowser.extension.*
 import com.dev.view.extension.loadRemoteImage
 import es.dmoral.toasty.Toasty
@@ -26,7 +26,7 @@ class AccountFragment : BaseFragment(), BackHandler {
     }
 
     lateinit var activityViewModel: MainViewModel
-    lateinit var binding: FragmentAccountSettingBinding
+    lateinit var binding: FragmentSettingAccountBinding
     override fun onBackPressed(): Boolean {
         RouterActivity?.loadSettingFragment(R.anim.holder,R.anim.slide_right_out)
         return true
@@ -44,10 +44,10 @@ class AccountFragment : BaseFragment(), BackHandler {
     }
 
     override fun getLayoutResId(): Int {
-        return R.layout.fragment_account_setting
+        return R.layout.fragment_setting_account
     }
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        binding = FragmentAccountSettingBinding.bind(super.onCreateView(inflater, container, savedInstanceState))
+        binding = FragmentSettingAccountBinding.bind(super.onCreateView(inflater, container, savedInstanceState))
         binding.lifecycleOwner=this
         return binding.root
     }

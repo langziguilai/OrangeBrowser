@@ -17,7 +17,7 @@ import com.dev.orangebrowser.bloc.host.MainViewModel
 import com.dev.orangebrowser.bloc.setting.adapter.Adapter
 import com.dev.orangebrowser.bloc.setting.viewholder.TickItem
 import com.dev.orangebrowser.bloc.setting.viewholder.base.Action
-import com.dev.orangebrowser.databinding.FragmentAdBlockWhiteListSettingBinding
+import com.dev.orangebrowser.databinding.FragmentSettingAdBlockWhiteListBinding
 import com.dev.orangebrowser.extension.RouterActivity
 import com.dev.orangebrowser.extension.appComponent
 import com.dev.util.DensityUtil
@@ -33,7 +33,7 @@ class AdBlockWhiteListSettingFragment : BaseAdBlockSettingFragment(), BackHandle
     }
 
     lateinit var activityViewModel: MainViewModel
-    lateinit var binding: FragmentAdBlockWhiteListSettingBinding
+    lateinit var binding: FragmentSettingAdBlockWhiteListBinding
     override fun onBackPressed(): Boolean {
         RouterActivity?.loadAdBlockSettingFragment(enterAnimationId = R.anim.holder,exitAnimationId = R.anim.slide_right_out)
         return true
@@ -50,10 +50,10 @@ class AdBlockWhiteListSettingFragment : BaseAdBlockSettingFragment(), BackHandle
         appComponent.inject(this)
     }
     override fun getLayoutResId(): Int {
-        return R.layout.fragment_ad_block_white_list_setting
+        return R.layout.fragment_setting_ad_block_white_list
     }
     override  fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        binding = FragmentAdBlockWhiteListSettingBinding.bind(super.onCreateView(inflater, container, savedInstanceState))
+        binding = FragmentSettingAdBlockWhiteListBinding.bind(super.onCreateView(inflater, container, savedInstanceState))
         binding.lifecycleOwner=this
         return binding.root
     }

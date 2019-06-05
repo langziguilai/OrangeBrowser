@@ -1,4 +1,4 @@
-package com.dev.orangebrowser.bloc.setting.fragments
+package com.dev.orangebrowser.bloc.setting.fragments.web
 
 import android.content.Context
 import android.os.Bundle
@@ -18,7 +18,7 @@ import com.dev.orangebrowser.bloc.setting.viewholder.DividerItem
 import com.dev.orangebrowser.bloc.setting.viewholder.SwitchItem
 import com.dev.orangebrowser.bloc.setting.viewholder.TileItem
 import com.dev.orangebrowser.bloc.setting.viewholder.base.Action
-import com.dev.orangebrowser.databinding.FragmentWebSettingBinding
+import com.dev.orangebrowser.databinding.FragmentSettingWebBinding
 import com.dev.orangebrowser.extension.*
 import com.dev.view.StatusBarUtil
 import java.util.*
@@ -32,7 +32,7 @@ class WebSettingFragment : BaseFragment(), BackHandler {
     }
 
     lateinit var activityViewModel: MainViewModel
-    lateinit var binding: FragmentWebSettingBinding
+    lateinit var binding: FragmentSettingWebBinding
     override fun onBackPressed(): Boolean {
         RouterActivity?.loadSettingFragment(R.anim.holder,R.anim.slide_right_out)
         return true
@@ -40,7 +40,7 @@ class WebSettingFragment : BaseFragment(), BackHandler {
 
     //获取layoutResourceId
     override fun getLayoutResId(): Int {
-        return R.layout.fragment_web_setting
+        return R.layout.fragment_setting_web
     }
 
     override fun useDataBinding(): Boolean {
@@ -54,7 +54,7 @@ class WebSettingFragment : BaseFragment(), BackHandler {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        binding = FragmentWebSettingBinding.bind(super.onCreateView(inflater, container, savedInstanceState))
+        binding = FragmentSettingWebBinding.bind(super.onCreateView(inflater, container, savedInstanceState))
         binding.lifecycleOwner=this
         return binding.root
     }

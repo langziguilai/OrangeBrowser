@@ -14,7 +14,7 @@ import com.dev.orangebrowser.bloc.host.MainViewModel
 import com.dev.orangebrowser.bloc.setting.adapter.Adapter
 import com.dev.orangebrowser.bloc.setting.viewholder.*
 import com.dev.orangebrowser.bloc.setting.viewholder.base.Action
-import com.dev.orangebrowser.databinding.FragmentAdBlockConnectionSettingBinding
+import com.dev.orangebrowser.databinding.FragmentSettingAdBlockConnectionBinding
 import com.dev.orangebrowser.extension.*
 import org.adblockplus.libadblockplus.android.ConnectionType
 import java.util.*
@@ -27,7 +27,7 @@ class AdBlockConnectionSettingFragment : BaseAdBlockSettingFragment(), BackHandl
     }
 
     lateinit var activityViewModel: MainViewModel
-    lateinit var binding: FragmentAdBlockConnectionSettingBinding
+    lateinit var binding: FragmentSettingAdBlockConnectionBinding
     override fun onBackPressed(): Boolean {
         RouterActivity?.loadAdBlockSettingFragment(enterAnimationId = R.anim.holder,exitAnimationId = R.anim.slide_right_out)
         return true
@@ -43,10 +43,10 @@ class AdBlockConnectionSettingFragment : BaseAdBlockSettingFragment(), BackHandl
         appComponent.inject(this)
     }
     override fun getLayoutResId(): Int {
-        return R.layout.fragment_ad_block_connection_setting
+        return R.layout.fragment_setting_ad_block_connection
     }
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        binding = FragmentAdBlockConnectionSettingBinding.bind(super.onCreateView(inflater, container, savedInstanceState))
+        binding = FragmentSettingAdBlockConnectionBinding.bind(super.onCreateView(inflater, container, savedInstanceState))
         binding.lifecycleOwner=this
         return binding.root
     }

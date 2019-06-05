@@ -21,7 +21,7 @@ import com.dev.orangebrowser.bloc.setting.viewholder.CheckboxItem
 import com.dev.orangebrowser.bloc.setting.viewholder.DividerItem
 import com.dev.orangebrowser.bloc.setting.viewholder.TileItem
 import com.dev.orangebrowser.bloc.setting.viewholder.base.Action
-import com.dev.orangebrowser.databinding.FragmentCacheSettingBinding
+import com.dev.orangebrowser.databinding.FragmentSettingCacheBinding
 import com.dev.orangebrowser.extension.RouterActivity
 import com.dev.orangebrowser.extension.appComponent
 import com.dev.orangebrowser.extension.getColor
@@ -39,7 +39,7 @@ class CacheSettingFragment : BaseFragment(), BackHandler {
     }
 
     lateinit var activityViewModel: MainViewModel
-    lateinit var binding: FragmentCacheSettingBinding
+    lateinit var binding: FragmentSettingCacheBinding
     @Inject
     lateinit var sessionManager:SessionManager
     @Inject
@@ -52,7 +52,7 @@ class CacheSettingFragment : BaseFragment(), BackHandler {
 
     //获取layoutResourceId
     override fun getLayoutResId(): Int {
-        return R.layout.fragment_cache_setting
+        return R.layout.fragment_setting_cache
     }
 
     override fun useDataBinding(): Boolean {
@@ -66,7 +66,7 @@ class CacheSettingFragment : BaseFragment(), BackHandler {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        binding = FragmentCacheSettingBinding.bind(super.onCreateView(inflater, container, savedInstanceState))
+        binding = FragmentSettingCacheBinding.bind(super.onCreateView(inflater, container, savedInstanceState))
         binding.lifecycleOwner=this
         return binding.root
     }

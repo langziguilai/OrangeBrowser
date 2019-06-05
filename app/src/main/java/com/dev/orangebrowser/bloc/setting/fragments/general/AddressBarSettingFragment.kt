@@ -1,4 +1,4 @@
-package com.dev.orangebrowser.bloc.setting.fragments
+package com.dev.orangebrowser.bloc.setting.fragments.general
 
 import android.content.Context
 import android.os.Bundle
@@ -13,31 +13,27 @@ import com.dev.base.support.BackHandler
 import com.dev.orangebrowser.R
 import com.dev.orangebrowser.bloc.host.MainViewModel
 import com.dev.orangebrowser.bloc.setting.adapter.Adapter
-import com.dev.orangebrowser.bloc.setting.viewholder.*
+import com.dev.orangebrowser.bloc.setting.viewholder.DividerItem
+import com.dev.orangebrowser.bloc.setting.viewholder.TickItem
 import com.dev.orangebrowser.bloc.setting.viewholder.base.Action
-import com.dev.orangebrowser.databinding.FragmentLanguageSettingBinding
+import com.dev.orangebrowser.databinding.FragmentSettingAddressBarShowItemBinding
 import com.dev.orangebrowser.extension.*
 import java.util.*
 
-class LanguageSettingFragment : BaseFragment(), BackHandler {
+class AddressBarSettingFragment : BaseFragment(), BackHandler {
 
 
     companion object {
-        const val Tag = "LanguageSettingFragment"
-        fun newInstance() = LanguageSettingFragment()
+        const val Tag = "AddressBarSettingFragment"
+        fun newInstance() = AddressBarSettingFragment()
     }
 
     lateinit var activityViewModel: MainViewModel
-    lateinit var binding: FragmentLanguageSettingBinding
+    lateinit var binding: FragmentSettingAddressBarShowItemBinding
     override fun onBackPressed(): Boolean {
         RouterActivity?.loadGeneralSettingFragment(R.anim.holder,R.anim.slide_right_out)
         return true
 
-    }
-
-    //获取layoutResourceId
-    override fun getLayoutResId(): Int {
-        return R.layout.fragment_language_setting
     }
 
     override fun useDataBinding(): Boolean {
@@ -49,9 +45,12 @@ class LanguageSettingFragment : BaseFragment(), BackHandler {
         //注入
         appComponent.inject(this)
     }
-
+    override fun getLayoutResId(): Int {
+        return R.layout.fragment_setting_address_bar_show_item
+    }
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        binding = FragmentLanguageSettingBinding.bind(super.onCreateView(inflater, container, savedInstanceState))
+        binding =
+            FragmentSettingAddressBarShowItemBinding.bind(super.onCreateView(inflater, container, savedInstanceState))
         binding.lifecycleOwner=this
         return binding.root
     }
@@ -75,48 +74,48 @@ class LanguageSettingFragment : BaseFragment(), BackHandler {
         binding.recyclerView.adapter = adapter
     }
 
-    private fun onSelect(data:TickItem) {
-        var selectedIndex=-1
+    private fun onSelect(data: TickItem) {
+        var selectedIndex = -1
         dataList.forEach {
             (it as? TickItem)?.apply {
-                if (it.value){
-                    selectedIndex=dataList.indexOf(it)
-                    it.value=false
+                if (it.value) {
+                    selectedIndex = dataList.indexOf(it)
+                    it.value = false
                 }
             }
         }
-        if (selectedIndex>=0){
+        if (selectedIndex >= 0) {
             binding.recyclerView.adapter?.notifyItemChanged(selectedIndex)
         }
 
-        val index=dataList.indexOf(data)
-        if (index>=0){
-            data.value=true
-            setSpString(R.string.pref_setting_language_title,data.title)
+        val index = dataList.indexOf(data)
+        if (index >= 0) {
+            setSpString(R.string.pref_setting_address_bar_show_title, data.title)
+            data.value = true
             binding.recyclerView.adapter?.notifyItemChanged(index)
         }
     }
 
     //TODO:添加Action
     private fun getData(): List<Any> {
-        val language = getSpString(R.string.pref_setting_language_title,getString(R.string.language_follow_system))
+        val showAddressBar = getSpString(R.string.pref_setting_show_address_bar, getString(R.string.show_title))
         val list = LinkedList<Any>()
         list.add(DividerItem(height = 24, background = getColor(R.color.color_F8F8F8)))
-        list.add(TickItem(title = getString(R.string.language_follow_system), action = object : Action<TickItem> {
+        list.add(TickItem(title = getString(R.string.show_domain), action = object : Action<TickItem> {
             override fun invoke(data: TickItem) {
                 onSelect(data)
             }
-        }, value = language==getString(R.string.language_follow_system)))
-        list.add(TickItem(title = getString(R.string.language_chinese), action = object : Action<TickItem> {
+        }, value = showAddressBar == getString(R.string.show_domain)))
+        list.add(TickItem(title = getString(R.string.show_title), action = object : Action<TickItem> {
             override fun invoke(data: TickItem) {
                 onSelect(data)
             }
-        }, value = language==getString(R.string.language_chinese)))
-        list.add(TickItem(title = getString(R.string.language_english), action = object : Action<TickItem> {
+        }, value = showAddressBar == getString(R.string.show_title)))
+        list.add(TickItem(title = getString(R.string.show_address), action = object : Action<TickItem> {
             override fun invoke(data: TickItem) {
                 onSelect(data)
             }
-        }, value = language==getString(R.string.language_english)))
+        }, value = showAddressBar == getString(R.string.show_address)))
         return list
     }
 }

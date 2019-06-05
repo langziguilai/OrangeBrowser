@@ -1,4 +1,4 @@
-package com.dev.orangebrowser.bloc.setting.fragments
+package com.dev.orangebrowser.bloc.setting.fragments.download
 
 import android.Manifest
 import android.content.Context
@@ -22,7 +22,7 @@ import com.dev.orangebrowser.bloc.host.MainViewModel
 import com.dev.orangebrowser.bloc.setting.adapter.Adapter
 import com.dev.orangebrowser.bloc.setting.viewholder.*
 import com.dev.orangebrowser.bloc.setting.viewholder.base.Action
-import com.dev.orangebrowser.databinding.FragmentDownloadPathSettingBinding
+import com.dev.orangebrowser.databinding.FragmentSettingDownloadPathBinding
 import com.dev.orangebrowser.extension.*
 import com.dev.util.DensityUtil
 import com.evernote.android.state.State
@@ -43,7 +43,7 @@ class DownloadPathSettingFragment : BaseFragment(), BackHandler {
     @State
     var currentDirectoryPath = ""
     lateinit var activityViewModel: MainViewModel
-    lateinit var binding: FragmentDownloadPathSettingBinding
+    lateinit var binding: FragmentSettingDownloadPathBinding
     override fun onBackPressed(): Boolean {
         if (currentDirectoryPath != START_PATH) {
             onPathSelect(
@@ -71,7 +71,7 @@ class DownloadPathSettingFragment : BaseFragment(), BackHandler {
 
     //获取layoutResourceId
     override fun getLayoutResId(): Int {
-        return R.layout.fragment_download_path_setting
+        return R.layout.fragment_setting_download_path
     }
 
     override fun useDataBinding(): Boolean {
@@ -85,7 +85,7 @@ class DownloadPathSettingFragment : BaseFragment(), BackHandler {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        binding = FragmentDownloadPathSettingBinding.bind(super.onCreateView(inflater, container, savedInstanceState))
+        binding = FragmentSettingDownloadPathBinding.bind(super.onCreateView(inflater, container, savedInstanceState))
         binding.lifecycleOwner=this
         return binding.root
     }
@@ -145,7 +145,8 @@ class DownloadPathSettingFragment : BaseFragment(), BackHandler {
     private lateinit var dataList: LinkedList<Any>
 
     override fun initData(savedInstanceState: Bundle?) {
-        currentDirectoryPath = START_PATH
+        currentDirectoryPath =
+            START_PATH
         launch(Dispatchers.IO) {
             dataList = getData(START_PATH)
             pathLinkedList.addAll(getParentPathData(START_PATH))

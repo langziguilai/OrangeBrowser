@@ -13,9 +13,12 @@ import com.dev.base.support.BackHandler
 import com.dev.orangebrowser.R
 import com.dev.orangebrowser.bloc.host.MainViewModel
 import com.dev.orangebrowser.bloc.setting.adapter.Adapter
-import com.dev.orangebrowser.bloc.setting.viewholder.*
+import com.dev.orangebrowser.bloc.setting.viewholder.CategoryHeaderItem
+import com.dev.orangebrowser.bloc.setting.viewholder.DividerItem
+import com.dev.orangebrowser.bloc.setting.viewholder.SwitchItem
+import com.dev.orangebrowser.bloc.setting.viewholder.TileItem
 import com.dev.orangebrowser.bloc.setting.viewholder.base.Action
-import com.dev.orangebrowser.databinding.FragmentGestureSettingBinding
+import com.dev.orangebrowser.databinding.FragmentSettingGestureBinding
 import com.dev.orangebrowser.extension.*
 import java.util.*
 
@@ -28,16 +31,16 @@ class GestureSettingFragment : BaseFragment(), BackHandler {
     }
 
     lateinit var activityViewModel: MainViewModel
-    lateinit var binding: FragmentGestureSettingBinding
+    lateinit var binding: FragmentSettingGestureBinding
     override fun onBackPressed(): Boolean {
-        RouterActivity?.loadSettingFragment(R.anim.holder,R.anim.slide_right_out)
+        RouterActivity?.loadSettingFragment(R.anim.holder, R.anim.slide_right_out)
         return true
 
     }
 
     //获取layoutResourceId
     override fun getLayoutResId(): Int {
-        return R.layout.fragment_gesture_setting
+        return R.layout.fragment_setting_gesture
     }
 
     override fun useDataBinding(): Boolean {
@@ -51,15 +54,15 @@ class GestureSettingFragment : BaseFragment(), BackHandler {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        binding = FragmentGestureSettingBinding.bind(super.onCreateView(inflater, container, savedInstanceState))
-        binding.lifecycleOwner=this
+        binding = FragmentSettingGestureBinding.bind(super.onCreateView(inflater, container, savedInstanceState))
+        binding.lifecycleOwner = this
         return binding.root
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         activityViewModel = ViewModelProviders.of(activity!!, factory).get(MainViewModel::class.java)
         binding.activityViewModel = activityViewModel
-        binding.backHandler=this
+        binding.backHandler = this
         super.onActivityCreated(savedInstanceState)
     }
 

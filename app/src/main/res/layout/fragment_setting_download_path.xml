@@ -4,7 +4,7 @@
     <data>
         <variable name="activityViewModel" type="com.dev.orangebrowser.bloc.host.MainViewModel"/>
         <variable name="backHandler" type="com.dev.base.support.BackHandler"/>
-        <variable name="fragment" type="com.dev.orangebrowser.bloc.setting.fragments.DownloadPathSettingFragment"/>
+        <variable name="fragment" type="com.dev.orangebrowser.bloc.setting.fragments.download.DownloadPathSettingFragment"/>
     </data>
     <androidx.coordinatorlayout.widget.CoordinatorLayout android:layout_width="match_parent"
                                                          android:fitsSystemWindows="true"
