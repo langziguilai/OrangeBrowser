@@ -24,6 +24,7 @@ import com.dev.orangebrowser.R
 import com.dev.orangebrowser.bloc.bookmark.BookMarkFragment
 import com.dev.orangebrowser.bloc.browser.BrowserFragment
 import com.dev.orangebrowser.bloc.download.DownloadFragment
+import com.dev.orangebrowser.bloc.download.image.DownloadImageFragment
 import com.dev.orangebrowser.bloc.found.FoundFragment
 import com.dev.orangebrowser.bloc.history.HistoryFragment
 import com.dev.orangebrowser.bloc.home.HomeFragment
@@ -367,7 +368,15 @@ class MainActivity : BaseActivity(), DownloadManager.OnAutoInstallDownloadAppLis
             .replace(R.id.root_container, fragment)
             .commit()
     }
-
+    //加载下载页面
+    fun loadDownloadImageFragment() {
+        val fragment = DownloadImageFragment.newInstance()
+        supportFragmentManager.beginTransaction()
+            .setCustomAnimations(R.anim.slide_left_in, R.anim.holder,R.anim.holder,R.anim.slide_right_out)
+            .add(R.id.root_container, fragment)
+            .addToBackStack(null)
+            .commit()
+    }
     //加载设置页面
     fun loadSettingFragment(enterAnimationId: Int=R.anim.slide_left_in,exitAnimationId: Int=R.anim.holder) {
         val fragment = SettingFragment.newInstance()

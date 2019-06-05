@@ -71,8 +71,7 @@ open class CustomBaseViewHolder(view: View): BaseViewHolder(view){
     fun loadLocalImage(@IdRes viewId: Int, path:String): CustomBaseViewHolder {
         val view = getView<ImageView>(viewId)
         val mRequestOptions = RequestOptions.centerCropTransform()
-        val imagePath=Environment.getExternalStorageDirectory().path+path
-        Glide.with(view.context).load(File(imagePath))
+        Glide.with(view.context).load(File(path))
             .apply(mRequestOptions).into(view)
         return this
     }

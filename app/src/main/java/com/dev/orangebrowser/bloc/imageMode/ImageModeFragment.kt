@@ -164,7 +164,7 @@ class ImageModeModeFragment : BaseFragment(), BackHandler {
             return
         }
         adapter = object :
-            BaseQuickAdapter<String, CustomBaseViewHolder>(R.layout.item_image_display, images) {
+            BaseQuickAdapter<String, CustomBaseViewHolder>(R.layout.item_scroll_parallax_image, images) {
             override fun convert(helper: CustomBaseViewHolder, item: String) {
                 helper.loadNoCropImage(R.id.image, url = item, referer = session.url)
                 helper.itemView.findViewById<ScrollParallaxImageView>(R.id.image).setParallaxStyles(
