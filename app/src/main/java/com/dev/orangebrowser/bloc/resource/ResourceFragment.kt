@@ -192,7 +192,7 @@ class ResourceFragment : BaseFragment(), BackHandler {
                         ImageResource(link=it.attr("abs:src").trim())
                     }.filter { it.link.isNotBlank()}
                     videoResource= doc.select("video").map {
-                        val poster=it.attr("poster")
+                        val poster=it.attr("abs:poster")
                         val src=it.attr("src")
                         if(src.startsWith("//")){
                             it.attr("src", "http:$src")
@@ -314,8 +314,20 @@ class ResourceFragment : BaseFragment(), BackHandler {
                                 referer = session?.url,
                                 cookies = session?.getCookies(resource.link)
                             )
+                            when(resource){
+                                is ImageResource-> {
+                                    download.contentType="image/*"
+                                }
+                                is VideoResource -> {
+                                    download.poster= resource.poster
+                                    download.contentType="video/*"
+                                }
+                                is AudioResource -> {
+                                    download.contentType="audio/*"
+                                }
+                            }
                             if(resource is VideoResource){
-                                download.poster= resource.poster
+
                             }
                             if (requireContext().applicationContext.isPermissionGranted(
                                     Manifest.permission.INTERNET,

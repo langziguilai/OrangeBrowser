@@ -7,6 +7,7 @@ import com.dev.orangebrowser.bloc.browser.BrowserFragment
 import com.dev.orangebrowser.bloc.download.DownloadFragment
 import com.dev.orangebrowser.bloc.download.html.DownloadHtmlFragment
 import com.dev.orangebrowser.bloc.download.image.DownloadImageFragment
+import com.dev.orangebrowser.bloc.download.video.DownloadVideoFragment
 import com.dev.orangebrowser.bloc.found.FoundFragment
 import com.dev.orangebrowser.bloc.history.HistoryFragment
 import com.dev.orangebrowser.bloc.home.HomeFragment
@@ -50,6 +51,7 @@ interface ApplicationComponent {
     fun inject(themeFragment: ThemeFragment)
     fun inject(downloadFragment: DownloadFragment)
     fun inject(downloadImageFragment: DownloadImageFragment)
+    fun inject(downloadVideoFragment: DownloadVideoFragment)
     fun inject(downloadHtmlFragment: DownloadHtmlFragment)
     fun inject(settingFragment: SettingFragment)
     fun inject(readModeFragment: ReadModeFragment)

@@ -1,4 +1,4 @@
-package com.dev.orangebrowser.bloc.download
+package com.dev.orangebrowser.bloc.download.video
 
 import android.app.Dialog
 import android.content.Context
@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.dev.base.BaseFragment
@@ -18,16 +19,11 @@ import com.dev.base.extension.shareLink
 import com.dev.base.extension.showToast
 import com.dev.base.support.BackHandler
 import com.dev.browser.database.download.*
-import com.dev.browser.session.Download
-import com.dev.browser.session.SessionManager
 import com.dev.orangebrowser.R
 import com.dev.orangebrowser.bloc.host.MainViewModel
-import com.dev.orangebrowser.databinding.FragmentDownloadBinding
-import com.dev.orangebrowser.extension.RouterActivity
+import com.dev.orangebrowser.databinding.FragmentDownloadVideoBinding
 import com.dev.orangebrowser.extension.appComponent
 import com.dev.orangebrowser.extension.getColor
-import com.dev.orangebrowser.utils.FileSizeHelper
-import com.dev.orangebrowser.utils.PositionUtils.calculateRecyclerViewTopMargin
 import com.dev.orangebrowser.view.contextmenu.Action
 import com.dev.orangebrowser.view.contextmenu.CommonContextMenuAdapter
 import com.dev.orangebrowser.view.contextmenu.MenuItem
@@ -40,40 +36,36 @@ import com.dev.view.recyclerview.GridDividerItemDecoration
 import com.dev.view.recyclerview.adapter.base.BaseQuickAdapter
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import java.io.File
 import java.lang.Exception
 import java.util.*
 import javax.inject.Inject
 
-class DownloadFragment : BaseFragment(),BackHandler {
+class DownloadVideoFragment : BaseFragment(),BackHandler {
     override fun onBackPressed(): Boolean {
-        sessoinManager.selectedSession?.apply {
-            RouterActivity?.loadHomeOrBrowserFragment(this.id,enterAnimationId = R.anim.holder,exitAnimationId = R.anim.slide_right_out)
-        }
+        fragmentManager?.popBackStack()
         return true
     }
 
 
     companion object {
-        val Tag = "DownloadFragment"
-        fun newInstance() = DownloadFragment()
+        val Tag = "DownloadVideoFragment"
+        fun newInstance() = DownloadVideoFragment()
     }
-    @Inject
-    lateinit var sessoinManager:SessionManager
+
     @Inject
     lateinit var downloadDao: DownloadDao
-    lateinit var viewModel: DownloadViewModel
+    lateinit var viewModel: DownloadVideoViewModel
     lateinit var activityViewModel: MainViewModel
-    lateinit var binding: FragmentDownloadBinding
+    lateinit var binding: FragmentDownloadVideoBinding
     override fun onAttach(context: Context) {
         super.onAttach(context)
         //注入
         appComponent.inject(this)
-        viewModel = ViewModelProviders.of(this, factory).get(DownloadViewModel::class.java)
+        viewModel = ViewModelProviders.of(this, factory).get(DownloadVideoViewModel::class.java)
     }
 
     override fun getLayoutResId(): Int {
-        return R.layout.fragment_download
+        return R.layout.fragment_download_video
     }
 
     override fun useDataBinding(): Boolean {
@@ -81,7 +73,7 @@ class DownloadFragment : BaseFragment(),BackHandler {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        binding = FragmentDownloadBinding.bind(super.onCreateView(inflater, container, savedInstanceState))
+        binding = FragmentDownloadVideoBinding.bind(super.onCreateView(inflater, container, savedInstanceState))
         binding.lifecycleOwner = this
         return binding.root
     }
@@ -97,55 +89,26 @@ class DownloadFragment : BaseFragment(),BackHandler {
         StatusBarUtil.setIconColor(requireActivity(), activityViewModel.theme.value!!.colorPrimary)
         offSet = DensityUtil.dip2px(requireContext(), 20f)
         binding.recyclerView.apply {
-            this.layoutManager = LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
+            this.layoutManager = GridLayoutManager(requireContext(),3, RecyclerView.VERTICAL, false)
             this.addItemDecoration(
                 GridDividerItemDecoration(
-                    0,
-                    DensityUtil.dip2px(requireContext(), 0.5f),
-                    getColor(R.color.material_grey_300)
+                    DensityUtil.dip2px(requireContext(), 1f),
+                    DensityUtil.dip2px(requireContext(), 1f),
+                    getColor(R.color.white)
                 )
             )
 
-        }
-        binding.savedVideos.setOnClickListener {
-            RouterActivity?.loadDownloadVideoFragment()
-        }
-
-        binding.downloadHtml.setOnClickListener {
-            RouterActivity?.loadDownloadHtmlFragment()
-        }
-        binding.downloadImage.setOnClickListener {
-           RouterActivity?.loadDownloadImageFragment()
         }
     }
     lateinit var downloads: LinkedList<DownloadEntity>
     override fun initData(savedInstanceState: Bundle?) {
         launch(Dispatchers.IO) {
-            downloads = LinkedList(downloadDao.getAll())
+            downloads = LinkedList(downloadDao.getDownloadByType(VIDEO))
             launch(Dispatchers.Main) {
                 val adapter = object :
-                    BaseQuickAdapter<DownloadEntity, CustomBaseViewHolder>(R.layout.item_download_item, downloads) {
+                    BaseQuickAdapter<DownloadEntity, CustomBaseViewHolder>(R.layout.item_download_image, downloads) {
                     override fun convert(helper: CustomBaseViewHolder, item: DownloadEntity) {
-                        helper.setTextColor(R.id.icon, activityViewModel.theme.value!!.colorPrimary)
-                        helper.setText(R.id.title, item.fileName)
-                        helper.setText(R.id.size, FileSizeHelper.ShowLongFileSize(item.contentLength))
-                        when (item.type) {
-                            IMAGE -> {
-                                helper.setText(R.id.icon,getString(R.string.ic_image))
-                            }
-                            VIDEO -> {
-                                helper.setText(R.id.icon,getString(R.string.ic_video))
-                            }
-                            AUDIO -> {
-                                helper.setText(R.id.icon,getString(R.string.ic_audio))
-                            }
-                            COMMON -> {
-                                helper.setText(R.id.icon,getString(R.string.ic_file))
-                            }
-                            APK -> {
-                                helper.setText(R.id.icon,getString(R.string.ic_store))
-                            }
-                        }
+                          helper.loadImage(R.id.image,item.poster,item.referer)
                     }
                 }
                 initDownloadItemDialog(adapter)
@@ -253,8 +216,6 @@ class DownloadFragment : BaseFragment(),BackHandler {
                      requireContext().showToast(getString(R.string.tip_delete_success))
                  }
              }
-
-
          }
     }
 }

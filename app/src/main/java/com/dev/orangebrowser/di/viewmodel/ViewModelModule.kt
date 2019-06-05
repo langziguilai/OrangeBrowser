@@ -23,6 +23,7 @@ import com.dev.orangebrowser.bloc.browser.BrowserViewModel
 import com.dev.orangebrowser.bloc.download.DownloadViewModel
 import com.dev.orangebrowser.bloc.download.html.DownloadHtmlViewModel
 import com.dev.orangebrowser.bloc.download.image.DownloadImageViewModel
+import com.dev.orangebrowser.bloc.download.video.DownloadVideoViewModel
 import com.dev.orangebrowser.bloc.found.FoundViewModel
 import com.dev.orangebrowser.bloc.history.HistoryViewModel
 import com.dev.orangebrowser.bloc.home.HomeViewModel
@@ -101,6 +102,10 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(DownloadHtmlViewModel::class)
     abstract fun bindsDownloadHtmlViewModel(downloadHtmlViewModel: DownloadHtmlViewModel): ViewModel
+    @Binds
+    @IntoMap
+    @ViewModelKey(DownloadVideoViewModel::class)
+    abstract fun bindsDownloadVideoViewModel(downloadVideoViewModel: DownloadVideoViewModel): ViewModel
     @Binds
     @IntoMap
     @ViewModelKey(SettingViewModel::class)

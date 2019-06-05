@@ -21,7 +21,7 @@ data class Download(
     var fileName: String,
     val referer:String?=null,
     val cookies:String?=null,
-    val contentType: String? = null,
+    var contentType: String? = null,
     val contentLength: Long? = null,
     val userAgent: String? = null,
     var poster:String?=null,//封面
