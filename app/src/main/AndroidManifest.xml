@@ -39,6 +39,11 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
+        <activity android:name=".bloc.display.image.ImageDisplayActivity"
+                  android:screenOrientation="portrait"
+                  android:windowSoftInputMode="adjustResize|stateAlwaysHidden"
+                  android:configChanges="orientation|keyboardHidden|keyboard|screenSize" >
+        </activity>
         <provider
                 android:name="androidx.core.content.FileProvider"
                 android:authorities="com.dev.fileprovider"

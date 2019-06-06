@@ -2,6 +2,7 @@ package com.dev.orangebrowser.bloc.download.image
 
 import android.app.Dialog
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.view.Gravity
 import android.view.LayoutInflater
@@ -21,7 +22,10 @@ import com.dev.base.support.BackHandler
 import com.dev.browser.database.download.*
 import com.dev.browser.session.SessionManager
 import com.dev.orangebrowser.R
+import com.dev.orangebrowser.bloc.display.image.ImageDisplayActivity
+import com.dev.orangebrowser.bloc.host.MainActivity
 import com.dev.orangebrowser.bloc.host.MainViewModel
+import com.dev.orangebrowser.data.model.SimpleImage
 import com.dev.orangebrowser.databinding.FragmentDownloadBinding
 import com.dev.orangebrowser.databinding.FragmentDownloadImageBinding
 import com.dev.orangebrowser.extension.RouterActivity
@@ -114,6 +118,16 @@ class DownloadImageFragment : BaseFragment(),BackHandler {
                     override fun convert(helper: CustomBaseViewHolder, item: DownloadEntity) {
                           helper.loadLocalImage(R.id.image,item.path)
                     }
+                }
+                adapter.setOnItemClickListener { _, view, position ->
+                    val intent= Intent(requireActivity(),ImageDisplayActivity::class.java)
+                    //设置参数
+                    intent.putExtra(ImageDisplayActivity.POSITION,position)
+
+                    intent.putParcelableArrayListExtra(ImageDisplayActivity.IMAGES,ArrayList<SimpleImage>(downloads.map {
+                        SimpleImage(url=it.url,path = it.path,referer = it.referer)
+                    }))
+                    startActivity(intent)
                 }
                 initDownloadItemDialog(adapter)
                 binding.recyclerView.adapter=adapter

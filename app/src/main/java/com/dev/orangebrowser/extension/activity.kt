@@ -1,5 +1,6 @@
 package com.dev.orangebrowser.extension
 
+import android.app.Activity
 import androidx.appcompat.app.AppCompatActivity
 import com.dev.orangebrowser.AndroidApplication
 import com.dev.orangebrowser.data.model.ApplicationData
@@ -13,3 +14,7 @@ val AppCompatActivity.appData: ApplicationData
 
 val AppCompatActivity.myApplication:AndroidApplication
     get() = (applicationContext as AndroidApplication)
+
+fun Activity.getColor(id:Int):Int{
+    return resources.getColor(id)
+}

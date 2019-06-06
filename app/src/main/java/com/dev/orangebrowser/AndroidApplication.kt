@@ -14,6 +14,8 @@ import com.dev.orangebrowser.di.ApplicationModule
 import com.dev.orangebrowser.di.DaggerApplicationComponent
 import com.dev.orangebrowser.di.DatabaseModule
 import com.dev.util.FileUtil
+import com.dev.view.biv.concept.BigImageViewer
+import com.dev.view.biv.loader.glide.GlideImageLoader
 import kotlinx.coroutines.*
 import org.adblockplus.libadblockplus.android.AdblockEngine
 import org.adblockplus.libadblockplus.android.SingleInstanceEngineProvider
@@ -48,6 +50,7 @@ class AndroidApplication:BaseApplication(),CoroutineScope {
     }
     lateinit var sessionClearObserver:SessionManager.Observer
     override fun initialize() {
+        BigImageViewer.initialize(GlideImageLoader.with(this))
         sessionClearObserver=object:SessionManager.Observer{
             //删除thumbnial
             override fun onSessionRemoved(session: Session) {

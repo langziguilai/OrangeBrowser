@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <variable name="viewModel" type="com.dev.orangebrowser.bloc.display.image.ImageDisplayViewModel"/>
+        <variable name="activity" type="com.dev.orangebrowser.bloc.display.image.ImageDisplayActivity"/>
+    </data>
+    <FrameLayout android:layout_width="match_parent"
+                                       android:id="@+id/image_container"
+                                       bgColor="@{viewModel.colorPrimary}"
+                                       android:layout_height="match_parent">
+
+            <com.dev.orangebrowser.view.LongClickFrameLayout
+                    android:id="@+id/container"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+                <androidx.viewpager2.widget.ViewPager2
+                        android:id="@+id/view_pager"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                />
+            </com.dev.orangebrowser.view.LongClickFrameLayout>
+        <LinearLayout android:id="@+id/header"
+                      android:layout_width="match_parent"
+                      android:layout_height="wrap_content"
+                      bgColor="@{viewModel.colorPrimary}"
+                      android:layout_gravity="top"
+                      android:orientation="horizontal">
+            <com.dev.view.IconfontTextView
+                    android:id="@+id/back"
+                    android:layout_width="48dp"
+                    android:layout_height="44dp"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="18sp"
+                    android:text="@string/ic_arrow_left"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:onClick="@{() -> activity.onBackPressed()}"
+                    android:gravity="center"
+                    android:layout_gravity="start|center_vertical"/>
+            <TextView android:text="@string/saved_images"
+                      android:id="@+id/title"
+                      android:gravity="center"
+                      android:textSize="18sp"
+                      android:singleLine="true"
+                      android:ellipsize="end"
+                      android:layout_weight="1"
+                      android:textColor="@color/colorBlack"
+                      android:layout_width="0dp"
+                      android:layout_height="match_parent"/>
+        </LinearLayout>
+    </FrameLayout>
+</layout>
