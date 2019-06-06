@@ -23,6 +23,7 @@ import com.dev.view.notchtools.core.NotchProperty
 import com.dev.view.notchtools.core.OnNotchCallBack
 import com.dev.view.recyclerview.CustomBaseViewHolder
 import com.dev.view.recyclerview.adapter.base.BaseQuickAdapter
+import java.io.File
 
 class ImageDisplayActivity : BaseNotchActivity(), OnNotchCallBack {
     lateinit var viewModel: ImageDisplayViewModel
@@ -71,13 +72,13 @@ class ImageDisplayActivity : BaseNotchActivity(), OnNotchCallBack {
         ) {
             override fun convert(helper: CustomBaseViewHolder, item: SimpleImage) {
                 helper.addOnClickListener(R.id.image)
+                val headers=HashMap<String,String>()
+                if (item.referer!=null){
+                    headers["referer"] = item.referer!!
+                }
                 if (item.path!=null){
-                    helper.loadLocalImage(R.id.image,item.path!!)
+                    helper.itemView.findViewById<BigImageView>(R.id.image).showImage(Uri.fromFile(File(item.path!!)), headers)
                 }else if(item.url!=null){
-                    val headers=HashMap<String,String>()
-                    if (item.referer!=null){
-                        headers["referer"] = item.referer!!
-                    }
                     helper.itemView.findViewById<BigImageView>(R.id.image).showImage(Uri.parse(item.url), headers)
                 }
 
@@ -92,7 +93,7 @@ class ImageDisplayActivity : BaseNotchActivity(), OnNotchCallBack {
             }
         }
         binding.viewPager.adapter=adapter
-        binding.viewPager.currentItem = currentPosition
+        binding.viewPager.setCurrentItem(currentPosition,false)
     }
 
     private fun hide(delay: Boolean = false) {

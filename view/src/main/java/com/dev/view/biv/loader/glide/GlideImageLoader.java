@@ -69,11 +69,11 @@ public class GlideImageLoader implements ImageLoader {
     }
 
     @Override
-    public void loadImage(final int requestId, final Uri uri, final Map<String,String> headers, final Callback callback) {
+    public void loadImage(final int requestId, final Uri uri, final Map<String, String> headers, final Callback callback) {
         ImageDownloadTarget target = new ImageDownloadTarget(uri.toString()) {
             @Override
             public void onResourceReady(@NonNull File resource,
-                    Transition<? super File> transition) {
+                                        Transition<? super File> transition) {
                 super.onResourceReady(resource, transition);
                 // we don't need delete this image file, so it behaves like cache hit
                 callback.onCacheHit(ImageInfoExtractor.getImageType(resource), resource);
@@ -103,15 +103,19 @@ public class GlideImageLoader implements ImageLoader {
         };
         clearTarget(requestId);
         saveTarget(requestId, target);
-        downloadImageInto(uri,headers, target);
+        downloadImageInto(uri, headers, target);
     }
 
-    protected void downloadImageInto(Uri uri,Map<String,String> headers, Target<File> target) {
-        LazyHeaders.Builder headerBuilder=new LazyHeaders.Builder();
-        for (String key : headers.keySet()){
+    protected void downloadImageInto(Uri uri, Map<String, String> headers, Target<File> target) {
+        if (uri.getScheme().startsWith("file")) {
+            mRequestManager .downloadOnly().load(uri).into(target);
+            return;
+        }
+        LazyHeaders.Builder headerBuilder = new LazyHeaders.Builder();
+        for (String key : headers.keySet()) {
             headerBuilder.addHeader(key, Objects.requireNonNull(headers.get(key)));
         }
-        GlideUrl url=new GlideUrl(uri.toString(),headerBuilder.build());
+        GlideUrl url = new GlideUrl(uri.toString(), headerBuilder.build());
         mRequestManager
                 .downloadOnly()
                 .load(url)
@@ -119,8 +123,8 @@ public class GlideImageLoader implements ImageLoader {
     }
 
     @Override
-    public void prefetch(Uri uri, Map<String,String> headers) {
-        downloadImageInto(uri,headers, new PrefetchTarget());
+    public void prefetch(Uri uri, Map<String, String> headers) {
+        downloadImageInto(uri, headers, new PrefetchTarget());
     }
 
     @Override
