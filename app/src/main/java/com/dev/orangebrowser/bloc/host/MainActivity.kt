@@ -54,6 +54,7 @@ import com.dev.orangebrowser.extension.myApplication
 import com.dev.orangebrowser.utils.auto_install.InstallAppInstance
 import com.dev.view.NavigationBarUtil
 import com.dev.view.StatusBarUtil
+import com.hw.ycshareelement.YcShareElement
 import com.yzq.zxinglibrary.android.CaptureActivity
 import com.yzq.zxinglibrary.bean.ZxingConfig
 import com.yzq.zxinglibrary.common.Constant
@@ -85,6 +86,8 @@ class MainActivity : BaseActivity(), DownloadManager.OnAutoInstallDownloadAppLis
 
     companion object {
         const val REQUEST_CODE_SCAN = 0x1234
+        const val REQUEST_IMAGE_TRANSITION=0x1235
+        const val REQUEST_VIDEO_TRANSITION=0x1236
     }
 
     @Inject
@@ -693,6 +696,18 @@ class MainActivity : BaseActivity(), DownloadManager.OnAutoInstallDownloadAppLis
         //如果是安装应用
         if (requestCode == InstallAppInstance.UNKNOWN_CODE && resultCode == Activity.RESULT_OK) {
             installAppInstance?.install()
+        }
+    }
+
+    //TODO:
+    override fun onActivityReenter(resultCode: Int, data: Intent) {
+        super.onActivityReenter(resultCode, data)
+        if (resultCode== REQUEST_IMAGE_TRANSITION){
+            YcShareElement.onActivityReenter(
+                this, resultCode, data
+            ) {
+                    //list -> mFragment.selectShareElement(list[0])
+            }
         }
     }
 }

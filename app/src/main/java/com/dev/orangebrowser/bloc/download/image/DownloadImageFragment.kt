@@ -4,11 +4,14 @@ import android.app.Dialog
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.os.Parcelable
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
+import android.widget.ImageView
+import androidx.core.view.ViewCompat
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -42,18 +45,20 @@ import com.dev.view.dialog.DialogBuilder
 import com.dev.view.recyclerview.CustomBaseViewHolder
 import com.dev.view.recyclerview.GridDividerItemDecoration
 import com.dev.view.recyclerview.adapter.base.BaseQuickAdapter
+import com.hw.ycshareelement.YcShareElement
+import com.hw.ycshareelement.transition.IShareElements
+import com.hw.ycshareelement.transition.ShareElementInfo
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.lang.Exception
 import java.util.*
 import javax.inject.Inject
 
-class DownloadImageFragment : BaseFragment(),BackHandler {
+class DownloadImageFragment : BaseFragment(),BackHandler, IShareElements {
     override fun onBackPressed(): Boolean {
         fragmentManager?.popBackStack()
         return true
     }
-
 
     companion object {
         val Tag = "DownloadHtmlFragment"
@@ -109,6 +114,7 @@ class DownloadImageFragment : BaseFragment(),BackHandler {
         }
     }
     lateinit var downloads: LinkedList<DownloadEntity>
+    lateinit var shareImageInfo:ShareElementInfo<SimpleImage>
     override fun initData(savedInstanceState: Bundle?) {
         launch(Dispatchers.IO) {
             downloads = LinkedList(downloadDao.getDownloadByType(IMAGE))
@@ -120,6 +126,11 @@ class DownloadImageFragment : BaseFragment(),BackHandler {
                     }
                 }
                 adapter.setOnItemClickListener { _, view, position ->
+                    val selectedItem=downloads[position]
+                    val imageView=view.findViewById<ImageView>(R.id.image).apply{
+                        ViewCompat.setTransitionName(this,selectedItem.url)
+                    }
+                    shareImageInfo=ShareElementInfo(imageView,SimpleImage(url=selectedItem.url,path = selectedItem.path,referer = selectedItem.referer))
                     val intent= Intent(requireActivity(),ImageDisplayActivity::class.java)
                     //设置参数
                     intent.putExtra(ImageDisplayActivity.POSITION,position)
@@ -127,7 +138,8 @@ class DownloadImageFragment : BaseFragment(),BackHandler {
                     intent.putParcelableArrayListExtra(ImageDisplayActivity.IMAGES,ArrayList<SimpleImage>(downloads.map {
                         SimpleImage(url=it.url,path = it.path,referer = it.referer)
                     }))
-                    startActivity(intent)
+                    val options = YcShareElement.buildOptionsBundle(requireActivity(), this@DownloadImageFragment)
+                    startActivityForResult(intent, MainActivity.REQUEST_IMAGE_TRANSITION, options)
                 }
                 initDownloadItemDialog(adapter)
                 binding.recyclerView.adapter=adapter
@@ -235,5 +247,9 @@ class DownloadImageFragment : BaseFragment(),BackHandler {
                  }
              }
          }
+    }
+
+    override fun getShareElements(): Array<ShareElementInfo<SimpleImage>> {
+        return arrayOf(shareImageInfo)
     }
 }

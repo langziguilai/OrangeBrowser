@@ -7,9 +7,11 @@ import android.view.View
 import android.view.WindowManager
 import android.view.animation.AccelerateInterpolator
 import android.view.animation.DecelerateInterpolator
-import android.widget.FrameLayout
+import androidx.core.view.ViewCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.RecyclerView
+import androidx.viewpager2.widget.ViewPager2
 import com.dev.base.BaseNotchActivity
 import com.dev.base.extension.onGlobalLayoutComplete
 import com.dev.orangebrowser.R
@@ -23,9 +25,12 @@ import com.dev.view.notchtools.core.NotchProperty
 import com.dev.view.notchtools.core.OnNotchCallBack
 import com.dev.view.recyclerview.CustomBaseViewHolder
 import com.dev.view.recyclerview.adapter.base.BaseQuickAdapter
+import com.hw.ycshareelement.YcShareElement
+import com.hw.ycshareelement.transition.IShareElements
+import com.hw.ycshareelement.transition.ShareElementInfo
 import java.io.File
 
-class ImageDisplayActivity : BaseNotchActivity(), OnNotchCallBack {
+class ImageDisplayActivity : BaseNotchActivity(), OnNotchCallBack, IShareElements {
     lateinit var viewModel: ImageDisplayViewModel
     lateinit var binding: ActivityImageDisplayBinding
 
@@ -34,6 +39,7 @@ class ImageDisplayActivity : BaseNotchActivity(), OnNotchCallBack {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        YcShareElement.setEnterTransitions(this,this)
         //注入
         appComponent.inject(this)
         viewModel = ViewModelProviders.of(this, factory).get(ImageDisplayViewModel::class.java)
@@ -52,6 +58,8 @@ class ImageDisplayActivity : BaseNotchActivity(), OnNotchCallBack {
 
     private var showStatusBar = false
     override fun initView(savedInstanceState: Bundle?) {
+        NotchTools.getFullScreenTools()
+            .fullScreenUseStatus(this, this)
         binding.header.onGlobalLayoutComplete {
             hide()
         }
@@ -59,6 +67,7 @@ class ImageDisplayActivity : BaseNotchActivity(), OnNotchCallBack {
 
     lateinit var data:ArrayList<SimpleImage>
     var currentPosition:Int=0
+    lateinit var adapter:BaseQuickAdapter<SimpleImage, CustomBaseViewHolder>
     override fun initData(savedInstanceState: Bundle?) {
         binding.activity = this
         binding.viewModel = viewModel
@@ -66,7 +75,7 @@ class ImageDisplayActivity : BaseNotchActivity(), OnNotchCallBack {
         currentPosition=intent.getIntExtra(POSITION,0)
         data=intent.getParcelableArrayListExtra<SimpleImage>(IMAGES)
 
-        val adapter = object : BaseQuickAdapter<SimpleImage, CustomBaseViewHolder>(
+        adapter = object : BaseQuickAdapter<SimpleImage, CustomBaseViewHolder>(
             R.layout.item_big_image,
             data
         ) {
@@ -92,8 +101,10 @@ class ImageDisplayActivity : BaseNotchActivity(), OnNotchCallBack {
                 hide(true)
             }
         }
+
         binding.viewPager.adapter=adapter
         binding.viewPager.setCurrentItem(currentPosition,false)
+        YcShareElement.postStartTransition(this)
     }
 
     private fun hide(delay: Boolean = false) {
@@ -176,5 +187,26 @@ class ImageDisplayActivity : BaseNotchActivity(), OnNotchCallBack {
     companion object{
         const val POSITION="position"
         const val IMAGES="images"
+    }
+
+    override fun getShareElements(): Array<ShareElementInfo<SimpleImage>> {
+        val index=binding.viewPager.currentItem
+        val simpleImage=data[index]
+        val field=binding.viewPager.javaClass.getDeclaredField("mRecyclerView")
+        field.isAccessible=true
+        val recyclerView=field.get(binding.viewPager) as RecyclerView
+        val imageView=adapter.getViewByPosition(recyclerView,index,R.id.image)?.apply {
+            if (simpleImage.url!=null){
+                ViewCompat.setTransitionName(this,simpleImage.url)
+            }else if (simpleImage.path!=null){
+                ViewCompat.setTransitionName(this,simpleImage.path)
+            }
+        }
+        val shareElement=ShareElementInfo(imageView!!,simpleImage)
+        return arrayOf(shareElement)
+    }
+    override fun finishAfterTransition() {
+        YcShareElement.finishAfterTransition(this, this)
+        super.finishAfterTransition()
     }
 }
