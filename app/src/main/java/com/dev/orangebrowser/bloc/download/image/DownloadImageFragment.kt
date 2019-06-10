@@ -54,7 +54,7 @@ import java.lang.Exception
 import java.util.*
 import javax.inject.Inject
 
-class DownloadImageFragment : BaseFragment(),BackHandler, IShareElements {
+class DownloadImageFragment : BaseFragment(), BackHandler, IShareElements {
     override fun onBackPressed(): Boolean {
         fragmentManager?.popBackStack()
         return true
@@ -94,15 +94,18 @@ class DownloadImageFragment : BaseFragment(),BackHandler, IShareElements {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         activityViewModel = ViewModelProviders.of(this.requireActivity(), factory).get(MainViewModel::class.java)
         binding.activityViewModel = activityViewModel
-        binding.backHandler=this
+        binding.backHandler = this
         super.onActivityCreated(savedInstanceState)
     }
+
     var offSet: Int = -1
+    lateinit var layoutManager:GridLayoutManager
     override fun initViewWithDataBinding(savedInstanceState: Bundle?) {
         StatusBarUtil.setIconColor(requireActivity(), activityViewModel.theme.value!!.colorPrimary)
         offSet = DensityUtil.dip2px(requireContext(), 20f)
         binding.recyclerView.apply {
-            this.layoutManager = GridLayoutManager(requireContext(),3, RecyclerView.VERTICAL, false)
+            layoutManager = GridLayoutManager(requireContext(), 3, RecyclerView.VERTICAL, false)
+            this.layoutManager=layoutManager
             this.addItemDecoration(
                 GridDividerItemDecoration(
                     DensityUtil.dip2px(requireContext(), 1f),
@@ -113,87 +116,97 @@ class DownloadImageFragment : BaseFragment(),BackHandler, IShareElements {
 
         }
     }
+
     lateinit var downloads: LinkedList<DownloadEntity>
-    lateinit var shareImageInfo:ShareElementInfo<SimpleImage>
+    lateinit var shareImageInfo: ShareElementInfo<SimpleImage>
+    lateinit var adapter:BaseQuickAdapter<DownloadEntity, CustomBaseViewHolder>
     override fun initData(savedInstanceState: Bundle?) {
         launch(Dispatchers.IO) {
             downloads = LinkedList(downloadDao.getDownloadByType(IMAGE))
             launch(Dispatchers.Main) {
-                val adapter = object :
+                adapter = object :
                     BaseQuickAdapter<DownloadEntity, CustomBaseViewHolder>(R.layout.item_download_image, downloads) {
                     override fun convert(helper: CustomBaseViewHolder, item: DownloadEntity) {
-                          helper.loadLocalImage(R.id.image,item.path)
+                        helper.loadLocalImage(R.id.image, item.path)
                     }
                 }
                 adapter.setOnItemClickListener { _, view, position ->
-                    val selectedItem=downloads[position]
-                    val imageView=view.findViewById<ImageView>(R.id.image).apply{
-                        ViewCompat.setTransitionName(this,selectedItem.url)
+                    val selectedItem = downloads[position]
+                    val imageView = view.findViewById<ImageView>(R.id.image).apply {
+                        ViewCompat.setTransitionName(this, selectedItem.url)
                     }
-                    shareImageInfo=ShareElementInfo(imageView,SimpleImage(url=selectedItem.url,path = selectedItem.path,referer = selectedItem.referer))
-                    val intent= Intent(requireActivity(),ImageDisplayActivity::class.java)
+                    shareImageInfo = ShareElementInfo(
+                        imageView,
+                        SimpleImage(url = selectedItem.url, path = selectedItem.path, referer = selectedItem.referer)
+                    )
+                    val intent = Intent(requireActivity(), ImageDisplayActivity::class.java)
                     //设置参数
-                    intent.putExtra(ImageDisplayActivity.POSITION,position)
+                    intent.putExtra(ImageDisplayActivity.POSITION, position)
 
-                    intent.putParcelableArrayListExtra(ImageDisplayActivity.IMAGES,ArrayList<SimpleImage>(downloads.map {
-                        SimpleImage(url=it.url,path = it.path,referer = it.referer)
-                    }))
+                    intent.putParcelableArrayListExtra(
+                        ImageDisplayActivity.IMAGES,
+                        ArrayList<SimpleImage>(downloads.map {
+                            SimpleImage(url = it.url, path = it.path, referer = it.referer)
+                        })
+                    )
                     val options = YcShareElement.buildOptionsBundle(requireActivity(), this@DownloadImageFragment)
                     startActivityForResult(intent, MainActivity.REQUEST_IMAGE_TRANSITION, options)
                 }
                 initDownloadItemDialog(adapter)
-                binding.recyclerView.adapter=adapter
+                binding.recyclerView.adapter = adapter
 
             }
 
         }
     }
-    var downloadItemDialog: Dialog?=null
+
+    var downloadItemDialog: Dialog? = null
     private fun initDownloadItemDialog(adapter: BaseQuickAdapter<DownloadEntity, CustomBaseViewHolder>?) {
         adapter?.setOnItemLongClickListener { _, _, position ->
-                downloadItemDialog=  DialogBuilder()
-                    .setLayoutId(R.layout.dialog_context_menu)
-                    .setHeightParent(1f)
-                    .setWidthPercent(1f)
-                    .setOnViewCreateListener(object : DialogBuilder.OnViewCreateListener {
-                        override fun onViewCreated(view: View) {
-                            initDownloadItemDialogView(view,position)
-                        }
-                    })
-                    .setGravity(Gravity.TOP)
-                    .build(requireContext())
-                downloadItemDialog?.show()
+            downloadItemDialog = DialogBuilder()
+                .setLayoutId(R.layout.dialog_context_menu)
+                .setHeightParent(1f)
+                .setWidthPercent(1f)
+                .setOnViewCreateListener(object : DialogBuilder.OnViewCreateListener {
+                    override fun onViewCreated(view: View) {
+                        initDownloadItemDialogView(view, position)
+                    }
+                })
+                .setGravity(Gravity.TOP)
+                .build(requireContext())
+            downloadItemDialog?.show()
             true
         }
     }
-    private fun initDownloadItemDialogView(view:View, position:Int){
+
+    private fun initDownloadItemDialogView(view: View, position: Int) {
         val recyclerView = view.findViewById<RecyclerView>(R.id.recyclerView).apply {
             this.layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
             this.adapter = CommonContextMenuAdapter(
                 R.layout.mozac_feature_contextmenu_item, listOf(
-                    MenuItem(label = getString(R.string.menu_delete),action = object: Action<MenuItem> {
+                    MenuItem(label = getString(R.string.menu_delete), action = object : Action<MenuItem> {
                         override fun execute(data: MenuItem) {
-                            val item=downloads[position]
+                            val item = downloads[position]
                             deleteDownloadItem(item)
                             downloads.remove(item)
                             binding.recyclerView.adapter?.notifyItemRemoved(position)
                             downloadItemDialog?.dismiss()
                         }
                     }),
-                    MenuItem(label = getString(R.string.menu_share),action = object:Action<MenuItem>{
+                    MenuItem(label = getString(R.string.menu_share), action = object : Action<MenuItem> {
                         override fun execute(data: MenuItem) {
                             downloadItemDialog?.dismiss()
-                            val item= downloads[position]
-                            if(!requireContext().shareLink(title =item.fileName,url =item.url)){
+                            val item = downloads[position]
+                            if (!requireContext().shareLink(title = item.fileName, url = item.url)) {
                                 requireContext().showToast(getString(R.string.tip_share_fail))
                             }
                         }
                     }),
-                    MenuItem(label = getString(R.string.menu_copy_link),action = object:Action<MenuItem>{
+                    MenuItem(label = getString(R.string.menu_copy_link), action = object : Action<MenuItem> {
                         override fun execute(data: MenuItem) {
                             downloadItemDialog?.dismiss()
-                            val item= downloads[position]
-                            requireContext().copyText(getString(R.string.link),item.url)
+                            val item = downloads[position]
+                            requireContext().copyText(getString(R.string.link), item.url)
                             requireContext().showToast(getString(R.string.tip_copy_link))
                         }
                     })
@@ -214,6 +227,7 @@ class DownloadImageFragment : BaseFragment(),BackHandler, IShareElements {
             }
         }
     }
+
     //计算左边的距离
     private fun calculateRecyclerViewLeftMargin(containerWidth: Int, childWidth: Int, x: Int): Int {
         return if (x - childWidth - offSet > 0) {
@@ -222,6 +236,7 @@ class DownloadImageFragment : BaseFragment(),BackHandler, IShareElements {
             x + offSet
         }
     }
+
     //计算距离
     private fun calculateRecyclerViewTopMargin(containerHeight: Int, childHeight: Int, y: Int): Int {
         return when {
@@ -232,24 +247,38 @@ class DownloadImageFragment : BaseFragment(),BackHandler, IShareElements {
     }
 
     //删除下载文件
-    fun deleteDownloadItem(downloadItem:DownloadEntity){
-         launch(Dispatchers.IO) {
-             try {
-                 downloadDao.delete(downloadItem)
-                 FileUtil.deleteFile(downloadItem.path)
-             }catch (e:Exception){
-                  launch(Dispatchers.Main){
-                      requireContext().showToast(getString(R.string.tip_delete_fail))
-                  }
-             }finally {
-                 launch(Dispatchers.Main) {
-                     requireContext().showToast(getString(R.string.tip_delete_success))
-                 }
-             }
-         }
+    fun deleteDownloadItem(downloadItem: DownloadEntity) {
+        launch(Dispatchers.IO) {
+            try {
+                downloadDao.delete(downloadItem)
+                FileUtil.deleteFile(downloadItem.path)
+            } catch (e: Exception) {
+                launch(Dispatchers.Main) {
+                    requireContext().showToast(getString(R.string.tip_delete_fail))
+                }
+            } finally {
+                launch(Dispatchers.Main) {
+                    requireContext().showToast(getString(R.string.tip_delete_success))
+                }
+            }
+        }
     }
 
     override fun getShareElements(): Array<ShareElementInfo<SimpleImage>> {
         return arrayOf(shareImageInfo)
+    }
+
+    fun selectShareElement(shareElementInfo: ShareElementInfo<SimpleImage>) {
+        val simpleImage = shareElementInfo.data
+        val index = downloads.indexOfLast {
+            when {
+                simpleImage.path != null -> true
+                simpleImage.url == it.url -> true
+                else -> false
+            }
+        }
+        if (index>=0){
+            layoutManager.scrollToPosition(index)
+        }
     }
 }

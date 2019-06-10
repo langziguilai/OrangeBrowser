@@ -48,6 +48,7 @@ import com.dev.orangebrowser.bloc.setting.fragments.web.WebSettingFragment
 import com.dev.orangebrowser.bloc.tabs.TabFragment
 import com.dev.orangebrowser.bloc.theme.ThemeFragment
 import com.dev.orangebrowser.data.model.ApplicationData
+import com.dev.orangebrowser.data.model.SimpleImage
 import com.dev.orangebrowser.extension.appComponent
 import com.dev.orangebrowser.extension.appData
 import com.dev.orangebrowser.extension.myApplication
@@ -55,6 +56,7 @@ import com.dev.orangebrowser.utils.auto_install.InstallAppInstance
 import com.dev.view.NavigationBarUtil
 import com.dev.view.StatusBarUtil
 import com.hw.ycshareelement.YcShareElement
+import com.hw.ycshareelement.transition.ShareElementInfo
 import com.yzq.zxinglibrary.android.CaptureActivity
 import com.yzq.zxinglibrary.bean.ZxingConfig
 import com.yzq.zxinglibrary.common.Constant
@@ -706,7 +708,15 @@ class MainActivity : BaseActivity(), DownloadManager.OnAutoInstallDownloadAppLis
             YcShareElement.onActivityReenter(
                 this, resultCode, data
             ) {
-                    //list -> mFragment.selectShareElement(list[0])
+                   supportFragmentManager.fragments.find { it is DownloadImageFragment }?.apply {
+                       val fragment=this
+                       it.firstOrNull()?.apply {
+                           val originalInfo=this
+                           (this.data as? SimpleImage)?.apply {
+                               (fragment as DownloadImageFragment).selectShareElement(ShareElementInfo<SimpleImage>(originalInfo.view,this))
+                           }
+                       }
+                   }
             }
         }
     }

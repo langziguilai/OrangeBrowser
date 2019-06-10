@@ -44,6 +44,7 @@ import androidx.annotation.RequiresPermission;
 import androidx.annotation.UiThread;
 import com.davemorrissey.labs.subscaleview.ImageSource;
 import com.davemorrissey.labs.subscaleview.SubsamplingScaleImageView;
+import com.dev.view.MatchParentLayout;
 import com.dev.view.R;
 import com.dev.view.biv.concept.BigImageViewer;
 import com.dev.view.biv.concept.indicator.ProgressIndicator;
@@ -66,7 +67,7 @@ import java.util.Map;
  */
 
 @Keep
-public class BigImageView extends FrameLayout implements ImageLoader.Callback {
+public class BigImageView extends MatchParentLayout implements ImageLoader.Callback {
     public static final int INIT_SCALE_TYPE_CENTER = 0;
     public static final int INIT_SCALE_TYPE_CENTER_CROP = 1;
     public static final int INIT_SCALE_TYPE_CENTER_INSIDE = 2;

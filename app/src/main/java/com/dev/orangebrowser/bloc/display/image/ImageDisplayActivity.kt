@@ -11,7 +11,6 @@ import androidx.core.view.ViewCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.RecyclerView
-import androidx.viewpager2.widget.ViewPager2
 import com.dev.base.BaseNotchActivity
 import com.dev.base.extension.getProperty
 import com.dev.base.extension.onGlobalLayoutComplete
@@ -21,6 +20,7 @@ import com.dev.orangebrowser.databinding.ActivityImageDisplayBinding
 import com.dev.orangebrowser.extension.appComponent
 import com.dev.view.StatusBarUtil
 import com.dev.view.biv.concept.view.BigImageView
+import com.dev.view.biv.factory.GlideImageViewFactory
 import com.dev.view.notchtools.NotchTools
 import com.dev.view.notchtools.core.NotchProperty
 import com.dev.view.notchtools.core.OnNotchCallBack
@@ -36,11 +36,14 @@ class ImageDisplayActivity : BaseNotchActivity(), OnNotchCallBack, IShareElement
     lateinit var binding: ActivityImageDisplayBinding
 
     override fun onBackPressed() {
-        finish()
+        getSelectImageView(binding.viewPager.currentItem)?.apply {
+            this.ssiv.resetScaleAndCenter()
+        }
+        finishAfterTransition()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        YcShareElement.setEnterTransitions(this,this)
+        YcShareElement.setEnterTransitions(this, this)
         //注入
         appComponent.inject(this)
         viewModel = ViewModelProviders.of(this, factory).get(ImageDisplayViewModel::class.java)
@@ -66,15 +69,15 @@ class ImageDisplayActivity : BaseNotchActivity(), OnNotchCallBack, IShareElement
         }
     }
 
-    lateinit var data:ArrayList<SimpleImage>
-    var currentPosition:Int=0
-    lateinit var adapter:BaseQuickAdapter<SimpleImage, CustomBaseViewHolder>
+    lateinit var data: ArrayList<SimpleImage>
+    var currentPosition: Int = 0
+    lateinit var adapter: BaseQuickAdapter<SimpleImage, CustomBaseViewHolder>
     override fun initData(savedInstanceState: Bundle?) {
         binding.activity = this
         binding.viewModel = viewModel
         viewModel.changeColor(resources.getColor(R.color.colorBlack))
-        currentPosition=intent.getIntExtra(POSITION,0)
-        data=intent.getParcelableArrayListExtra<SimpleImage>(IMAGES)
+        currentPosition = intent.getIntExtra(POSITION, 0)
+        data = intent.getParcelableArrayListExtra<SimpleImage>(IMAGES)
 
         adapter = object : BaseQuickAdapter<SimpleImage, CustomBaseViewHolder>(
             R.layout.item_big_image,
@@ -82,13 +85,15 @@ class ImageDisplayActivity : BaseNotchActivity(), OnNotchCallBack, IShareElement
         ) {
             override fun convert(helper: CustomBaseViewHolder, item: SimpleImage) {
                 helper.addOnClickListener(R.id.image)
-                val headers=HashMap<String,String>()
-                if (item.referer!=null){
+                val headers = HashMap<String, String>()
+                if (item.referer != null) {
                     headers["referer"] = item.referer!!
                 }
-                if (item.path!=null){
-                    helper.itemView.findViewById<BigImageView>(R.id.image).showImage(Uri.fromFile(File(item.path!!)), headers)
-                }else if(item.url!=null){
+                helper.itemView.findViewById<BigImageView>(R.id.image).setImageViewFactory(GlideImageViewFactory())
+                if (item.path != null) {
+                    helper.itemView.findViewById<BigImageView>(R.id.image)
+                        .showImage(Uri.fromFile(File(item.path!!)), headers)
+                } else if (item.url != null) {
                     helper.itemView.findViewById<BigImageView>(R.id.image).showImage(Uri.parse(item.url), headers)
                 }
 
@@ -103,11 +108,27 @@ class ImageDisplayActivity : BaseNotchActivity(), OnNotchCallBack, IShareElement
             }
         }
 
-        binding.viewPager.adapter=adapter
-        binding.viewPager.setCurrentItem(currentPosition,false)
+        binding.viewPager.adapter = adapter
+        binding.viewPager.setCurrentItem(currentPosition, false)
         YcShareElement.postStartTransition(this)
     }
 
+    private fun getShareElement(position: Int): ShareElementInfo<SimpleImage> {
+        val simpleImage = data[position]
+        val imageView=getSelectImageView(position)
+        imageView?.apply {
+            if (simpleImage.url != null) {
+                ViewCompat.setTransitionName(this, simpleImage.url)
+            } else if (simpleImage.path != null) {
+                ViewCompat.setTransitionName(this, simpleImage.path)
+            }
+        }
+        return ShareElementInfo<SimpleImage>(imageView!!, simpleImage)
+    }
+    private fun getSelectImageView(position:Int):BigImageView?{
+        val recyclerView = binding.viewPager.getProperty("mRecyclerView") as RecyclerView
+        return adapter.getViewByPosition(recyclerView, position, R.id.image) as? BigImageView
+    }
     private fun hide(delay: Boolean = false) {
         if (delay) {
             binding.header.postDelayed({
@@ -185,26 +206,17 @@ class ImageDisplayActivity : BaseNotchActivity(), OnNotchCallBack, IShareElement
             )
         }
     }
-    companion object{
-        const val POSITION="position"
-        const val IMAGES="images"
+
+    companion object {
+        const val POSITION = "position"
+        const val IMAGES = "images"
     }
 
     override fun getShareElements(): Array<ShareElementInfo<SimpleImage>> {
-        val index=binding.viewPager.currentItem
-        val simpleImage=data[index]
-        val recyclerView=binding.viewPager.getProperty("mRecyclerView") as RecyclerView
-
-        val imageView=adapter.getViewByPosition(recyclerView,index,R.id.image)?.apply {
-            if (simpleImage.url!=null){
-                ViewCompat.setTransitionName(this,simpleImage.url)
-            }else if (simpleImage.path!=null){
-                ViewCompat.setTransitionName(this,simpleImage.path)
-            }
-        }
-        val shareElement=ShareElementInfo(imageView!!,simpleImage)
-        return arrayOf(shareElement)
+        val  shareElementInfo = getShareElement(binding.viewPager.currentItem)
+        return arrayOf(shareElementInfo!!)
     }
+
     override fun finishAfterTransition() {
         YcShareElement.finishAfterTransition(this, this)
         super.finishAfterTransition()
