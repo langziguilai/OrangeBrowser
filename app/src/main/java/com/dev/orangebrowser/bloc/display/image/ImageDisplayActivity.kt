@@ -13,6 +13,7 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.dev.base.BaseNotchActivity
+import com.dev.base.extension.getProperty
 import com.dev.base.extension.onGlobalLayoutComplete
 import com.dev.orangebrowser.R
 import com.dev.orangebrowser.data.model.SimpleImage
@@ -192,9 +193,8 @@ class ImageDisplayActivity : BaseNotchActivity(), OnNotchCallBack, IShareElement
     override fun getShareElements(): Array<ShareElementInfo<SimpleImage>> {
         val index=binding.viewPager.currentItem
         val simpleImage=data[index]
-        val field=binding.viewPager.javaClass.getDeclaredField("mRecyclerView")
-        field.isAccessible=true
-        val recyclerView=field.get(binding.viewPager) as RecyclerView
+        val recyclerView=binding.viewPager.getProperty("mRecyclerView") as RecyclerView
+
         val imageView=adapter.getViewByPosition(recyclerView,index,R.id.image)?.apply {
             if (simpleImage.url!=null){
                 ViewCompat.setTransitionName(this,simpleImage.url)
