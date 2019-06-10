@@ -19,3 +19,9 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file nameRes.
 #-renamesourcefileattribute SourceFile
+
+# GSYvideopalyer
+-keep class tv.danmaku.ijk.** { *; }
+-dontwarn tv.danmaku.ijk.**
+-keep class com.shuyu.gsyvideoplayer.** { *; }
+-dontwarn com.shuyu.gsyvideoplayer.**
