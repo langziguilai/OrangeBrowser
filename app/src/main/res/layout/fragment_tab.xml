@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <variable name="activityViewModel" type="com.dev.orangebrowser.bloc.host.MainViewModel"/>
+    </data>
+    <androidx.coordinatorlayout.widget.CoordinatorLayout android:layout_width="match_parent"
+                                                         android:fitsSystemWindows="true"
+                                                         android:id="@+id/container_wrapper"
+                                                         android:background="@{activityViewModel.theme.colorPrimary}"
+                                                         android:layout_height="match_parent">
+        <androidx.constraintlayout.widget.ConstraintLayout
+                android:background="@{activityViewModel.theme.colorBackground}"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                tools:context=".bloc.tabs.TabFragment">
+            <View android:id="@+id/topbar_background"
+                  app:layout_constraintTop_toTopOf="parent"
+                  app:layout_constraintStart_toStartOf="parent"
+                  app:layout_constraintEnd_toEndOf="parent"
+                  android:layout_width="match_parent"
+                  android:layout_height="44dp"/>
+            <TextView android:id="@+id/title"
+                      android:layout_width="match_parent"
+                      android:layout_height="44dp"
+                      android:gravity="center"
+                      android:textColor="@color/colorWhite"
+                      android:textSize="18sp"
+                      android:alpha="0"
+                      android:textStyle="bold"
+                      android:maxLength="15"
+                      android:singleLine="true"
+                      android:ellipsize="end"
+                      app:layout_constraintTop_toTopOf="parent"
+                      app:layout_constraintStart_toStartOf="parent"
+                      app:layout_constraintEnd_toEndOf="parent"/>
+            <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/top_bar"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:layout_width="match_parent"
+                    android:layout_height="44dp">
+                <LinearLayout android:paddingStart="6dp"
+                              android:background="@drawable/bg_transparent_round" android:layout_width="0dp"
+                              android:layout_height="wrap_content" android:orientation="horizontal"
+                              app:layout_constraintTop_toTopOf="parent" app:layout_constraintBottom_toBottomOf="parent"
+                              app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="8dp"
+                              android:id="@+id/linearLayout" app:layout_constraintEnd_toStartOf="@+id/top_menu"
+                              android:layout_marginEnd="2dp">
+                    <com.dev.view.IconfontTextView android:gravity="center" android:text="@string/ic_lock_fill"
+                                                   android:background="@drawable/bg_round_1b000000"
+                                                   android:textSize="12sp"
+                                                   android:visibility="gone"
+                                                   android:textColor="@{activityViewModel.theme.colorPrimaryActive}"
+                                                   android:id="@+id/security_icon" android:layout_width="20dp"
+                                                   android:layout_height="20dp" android:layout_gravity="center_vertical"/>
+                    <TextView android:id="@+id/search_text" android:layout_marginStart="0dp"
+                              android:paddingStart="6dp"
+                              android:paddingEnd="6dp"
+                              android:layout_weight="1"
+                              android:maxLines="1"
+                              android:layout_width="0dp" android:layout_height="32dp"
+                              android:layout_gravity="center_vertical"
+                              android:hint="@string/search_or_input" android:gravity="start|center_vertical"
+                              android:textColor="@color/colorWhite" android:textColorHint="@color/colorWhite"
+                              android:textSize="14sp"/>
+                    <com.dev.view.IconfontTextView android:background="?android:attr/selectableItemBackgroundBorderless"
+                                                   android:clickable="true" android:focusable="true"
+                                                   android:gravity="center" android:text="@string/ic_reload"
+                                                   android:id="@+id/reload_icon"
+                                                   android:layout_width="30dp" android:layout_height="30dp"
+                                                   android:textColor="@color/color_8F8F8F"
+                                                   android:layout_gravity="center_vertical" android:visibility="gone"
+                                                   android:textSize="14sp"/>
+                    <com.dev.view.IconfontTextView android:background="?android:attr/selectableItemBackgroundBorderless"
+                                                   android:clickable="true" android:focusable="true"
+                                                   android:gravity="center" android:text="@string/ic_close"
+                                                   android:id="@+id/stop_icon"
+                                                   android:layout_width="30dp" android:layout_height="30dp"
+                                                   android:textColor="@color/color_8F8F8F"
+                                                   android:layout_gravity="center_vertical" android:textSize="14sp"/>
+                </LinearLayout>
+                <com.dev.view.IconfontTextView android:id="@+id/top_menu" android:clickable="true"
+                                               android:background="?android:attr/selectableItemBackgroundBorderless"
+                                               android:layout_gravity="center_vertical" android:focusable="true"
+                                               android:gravity="center" android:layout_width="26dp"
+                                               android:layout_height="26dp"
+                                               android:textSize="@dimen/icon_text_size" android:text="@string/ic_more"
+                                               android:textColor="@color/colorWhite"
+                                               android:layout_marginEnd="2dp" app:layout_constraintEnd_toEndOf="parent"
+                                               app:layout_constraintBottom_toBottomOf="parent"
+                                               app:layout_constraintTop_toTopOf="parent"
+                />
+                <ProgressBar
+                        android:id="@+id/progress"
+                        style="@android:style/Widget.ProgressBar.Horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="1.5dp"
+                        android:max="100"
+                        android:visibility="gone"
+                        android:progressDrawable="@drawable/bg_progressbar_dark"
+                        app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"/>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+            <FrameLayout android:layout_width="0dp" android:layout_height="0dp"
+                         app:layout_constraintStart_toStartOf="parent"
+                         app:layout_constraintEnd_toEndOf="parent"
+                         android:clipChildren="false"
+                         app:layout_constraintBottom_toTopOf="@+id/bottom_bar_animate"
+                         app:layout_constraintTop_toBottomOf="@+id/title">
+                <androidx.recyclerview.widget.RecyclerView
+                        android:layout_gravity="center"
+                        android:clipChildren="false"
+                        android:clipToPadding="false"
+                        android:id="@+id/viewpager"
+                        android:paddingStart="46dp"
+                        android:paddingEnd="46dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"/>
+            </FrameLayout>
+            <ImageView android:id="@+id/thumbnailPlaceHolder" android:layout_width="0dp" android:layout_height="0dp"
+                       app:layout_constraintStart_toStartOf="parent"
+                       app:layout_constraintEnd_toEndOf="parent"
+                       app:layout_constraintBottom_toTopOf="@+id/bottom_bar_animate"
+                       app:layout_constraintTop_toBottomOf="@+id/title"/>
+            <FrameLayout android:id="@+id/bottom_bar" android:layout_width="match_parent" android:layout_height="50dp"
+                         app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintStart_toStartOf="parent"
+                         app:layout_constraintEnd_toEndOf="parent">
+                <LinearLayout android:layout_gravity="center_horizontal" android:orientation="horizontal"
+                              android:layout_width="wrap_content" android:layout_height="match_parent">
+                    <com.dev.view.IconfontTextView android:id="@+id/clear" android:gravity="center"
+                                                   android:clickable="true"
+                                                   android:focusable="true"
+                                                   android:textSize="18sp"
+                                                   android:textStyle="bold"
+                                                   android:background="?android:attr/selectableItemBackgroundBorderless"
+                                                   android:text="@string/ic_close" android:textColor="@color/colorWhite"
+                                                   android:layout_width="80dp" android:layout_height="match_parent"/>
+                    <com.dev.view.IconfontTextView android:id="@+id/add" android:gravity="center"
+                                                   android:clickable="true"
+                                                   android:focusable="true"
+                                                   android:background="?android:attr/selectableItemBackgroundBorderless"
+                                                   android:text="@string/ic_circle_plus"
+                                                   android:textSize="18sp"
+                                                   android:textStyle="bold"
+                                                   android:textColor="@color/colorWhite"
+                                                   android:layout_width="80dp" android:layout_height="match_parent"/>
+                    <com.dev.view.IconfontTextView android:id="@+id/go_back" android:gravity="center"
+                                                   android:clickable="true"
+                                                   android:focusable="true"
+                                                   android:background="?android:attr/selectableItemBackgroundBorderless"
+                                                   android:text="@string/ic_arrow_left"
+                                                   android:textSize="18sp"
+                                                   android:textStyle="bold"
+                                                   android:textColor="@color/colorWhite"
+                                                   android:layout_width="80dp" android:layout_height="match_parent"/>
+                </LinearLayout>
+            </FrameLayout>
+            <!--底部工具栏-->
+            <LinearLayout android:id="@+id/bottom_bar_animate"
+                          app:layout_constraintBottom_toBottomOf="parent"
+                          app:layout_constraintStart_toStartOf="parent"
+                          app:layout_constraintEnd_toEndOf="parent"
+                          android:orientation="vertical"
+                          android:layout_width="match_parent"
+                          android:layout_height="wrap_content">
+                <View android:layout_width="match_parent" android:layout_height="1px"
+                      android:background="@color/borderColor"/>
+                <LinearLayout android:layout_width="match_parent" android:layout_height="42dp"
+                              android:orientation="horizontal" android:background="@color/colorWhite">
+                    <com.dev.view.IconfontTextView android:clickable="true" android:focusable="true"
+                                                   android:background="?android:attr/selectableItemBackgroundBorderless"
+                                                   android:id="@+id/back" android:gravity="center"
+                                                   android:layout_width="0dp" android:layout_weight="1"
+                                                   android:layout_height="42dp" android:textSize="@dimen/icon_text_size"
+                                                   android:text="@string/ic_left"
+                                                   android:textColor="@{activityViewModel.theme.colorPrimary}"/>
+                    <com.dev.view.IconfontTextView android:clickable="true" android:focusable="true"
+                                                   android:background="?android:attr/selectableItemBackgroundBorderless"
+                                                   android:id="@+id/forward" android:gravity="center"
+                                                   android:layout_width="0dp" android:layout_weight="1"
+                                                   android:layout_height="42dp"
+                                                   android:textSize="@dimen/icon_text_size"
+                                                   android:text="@string/ic_right"/>
+                    <com.dev.view.IconfontTextView android:id="@+id/home" android:gravity="center"
+                                                   android:layout_width="0dp" android:layout_weight="1"
+                                                   android:layout_height="42dp" android:textSize="@dimen/icon_text_size"
+                                                   android:text="@string/ic_double_circle"
+                                                   android:textColor="@{activityViewModel.theme.colorPrimary}"/>
+                    <com.dev.view.IconfontTextView android:id="@+id/search" android:gravity="center"
+                                                   android:layout_width="0dp" android:layout_weight="1"
+                                                   android:visibility="gone"
+                                                   android:layout_height="42dp" android:textSize="@dimen/icon_text_size"
+                                                   android:text="@string/ic_search"
+                                                   android:textColor="@{activityViewModel.theme.colorPrimary}"/>
+                    <FrameLayout android:clickable="true" android:focusable="true"
+                                 android:background="?android:attr/selectableItemBackgroundBorderless"
+                                 android:id="@+id/counter"
+                                 android:gravity="center" android:layout_width="0dp" android:layout_weight="1"
+                                 android:layout_height="42dp">
+                        <View android:layout_height="16dp" android:layout_width="16dp"
+                              app:borderColor="@{activityViewModel.theme.colorPrimary}"
+                              app:borderWidth="@{1.3f}"
+                              android:layout_gravity="center"/>
+                        <TextView android:id="@+id/counterNumber" tools:text="99" android:layout_width="wrap_content"
+                                  android:layout_height="wrap_content" android:layout_gravity="center"
+                                  android:textColor="@{activityViewModel.theme.colorPrimary}" android:textSize="11sp"/>
+                    </FrameLayout>
+                    <com.dev.view.IconfontTextView android:clickable="true" android:focusable="true"
+                                                   android:background="?android:attr/selectableItemBackgroundBorderless"
+                                                   android:id="@+id/menu" android:gravity="center"
+                                                   android:layout_width="0dp" android:layout_weight="1"
+                                                   android:layout_height="42dp" android:textSize="@dimen/icon_text_size"
+                                                   android:text="@string/ic_menu"
+                                                   android:textColor="@{activityViewModel.theme.colorPrimary}"/>
+                </LinearLayout>
+            </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+</layout>

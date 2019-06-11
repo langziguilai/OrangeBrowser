@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- This Source Code Form is subject to the terms of the Mozilla Public
+   - License, v. 2.0. If a copy of the MPL was not distributed with this
+   - file, You can obtain one at http://mozilla.org/MPL/2.0/. -->
+<resources>
+    <declare-styleable name="ForwardPreference">
+        <attr name="forwardPreference_title" format="reference|string"/>
+        <attr name="forwardPreference_icon" format="reference|string"/>
+        <attr name="forwardPreference_tip" format="reference|string"/>
+    </declare-styleable>
+    <declare-styleable name="DividerPreference">
+        <attr name="dividerPreference_height" format="reference|dimension"/>
+        <attr name="dividerPreference_bg" format="reference|color"/>
+    </declare-styleable>
+    <declare-styleable name="TagCloudView">
+        <attr name="singleChoice" format="boolean" />
+        <attr name="tagTextSize" format="reference|dimension" />
+        <attr name="tagTextBorderColor" format="reference|color" />
+        <attr name="tagTextBorderWidth" format="reference|dimension" />
+        <attr name="tagTextDefaultColor" format="reference|color" />
+        <attr name="tagTextDefaultBackgroundColor" format="reference|color" />
+        <attr name="tagTextSelectedColor" format="reference|color" />
+        <attr name="tagTextSelectedBackgroundColor" format="reference|color" />
+        <attr name="tagTextRadius" format="reference|dimension" />
+        <attr name="tagCloudBackgroundColor" format="reference|color" />
+        <attr name="tagCloudRadius" format="reference|dimension" />
+    </declare-styleable>
+</resources>

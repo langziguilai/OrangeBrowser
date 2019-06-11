@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">browser</string>
+    <string name="mozac_browser_engine_system_alert_title">The page at %1$s says:</string>
+    <string name="mozac_support_ktx_menu_share_with">Share with…</string>
+    <string name="mozac_support_ktx_share_dialog_title">Share via</string>
+
+</resources>

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="transparent">#00000000</color>
+    <color name="mozac_ui_doorhanger_divider_color">#ffe4e4e8</color>
+    <color name="white">#FFFFFF</color>
+    <color name="ripple">#AFAFAF</color>
+</resources>

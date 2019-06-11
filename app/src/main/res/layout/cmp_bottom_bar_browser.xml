@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:tools="http://schemas.android.com/tools"
+              android:id="@+id/bottom_bar"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content">
+    <View android:layout_width="match_parent" android:layout_height="1px" android:background="@color/borderColor"/>
+    <LinearLayout android:layout_width="match_parent" android:layout_height="42dp" android:orientation="horizontal"
+                  android:background="@color/background">
+        <com.dev.view.IconfontTextView android:clickable="true" android:focusable="true"
+                                       android:background="?android:attr/selectableItemBackgroundBorderless"
+                                       android:id="@+id/back" android:gravity="center" android:layout_width="72dp"
+                                       android:layout_height="42dp" android:textSize="@dimen/icon_text_size"
+                                       android:text="@string/ic_left" android:textColor="@color/colorPrimary"/>
+        <com.dev.view.IconfontTextView android:clickable="true" android:focusable="true"
+                                       android:background="?android:attr/selectableItemBackgroundBorderless"
+                                       android:id="@+id/forward" android:gravity="center" android:layout_width="72dp"
+                                       android:layout_height="42dp" android:textSize="@dimen/icon_text_size"
+                                       android:text="@string/ic_right" android:textColor="@color/colorPrimaryDisable"/>
+        <com.dev.view.IconfontTextView android:id="@+id/home" android:gravity="center" android:layout_width="72dp"
+                                       android:layout_height="42dp" android:textSize="@dimen/icon_text_size"
+                                       android:text="@string/ic_double_circle" android:textColor="@color/colorPrimary"/>
+        <FrameLayout android:clickable="true" android:focusable="true"
+                     android:background="?android:attr/selectableItemBackgroundBorderless" android:id="@+id/counter"
+                     android:gravity="center" android:layout_width="72dp" android:layout_height="42dp">
+            <View android:layout_height="16dp" android:layout_width="16dp"
+                  android:background="@drawable/bg_square_border" android:layout_gravity="center"/>
+            <TextView android:id="@+id/counterNumber" tools:text="99" android:layout_width="wrap_content"
+                      android:layout_height="wrap_content" android:layout_gravity="center"
+                      android:textColor="@color/colorPrimary" android:textSize="11dp"/>
+        </FrameLayout>
+        <com.dev.view.IconfontTextView android:clickable="true" android:focusable="true"
+                                       android:background="?android:attr/selectableItemBackgroundBorderless"
+                                       android:id="@+id/menu" android:gravity="center" android:layout_width="72dp"
+                                       android:layout_height="42dp" android:textSize="@dimen/icon_text_size"
+                                       android:text="@string/ic_menu" android:textColor="@color/colorPrimary"/>
+    </LinearLayout>
+</LinearLayout>

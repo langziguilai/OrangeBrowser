@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="CommonShapeButton">
+        <!--shape模式-->
+        <attr name="csb_shapeMode" format="enum">
+            <enum name="rectangle" value="0" />
+            <enum name="oval" value="1" />
+            <enum name="line" value="2" />
+            <enum name="ring" value="3" />
+        </attr>
+        <!--填充颜色-->
+        <attr name="csb_fillColor" format="color" />
+        <!--按压颜色-->
+        <attr name="csb_pressedColor" format="color" />
+        <!--描边颜色-->
+        <attr name="csb_strokeColor" format="color" />
+        <!--描边宽度-->
+        <attr name="csb_strokeWidth" format="dimension" />
+        <!--圆角大小-->
+        <attr name="csb_cornerRadius" format="dimension" />
+        <!--圆角位置-->
+        <attr name="csb_cornerPosition">
+            <flag name="topLeft" value="1" />
+            <flag name="topRight" value="2" />
+            <flag name="bottomRight" value="4" />
+            <flag name="bottomLeft" value="8" />
+        </attr>
+        <!--是否开启动效-->
+        <attr name="csb_activeEnable" format="boolean" />
+        <!--drawable位置-->
+        <attr name="csb_drawablePosition" format="enum">
+            <enum name="left" value="0" />
+            <enum name="top" value="1" />
+            <enum name="right" value="2" />
+            <enum name="bottom" value="3" />
+        </attr>
+        <!--渐变开始颜色-->
+        <attr name="csb_startColor" format="color" />
+        <!--渐变结束颜色-->
+        <attr name="csb_endColor" format="color" />
+        <!--渐变方向-->
+        <attr name="csb_orientation" format="enum">
+            <enum name="TOP_BOTTOM" value="0" />
+            <enum name="LEFT_RIGHT" value="1" />
+        </attr>
+    </declare-styleable>
+
+    <declare-styleable name="GridView">
+        <attr name="gv_column" format="integer"/>
+        <attr name="gv_reverse" format="boolean"/>
+        <attr name="gv_vertical" format="boolean"/>
+        <attr name="gv_horizon_space" format="dimension|reference"/>
+        <attr name="gv_vertical_space" format="dimension|reference"/>
+        <attr name="gv_space_color" format="color|reference"/>
+
+    </declare-styleable>
+    <declare-styleable name="ListView">
+        <attr name="lv_reverse" format="boolean"/>
+        <attr name="lv_vertical" format="boolean"/>
+    </declare-styleable>
+    <declare-styleable name="RippleView">
+        <attr name="rv_alpha" format="integer" />
+        <attr name="rv_framerate" format="integer"/>
+        <attr name="rv_rippleDuration" format="integer"/>
+        <attr name="rv_zoomDuration" format="integer" />
+        <attr name="rv_color" format="color" />
+        <attr name="rv_centered" format="boolean" />
+        <attr name="rv_type" format="enum">
+            <enum name="simpleRipple" value="0"/>
+            <enum name="doubleRipple" value="1"/>
+            <enum name="rectangle" value="2" />
+        </attr>
+        <attr name="rv_ripplePadding" format="dimension" />
+        <attr name="rv_zoom" format="boolean" />
+        <attr name="rv_zoomScale" format="float" />
+
+    </declare-styleable>
+    <declare-styleable name="BigImageView">
+        <attr format="enum" name="initScaleType">
+            <enum name="center" value="0"/>
+            <enum name="centerCrop" value="1"/>
+            <enum name="centerInside" value="2"/>
+            <enum name="fitCenter" value="3"/>
+            <enum name="fitEnd" value="4"/>
+            <enum name="fitStart" value="5"/>
+            <enum name="fitXY" value="6"/>
+            <enum name="custom" value="7"/>
+            <enum name="start" value="8"/>
+        </attr>
+        <attr format="boolean" name="tapToRetry"/>
+        <attr format="boolean" name="optimizeDisplay"/>
+        <!-- A drawable to be be used as a failure image. -->
+        <attr name="failureImage" format="reference"/>
+        <attr name="failureImageInitScaleType" format="enum">
+            <enum name="center" value="0" />
+            <enum name="centerCrop" value="1" />
+            <enum name="centerInside" value="2" />
+            <enum name="fitCenter" value="3" />
+            <enum name="fitEnd" value="4" />
+            <enum name="fitStart" value="5" />
+            <enum name="fitXY" value="6" />
+        </attr>
+        <attr name="thumbnailScaleType" format="enum">
+            <enum name="center" value="0" />
+            <enum name="centerCrop" value="1" />
+            <enum name="centerInside" value="2" />
+            <enum name="fitCenter" value="3" />
+            <enum name="fitEnd" value="4" />
+            <enum name="fitStart" value="5" />
+            <enum name="fitXY" value="6" />
+        </attr>
+    </declare-styleable>
+</resources>

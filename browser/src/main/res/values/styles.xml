@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Mozac.Feature.FindInPage.Buttons" parent="">
+        <item name="android:layout_width">24dp</item>
+        <item name="android:layout_height">24dp</item>
+        <item name="android:background">?android:attr/selectableItemBackgroundBorderless</item>
+        <item name="android:tint">#ff000000</item>
+        <item name="android:layout_marginEnd">@dimen/mozac_feature_findinpage_buttons_margin_end</item>
+    </style>
+</resources>

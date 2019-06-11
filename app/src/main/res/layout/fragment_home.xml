@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <variable name="activityViewModel" type="com.dev.orangebrowser.bloc.host.MainViewModel"/>
+    </data>
+    <androidx.coordinatorlayout.widget.CoordinatorLayout android:layout_width="match_parent"
+                                                         android:fitsSystemWindows="true"
+                                                         android:id="@+id/container_wrapper"
+                                                         app:bgColor="@{activityViewModel.theme.colorPrimary}"
+                                                         android:layout_height="match_parent">
+        <LinearLayout
+                android:id="@+id/container"
+                android:orientation="vertical"
+
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+            <!--顶部bar-->
+            <LinearLayout android:id="@+id/top_bar"
+                          app:bgColor="@{activityViewModel.theme.colorPrimary}" android:layout_width="match_parent"
+                          android:layout_height="44dp"
+                          android:orientation="horizontal">
+                <TextView android:id="@+id/search_text" android:layout_marginStart="8dp"
+                          android:background="@drawable/bg_transparent_round" android:paddingStart="12dp"
+                          android:layout_width="0dp"  android:layout_weight="1" android:layout_height="32dp" android:layout_gravity="center_vertical"
+                          android:hint="@string/search_or_input" android:gravity="start|center_vertical"
+                          android:textColor="@color/colorWhite" android:textColorHint="@color/colorWhite" android:textSize="14sp"/>
+                <com.dev.view.IconfontTextView android:id="@+id/top_menu" android:clickable="true"
+                                               android:background="?android:attr/selectableItemBackgroundBorderless"
+                                               android:layout_gravity="center_vertical" android:focusable="true"
+                                               android:gravity="center" android:layout_width="26dp" android:layout_height="26dp"
+                                               android:textSize="@dimen/icon_text_size" android:text="@string/ic_more"
+                                               android:textColor="@color/colorWhite" android:layout_marginStart="2dp"
+                                               android:layout_marginEnd="2dp"/>
+            </LinearLayout>
+            <FrameLayout android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1">
+                <androidx.viewpager.widget.ViewPager
+                        android:background="@color/colorWhite"
+                        android:id="@+id/viewpager"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginBottom="42dp"
+                />
+                <!--底部bar-->
+                <LinearLayout android:id="@+id/bottom_bar"
+                              android:layout_gravity="bottom"
+                              android:orientation="vertical"
+                              android:layout_width="match_parent"
+                              android:layout_height="wrap_content">
+                    <View android:layout_width="match_parent" android:layout_height="1px" android:background="@color/borderColor"/>
+                    <LinearLayout android:layout_width="match_parent" android:layout_height="42dp" android:orientation="horizontal"
+                                  android:background="@color/background">
+                        <com.dev.view.IconfontTextView android:focusable="true"
+                                                       android:background="?android:attr/selectableItemBackgroundBorderless"
+                                                       android:id="@+id/back" android:gravity="center" android:layout_width="0dp" android:layout_weight="1"
+                                                       android:layout_height="42dp" android:textSize="@dimen/icon_text_size"
+                                                       android:text="@string/ic_left"
+                                                       android:textColor="@{activityViewModel.theme.colorPrimaryDisable}"/>
+                        <com.dev.view.IconfontTextView android:focusable="true" android:clickable="true"
+                                                       android:background="?android:attr/selectableItemBackgroundBorderless"
+                                                       android:id="@+id/forward" android:gravity="center"
+                                                       android:layout_width="0dp" android:layout_weight="1"
+                                                       android:layout_height="42dp"
+                                                       android:textSize="@dimen/icon_text_size" android:text="@string/ic_right"/>
+                        <com.dev.view.IconfontTextView android:id="@+id/search" android:gravity="center" android:layout_width="0dp" android:layout_weight="1"
+                                                       android:layout_height="42dp" android:textSize="@dimen/icon_text_size"
+                                                       android:text="@string/ic_search" android:textColor="@{activityViewModel.theme.colorPrimary}"/>
+                        <FrameLayout android:clickable="true" android:focusable="true"
+                                     android:background="?android:attr/selectableItemBackgroundBorderless" android:id="@+id/counter"
+                                     android:gravity="center" android:layout_width="0dp" android:layout_weight="1" android:layout_height="42dp">
+                            <View android:layout_height="16dp" android:layout_width="16dp"
+                                  app:borderColor="@{activityViewModel.theme.colorPrimary}"
+                                  app:borderWidth="@{1.3f}"
+                                  android:layout_gravity="center"/>
+                            <TextView android:id="@+id/counterNumber" tools:text="99" android:layout_width="wrap_content"
+                                      android:layout_height="wrap_content" android:layout_gravity="center"
+                                      android:textColor="@{activityViewModel.theme.colorPrimary}" android:textSize="11dp"/>
+
+                        </FrameLayout>
+                        <com.dev.view.IconfontTextView android:clickable="true" android:focusable="true"
+                                                       android:background="?android:attr/selectableItemBackgroundBorderless"
+                                                       android:id="@+id/menu" android:gravity="center" android:layout_width="0dp" android:layout_weight="1"
+                                                       android:layout_height="42dp" android:textSize="@dimen/icon_text_size"
+                                                       android:text="@string/ic_menu" android:textColor="@{activityViewModel.theme.colorPrimary}"/>
+
+                    </LinearLayout>
+                </LinearLayout>
+                <!--顶部menu panel-->
+                <View android:clickable="true" android:focusable="true" android:id="@+id/over_layer_top_panel"
+                      android:layout_width="match_parent" android:layout_height="match_parent"
+                      android:background="@android:color/transparent" android:visibility="gone"/>
+                <com.dev.view.GridView
+                        android:id="@+id/top_menu_panel"
+                        android:background="@{activityViewModel.theme.colorPrimary}"
+                        android:layout_gravity="top"
+                        android:paddingLeft="4dp"
+                        android:paddingRight="4dp"
+                        android:paddingTop="10dp"
+                        android:paddingBottom="15dp"
+                        app:gv_horizon_space="0dp"
+                        app:gv_vertical_space="6dp"
+                        app:gv_space_color="@android:color/transparent"
+                        app:gv_column="4"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"/>
+                <!--底部panel menu-->
+                <View android:clickable="true" android:focusable="true" android:id="@+id/over_layer_bottom_panel"
+                      android:layout_width="match_parent" android:layout_height="match_parent"
+                      android:background="@android:color/transparent" android:visibility="gone"/>
+                <LinearLayout android:layout_gravity="bottom"
+                              android:clickable="true"
+                              android:focusable="true"
+                              android:id="@+id/bottom_menu_panel"
+                              android:orientation="vertical"
+                              android:background="@drawable/bg_white_corner_2dp"
+                              android:layout_margin="8dp"
+                              android:padding="4dp"
+                              android:layout_width="match_parent"
+                              android:layout_height="wrap_content">
+                    <com.dev.view.GridView
+                            android:id="@+id/bottom_menu_grid_view"
+                            android:layout_gravity="bottom"
+                            app:gv_horizon_space="0dp"
+                            app:gv_vertical_space="0dp"
+                            app:gv_space_color="@android:color/transparent"
+                            app:gv_column="4"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"/>
+                    <com.dev.view.IconfontTextView android:id="@+id/bottom_menu_grid_view_close" android:layout_marginTop="12dp"
+                                                   android:textColor="@{activityViewModel.theme.colorPrimary}"
+                                                   android:clickable="true"
+                                                   android:focusable="true"
+                                                   android:gravity="center" android:text="@string/ic_down"
+                                                   android:layout_width="match_parent" android:layout_height="36dp"/>
+
+                </LinearLayout>
+            </FrameLayout>
+        </LinearLayout>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+</layout>

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:background="?android:attr/selectableItemBackgroundBorderless"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content">
+      <com.dev.view.IconfontTextView android:id="@+id/icon" android:layout_width="match_parent" android:layout_height="wrap_content" android:minHeight="45dp" android:gravity="center" android:textSize="20sp" android:textColor="@color/colorPrimary"/>
+      <TextView android:layout_width="match_parent" android:id="@+id/name" android:layout_height="wrap_content" android:minHeight="16dp" android:gravity="center" android:textSize="12sp" android:textColor="@color/colorPrimary"/>
+</LinearLayout>

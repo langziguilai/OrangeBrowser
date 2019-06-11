@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- This Source Code Form is subject to the terms of the Mozilla Public
+   - License, v. 2.0. If a copy of the MPL was not distributed with this
+   - file, You can obtain one at http://mozilla.org/MPL/2.0/. -->
+<FrameLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:tools="http://schemas.android.com/tools"
+        android:clickable="true"
+        android:focusable="true"
+        android:id="@+id/container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    <FrameLayout android:layout_marginStart="8dp"
+                 android:layout_marginBottom="20dp"
+                 android:layout_marginEnd="8dp"
+                 android:background="@drawable/bg_white_corner_2dp" android:padding="12dp"
+                 android:layout_gravity="bottom" android:layout_width="match_parent"
+                 android:layout_height="wrap_content">
+        <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+            <androidx.appcompat.widget.AppCompatTextView android:id="@+id/title" android:layout_width="0dp"
+                                                         android:layout_height="40dp"
+                                                         tools:text="下载提示"
+                                                         android:textColor="#000000"
+                                                         android:textSize="16sp"
+                                                         android:gravity="center"
+                                                         android:textStyle="bold"
+                                                         app:layout_constraintTop_toTopOf="parent"
+                                                         app:layout_constraintStart_toStartOf="parent"
+                                                         app:layout_constraintEnd_toEndOf="parent"/>
+
+
+            <androidx.appcompat.widget.AppCompatTextView android:id="@+id/file" android:layout_width="0dp"
+                                                         android:layout_height="40dp"
+                                                         tools:text="CSDN.apk"
+                                                         android:maxLines="2"
+                                                         android:ellipsize="marquee"
+                                                         android:textColor="#2C2C2C"
+                                                         android:textSize="16sp"
+                                                         android:gravity="start|center_vertical"
+                                                         app:layout_constraintTop_toBottomOf="@+id/title"
+                                                         app:layout_constraintStart_toStartOf="parent"
+                                                         app:layout_constraintEnd_toEndOf="parent"/>
+
+
+            <androidx.appcompat.widget.AppCompatTextView android:layout_width="wrap_content"
+                                                         android:id="@+id/cancel_button"
+                                                         tools:text="取消"
+                                                         android:clickable="true"
+                                                         android:focusable="true"
+                                                         android:textSize="20sp"
+                                                         android:textColor="#4D4D4D"
+                                                         android:paddingStart="20dp"
+                                                         android:paddingEnd="20dp"
+                                                         android:paddingBottom="10dp"
+                                                         app:layout_constraintStart_toStartOf="parent"
+                                                         app:layout_constraintTop_toBottomOf="@+id/file"
+                                                         android:background="?android:attr/selectableItemBackgroundBorderless"
+                                                         android:paddingTop="10dp"
+                                                         android:layout_height="wrap_content"
+                                                         android:layout_marginTop="8dp"/>
+
+            <androidx.appcompat.widget.AppCompatTextView android:layout_width="wrap_content"
+                                                         android:id="@+id/ok_button"
+                                                         app:layout_constraintEnd_toEndOf="parent"
+                                                         app:layout_constraintTop_toBottomOf="@+id/file"
+                                                         tools:text="下载"
+                                                         android:textSize="20sp"
+                                                         android:clickable="true"
+                                                         android:focusable="true"
+                                                         android:textColor="#000000"
+                                                         android:paddingStart="20dp"
+                                                         android:paddingEnd="20dp"
+                                                         android:paddingBottom="10dp"
+                                                         android:paddingTop="10dp"
+                                                         android:background="?android:attr/selectableItemBackgroundBorderless"
+                                                         android:layout_height="wrap_content"
+                                                         android:layout_marginTop="8dp"/>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </FrameLayout>
+
+</FrameLayout>
