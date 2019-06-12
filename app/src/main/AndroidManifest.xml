@@ -41,6 +41,7 @@
         </activity>
         <activity android:name=".bloc.display.image.ImageDisplayActivity"
                   android:screenOrientation="portrait"
+                  android:theme="@style/AppTheme.BgTransparent"
                   android:windowSoftInputMode="adjustResize|stateAlwaysHidden"
                   android:configChanges="orientation|keyboardHidden|keyboard|screenSize" >
         </activity>

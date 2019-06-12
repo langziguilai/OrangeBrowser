@@ -146,7 +146,7 @@ class ImageDisplayActivity : BaseNotchActivity(), OnNotchCallBack, IShareElement
         binding.viewPager.setCurrentItem(currentPosition, false)
         binding.viewPager.registerOnPageChangeCallback(object:ViewPager2.OnPageChangeCallback(){
             override fun onPageSelected(position: Int) {
-                EventBus.getDefault().post(ChangeRecyclerViewIndexEvent(position))
+                EventBus.getDefault().postSticky(ChangeRecyclerViewIndexEvent(position))
                 val item=data[position]
                 if (item.path!=null){
                     GlideHelper.loadLocalImage(binding.transitionImg,item.path)

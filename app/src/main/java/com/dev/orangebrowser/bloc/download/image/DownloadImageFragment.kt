@@ -293,7 +293,7 @@ class DownloadImageFragment : BaseFragment(), BackHandler, IShareElements {
             mLayoutManager.scrollToPosition(index)
         }
     }
-    @Subscribe(threadMode = ThreadMode.MAIN)
+    @Subscribe(sticky = true,threadMode = ThreadMode.MAIN)
     fun onChangeRecyclerViewItemIndex(event:ChangeRecyclerViewIndexEvent){
         mLayoutManager.scrollToPosition(event.message)
     }
