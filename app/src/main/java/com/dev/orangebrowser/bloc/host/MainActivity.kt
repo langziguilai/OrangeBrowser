@@ -64,6 +64,7 @@ import permissions.dispatcher.*
 import java.io.File
 import javax.inject.Inject
 import com.dev.orangebrowser.R
+import com.dev.orangebrowser.data.model.SimpleVideo
 
 const val APPLICATION_DATA = "application_data"
 
@@ -723,6 +724,14 @@ class MainActivity : BaseActivity(), DownloadManager.OnAutoInstallDownloadAppLis
                 it.firstOrNull()?.apply {
                     (this.data as? SimpleImage)?.apply {
                         (fragment as DownloadImageFragment).selectShareElement(this)
+                    }
+                }
+            }
+            supportFragmentManager.fragments.find { it is DownloadVideoFragment }?.apply {
+                val fragment = this
+                it.firstOrNull()?.apply {
+                    (this.data as? SimpleVideo)?.apply {
+                        (fragment as DownloadVideoFragment).selectShareElement(this)
                     }
                 }
             }

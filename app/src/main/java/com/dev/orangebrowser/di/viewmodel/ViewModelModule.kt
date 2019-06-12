@@ -21,6 +21,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.dev.orangebrowser.bloc.bookmark.BookMarkViewModel
 import com.dev.orangebrowser.bloc.browser.BrowserViewModel
 import com.dev.orangebrowser.bloc.display.image.ImageDisplayViewModel
+import com.dev.orangebrowser.bloc.display.video.VideoDisplayViewModel
 import com.dev.orangebrowser.bloc.download.DownloadViewModel
 import com.dev.orangebrowser.bloc.download.html.DownloadHtmlViewModel
 import com.dev.orangebrowser.bloc.download.image.DownloadImageViewModel
@@ -54,6 +55,10 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(ImageDisplayViewModel::class)
     abstract fun bindImageDisplayViewModel(imageDisplayViewModel: ImageDisplayViewModel): ViewModel
+    @Binds
+    @IntoMap
+    @ViewModelKey(VideoDisplayViewModel::class)
+    abstract fun bindVideoDisplayViewModel(videoDisplayViewModel: VideoDisplayViewModel): ViewModel
     @Binds
     @IntoMap
     @ViewModelKey(HomeViewModel::class)

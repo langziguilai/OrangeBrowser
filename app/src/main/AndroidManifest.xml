@@ -45,6 +45,12 @@
                   android:windowSoftInputMode="adjustResize|stateAlwaysHidden"
                   android:configChanges="orientation|keyboardHidden|keyboard|screenSize" >
         </activity>
+        <activity android:name=".bloc.display.video.VideoDisplayActivity"
+                  android:screenOrientation="portrait"
+                  android:theme="@style/AppTheme.BgTransparent"
+                  android:windowSoftInputMode="adjustResize|stateAlwaysHidden"
+                  android:configChanges="orientation|keyboardHidden|keyboard|screenSize" >
+        </activity>
         <provider
                 android:name="androidx.core.content.FileProvider"
                 android:authorities="com.dev.fileprovider"

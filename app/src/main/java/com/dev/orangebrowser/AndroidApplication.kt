@@ -17,9 +17,11 @@ import com.dev.util.FileUtil
 import com.dev.view.biv.concept.BigImageViewer
 import com.dev.view.biv.loader.glide.GlideImageLoader
 import com.hw.ycshareelement.YcShareElement
+import com.shuyu.gsyvideoplayer.player.PlayerFactory
 import kotlinx.coroutines.*
 import org.adblockplus.libadblockplus.android.AdblockEngine
 import org.adblockplus.libadblockplus.android.SingleInstanceEngineProvider
+import tv.danmaku.ijk.media.exo2.Exo2PlayerManager
 import java.lang.Exception
 import javax.inject.Inject
 import kotlin.coroutines.CoroutineContext
@@ -114,6 +116,8 @@ class AndroidApplication:BaseApplication(),CoroutineScope {
             }
         }
 
+        //设置GSYVideoPLAYER的播放方式
+        PlayerFactory.setPlayManager(Exo2PlayerManager::class.java)
     }
     //注入自定义的Filter
     private fun injectFilterToAdBlock(engine:AdblockEngine){

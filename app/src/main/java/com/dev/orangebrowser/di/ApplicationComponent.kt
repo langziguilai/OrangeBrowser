@@ -5,6 +5,7 @@ import com.dev.orangebrowser.AndroidApplication
 import com.dev.orangebrowser.bloc.bookmark.BookMarkFragment
 import com.dev.orangebrowser.bloc.browser.BrowserFragment
 import com.dev.orangebrowser.bloc.display.image.ImageDisplayActivity
+import com.dev.orangebrowser.bloc.display.video.VideoDisplayActivity
 import com.dev.orangebrowser.bloc.download.DownloadFragment
 import com.dev.orangebrowser.bloc.download.html.DownloadHtmlFragment
 import com.dev.orangebrowser.bloc.download.image.DownloadImageFragment
@@ -40,6 +41,7 @@ interface ApplicationComponent {
     fun inject(application: AndroidApplication)
     fun inject(mainActivity: MainActivity)
     fun inject(imageDisplayActivity: ImageDisplayActivity)
+    fun inject(videoDisplayActivity: VideoDisplayActivity)
 //
 
     fun inject(homeFragment: HomeFragment)
