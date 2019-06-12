@@ -105,6 +105,8 @@ class VideoDisplayActivity : BaseNotchActivity(), OnNotchCallBack, IShareElement
                         .setUrl(item.path)
                         .setCacheWithPlay(true)
                         .setLooping(true)
+                        .setEnlargeImageRes(R.drawable.ic_fullscreen_white_24dp)
+                        .setShrinkImageRes(R.drawable.ic_fullscreen_exit_white_24dp)
                         .setGSYVideoProgressListener { progress, _, _, _ ->
                             if (progress > 0) {
                                 posterImageView?.hide()
@@ -125,14 +127,6 @@ class VideoDisplayActivity : BaseNotchActivity(), OnNotchCallBack, IShareElement
                     }
                     startPlayLogic()
                 }
-            }
-        }
-        adapter.setOnItemChildClickListener { _, _, _ ->
-            showStatusBar = !showStatusBar
-            if (showStatusBar) {
-                show()
-            } else {
-                hide(true)
             }
         }
 
@@ -164,7 +158,10 @@ class VideoDisplayActivity : BaseNotchActivity(), OnNotchCallBack, IShareElement
         GSYVideoManager.instance().pause()
         super.onPause()
     }
-
+    override fun onDestroy() {
+        super.onDestroy()
+        GSYVideoManager.releaseAllVideos()
+    }
     private fun getShareElement(position: Int): ShareElementInfo<SimpleVideo> {
         val simpleVideo = data[position]
         val posterImageView = getSelectPosterImageView(position)
@@ -201,49 +198,6 @@ class VideoDisplayActivity : BaseNotchActivity(), OnNotchCallBack, IShareElement
             }
         }.start()
         StatusBarUtil.setDarkIcon(this)
-    }
-
-    private fun show() {
-        binding.header.show()
-        binding.header.postDelayed({
-            viewModel.changeColor(resources.getColor(R.color.white))
-        }, 100)
-        showBar()
-        binding.header.animate().apply {
-            translationY(0f)
-            alpha(1f)
-            duration = 200
-            interpolator = DecelerateInterpolator()
-        }.start()
-
-        StatusBarUtil.setDarkIcon(this)
-    }
-
-    //显示Statusbar
-    private fun showBar() {
-        val uiOptions = window.decorView.systemUiVisibility
-        var newUiOptions = uiOptions
-        val isImmersiveModeEnabled = uiOptions or View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY == uiOptions
-        if (isImmersiveModeEnabled) {
-
-            //先取 非 后再 与， 把对应位置的1 置成0，原本为0的还是0
-            if (Build.VERSION.SDK_INT >= 14) {
-                newUiOptions = newUiOptions and View.SYSTEM_UI_FLAG_HIDE_NAVIGATION.inv()
-            }
-            if (Build.VERSION.SDK_INT >= 16) {
-                newUiOptions = newUiOptions and View.SYSTEM_UI_FLAG_FULLSCREEN.inv()
-            }
-
-            if (Build.VERSION.SDK_INT >= 19) {
-                newUiOptions = newUiOptions and View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY.inv()
-            }
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)//设置透明状态栏
-                window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION)//设置透明导航栏
-                window.clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN)
-            }
-            window.decorView.systemUiVisibility = newUiOptions
-        }
     }
 
     private fun hideBar() {

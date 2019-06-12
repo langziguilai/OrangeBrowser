@@ -20,23 +20,13 @@ public class GlideHelper {
         Glide.with(imageView.getContext()).load(Uri.fromFile(new File(path))).into(imageView);
     }
     public static void loadRemoteImage(ImageView imageView, String url,String referer){
-        LazyHeaders.Builder builder=new LazyHeaders.Builder();
-        builder.addHeader("Referer",referer);
-        GlideUrl glideUrl=new GlideUrl(url,builder.build());
-        Glide.with(imageView.getContext()).load(glideUrl).into(imageView);
+        if (url.trim().length()<=0){
+            imageView.setImageDrawable(new ColorDrawable(0xff777777));
+        }else{
+            LazyHeaders.Builder builder=new LazyHeaders.Builder();
+            builder.addHeader("Referer",referer);
+            GlideUrl glideUrl=new GlideUrl(url,builder.build());
+            Glide.with(imageView.getContext()).load(glideUrl).into(imageView);
+        }
     }
-    public static void loadRemoteImageWithShareElement(ImageView imageView,String url,String referer){
-        LazyHeaders.Builder builder=new LazyHeaders.Builder();
-        builder.addHeader("Referer",referer);
-        GlideUrl glideUrl=new GlideUrl(url,builder.build());
-        Glide.with(imageView)
-                .load(glideUrl)
-                .apply(new RequestOptions()
-                        .diskCacheStrategy(DiskCacheStrategy.NONE)
-                        .transform(new FitCenter())
-                        .skipMemoryCache(true)
-                        .placeholder(new ColorDrawable(Color.GRAY)))
-                .into(imageView);
-    }
-
 }
