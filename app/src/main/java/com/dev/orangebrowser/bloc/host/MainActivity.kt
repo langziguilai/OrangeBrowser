@@ -20,7 +20,6 @@ import com.dev.browser.feature.tabs.TabsUseCases
 import com.dev.browser.session.Download
 import com.dev.browser.session.Session
 import com.dev.browser.session.SessionManager
-import com.dev.orangebrowser.R
 import com.dev.orangebrowser.bloc.bookmark.BookMarkFragment
 import com.dev.orangebrowser.bloc.browser.BrowserFragment
 import com.dev.orangebrowser.bloc.download.DownloadFragment
@@ -64,7 +63,7 @@ import es.dmoral.toasty.Toasty
 import permissions.dispatcher.*
 import java.io.File
 import javax.inject.Inject
-
+import com.dev.orangebrowser.R
 
 const val APPLICATION_DATA = "application_data"
 
@@ -88,8 +87,8 @@ class MainActivity : BaseActivity(), DownloadManager.OnAutoInstallDownloadAppLis
 
     companion object {
         const val REQUEST_CODE_SCAN = 0x1234
-        const val REQUEST_IMAGE_TRANSITION=0x1235
-        const val REQUEST_VIDEO_TRANSITION=0x1236
+        const val REQUEST_IMAGE_TRANSITION = 0x1235
+        const val REQUEST_VIDEO_TRANSITION = 0x1236
     }
 
     @Inject
@@ -165,9 +164,9 @@ class MainActivity : BaseActivity(), DownloadManager.OnAutoInstallDownloadAppLis
         Manifest.permission.RECORD_AUDIO
     )
     fun loadFirstInFragment() {
-        if(sessionManager.selectedSession!=null){
-            loadHomeOrBrowserFragment(sessionId =sessionManager.selectedSession!!.id )
-        }else{
+        if (sessionManager.selectedSession != null) {
+            loadHomeOrBrowserFragment(sessionId = sessionManager.selectedSession!!.id)
+        } else {
             loadHomeFragment("")
         }
     }
@@ -318,15 +317,20 @@ class MainActivity : BaseActivity(), DownloadManager.OnAutoInstallDownloadAppLis
     }
 
     //加载搜索页面
-    fun loadSearchFragment(sessionId: String,color:Int?=null, enterAnimationId: Int? = null, exitAnimationId: Int? = null) {
+    fun loadSearchFragment(
+        sessionId: String,
+        color: Int? = null,
+        enterAnimationId: Int? = null,
+        exitAnimationId: Int? = null
+    ) {
         if (enterAnimationId != null && exitAnimationId != null) {
             supportFragmentManager.beginTransaction()
                 .setCustomAnimations(enterAnimationId, exitAnimationId)
-                .replace(R.id.root_container, SearchFragment.newInstance(sessionId,color))
+                .replace(R.id.root_container, SearchFragment.newInstance(sessionId, color))
                 .commit()
         } else {
             supportFragmentManager.beginTransaction()
-                .replace(R.id.root_container, SearchFragment.newInstance(sessionId,color))
+                .replace(R.id.root_container, SearchFragment.newInstance(sessionId, color))
                 .commit()
         }
     }
@@ -369,36 +373,39 @@ class MainActivity : BaseActivity(), DownloadManager.OnAutoInstallDownloadAppLis
 
     //加载下载页面
     fun loadDownloadFragment(enterAnimationId: Int? = R.anim.slide_left_in, exitAnimationId: Int? = R.anim.holder) {
-        if(enterAnimationId!=null && exitAnimationId!=null){
+        if (enterAnimationId != null && exitAnimationId != null) {
             val fragment = DownloadFragment.newInstance()
             supportFragmentManager.beginTransaction()
                 .setCustomAnimations(enterAnimationId, exitAnimationId)
                 .replace(R.id.root_container, fragment)
                 .commit()
-        }else{
+        } else {
             val fragment = DownloadFragment.newInstance()
             supportFragmentManager.beginTransaction()
                 .replace(R.id.root_container, fragment)
                 .commit()
         }
     }
+
     //加载下载页面
     fun loadDownloadImageFragment() {
         val fragment = DownloadImageFragment.newInstance()
         supportFragmentManager.beginTransaction()
-            .setCustomAnimations(R.anim.slide_left_in, R.anim.holder,R.anim.holder,R.anim.slide_right_out)
+            .setCustomAnimations(R.anim.slide_left_in, R.anim.holder, R.anim.holder, R.anim.slide_right_out)
             .add(R.id.root_container, fragment)
             .addToBackStack(null)
             .commit()
     }
+
     fun loadDownloadVideoFragment() {
         val fragment = DownloadVideoFragment.newInstance()
         supportFragmentManager.beginTransaction()
-            .setCustomAnimations(R.anim.slide_left_in, R.anim.holder,R.anim.holder,R.anim.slide_right_out)
+            .setCustomAnimations(R.anim.slide_left_in, R.anim.holder, R.anim.holder, R.anim.slide_right_out)
             .add(R.id.root_container, fragment)
             .addToBackStack(null)
             .commit()
     }
+
     //加载下载页面
     fun loadDownloadHtmlFragment() {
         val fragment = DownloadHtmlFragment.newInstance()
@@ -407,8 +414,9 @@ class MainActivity : BaseActivity(), DownloadManager.OnAutoInstallDownloadAppLis
             .replace(R.id.root_container, fragment)
             .commit()
     }
+
     //加载设置页面
-    fun loadSettingFragment(enterAnimationId: Int=R.anim.slide_left_in,exitAnimationId: Int=R.anim.holder) {
+    fun loadSettingFragment(enterAnimationId: Int = R.anim.slide_left_in, exitAnimationId: Int = R.anim.holder) {
         val fragment = SettingFragment.newInstance()
         supportFragmentManager.beginTransaction()
             .setCustomAnimations(enterAnimationId, exitAnimationId)
@@ -460,7 +468,7 @@ class MainActivity : BaseActivity(), DownloadManager.OnAutoInstallDownloadAppLis
     }
 
     //通用设置界面
-    fun loadGeneralSettingFragment(enterAnimationId: Int=R.anim.slide_left_in,exitAnimationId: Int=R.anim.holder) {
+    fun loadGeneralSettingFragment(enterAnimationId: Int = R.anim.slide_left_in, exitAnimationId: Int = R.anim.holder) {
         val fragment = GeneralSettingFragment.newInstance()
         supportFragmentManager.beginTransaction()
             .setCustomAnimations(enterAnimationId, exitAnimationId)
@@ -469,7 +477,7 @@ class MainActivity : BaseActivity(), DownloadManager.OnAutoInstallDownloadAppLis
     }
 
     //网页设置界面
-    fun loadWebSettingFragment(enterAnimationId: Int=R.anim.slide_left_in,exitAnimationId: Int=R.anim.holder) {
+    fun loadWebSettingFragment(enterAnimationId: Int = R.anim.slide_left_in, exitAnimationId: Int = R.anim.holder) {
         val fragment = WebSettingFragment.newInstance()
         supportFragmentManager.beginTransaction()
             .setCustomAnimations(enterAnimationId, exitAnimationId)
@@ -487,7 +495,7 @@ class MainActivity : BaseActivity(), DownloadManager.OnAutoInstallDownloadAppLis
     }
 
     //广告拦截设置界面
-    fun loadAdBlockSettingFragment(enterAnimationId: Int=R.anim.slide_left_in,exitAnimationId: Int=R.anim.holder) {
+    fun loadAdBlockSettingFragment(enterAnimationId: Int = R.anim.slide_left_in, exitAnimationId: Int = R.anim.holder) {
         val fragment = AdBlockSettingFragment.newInstance()
         supportFragmentManager.beginTransaction()
             .setCustomAnimations(enterAnimationId, exitAnimationId)
@@ -523,7 +531,10 @@ class MainActivity : BaseActivity(), DownloadManager.OnAutoInstallDownloadAppLis
     }
 
     //下载引擎设置界面
-    fun loadDownloadSettingFragment(enterAnimationId: Int=R.anim.slide_left_in,exitAnimationId: Int=R.anim.holder) {
+    fun loadDownloadSettingFragment(
+        enterAnimationId: Int = R.anim.slide_left_in,
+        exitAnimationId: Int = R.anim.holder
+    ) {
         val fragment = DownloadSettingFragment.newInstance()
         supportFragmentManager.beginTransaction()
             .setCustomAnimations(enterAnimationId, exitAnimationId)
@@ -704,19 +715,16 @@ class MainActivity : BaseActivity(), DownloadManager.OnAutoInstallDownloadAppLis
     //TODO:
     override fun onActivityReenter(resultCode: Int, data: Intent) {
         super.onActivityReenter(resultCode, data)
-        if (resultCode== REQUEST_IMAGE_TRANSITION){
-            YcShareElement.onActivityReenter(
-                this, resultCode, data
-            ) {
-                   supportFragmentManager.fragments.find { it is DownloadImageFragment }?.apply {
-                       val fragment=this
-                       it.firstOrNull()?.apply {
-                           val originalInfo=this
-                           (this.data as? SimpleImage)?.apply {
-                               (fragment as DownloadImageFragment).selectShareElement(ShareElementInfo<SimpleImage>(originalInfo.view,this))
-                           }
-                       }
-                   }
+        YcShareElement.onActivityReenter(
+            this, resultCode, data
+        ) {
+            supportFragmentManager.fragments.find { it is DownloadImageFragment }?.apply {
+                val fragment = this
+                it.firstOrNull()?.apply {
+                    (this.data as? SimpleImage)?.apply {
+                        (fragment as DownloadImageFragment).selectShareElement(this)
+                    }
+                }
             }
         }
     }

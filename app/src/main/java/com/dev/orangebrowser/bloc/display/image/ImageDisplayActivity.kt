@@ -11,13 +11,16 @@ import androidx.core.view.ViewCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.RecyclerView
+import androidx.viewpager2.widget.ViewPager2
+import com.davemorrissey.labs.subscaleview.SubsamplingScaleImageView
 import com.dev.base.BaseNotchActivity
-import com.dev.base.extension.getProperty
-import com.dev.base.extension.onGlobalLayoutComplete
+import com.dev.base.extension.*
 import com.dev.orangebrowser.R
 import com.dev.orangebrowser.data.model.SimpleImage
 import com.dev.orangebrowser.databinding.ActivityImageDisplayBinding
+import com.dev.orangebrowser.eventbus.ChangeRecyclerViewIndexEvent
 import com.dev.orangebrowser.extension.appComponent
+import com.dev.view.GlideHelper
 import com.dev.view.StatusBarUtil
 import com.dev.view.biv.concept.view.BigImageView
 import com.dev.view.biv.factory.GlideImageViewFactory
@@ -29,6 +32,7 @@ import com.dev.view.recyclerview.adapter.base.BaseQuickAdapter
 import com.hw.ycshareelement.YcShareElement
 import com.hw.ycshareelement.transition.IShareElements
 import com.hw.ycshareelement.transition.ShareElementInfo
+import org.greenrobot.eventbus.EventBus
 import java.io.File
 
 class ImageDisplayActivity : BaseNotchActivity(), OnNotchCallBack, IShareElements {
@@ -36,10 +40,40 @@ class ImageDisplayActivity : BaseNotchActivity(), OnNotchCallBack, IShareElement
     lateinit var binding: ActivityImageDisplayBinding
 
     override fun onBackPressed() {
-        getSelectImageView(binding.viewPager.currentItem)?.apply {
-            this.ssiv.resetScaleAndCenter()
+        val item = data[binding.viewPager.currentItem]
+        val view = binding.transitionImg.apply {
+            if (item.path != null) {
+                transitionName = item.path!!
+            } else if (item.url != null) {
+                transitionName = item.url!!
+            }
         }
-        finishAfterTransition()
+        shareElementInfo = ShareElementInfo(view, item)
+        binding.container.hide()
+        binding.transitionImg.show()
+        val bigImageView = getSelectImageView(binding.viewPager.currentItem)
+        if (bigImageView == null) {
+            finishAfterTransition()
+        }else{
+            val minScale=bigImageView.ssiv.excute("minScale") as Float
+            val currentScale=bigImageView.ssiv.scale
+            if (Math.abs(minScale-currentScale)>0.01){
+                bigImageView.ssiv.animateScale(minScale)?.apply {
+                    withOnAnimationEventListener(object:SubsamplingScaleImageView.OnAnimationEventListener{
+                        override fun onComplete() {
+                            finishAfterTransition()
+                        }
+
+                        override fun onInterruptedByUser() {}
+
+                        override fun onInterruptedByNewAnim() {}
+                    })
+                }?.start()
+            }else{
+                finishAfterTransition()
+            }
+        }
+
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -102,7 +136,7 @@ class ImageDisplayActivity : BaseNotchActivity(), OnNotchCallBack, IShareElement
         adapter.setOnItemChildClickListener { _, _, _ ->
             showStatusBar = !showStatusBar
             if (showStatusBar) {
-                show()
+                resumeImageSizeAndShowStatus()
             } else {
                 hide(true)
             }
@@ -110,25 +144,44 @@ class ImageDisplayActivity : BaseNotchActivity(), OnNotchCallBack, IShareElement
 
         binding.viewPager.adapter = adapter
         binding.viewPager.setCurrentItem(currentPosition, false)
+        binding.viewPager.registerOnPageChangeCallback(object:ViewPager2.OnPageChangeCallback(){
+            override fun onPageSelected(position: Int) {
+                EventBus.getDefault().post(ChangeRecyclerViewIndexEvent(position))
+                val item=data[position]
+                if (item.path!=null){
+                    GlideHelper.loadLocalImage(binding.transitionImg,item.path)
+                } else if(item.url!=null){
+                    GlideHelper.loadRemoteImage(binding.transitionImg,item.url,item.referer)
+                }
+            }
+        })
+        val item=data[currentPosition]
+        if (item.path!=null){
+            GlideHelper.loadLocalImage(binding.transitionImg,item.path)
+        } else if(item.url!=null){
+            GlideHelper.loadRemoteImage(binding.transitionImg,item.url,item.referer)
+        }
         YcShareElement.postStartTransition(this)
     }
 
     private fun getShareElement(position: Int): ShareElementInfo<SimpleImage> {
         val simpleImage = data[position]
-        val imageView=getSelectImageView(position)
+        val imageView = getSelectImageView(position)
         imageView?.apply {
-            if (simpleImage.url != null) {
-                ViewCompat.setTransitionName(this, simpleImage.url)
-            } else if (simpleImage.path != null) {
+            if (simpleImage.path != null) {
                 ViewCompat.setTransitionName(this, simpleImage.path)
+            } else if (simpleImage.url != null) {
+                ViewCompat.setTransitionName(this, simpleImage.url)
             }
         }
         return ShareElementInfo<SimpleImage>(imageView!!, simpleImage)
     }
-    private fun getSelectImageView(position:Int):BigImageView?{
+
+    private fun getSelectImageView(position: Int): BigImageView? {
         val recyclerView = binding.viewPager.getProperty("mRecyclerView") as RecyclerView
         return adapter.getViewByPosition(recyclerView, position, R.id.image) as? BigImageView
     }
+
     private fun hide(delay: Boolean = false) {
         if (delay) {
             binding.header.postDelayed({
@@ -148,6 +201,30 @@ class ImageDisplayActivity : BaseNotchActivity(), OnNotchCallBack, IShareElement
         StatusBarUtil.setDarkIcon(this)
     }
 
+    private fun resumeImageSizeAndShowStatus(){
+        val bigImageView = getSelectImageView(binding.viewPager.currentItem)
+        if (bigImageView == null) {
+              show()
+        }else{
+            val minScale=bigImageView.ssiv.excute("minScale") as Float
+            val currentScale=bigImageView.ssiv.scale
+            if (Math.abs(minScale-currentScale)>0.01){
+                 bigImageView.ssiv.animateScale(minScale)?.apply {
+                     withOnAnimationEventListener(object:SubsamplingScaleImageView.OnAnimationEventListener{
+                         override fun onComplete() {
+                             show()
+                         }
+
+                         override fun onInterruptedByUser() {}
+
+                         override fun onInterruptedByNewAnim() {}
+                     })
+                 }?.start()
+            }else{
+                show()
+            }
+        }
+    }
     private fun show() {
         binding.header.postDelayed({
             viewModel.changeColor(resources.getColor(R.color.white))
@@ -212,8 +289,11 @@ class ImageDisplayActivity : BaseNotchActivity(), OnNotchCallBack, IShareElement
         const val IMAGES = "images"
     }
 
+    var shareElementInfo: ShareElementInfo<SimpleImage>? = null
     override fun getShareElements(): Array<ShareElementInfo<SimpleImage>> {
-        val  shareElementInfo = getShareElement(binding.viewPager.currentItem)
+        if (shareElementInfo == null) {
+            shareElementInfo = getShareElement(binding.viewPager.currentItem)
+        }
         return arrayOf(shareElementInfo!!)
     }
 
@@ -221,4 +301,6 @@ class ImageDisplayActivity : BaseNotchActivity(), OnNotchCallBack, IShareElement
         YcShareElement.finishAfterTransition(this, this)
         super.finishAfterTransition()
     }
+
+
 }

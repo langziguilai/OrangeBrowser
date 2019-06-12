@@ -8,11 +8,13 @@
         <variable name="activity" type="com.dev.orangebrowser.bloc.display.image.ImageDisplayActivity"/>
     </data>
     <FrameLayout android:layout_width="match_parent"
+                 bgColor="@{viewModel.colorPrimary}"
                                        android:id="@+id/image_container"
-                                       bgColor="@{viewModel.colorPrimary}"
                                        android:layout_height="match_parent">
+        <ImageView android:id="@+id/transition_img"  android:layout_width="match_parent" android:layout_height="match_parent"/>
             <com.dev.orangebrowser.view.LongClickFrameLayout
                     android:id="@+id/container"
+                    bgColor="@{viewModel.colorPrimary}"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
                 <androidx.viewpager2.widget.ViewPager2

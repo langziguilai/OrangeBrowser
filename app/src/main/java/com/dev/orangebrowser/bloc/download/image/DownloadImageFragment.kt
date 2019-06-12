@@ -4,14 +4,12 @@ import android.app.Dialog
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.os.Parcelable
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.ImageView
-import androidx.core.view.ViewCompat
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -22,19 +20,18 @@ import com.dev.base.extension.onGlobalLayoutComplete
 import com.dev.base.extension.shareLink
 import com.dev.base.extension.showToast
 import com.dev.base.support.BackHandler
-import com.dev.browser.database.download.*
-import com.dev.browser.session.SessionManager
+import com.dev.browser.database.download.DownloadDao
+import com.dev.browser.database.download.DownloadEntity
+import com.dev.browser.database.download.IMAGE
 import com.dev.orangebrowser.R
 import com.dev.orangebrowser.bloc.display.image.ImageDisplayActivity
 import com.dev.orangebrowser.bloc.host.MainActivity
 import com.dev.orangebrowser.bloc.host.MainViewModel
 import com.dev.orangebrowser.data.model.SimpleImage
-import com.dev.orangebrowser.databinding.FragmentDownloadBinding
 import com.dev.orangebrowser.databinding.FragmentDownloadImageBinding
-import com.dev.orangebrowser.extension.RouterActivity
+import com.dev.orangebrowser.eventbus.ChangeRecyclerViewIndexEvent
 import com.dev.orangebrowser.extension.appComponent
 import com.dev.orangebrowser.extension.getColor
-import com.dev.orangebrowser.utils.FileSizeHelper
 import com.dev.orangebrowser.view.contextmenu.Action
 import com.dev.orangebrowser.view.contextmenu.CommonContextMenuAdapter
 import com.dev.orangebrowser.view.contextmenu.MenuItem
@@ -50,7 +47,9 @@ import com.hw.ycshareelement.transition.IShareElements
 import com.hw.ycshareelement.transition.ShareElementInfo
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import java.lang.Exception
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 import java.util.*
 import javax.inject.Inject
 
@@ -99,13 +98,13 @@ class DownloadImageFragment : BaseFragment(), BackHandler, IShareElements {
     }
 
     var offSet: Int = -1
-    lateinit var layoutManager:GridLayoutManager
+    lateinit var mLayoutManager:GridLayoutManager
     override fun initViewWithDataBinding(savedInstanceState: Bundle?) {
         StatusBarUtil.setIconColor(requireActivity(), activityViewModel.theme.value!!.colorPrimary)
         offSet = DensityUtil.dip2px(requireContext(), 20f)
         binding.recyclerView.apply {
-            layoutManager = GridLayoutManager(requireContext(), 3, RecyclerView.VERTICAL, false)
-            this.layoutManager=layoutManager
+            mLayoutManager = GridLayoutManager(requireContext(), 3, RecyclerView.VERTICAL, false)
+            this.layoutManager=mLayoutManager
             this.addItemDecoration(
                 GridDividerItemDecoration(
                     DensityUtil.dip2px(requireContext(), 1f),
@@ -127,14 +126,22 @@ class DownloadImageFragment : BaseFragment(), BackHandler, IShareElements {
                 adapter = object :
                     BaseQuickAdapter<DownloadEntity, CustomBaseViewHolder>(R.layout.item_download_image, downloads) {
                     override fun convert(helper: CustomBaseViewHolder, item: DownloadEntity) {
-                        helper.loadLocalImage(R.id.image, item.path)
+                        if (item.path.isNotBlank()){
+                            helper.itemView.findViewById<ImageView>(R.id.image).apply {
+                                transitionName=item.path
+                            }
+                            helper.loadLocalImage(R.id.image, item.path)
+                        }else if(item.url.isNotBlank()){
+                            helper.itemView.findViewById<ImageView>(R.id.image).apply {
+                                transitionName=item.url
+                            }
+                            helper.loadImage(R.id.image, item.path,item.referer)
+                        }
                     }
                 }
                 adapter.setOnItemClickListener { _, view, position ->
                     val selectedItem = downloads[position]
-                    val imageView = view.findViewById<ImageView>(R.id.image).apply {
-                        ViewCompat.setTransitionName(this, selectedItem.url)
-                    }
+                    val imageView = view.findViewById<ImageView>(R.id.image)
                     shareImageInfo = ShareElementInfo(
                         imageView,
                         SimpleImage(url = selectedItem.url, path = selectedItem.path, referer = selectedItem.referer)
@@ -268,17 +275,34 @@ class DownloadImageFragment : BaseFragment(), BackHandler, IShareElements {
         return arrayOf(shareImageInfo)
     }
 
-    fun selectShareElement(shareElementInfo: ShareElementInfo<SimpleImage>) {
-        val simpleImage = shareElementInfo.data
-        val index = downloads.indexOfLast {
-            when {
-                simpleImage.path != null -> true
-                simpleImage.url == it.url -> true
-                else -> false
+    fun selectShareElement(simpleImage: SimpleImage) {
+        var index = 0
+        for (download in downloads){
+            if (download.path.isNotBlank() && download.path==simpleImage.path){
+                index=downloads.indexOf(download)
+                break
+            } else if(download.url.isNotBlank() && download.url==simpleImage.url){
+                index=downloads.indexOf(download)
+                break
             }
         }
         if (index>=0){
-            layoutManager.scrollToPosition(index)
+            adapter.getViewByPosition(binding.recyclerView,index,R.id.image)?.apply {
+                shareImageInfo=ShareElementInfo(this,simpleImage)
+            }
+            mLayoutManager.scrollToPosition(index)
         }
+    }
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onChangeRecyclerViewItemIndex(event:ChangeRecyclerViewIndexEvent){
+        mLayoutManager.scrollToPosition(event.message)
+    }
+    override fun onStart() {
+        super.onStart()
+        EventBus.getDefault().register(this)
+    }
+    override fun onStop(){
+        EventBus.getDefault().unregister(this)
+        super.onStop()
     }
 }

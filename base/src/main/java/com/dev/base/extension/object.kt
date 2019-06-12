@@ -7,3 +7,10 @@ fun Any.getProperty(name:String):Any{
     }
     return filed.get(this)
 }
+
+fun Any.excute(name:String):Any{
+    val method=this.javaClass.getDeclaredMethod(name).apply {
+        this.isAccessible=true
+    }
+    return method.invoke(this)
+}
