@@ -3,6 +3,7 @@ package com.dev.orangebrowser.bloc.display.image
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.view.WindowManager
 import android.view.animation.AccelerateInterpolator
@@ -49,18 +50,20 @@ class ImageDisplayActivity : BaseNotchActivity(), OnNotchCallBack, IShareElement
             }
         }
         shareElementInfo = ShareElementInfo(view, item)
-        binding.container.hide()
-        binding.transitionImg.show()
         val bigImageView = getSelectImageView(binding.viewPager.currentItem)
-        if (bigImageView == null) {
+        if (bigImageView == null || bigImageView.ssiv == null) {
+            binding.container.hide()
+            binding.transitionImg.show()
             finishAfterTransition()
-        }else{
-            val minScale=bigImageView.ssiv.excute("minScale") as Float
-            val currentScale=bigImageView.ssiv.scale
-            if (Math.abs(minScale-currentScale)>0.01){
+        } else {
+            val minScale = bigImageView.ssiv.excute("minScale") as Float
+            val currentScale = bigImageView.ssiv.scale
+            if (Math.abs(minScale - currentScale) > 0.01) {
                 bigImageView.ssiv.animateScale(minScale)?.apply {
-                    withOnAnimationEventListener(object:SubsamplingScaleImageView.OnAnimationEventListener{
+                    withOnAnimationEventListener(object : SubsamplingScaleImageView.OnAnimationEventListener {
                         override fun onComplete() {
+                            binding.container.hide()
+                            binding.transitionImg.show()
                             finishAfterTransition()
                         }
 
@@ -69,7 +72,9 @@ class ImageDisplayActivity : BaseNotchActivity(), OnNotchCallBack, IShareElement
                         override fun onInterruptedByNewAnim() {}
                     })
                 }?.start()
-            }else{
+            } else {
+                binding.container.hide()
+                binding.transitionImg.show()
                 finishAfterTransition()
             }
         }
@@ -130,7 +135,6 @@ class ImageDisplayActivity : BaseNotchActivity(), OnNotchCallBack, IShareElement
                 } else if (item.url != null) {
                     helper.itemView.findViewById<BigImageView>(R.id.image).showImage(Uri.parse(item.url), headers)
                 }
-
             }
         }
         adapter.setOnItemChildClickListener { _, _, _ ->
@@ -144,22 +148,22 @@ class ImageDisplayActivity : BaseNotchActivity(), OnNotchCallBack, IShareElement
 
         binding.viewPager.adapter = adapter
         binding.viewPager.setCurrentItem(currentPosition, false)
-        binding.viewPager.registerOnPageChangeCallback(object:ViewPager2.OnPageChangeCallback(){
+        binding.viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
                 EventBus.getDefault().postSticky(ChangeRecyclerViewIndexEvent(position))
-                val item=data[position]
-                if (item.path!=null){
-                    GlideHelper.loadLocalImage(binding.transitionImg,item.path)
-                } else if(item.url!=null){
-                    GlideHelper.loadRemoteImage(binding.transitionImg,item.url,item.referer)
+                val item = data[position]
+                if (item.path != null) {
+                    GlideHelper.loadLocalImage(binding.transitionImg, item.path)
+                } else if (item.url != null) {
+                    GlideHelper.loadRemoteImage(binding.transitionImg, item.url, item.referer)
                 }
             }
         })
-        val item=data[currentPosition]
-        if (item.path!=null){
-            GlideHelper.loadLocalImage(binding.transitionImg,item.path)
-        } else if(item.url!=null){
-            GlideHelper.loadRemoteImage(binding.transitionImg,item.url,item.referer)
+        val item = data[currentPosition]
+        if (item.path != null) {
+            GlideHelper.loadLocalImage(binding.transitionImg, item.path)
+        } else if (item.url != null) {
+            GlideHelper.loadRemoteImage(binding.transitionImg, item.url, item.referer)
         }
         YcShareElement.postStartTransition(this)
     }
@@ -201,30 +205,31 @@ class ImageDisplayActivity : BaseNotchActivity(), OnNotchCallBack, IShareElement
         StatusBarUtil.setDarkIcon(this)
     }
 
-    private fun resumeImageSizeAndShowStatus(){
+    private fun resumeImageSizeAndShowStatus() {
         val bigImageView = getSelectImageView(binding.viewPager.currentItem)
-        if (bigImageView == null) {
-              show()
-        }else{
-            val minScale=bigImageView.ssiv.excute("minScale") as Float
-            val currentScale=bigImageView.ssiv.scale
-            if (Math.abs(minScale-currentScale)>0.01){
-                 bigImageView.ssiv.animateScale(minScale)?.apply {
-                     withOnAnimationEventListener(object:SubsamplingScaleImageView.OnAnimationEventListener{
-                         override fun onComplete() {
-                             show()
-                         }
+        if (bigImageView == null || bigImageView.ssiv == null) {
+            show()
+        } else {
+            val minScale = bigImageView.ssiv.excute("minScale") as Float
+            val currentScale = bigImageView.ssiv.scale
+            if (Math.abs(minScale - currentScale) > 0.01) {
+                bigImageView.ssiv.animateScale(minScale)?.apply {
+                    withOnAnimationEventListener(object : SubsamplingScaleImageView.OnAnimationEventListener {
+                        override fun onComplete() {
+                            show()
+                        }
 
-                         override fun onInterruptedByUser() {}
+                        override fun onInterruptedByUser() {}
 
-                         override fun onInterruptedByNewAnim() {}
-                     })
-                 }?.start()
-            }else{
+                        override fun onInterruptedByNewAnim() {}
+                    })
+                }?.start()
+            } else {
                 show()
             }
         }
     }
+
     private fun show() {
         binding.header.postDelayed({
             viewModel.changeColor(resources.getColor(R.color.white))
