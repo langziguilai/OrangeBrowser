@@ -22,38 +22,56 @@
                           android:orientation="horizontal">
                 <TextView android:id="@+id/search_text" android:layout_marginStart="8dp"
                           android:background="@drawable/bg_transparent_round" android:paddingStart="12dp"
-                          android:layout_width="0dp"  android:layout_weight="1" android:layout_height="32dp" android:layout_gravity="center_vertical"
+                          android:layout_width="0dp" android:layout_weight="1" android:layout_height="32dp"
+                          android:layout_gravity="center_vertical"
                           android:hint="@string/search_or_input" android:gravity="start|center_vertical"
-                          android:textColor="@color/colorWhite" android:textColorHint="@color/colorWhite" android:textSize="14sp"/>
+                          android:textColor="@color/colorWhite" android:textColorHint="@color/colorWhite"
+                          android:textSize="14sp"/>
                 <com.dev.view.IconfontTextView android:id="@+id/top_menu" android:clickable="true"
                                                android:background="?android:attr/selectableItemBackgroundBorderless"
                                                android:layout_gravity="center_vertical" android:focusable="true"
-                                               android:gravity="center" android:layout_width="26dp" android:layout_height="26dp"
+                                               android:gravity="center" android:layout_width="26dp"
+                                               android:layout_height="26dp"
                                                android:textSize="@dimen/icon_text_size" android:text="@string/ic_more"
                                                android:textColor="@color/colorWhite" android:layout_marginStart="2dp"
                                                android:layout_marginEnd="2dp"/>
             </LinearLayout>
             <FrameLayout android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1">
-                <androidx.viewpager.widget.ViewPager
-                        android:background="@color/colorWhite"
-                        android:id="@+id/viewpager"
+                <com.dev.view.MatchParentLayout
+                        android:id="@+id/content_container"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                        android:clickable="true"
+                        android:focusable="true"
                         android:layout_marginBottom="42dp"
-                />
+                        android:layout_height="match_parent">
+                    <androidx.recyclerview.widget.RecyclerView
+                            android:background="@color/colorWhite"
+                            android:id="@+id/recycler_view"
+                            android:clipToPadding="false"
+                            android:paddingTop="9dp"
+                            android:paddingStart="13dp"
+                            android:paddingEnd="13dp"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                    />
+                </com.dev.view.MatchParentLayout>
                 <!--底部bar-->
                 <LinearLayout android:id="@+id/bottom_bar"
                               android:layout_gravity="bottom"
                               android:orientation="vertical"
                               android:layout_width="match_parent"
                               android:layout_height="wrap_content">
-                    <View android:layout_width="match_parent" android:layout_height="1px" android:background="@color/borderColor"/>
-                    <LinearLayout android:layout_width="match_parent" android:layout_height="42dp" android:orientation="horizontal"
+                    <View android:layout_width="match_parent" android:layout_height="1px"
+                          android:background="@color/borderColor"/>
+                    <LinearLayout android:layout_width="match_parent" android:layout_height="42dp"
+                                  android:orientation="horizontal"
                                   android:background="@color/background">
                         <com.dev.view.IconfontTextView android:focusable="true"
                                                        android:background="?android:attr/selectableItemBackgroundBorderless"
-                                                       android:id="@+id/back" android:gravity="center" android:layout_width="0dp" android:layout_weight="1"
-                                                       android:layout_height="42dp" android:textSize="@dimen/icon_text_size"
+                                                       android:id="@+id/back" android:gravity="center"
+                                                       android:layout_width="0dp" android:layout_weight="1"
+                                                       android:layout_height="42dp"
+                                                       android:textSize="@dimen/icon_text_size"
                                                        android:text="@string/ic_left"
                                                        android:textColor="@{activityViewModel.theme.colorPrimaryDisable}"/>
                         <com.dev.view.IconfontTextView android:focusable="true" android:clickable="true"
@@ -61,27 +79,38 @@
                                                        android:id="@+id/forward" android:gravity="center"
                                                        android:layout_width="0dp" android:layout_weight="1"
                                                        android:layout_height="42dp"
-                                                       android:textSize="@dimen/icon_text_size" android:text="@string/ic_right"/>
-                        <com.dev.view.IconfontTextView android:id="@+id/search" android:gravity="center" android:layout_width="0dp" android:layout_weight="1"
-                                                       android:layout_height="42dp" android:textSize="@dimen/icon_text_size"
-                                                       android:text="@string/ic_search" android:textColor="@{activityViewModel.theme.colorPrimary}"/>
+                                                       android:textSize="@dimen/icon_text_size"
+                                                       android:text="@string/ic_right"/>
+                        <com.dev.view.IconfontTextView android:id="@+id/search" android:gravity="center"
+                                                       android:layout_width="0dp" android:layout_weight="1"
+                                                       android:layout_height="42dp"
+                                                       android:textSize="@dimen/icon_text_size"
+                                                       android:text="@string/ic_search"
+                                                       android:textColor="@{activityViewModel.theme.colorPrimary}"/>
                         <FrameLayout android:clickable="true" android:focusable="true"
-                                     android:background="?android:attr/selectableItemBackgroundBorderless" android:id="@+id/counter"
-                                     android:gravity="center" android:layout_width="0dp" android:layout_weight="1" android:layout_height="42dp">
+                                     android:background="?android:attr/selectableItemBackgroundBorderless"
+                                     android:id="@+id/counter"
+                                     android:gravity="center" android:layout_width="0dp" android:layout_weight="1"
+                                     android:layout_height="42dp">
                             <View android:layout_height="16dp" android:layout_width="16dp"
                                   app:borderColor="@{activityViewModel.theme.colorPrimary}"
                                   app:borderWidth="@{1.3f}"
                                   android:layout_gravity="center"/>
-                            <TextView android:id="@+id/counterNumber" tools:text="99" android:layout_width="wrap_content"
+                            <TextView android:id="@+id/counterNumber" tools:text="99"
+                                      android:layout_width="wrap_content"
                                       android:layout_height="wrap_content" android:layout_gravity="center"
-                                      android:textColor="@{activityViewModel.theme.colorPrimary}" android:textSize="11dp"/>
+                                      android:textColor="@{activityViewModel.theme.colorPrimary}"
+                                      android:textSize="11dp"/>
 
                         </FrameLayout>
                         <com.dev.view.IconfontTextView android:clickable="true" android:focusable="true"
                                                        android:background="?android:attr/selectableItemBackgroundBorderless"
-                                                       android:id="@+id/menu" android:gravity="center" android:layout_width="0dp" android:layout_weight="1"
-                                                       android:layout_height="42dp" android:textSize="@dimen/icon_text_size"
-                                                       android:text="@string/ic_menu" android:textColor="@{activityViewModel.theme.colorPrimary}"/>
+                                                       android:id="@+id/menu" android:gravity="center"
+                                                       android:layout_width="0dp" android:layout_weight="1"
+                                                       android:layout_height="42dp"
+                                                       android:textSize="@dimen/icon_text_size"
+                                                       android:text="@string/ic_menu"
+                                                       android:textColor="@{activityViewModel.theme.colorPrimary}"/>
 
                     </LinearLayout>
                 </LinearLayout>
@@ -126,7 +155,8 @@
                             app:gv_column="4"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"/>
-                    <com.dev.view.IconfontTextView android:id="@+id/bottom_menu_grid_view_close" android:layout_marginTop="12dp"
+                    <com.dev.view.IconfontTextView android:id="@+id/bottom_menu_grid_view_close"
+                                                   android:layout_marginTop="12dp"
                                                    android:textColor="@{activityViewModel.theme.colorPrimary}"
                                                    android:clickable="true"
                                                    android:focusable="true"

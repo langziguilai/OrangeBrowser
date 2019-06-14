@@ -1,0 +1,44 @@
+[
+  {
+    "name": "UI中国",
+    "description": "专业用户体验设计平台",
+    "icon": "https://i.loli.net/2019/06/13/5d01ef1a7d02812411.png",
+    "url": "https://www.ui.cn",
+    "rank": 1
+  },
+  {
+    "name": "百度",
+    "description": "百度一下你就知道",
+    "icon": "https://i.loli.net/2019/06/13/5d01ee87aa0ea50345.png",
+    "url": "https://www.baidu.com",
+    "rank": 2
+  },
+  {
+    "name": "糗事百科",
+    "description": "超搞笑的原创糗事笑话分享社区",
+    "icon": "https://i.loli.net/2019/06/13/5d01eeb7e06ac57966.png",
+    "url": "https://www.qiushibaike.com",
+    "rank": 3
+  },
+  {
+    "name": "起点中文网",
+    "description": "阅文集团旗下网站",
+    "icon": "https://i.loli.net/2019/06/13/5d01ef51b650930130.png",
+    "url": "https://www.qidian.com",
+    "rank": 4
+  },
+  {
+    "name": "豆瓣FM",
+    "description": "豆瓣FM",
+    "icon": "https://i.loli.net/2019/06/13/5d01efa4c07eb25519.png",
+    "url": "https://douban.fm",
+    "rank": 5
+  },
+  {
+    "name": "知乎",
+    "description": "有问题，上知乎",
+    "icon": "https://i.loli.net/2019/06/13/5d01efee792fc66059.png",
+    "url": "https://www.zhihu.com",
+    "rank": 6
+  }
+]

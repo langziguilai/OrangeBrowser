@@ -1,40 +1,61 @@
 package com.dev.orangebrowser.bloc.home
 
 import android.content.Context
+import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.ItemTouchHelper
+import androidx.recyclerview.widget.RecyclerView
 import com.dev.base.BaseLazyFragment
+import com.dev.base.extension.hide
+import com.dev.base.extension.show
+import com.dev.base.extension.showToast
 import com.dev.base.support.BackHandler
 import com.dev.base.support.ViewBoundFeatureWrapper
+import com.dev.base.support.isUrl
+import com.dev.browser.feature.session.SessionUseCases
 import com.dev.browser.feature.tabs.TabsUseCases
 import com.dev.browser.session.Session
 import com.dev.browser.session.SessionManager
+import com.dev.browser.support.log.Log
 import com.dev.orangebrowser.R
 import com.dev.orangebrowser.bloc.browser.BrowserFragment
-import com.dev.orangebrowser.bloc.browser.integration.ContextMenuIntegration
 import com.dev.orangebrowser.bloc.home.helper.BottomBarHelper
 import com.dev.orangebrowser.bloc.home.helper.TopBarHelper
+import com.dev.orangebrowser.bloc.home.intergration.ContentBlinkFixIntegration
 import com.dev.orangebrowser.bloc.home.intergration.ThumbnailIntergration
 import com.dev.orangebrowser.bloc.host.MainViewModel
+import com.dev.orangebrowser.data.model.CloseItem
+import com.dev.orangebrowser.data.model.MainPageSite
 import com.dev.orangebrowser.data.model.Site
-import com.dev.orangebrowser.data.model.Theme
 import com.dev.orangebrowser.databinding.FragmentHomeBinding
 import com.dev.orangebrowser.extension.RouterActivity
 import com.dev.orangebrowser.extension.appComponent
+import com.dev.orangebrowser.extension.getColor
+import com.dev.util.DensityUtil
 import com.dev.view.StatusBarUtil
+import com.dev.view.recyclerview.CustomBaseViewHolder
+import com.dev.view.recyclerview.GridDividerItemDecoration
+import com.dev.view.recyclerview.adapter.base.BaseItemDraggableAdapter
 import com.evernote.android.state.State
 import java.util.*
 import javax.inject.Inject
+import com.dev.view.recyclerview.adapter.base.callback.ItemDragAndSwipeCallback
+import com.dev.view.recyclerview.adapter.base.listener.OnItemDragListener
+
 
 class HomeFragment : BaseLazyFragment(), BackHandler {
     @Inject
     lateinit var sessionManager: SessionManager
     @Inject
     lateinit var tabsUserCase:TabsUseCases
+    @Inject
+    lateinit var sessionUseCases: SessionUseCases
     //dataList
     lateinit var viewModel: HomeViewModel
     lateinit var activityViewModel:MainViewModel
@@ -96,33 +117,159 @@ class HomeFragment : BaseLazyFragment(), BackHandler {
     }
 
     override fun initViewWithDataBinding(savedInstanceState: Bundle?) {
-
         initSession()
         StatusBarUtil.setLightIcon(requireActivity())
         val bottomBarHelper= BottomBarHelper(binding, this, savedInstanceState)
             TopBarHelper(binding, this, savedInstanceState, bottomBarHelper)
-        initViewPager(savedInstanceState)
+        initRecyclerView(savedInstanceState)
         thumbnailIntergration.set(
-            feature = ThumbnailIntergration(context=requireContext(),view=binding.viewpager,sessionId = sessionId,sessionManager = sessionManager),
+            feature = ThumbnailIntergration(context=requireContext(),view=binding.recyclerView,sessionId = sessionId,sessionManager = sessionManager),
             owner = this,
             view = binding.root
         )
+        sessionManager.findSessionById(sessionId)?.apply {
+            ContentBlinkFixIntegration(binding=binding,fragment = this@HomeFragment,session = this)
+        }
+    }
+    lateinit var adapter:BaseItemDraggableAdapter<CloseItem<MainPageSite>,CustomBaseViewHolder>
+    var data:LinkedList<CloseItem<MainPageSite>> = LinkedList()
+    var moveFrom:Int=0
+    lateinit var mLayoutManager: GridLayoutManager
+    //初始化ViewPager
+    private fun initRecyclerView(savedInstanceState: Bundle?) {
+        mLayoutManager=GridLayoutManager(requireContext(),3, RecyclerView.VERTICAL,false)
+        binding.recyclerView.layoutManager=mLayoutManager
+        adapter=object: BaseItemDraggableAdapter<CloseItem<MainPageSite>, CustomBaseViewHolder>(R.layout.item_site,data){
+            override fun convert(helper: CustomBaseViewHolder, item: CloseItem<MainPageSite>) {
+                helper.addOnClickListener(R.id.delete_icon)
+                if (item.showCloseItem){
+                    helper.itemView.findViewById<View>(R.id.delete_icon)?.show()
+                }else{
+                    helper.itemView.findViewById<View>(R.id.delete_icon)?.hide()
+                }
+                helper.setTextToAppCompatTextView(R.id.title,item.data.name ?: "")
+                if (item.data.icon!=null){
+                    helper.loadImage(R.id.icon,item.data.icon!!,"")
+                }else{
+                    helper.loadTextAsImage(R.id.icon,text = item.data.textIcon ?: "",
+                        textColor = activityViewModel.theme.value!!.colorPrimary,
+                        borderRadius = DensityUtil.dip2px(requireContext(),6f),
+                        backgroundColor =Color.parseColor(item.data.backgroundColor) )
+                }
+            }
+        }
+        adapter.setOnItemClickListener { _, _, position ->
+            if (showingDeleteIcon){
+                hideDeleteIcon()
+            }else{
+                val item=data[position].data
+                if (item.url!=null){
+                    item.url?.apply {
+                        if (this.isUrl()){
+                            sessionUseCases.loadUrl.invoke(this)
+                            RouterActivity?.loadBrowserFragment(sessionId)
+                        }
+                    }
+                }
+            }
+
+        }
+        adapter.setOnItemChildClickListener { _, view, position ->
+            //删除
+            if (view.id==R.id.delete_icon){
+                deleteSite(position)
+            }
+        }
+        val itemDragAndSwipeCallback = ItemDragAndSwipeCallback(adapter)
+        val itemTouchHelper = ItemTouchHelper(itemDragAndSwipeCallback)
+        itemTouchHelper.attachToRecyclerView(binding.recyclerView)
+        adapter.enableDragItem(itemTouchHelper)
+        adapter.setOnItemDragListener(object:OnItemDragListener{
+            override fun onItemDragStart(viewHolder: RecyclerView.ViewHolder?, pos: Int) {
+                moveFrom=pos
+                showDeleteIcon()
+            }
+            override fun onItemDragMoving(
+                source: RecyclerView.ViewHolder,
+                from: Int,
+                target: RecyclerView.ViewHolder,
+                to: Int
+            ) {
+            }
+            override fun onItemDragEnd(viewHolder: RecyclerView.ViewHolder?, pos: Int) {
+                moveSiteRank(moveFrom,pos)
+            }
+        })
+        binding.recyclerView.adapter=adapter
+        viewModel.siteList.observe(this, Observer<List<MainPageSite>> {newData->
+            data.clear()
+            data.addAll(newData.map { CloseItem(showCloseItem = false,data = it) })
+            adapter.notifyDataSetChanged()
+        })
+        viewModel.errorCode.observe(this, Observer<Int> {
+            when(it){
+                HomeViewModel.DELETE_FAIL->{requireContext().showToast(getString(R.string.delete_fail))}
+                HomeViewModel.MOVE_FAIL->{requireContext().showToast(getString(R.string.move_site_fail))}
+                HomeViewModel.LOAD_FAIL->{requireContext().showToast(getString(R.string.load_fail))}
+            }
+        })
     }
 
-    //初始化ViewPager
-    private fun initViewPager(savedInstanceState: Bundle?) {
-        //TODO:init ViewPager
-        binding.viewpager
-    }
     //初始化数据
     override fun initData(savedInstanceState: Bundle?) {
-
+         viewModel.loadMainPageSites()
     }
-
+    //移动位置
+    private fun moveSiteRank(from:Int,to:Int){
+        if (from==to) return
+        viewModel.updateSites(data)
+    }
+    //删除网站
+    private fun deleteSite(position:Int){
+        val deletedSite= data[position].data
+        data.removeAt(position)
+        adapter.notifyItemRemoved(position)
+        viewModel.delete(deletedSite,data)
+    }
+    var showingDeleteIcon=false
+    private fun showDeleteIcon(){
+        showingDeleteIcon=true
+        data.forEach {
+            it.showCloseItem=true
+        }
+        val firstVisible=mLayoutManager.findFirstVisibleItemPosition()
+        val lastVisible=mLayoutManager.findLastVisibleItemPosition()
+        for (i in firstVisible..lastVisible){
+            adapter.getViewByPosition(binding.recyclerView,i,R.id.delete_icon)?.apply {
+                this.show()
+            }
+        }
+    }
+    private fun hideDeleteIcon(){
+        if (!showingDeleteIcon) return
+        showingDeleteIcon=false
+        data.forEach {
+            it.showCloseItem=false
+        }
+        val firstVisible=mLayoutManager.findFirstVisibleItemPosition()
+        val lastVisible=mLayoutManager.findLastVisibleItemPosition()
+        for (i in firstVisible..lastVisible){
+            adapter.getViewByPosition(binding.recyclerView,i,R.id.delete_icon)?.apply {
+                this.hide()
+            }
+        }
+    }
     //处理返回值
     override fun onBackPressed(): Boolean {
         for (backHandler in backHandlers){
             if (backHandler.onBackPressed()){
+                return true
+            }
+        }
+        //如果处于网站编辑状态，那么返回就隐藏按钮
+        if (data.firstOrNull()!=null){
+            if (data.first.showCloseItem){
+                hideDeleteIcon()
                 return true
             }
         }
@@ -147,6 +294,5 @@ class HomeFragment : BaseLazyFragment(), BackHandler {
             }
         }
     }
-
 }
 

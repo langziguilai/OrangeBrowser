@@ -9,6 +9,7 @@ import com.dev.browser.database.download.DownloadDao
 import com.dev.browser.database.history.VisitHistoryDao
 import com.dev.orangebrowser.data.AppDatabase
 import com.dev.orangebrowser.data.dao.AdBlockFilterDao
+import com.dev.orangebrowser.data.dao.MainPageSiteDao
 import com.dev.orangebrowser.data.dao.SavedFileDao
 import dagger.Module
 import dagger.Provides
@@ -35,6 +36,11 @@ class DatabaseModule {
     @Singleton
     fun provideSavedFileDao(appDatabase: AppDatabase): SavedFileDao {
         return appDatabase.savedFileDao()
+    }
+    @Provides
+    @Singleton
+    fun provideMainPageSiteDao(appDatabase: AppDatabase): MainPageSiteDao {
+        return appDatabase.mainPageSiteDao()
     }
     @Provides
     @Singleton

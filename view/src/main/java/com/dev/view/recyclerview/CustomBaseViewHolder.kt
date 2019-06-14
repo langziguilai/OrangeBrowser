@@ -2,8 +2,6 @@ package com.dev.view.recyclerview
 
 import android.graphics.Bitmap
 import android.graphics.drawable.ColorDrawable
-import android.net.Uri
-import android.os.Environment
 import android.view.View
 import android.widget.ImageView
 import androidx.annotation.IdRes
@@ -16,6 +14,7 @@ import com.bumptech.glide.load.model.GlideUrl
 import com.bumptech.glide.load.model.Headers
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.bumptech.glide.request.RequestOptions
+import com.bumptech.glide.request.target.SimpleTarget
 import com.dev.view.R
 import com.dev.view.recyclerview.adapter.base.BaseViewHolder
 import java.io.File
@@ -54,6 +53,13 @@ open class CustomBaseViewHolder(view: View): BaseViewHolder(view){
         Glide.with(view.context).load(getGlideUrlWithReferer(url, referer))
             .placeholder(ColorDrawable(view.context.resources.getColor(R.color.color_7A7A7A)))
             .transition(DrawableTransitionOptions().crossFade(300))
+            .apply(mRequestOptions).into(view)
+        return this
+    }
+    fun loadImage(@IdRes viewId: Int, url:String): CustomBaseViewHolder {
+        val view = getView<ImageView>(viewId)
+        val mRequestOptions = RequestOptions.circleCropTransform()
+        Glide.with(view.context).load(url)
             .apply(mRequestOptions).into(view)
         return this
     }
@@ -105,11 +111,20 @@ open class CustomBaseViewHolder(view: View): BaseViewHolder(view){
             .apply(mRequestOptions).into(view)
         return this
     }
-    fun loadTextAsImage(@IdRes viewId:Int,text:String?,textColor:Int,backgroundColor:Int): CustomBaseViewHolder {
+    fun loadTextAsImage(@IdRes viewId:Int, text:String?,
+                        fontSize:Int=42,
+                        textColor:Int=0x111111,
+                        borderRadius:Int=0,
+                        borderSize:Int=0,
+                        backgroundColor:Int=0xEEEEEE): CustomBaseViewHolder {
         val view = getView<ImageView>(viewId)
         val textDrawable = TextDrawable.builder()
-            .beginConfig().textColor(textColor).endConfig()
-            .buildRound(text?.substring(0,1), backgroundColor) // radius in px
+            .beginConfig()
+            .fontSize(fontSize)
+            .textColor(textColor)
+            .withBorder(borderSize)
+            .endConfig()
+            .buildRoundRect(text?.substring(0,1), backgroundColor,borderRadius) // radius in px
         Glide.with(view.context).load(textDrawable)
             .into(view)
         return this

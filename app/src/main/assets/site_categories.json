@@ -1,0 +1,50 @@
+[
+  {
+    "name": "资讯",
+    "description": "News",
+    "icon": "https://i.loli.net/2019/06/13/5d01f0537a54e50655.png",
+    "url": "1"
+  },
+  {
+    "name": "娱乐",
+    "description": "Entertainment",
+    "icon": "https://i.loli.net/2019/06/13/5d01f0a78b60369955.png",
+    "url": "2"
+  },
+  {
+    "name": "购物",
+    "description": "Shopping",
+    "icon": "https://i.loli.net/2019/06/13/5d01f0a8029ec94416.png",
+    "url": "3"
+  },
+  {
+    "name": "视频",
+    "description": "Video",
+    "icon": "https://i.loli.net/2019/06/13/5d01f0a8094d014339.png",
+    "url": "4"
+  },
+  {
+    "name": "工具",
+    "description": "Tools",
+    "icon": "https://i.loli.net/2019/06/13/5d01f0a85733325186.png",
+    "url": "5"
+  },
+  {
+    "name": "社交",
+    "description": "Social Network",
+    "icon": "https://i.loli.net/2019/06/13/5d01f0a863aad30310.png",
+    "url": "6"
+  },
+  {
+    "name": "旅行",
+    "description": "Travel",
+    "icon": "https://i.loli.net/2019/06/13/5d01f0a8ae42a48129.png",
+    "url": "7"
+  },
+  {
+    "name": "插件",
+    "description": "MagSite",
+    "icon": "https://i.loli.net/2019/06/13/5d01f0a8be8f062099.png",
+    "url": "8"
+  }
+]
