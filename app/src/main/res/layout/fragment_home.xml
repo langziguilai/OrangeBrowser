@@ -21,7 +21,7 @@
                           android:layout_height="44dp"
                           android:orientation="horizontal">
                 <TextView android:id="@+id/search_text" android:layout_marginStart="8dp"
-                          android:background="@drawable/bg_transparent_round" android:paddingStart="12dp"
+                          android:background="@drawable/bg_half_transparent_round" android:paddingStart="12dp"
                           android:layout_width="0dp" android:layout_weight="1" android:layout_height="32dp"
                           android:layout_gravity="center_vertical"
                           android:hint="@string/search_or_input" android:gravity="start|center_vertical"

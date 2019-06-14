@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:background="@drawable/bg_white_corner_2dp"
+        android:layout_height="wrap_content" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <ImageView
+            android:id="@+id/icon"
+            android:paddingLeft="16dp"
+            android:paddingRight="8dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_width="66dp"
+            android:layout_height="82dp"/>
+    <TextView
+            android:id="@+id/name"
+            android:textColor="@color/color_6C6C6C"
+            tools:text="资讯"
+            android:gravity="bottom|start"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/icon"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:textSize="13sp"
+            android:layout_width="0dp"
+            android:layout_height="42dp"/>
+    <TextView
+            android:id="@+id/description"
+            android:textColor="@color/color_AFAFAF"
+            tools:text="News"
+            android:gravity="top|start"
+            android:layout_marginTop="4dp"
+            app:layout_constraintTop_toBottomOf="@+id/name"
+            app:layout_constraintStart_toEndOf="@+id/icon"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:textSize="12sp"
+            android:layout_width="0dp"
+            android:layout_height="0dp"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

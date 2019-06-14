@@ -22,7 +22,6 @@ import com.dev.browser.feature.session.SessionUseCases
 import com.dev.browser.feature.tabs.TabsUseCases
 import com.dev.browser.session.Session
 import com.dev.browser.session.SessionManager
-import com.dev.browser.support.log.Log
 import com.dev.orangebrowser.R
 import com.dev.orangebrowser.bloc.browser.BrowserFragment
 import com.dev.orangebrowser.bloc.home.helper.BottomBarHelper
@@ -30,23 +29,22 @@ import com.dev.orangebrowser.bloc.home.helper.TopBarHelper
 import com.dev.orangebrowser.bloc.home.intergration.ContentBlinkFixIntegration
 import com.dev.orangebrowser.bloc.home.intergration.ThumbnailIntergration
 import com.dev.orangebrowser.bloc.host.MainViewModel
+import com.dev.orangebrowser.config.ErrorCode
 import com.dev.orangebrowser.data.model.CloseItem
 import com.dev.orangebrowser.data.model.MainPageSite
 import com.dev.orangebrowser.data.model.Site
 import com.dev.orangebrowser.databinding.FragmentHomeBinding
 import com.dev.orangebrowser.extension.RouterActivity
 import com.dev.orangebrowser.extension.appComponent
-import com.dev.orangebrowser.extension.getColor
 import com.dev.util.DensityUtil
 import com.dev.view.StatusBarUtil
 import com.dev.view.recyclerview.CustomBaseViewHolder
-import com.dev.view.recyclerview.GridDividerItemDecoration
 import com.dev.view.recyclerview.adapter.base.BaseItemDraggableAdapter
+import com.dev.view.recyclerview.adapter.base.callback.ItemDragAndSwipeCallback
+import com.dev.view.recyclerview.adapter.base.listener.OnItemDragListener
 import com.evernote.android.state.State
 import java.util.*
 import javax.inject.Inject
-import com.dev.view.recyclerview.adapter.base.callback.ItemDragAndSwipeCallback
-import com.dev.view.recyclerview.adapter.base.listener.OnItemDragListener
 
 
 class HomeFragment : BaseLazyFragment(), BackHandler {
@@ -139,7 +137,7 @@ class HomeFragment : BaseLazyFragment(), BackHandler {
     private fun initRecyclerView(savedInstanceState: Bundle?) {
         mLayoutManager=GridLayoutManager(requireContext(),3, RecyclerView.VERTICAL,false)
         binding.recyclerView.layoutManager=mLayoutManager
-        adapter=object: BaseItemDraggableAdapter<CloseItem<MainPageSite>, CustomBaseViewHolder>(R.layout.item_site,data){
+        adapter=object: BaseItemDraggableAdapter<CloseItem<MainPageSite>, CustomBaseViewHolder>(R.layout.item_site_favorite,data){
             override fun convert(helper: CustomBaseViewHolder, item: CloseItem<MainPageSite>) {
                 helper.addOnClickListener(R.id.delete_icon)
                 if (item.showCloseItem){
@@ -149,7 +147,7 @@ class HomeFragment : BaseLazyFragment(), BackHandler {
                 }
                 helper.setTextToAppCompatTextView(R.id.title,item.data.name ?: "")
                 if (item.data.icon!=null){
-                    helper.loadImage(R.id.icon,item.data.icon!!,"")
+                    helper.loadImage(R.id.icon,item.data.icon!!)
                 }else{
                     helper.loadTextAsImage(R.id.icon,text = item.data.textIcon ?: "",
                         textColor = activityViewModel.theme.value!!.colorPrimary,
@@ -201,16 +199,16 @@ class HomeFragment : BaseLazyFragment(), BackHandler {
             }
         })
         binding.recyclerView.adapter=adapter
-        viewModel.siteList.observe(this, Observer<List<MainPageSite>> {newData->
+        viewModel.siteListLiveData.observe(this, Observer<List<MainPageSite>> { newData->
             data.clear()
             data.addAll(newData.map { CloseItem(showCloseItem = false,data = it) })
             adapter.notifyDataSetChanged()
         })
-        viewModel.errorCode.observe(this, Observer<Int> {
+        viewModel.errorCodeLiveData.observe(this, Observer<Int> {
             when(it){
-                HomeViewModel.DELETE_FAIL->{requireContext().showToast(getString(R.string.delete_fail))}
-                HomeViewModel.MOVE_FAIL->{requireContext().showToast(getString(R.string.move_site_fail))}
-                HomeViewModel.LOAD_FAIL->{requireContext().showToast(getString(R.string.load_fail))}
+                ErrorCode.DELETE_FAIL->{requireContext().showToast(getString(R.string.delete_fail))}
+                ErrorCode.MOVE_FAIL->{requireContext().showToast(getString(R.string.move_site_fail))}
+                ErrorCode.LOAD_FAIL->{requireContext().showToast(getString(R.string.load_fail))}
             }
         })
     }

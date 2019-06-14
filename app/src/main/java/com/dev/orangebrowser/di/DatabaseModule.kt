@@ -11,6 +11,7 @@ import com.dev.orangebrowser.data.AppDatabase
 import com.dev.orangebrowser.data.dao.AdBlockFilterDao
 import com.dev.orangebrowser.data.dao.MainPageSiteDao
 import com.dev.orangebrowser.data.dao.SavedFileDao
+import com.dev.orangebrowser.data.dao.SiteCategoryDao
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton
@@ -41,6 +42,11 @@ class DatabaseModule {
     @Singleton
     fun provideMainPageSiteDao(appDatabase: AppDatabase): MainPageSiteDao {
         return appDatabase.mainPageSiteDao()
+    }
+    @Provides
+    @Singleton
+    fun provideSiteCategoryDao(appDatabase: AppDatabase): SiteCategoryDao {
+        return appDatabase.siteCategoryDao()
     }
     @Provides
     @Singleton

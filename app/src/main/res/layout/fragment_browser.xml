@@ -177,7 +177,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="44dp">
                 <LinearLayout android:paddingStart="6dp"
-                              android:background="@drawable/bg_transparent_round" android:layout_width="0dp"
+                              android:background="@drawable/bg_half_transparent_round" android:layout_width="0dp"
                               android:layout_height="wrap_content" android:orientation="horizontal"
                               app:layout_constraintTop_toTopOf="parent" app:layout_constraintBottom_toBottomOf="parent"
                               app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="8dp"

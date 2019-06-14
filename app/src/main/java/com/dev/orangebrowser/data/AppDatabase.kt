@@ -5,10 +5,12 @@ import androidx.room.RoomDatabase
 import com.dev.orangebrowser.data.dao.AdBlockFilterDao
 import com.dev.orangebrowser.data.dao.MainPageSiteDao
 import com.dev.orangebrowser.data.dao.SavedFileDao
+import com.dev.orangebrowser.data.dao.SiteCategoryDao
 import com.dev.orangebrowser.data.model.*
 
 @Database(
     entities = [
+        SiteCategory::class,
         MainPageSite::class,
         FavoriteSite::class,
         CommonSite::class,
@@ -21,6 +23,7 @@ abstract class AppDatabase : RoomDatabase() {
     //    abstract fun favoriteSiteDao(): FavoriteSiteDao
 //    abstract fun commonSiteDao(): CommonSiteDao
 //    abstract fun newRecommendedDao(): NewRecommendedDao
+    abstract fun siteCategoryDao():SiteCategoryDao
     abstract fun mainPageSiteDao(): MainPageSiteDao
     abstract fun adBlockFilterDao(): AdBlockFilterDao
     abstract fun savedFileDao(): SavedFileDao
