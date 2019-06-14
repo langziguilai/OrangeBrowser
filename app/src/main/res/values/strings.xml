@@ -350,4 +350,6 @@
     <string name="delete_fail">删除失败</string>
     <string name="move_site_fail">移动网站失败</string>
     <string name="load_fail">加载失败</string>
+    <string name="added">已添加</string>
+    <string name="add_home_page">加主页</string>
 </resources>

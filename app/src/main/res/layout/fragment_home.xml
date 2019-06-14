@@ -48,6 +48,7 @@
                             android:background="@color/colorWhite"
                             android:id="@+id/recycler_view"
                             android:clipToPadding="false"
+                            android:overScrollMode="never"
                             android:paddingTop="9dp"
                             android:paddingStart="13dp"
                             android:paddingEnd="13dp"

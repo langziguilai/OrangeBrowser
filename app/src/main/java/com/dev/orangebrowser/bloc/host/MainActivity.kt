@@ -55,7 +55,6 @@ import com.dev.orangebrowser.utils.auto_install.InstallAppInstance
 import com.dev.view.NavigationBarUtil
 import com.dev.view.StatusBarUtil
 import com.hw.ycshareelement.YcShareElement
-import com.hw.ycshareelement.transition.ShareElementInfo
 import com.yzq.zxinglibrary.android.CaptureActivity
 import com.yzq.zxinglibrary.bean.ZxingConfig
 import com.yzq.zxinglibrary.common.Constant
@@ -64,6 +63,7 @@ import permissions.dispatcher.*
 import java.io.File
 import javax.inject.Inject
 import com.dev.orangebrowser.R
+import com.dev.orangebrowser.bloc.found.category.SiteListFragment
 import com.dev.orangebrowser.data.model.SimpleVideo
 
 const val APPLICATION_DATA = "application_data"
@@ -344,7 +344,15 @@ class MainActivity : BaseActivity(), DownloadManager.OnAutoInstallDownloadAppLis
             .replace(R.id.root_container, fragment)
             .commit()
     }
-
+    //加载发现页面
+    fun loadSiteListFragment(categoryName:String, url:String) {
+        val fragment = SiteListFragment.newInstance(categoryName=categoryName,url=url)
+        supportFragmentManager.beginTransaction()
+            .setCustomAnimations(R.anim.slide_left_in, R.anim.holder,R.anim.holder,R.anim.slide_right_out)
+            .add(R.id.root_container, fragment)
+            .addToBackStack(null)
+            .commit()
+    }
     //加载历史页面
     fun loadHistoryFragment() {
         val fragment = HistoryFragment.newInstance()

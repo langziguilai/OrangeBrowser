@@ -1,12 +1,14 @@
-package com.dev.orangebrowser.bloc.found
+package com.dev.orangebrowser.bloc.found.category
 
 import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.dev.base.BaseFragment
 import com.dev.base.extension.showToast
@@ -15,47 +17,53 @@ import com.dev.browser.session.SessionManager
 import com.dev.orangebrowser.R
 import com.dev.orangebrowser.bloc.host.MainViewModel
 import com.dev.orangebrowser.config.ErrorCode
-import com.dev.orangebrowser.data.model.SiteCategory
-import com.dev.orangebrowser.databinding.FragmentFoundBinding
-import com.dev.orangebrowser.extension.RouterActivity
+import com.dev.orangebrowser.data.model.CommonSite
+import com.dev.orangebrowser.databinding.FragmentSiteListBinding
 import com.dev.orangebrowser.extension.appComponent
-import com.dev.orangebrowser.extension.getColor
-import com.dev.util.DensityUtil
 import com.dev.view.StatusBarUtil
 import com.dev.view.recyclerview.CustomBaseViewHolder
-import com.dev.view.recyclerview.GridDividerItemDecoration
 import com.dev.view.recyclerview.adapter.base.BaseQuickAdapter
 import java.util.*
 import javax.inject.Inject
 
-class FoundFragment : BaseFragment(), BackHandler {
+class SiteListFragment : BaseFragment(), BackHandler {
     @Inject
     lateinit var sessionManager: SessionManager
-
+    val category:String
+        get() = arguments?.getString(SITE_CATEGORY_NAME) ?: ""
+    val url:String
+        get() = arguments?.getString(SITE_CATEGORY_URL) ?: ""
     override fun onBackPressed(): Boolean {
         sessionManager.selectedSession?.apply {
-            RouterActivity?.loadHomeOrBrowserFragment(this.id, R.anim.holder, R.anim.slide_right_out)
+            fragmentManager?.popBackStack()
         }
         return true
     }
 
     companion object {
-        val Tag = "FoundFragment"
-        fun newInstance() = FoundFragment()
+        val Tag = "SiteListFragment"
+        const val SITE_CATEGORY_NAME = "site_category_name"
+        const val SITE_CATEGORY_URL = "site_category_url"
+        fun newInstance(categoryName: String, url: String) = SiteListFragment().apply {
+            arguments = Bundle().apply {
+                putString(SITE_CATEGORY_NAME, categoryName)
+                putString(SITE_CATEGORY_URL, url)
+            }
+        }
     }
 
-    lateinit var viewModel: FoundViewModel
+    lateinit var viewModel: SiteListViewModel
     lateinit var activityViewModel: MainViewModel
-    lateinit var binding: FragmentFoundBinding
+    lateinit var binding: FragmentSiteListBinding
     override fun onAttach(context: Context) {
         super.onAttach(context)
         //注入
         appComponent.inject(this)
-        viewModel = ViewModelProviders.of(this, factory).get(FoundViewModel::class.java)
+        viewModel = ViewModelProviders.of(this, factory).get(SiteListViewModel::class.java)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        binding = FragmentFoundBinding.bind(super.onCreateView(inflater, container, savedInstanceState))
+        binding = FragmentSiteListBinding.bind(super.onCreateView(inflater, container, savedInstanceState))
         binding.lifecycleOwner = this
         return binding.root
     }
@@ -73,33 +81,29 @@ class FoundFragment : BaseFragment(), BackHandler {
 
     //获取layoutResourceId
     override fun getLayoutResId(): Int {
-        return R.layout.fragment_found
+        return R.layout.fragment_site_list
     }
 
-    private var data: LinkedList<SiteCategory> = LinkedList()
+    private var data: LinkedList<CommonSite> = LinkedList()
     override fun initViewWithDataBinding(savedInstanceState: Bundle?) {
         StatusBarUtil.setIconColor(requireActivity(), activityViewModel.theme.value!!.colorPrimary)
-        binding.recyclerView.layoutManager = GridLayoutManager(requireContext(), 2, RecyclerView.VERTICAL, false)
-        val spanWidth = DensityUtil.dip2px(requireContext(), 18f)
-        val spanHeight = spanWidth / 2
-        binding.recyclerView.addItemDecoration(
-            GridDividerItemDecoration(
-                spanWidth,
-                spanHeight,
-                getColor(R.color.colorWhite)
-            )
-        )
-        val adapter = object : BaseQuickAdapter<SiteCategory, CustomBaseViewHolder>(R.layout.item_site_category, data) {
-            override fun convert(helper: CustomBaseViewHolder, item: SiteCategory) {
-                helper.loadImage(R.id.icon, item.icon ?: "", strategy = CustomBaseViewHolder.CENTER_INSIDE)
+        binding.title.text=category
+        binding.recyclerView.layoutManager = LinearLayoutManager(requireContext(),  RecyclerView.VERTICAL, false)
+        val adapter = object : BaseQuickAdapter<CommonSite, CustomBaseViewHolder>(R.layout.item_site_common, data) {
+            override fun convert(helper: CustomBaseViewHolder, item: CommonSite) {
+                helper.addOnClickListener(R.id.add)
+                helper.loadImage(R.id.icon, item.icon ?: "", strategy = CustomBaseViewHolder.CENTER_OUTSIDE)
                 helper.setText(R.id.name, item.name ?: "")
-                helper.setText(R.id.description, item.description ?: "")
+                if (item.added){
+                    helper.setText(R.id.add,getString(R.string.added))
+                }else{
+                    helper.setText(R.id.add,getString(R.string.add_home_page))
+                }
             }
         }
-        adapter.setOnItemClickListener { _, _, position ->
-            val category=data[position]
-            if (category.name!=null && category.url!=null){
-                RouterActivity?.loadSiteListFragment(categoryName=category.name!!,url = category.url!!)
+        adapter.setOnItemChildClickListener { _, view, position ->
+            if (view.id==R.id.add){
+                addSiteToMainPage(view,data[position])
             }
         }
         binding.recyclerView.adapter = adapter
@@ -117,17 +121,15 @@ class FoundFragment : BaseFragment(), BackHandler {
         })
     }
 
+    private fun addSiteToMainPage(view:View,site:CommonSite){
+          if(!site.added){
+              site.added=true
+              view.findViewById<TextView>(R.id.add)?.text=getString(R.string.added)
+              viewModel.addToHomePage(site)
+          }
+    }
     override fun initData(savedInstanceState: Bundle?) {
-        viewModel.loadCategoryList()
+        viewModel.loadCommonSites(category)
         viewModel.loadFromRemote()
     }
-//看看是否添加头部
-//    private fun getHeaderView(): View {
-//        val view =
-//            LayoutInflater.from(requireContext()).inflate(R.layout.view_category_header, binding.recyclerView, false)
-//        view.findViewById<ImageView>(R.id.image)?.apply {
-//            //GlideHelper.loadRemoteImage()
-//        }
-//        return view
-//    }
 }

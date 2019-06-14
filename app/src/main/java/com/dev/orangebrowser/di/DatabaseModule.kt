@@ -8,10 +8,7 @@ import com.dev.browser.database.bookmark.BookMarkDao
 import com.dev.browser.database.download.DownloadDao
 import com.dev.browser.database.history.VisitHistoryDao
 import com.dev.orangebrowser.data.AppDatabase
-import com.dev.orangebrowser.data.dao.AdBlockFilterDao
-import com.dev.orangebrowser.data.dao.MainPageSiteDao
-import com.dev.orangebrowser.data.dao.SavedFileDao
-import com.dev.orangebrowser.data.dao.SiteCategoryDao
+import com.dev.orangebrowser.data.dao.*
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton
@@ -42,6 +39,11 @@ class DatabaseModule {
     @Singleton
     fun provideMainPageSiteDao(appDatabase: AppDatabase): MainPageSiteDao {
         return appDatabase.mainPageSiteDao()
+    }
+    @Provides
+    @Singleton
+    fun provideCommonSiteDao(appDatabase: AppDatabase): CommonSiteDao {
+        return appDatabase.commonSiteDao()
     }
     @Provides
     @Singleton

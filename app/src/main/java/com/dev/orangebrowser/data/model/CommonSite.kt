@@ -10,10 +10,11 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName="common_site")
 data class CommonSite(
-    @PrimaryKey var uid: Int,
+    @PrimaryKey(autoGenerate = true) var uid: Int,
     @ColumnInfo(name = "url") var url: String?, //首页
-    @ColumnInfo(name = "nameRes") var name: String?,//名称
+    @ColumnInfo(name = "name") var name: String?,//名称
+    @ColumnInfo(name = "description") var description: String?,//描述
     @ColumnInfo(name = "icon") var icon: String?, //icon
-    @ColumnInfo(name = "rank") var rank: Int?, //rank
-    @ColumnInfo(name = "category") var category: String? //分类
+    @ColumnInfo(name = "category") var category: String?, //分类
+    @ColumnInfo(name = "added") var added: Boolean=false //是否已经添加到主页
 )

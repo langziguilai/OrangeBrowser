@@ -10,7 +10,7 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName="main_page_site")
 data class MainPageSite(
-    @PrimaryKey(autoGenerate = true) var uid: Int,
+    @PrimaryKey(autoGenerate = true) var uid: Int=0,
     @ColumnInfo(name = "url") var url: String?, //首页
     @ColumnInfo(name = "name") var name: String?,//名称
     @ColumnInfo(name = "description") var description: String?,//描述

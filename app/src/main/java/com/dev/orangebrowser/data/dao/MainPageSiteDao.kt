@@ -12,7 +12,12 @@ interface MainPageSiteDao {
     //按照rank排序
     @Query("SELECT * FROM main_page_site ORDER BY rank ASC")
     fun getAll(): List<MainPageSite>
-
+    //获取总数
+    @Query("SELECT count(*) FROM main_page_site")
+    fun getCount(): Int
+    //获取总数
+    @Query("SELECT count(*) FROM main_page_site WHERE url=:url")
+    fun getExistCount(url:String): Int
     //更新排序
     @Query("UPDATE main_page_site SET rank=:rank where uid=:id")
     fun updateSiteRank(id: Int, rank: Int)
