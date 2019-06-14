@@ -62,13 +62,13 @@ class SiteListViewModel @Inject constructor(var context: Context) : CoroutineVie
 
     fun addToHomePage(site:CommonSite)=launch(Dispatchers.IO) {
         try {
+            commonSiteDao.updateAddStatus(site.uid,true)
             if(mainPageSiteDao.getExistCount(site.url ?: "")<=0){
                 val count=mainPageSiteDao.getCount()
                 mainPageSiteDao.insertAll(MainPageSite(url = site.url,
                     name = site.name,
                     description = site.description,
                     icon = site.icon,rank = count))
-                commonSiteDao.updateAddStatus(site.uid,true)
             }
         }catch (e: Exception){
             e.printStackTrace()
