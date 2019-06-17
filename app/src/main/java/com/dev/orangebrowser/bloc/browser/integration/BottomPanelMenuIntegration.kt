@@ -85,7 +85,7 @@ class BottomPanelMenuIntegration(
     }
     private fun initBottomMenuData(){
         //设置视野模式
-        fragment.appData.bottomMenuActionItems.find { it.id==R.string.ic_normal_screen  }?.apply {
+        fragment.appDataForFragment.bottomMenuActionItems.find { it.id==R.string.ic_normal_screen  }?.apply {
             val viewMode=fragment.getSpInt(R.string.pref_setting_view_mode,Session.NORMAL_SCREEN_MODE)
             if (viewMode==Session.NORMAL_SCREEN_MODE){
                 this.active=false
@@ -105,11 +105,11 @@ class BottomPanelMenuIntegration(
         }
 
         //设置UserAgent
-        fragment.appData.bottomMenuActionItems.find { it.id== R.string.ic_desktop  }?.apply {
+        fragment.appDataForFragment.bottomMenuActionItems.find { it.id== R.string.ic_desktop  }?.apply {
                 this.active=session.desktopMode
         }
         //设置无图模式
-        fragment.appData.bottomMenuActionItems.find { it.id== R.string.ic_forbid_image  }?.apply {
+        fragment.appDataForFragment.bottomMenuActionItems.find { it.id== R.string.ic_forbid_image  }?.apply {
             if(session.forbidImageMode){
                 this.active=true
                 this.iconRes=R.string.ic_forbid_image
@@ -119,14 +119,14 @@ class BottomPanelMenuIntegration(
             }
         }
         //设置隐私模式
-        fragment.appData.bottomMenuActionItems.find { it.id== R.string.ic_privacy  }?.apply {
+        fragment.appDataForFragment.bottomMenuActionItems.find { it.id== R.string.ic_privacy  }?.apply {
             this.active = session.private
         }
     }
     private fun initBottomMenuGridView(bottomMenuGridView: GridView) {
         val adapter = object : BaseQuickAdapter<ActionItem, CustomBaseViewHolder>(
             R.layout.item_bottom_action_item,
-            fragment.appData.bottomMenuActionItems
+            fragment.appDataForFragment.bottomMenuActionItems
         ) {
             override fun convert(helper: CustomBaseViewHolder, item: ActionItem) {
                 if (item.active) {
@@ -141,7 +141,7 @@ class BottomPanelMenuIntegration(
             }
         }
         adapter.setOnItemClickListener { _, view, position ->
-            onBottomMenuActionItemClick(view, fragment.appData.bottomMenuActionItems[position])
+            onBottomMenuActionItemClick(view, fragment.appDataForFragment.bottomMenuActionItems[position])
         }
         bottomMenuGridView.adapter = adapter
     }

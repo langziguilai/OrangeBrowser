@@ -9,7 +9,7 @@ import com.dev.orangebrowser.di.ApplicationComponent
 val AppCompatActivity.appComponent: ApplicationComponent
     get() = (applicationContext as AndroidApplication).appComponent
 
-val AppCompatActivity.appData: ApplicationData
+val AppCompatActivity.appDataForActivity: ApplicationData?
     get() = (applicationContext as AndroidApplication).applicationData
 
 val AppCompatActivity.myApplication:AndroidApplication

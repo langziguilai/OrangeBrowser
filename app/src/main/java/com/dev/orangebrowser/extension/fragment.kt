@@ -13,8 +13,8 @@ val androidx.fragment.app.Fragment.appComponent: ApplicationComponent
 
 
 
-val androidx.fragment.app.Fragment.appData: ApplicationData
-    get() = (requireContext().applicationContext as AndroidApplication).applicationData
+val androidx.fragment.app.Fragment.appDataForFragment: ApplicationData
+    get() = (requireContext().applicationContext as AndroidApplication).applicationData!!
 
 val androidx.fragment.app.Fragment.RouterActivity: MainActivity?
     get(){

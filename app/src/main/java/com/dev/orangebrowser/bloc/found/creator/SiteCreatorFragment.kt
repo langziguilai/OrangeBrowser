@@ -19,7 +19,7 @@ import com.dev.orangebrowser.config.ErrorCode
 import com.dev.orangebrowser.data.model.MainPageSite
 import com.dev.orangebrowser.databinding.FragmentSiteCreatorBinding
 import com.dev.orangebrowser.extension.appComponent
-import com.dev.orangebrowser.extension.appData
+import com.dev.orangebrowser.extension.appDataForFragment
 import com.dev.orangebrowser.extension.getColor
 import com.dev.util.ColorKitUtil
 import com.dev.util.DensityUtil
@@ -120,7 +120,7 @@ class SiteCreatorFragment : BaseFragment(), BackHandler {
     }
     private fun parseThemes(){
         try {
-            themes.addAll(appData.themes.themeSources.map{ Color.parseColor(it.colorPrimary) })
+            themes.addAll(appDataForFragment.themes.themeSources.map{ Color.parseColor(it.colorPrimary) })
             if (!themes.contains(color)){
                 themes.add(0,color)
             }

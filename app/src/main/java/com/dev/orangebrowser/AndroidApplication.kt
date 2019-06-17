@@ -51,7 +51,7 @@ class AndroidApplication:BaseApplication(),CoroutineScope {
             .build()
     }
     //全局数据
-    lateinit var applicationData: ApplicationData
+    var applicationData: ApplicationData?=null
 
     fun initApplicationData(data:ApplicationData){applicationData=data}
     override fun injectMembers() {

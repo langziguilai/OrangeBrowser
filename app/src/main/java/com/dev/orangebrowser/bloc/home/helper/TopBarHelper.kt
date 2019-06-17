@@ -9,7 +9,7 @@ import com.dev.orangebrowser.bloc.home.HomeFragment
 import com.dev.orangebrowser.data.model.ActionItem
 import com.dev.orangebrowser.databinding.FragmentHomeBinding
 import com.dev.orangebrowser.extension.RouterActivity
-import com.dev.orangebrowser.extension.appData
+import com.dev.orangebrowser.extension.appDataForFragment
 import com.dev.orangebrowser.extension.getSpBool
 import com.dev.view.GridView
 import com.dev.view.NavigationBarUtil
@@ -36,7 +36,7 @@ class TopBarHelper(var binding: FragmentHomeBinding, var fragment: HomeFragment,
             }
         }
         binding.topMenu.setOnClickListener {
-            if (fragment.appData.topMenuActionItems.isEmpty()){
+            if (fragment.appDataForFragment.topMenuActionItems.isEmpty()){
                 fragment.requireContext().showToast(fragment.requireContext().getString(R.string.tip_no_library_function_selected))
             }else{
                 toggleTopPanel()
@@ -110,17 +110,17 @@ class TopBarHelper(var binding: FragmentHomeBinding, var fragment: HomeFragment,
                 result.add(ActionItem(nameRes = R.string.add_to_home_page, iconRes = R.string.ic_store, id = R.string.ic_store))
             }
         }
-        fragment.appData.topMenuActionItems=result
+        fragment.appDataForFragment.topMenuActionItems=result
     }
     private fun initTopMenuGridView(topMenuPanel: GridView) {
-        val adapter=object: BaseQuickAdapter<ActionItem, CustomBaseViewHolder>(R.layout.item_top_action_item,fragment.appData.topMenuActionItems){
+        val adapter=object: BaseQuickAdapter<ActionItem, CustomBaseViewHolder>(R.layout.item_top_action_item,fragment.appDataForFragment.topMenuActionItems){
             override fun convert(helper: CustomBaseViewHolder, item: ActionItem) {
                 helper.setText(R.id.icon,item.iconRes)
                 helper.setText(R.id.name,item.nameRes)
             }
         }
         adapter.setOnItemClickListener { _, _, position ->
-            onTopMenuActionItemClick(fragment.appData.topMenuActionItems[position])
+            onTopMenuActionItemClick(fragment.appDataForFragment.topMenuActionItems[position])
         }
         topMenuPanel.adapter=adapter
     }

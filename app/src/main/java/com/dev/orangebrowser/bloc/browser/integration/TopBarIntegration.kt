@@ -15,8 +15,7 @@ import com.dev.orangebrowser.bloc.browser.integration.helper.TopPanelHelper
 import com.dev.orangebrowser.bloc.browser.integration.helper.redirect
 import com.dev.orangebrowser.databinding.FragmentBrowserBinding
 import com.dev.orangebrowser.extension.RouterActivity
-import com.dev.orangebrowser.extension.appData
-import com.dev.orangebrowser.extension.getSpInt
+import com.dev.orangebrowser.extension.appDataForFragment
 import com.dev.orangebrowser.extension.getSpString
 import com.dev.util.StringUtil
 
@@ -57,7 +56,7 @@ class TopBarIntegration(
             }
         }
         binding.topMenu.setOnClickListener {
-            if (fragment.appData.topMenuActionItems.isEmpty()) {
+            if (fragment.appDataForFragment.topMenuActionItems.isEmpty()) {
                 fragment.requireContext()
                     .showToast(fragment.requireContext().getString(R.string.tip_no_library_function_selected))
             } else {

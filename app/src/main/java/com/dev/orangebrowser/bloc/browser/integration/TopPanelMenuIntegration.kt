@@ -21,7 +21,7 @@ import com.dev.orangebrowser.data.model.ActionItem
 import com.dev.orangebrowser.data.model.SavedFile
 import com.dev.orangebrowser.databinding.FragmentBrowserBinding
 import com.dev.orangebrowser.extension.RouterActivity
-import com.dev.orangebrowser.extension.appData
+import com.dev.orangebrowser.extension.appDataForFragment
 import com.dev.orangebrowser.extension.getSpBool
 import com.dev.view.GridView
 import com.dev.view.recyclerview.CustomBaseViewHolder
@@ -109,13 +109,13 @@ class TopPanelMenuIntegration(
                 result.add(ActionItem(nameRes = R.string.add_to_home_page, iconRes = R.string.ic_store, id = R.string.ic_store))
             }
         }
-        fragment.appData.topMenuActionItems=result
+        fragment.appDataForFragment.topMenuActionItems=result
     }
     private fun initTopMenuGridView(topMenuPanel: GridView) {
         val adapter =
-            TopMenuPanelAdapter(R.color.colorWhite, R.layout.item_top_action_item, fragment.appData.topMenuActionItems)
+            TopMenuPanelAdapter(R.color.colorWhite, R.layout.item_top_action_item, fragment.appDataForFragment.topMenuActionItems)
         adapter.setOnItemClickListener { _, _, position ->
-            onTopMenuActionItemClick(fragment.appData.topMenuActionItems[position])
+            onTopMenuActionItemClick(fragment.appDataForFragment.topMenuActionItems[position])
         }
         topMenuPanel.adapter = adapter
     }

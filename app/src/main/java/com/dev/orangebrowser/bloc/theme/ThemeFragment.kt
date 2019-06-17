@@ -86,7 +86,7 @@ class ThemeFragment : BaseFragment(), BackHandler {
     override fun initData(savedInstanceState: Bundle?) {
         binding.recyclerView.adapter = object : BaseQuickAdapter<ThemeSource, CustomBaseViewHolder>(
             R.layout.item_theme,
-            appData.themes.themeSources
+            appDataForFragment.themes.themeSources
         ) {
             override fun convert(helper: CustomBaseViewHolder, item: ThemeSource) {
                 val bg = DrawableCreator.Builder()

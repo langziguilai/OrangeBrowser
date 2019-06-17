@@ -3,7 +3,6 @@ package com.dev.orangebrowser.bloc.browser
 
 import android.content.Context
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.view.*
 import androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -39,8 +38,7 @@ import com.dev.browser.database.bookmark.BookMarkCategoryDao
 import com.dev.browser.database.bookmark.BookMarkDao
 import com.dev.browser.session.Session
 import com.dev.orangebrowser.data.dao.SavedFileDao
-import com.dev.orangebrowser.extension.appData
-import com.dev.util.ColorStore
+import com.dev.orangebrowser.extension.appDataForFragment
 import com.dev.view.NavigationBarUtil
 
 
@@ -470,7 +468,7 @@ class BrowserFragment : BaseFragment(), BackHandler, UserInteractionHandler {
             NavigationBarUtil.setNavigationBarColor(RouterActivity!!,activityViewModel.theme.value!!.colorPrimary)
         }
         //清除全局视野模式的active标志
-        appData.bottomMenuActionItems.find {
+        appDataForFragment.bottomMenuActionItems.find {
             it.id==R.string.ic_normal_screen
         }?.active=false
         super.onDetach()

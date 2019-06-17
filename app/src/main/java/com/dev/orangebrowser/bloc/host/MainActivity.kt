@@ -49,7 +49,6 @@ import com.dev.orangebrowser.bloc.theme.ThemeFragment
 import com.dev.orangebrowser.data.model.ApplicationData
 import com.dev.orangebrowser.data.model.SimpleImage
 import com.dev.orangebrowser.extension.appComponent
-import com.dev.orangebrowser.extension.appData
 import com.dev.orangebrowser.extension.myApplication
 import com.dev.orangebrowser.utils.auto_install.InstallAppInstance
 import com.dev.view.NavigationBarUtil
@@ -66,6 +65,7 @@ import com.dev.orangebrowser.R
 import com.dev.orangebrowser.bloc.found.category.SiteListFragment
 import com.dev.orangebrowser.bloc.found.creator.SiteCreatorFragment
 import com.dev.orangebrowser.data.model.SimpleVideo
+import com.dev.orangebrowser.extension.appDataForActivity
 
 const val APPLICATION_DATA = "application_data"
 
@@ -137,8 +137,8 @@ class MainActivity : BaseActivity(), DownloadManager.OnAutoInstallDownloadAppLis
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
-        if (appData != null) {
-            outState.putParcelable(APPLICATION_DATA, appData)
+        if (appDataForActivity != null) {
+            outState.putParcelable(APPLICATION_DATA, appDataForActivity)
         }
         super.onSaveInstanceState(outState)
     }
