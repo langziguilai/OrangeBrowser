@@ -3,6 +3,7 @@ package com.dev.orangebrowser.bloc.browser.integration.helper
 import android.app.Activity
 import android.content.Context
 import android.content.pm.ActivityInfo
+import android.net.Uri
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.view.setPadding
 import com.dev.base.extension.enterToImmersiveMode
@@ -11,12 +12,13 @@ import com.dev.base.extension.hide
 import com.dev.base.extension.show
 import com.dev.browser.session.Session
 import com.dev.orangebrowser.R
+import com.dev.orangebrowser.bloc.browser.BrowserFragment
 import com.dev.orangebrowser.bloc.host.MainActivity
 import com.dev.orangebrowser.databinding.FragmentBrowserBinding
 import com.dev.orangebrowser.bloc.browser.view.WebViewToggleBehavior
 import com.dev.view.StatusBarUtil
 
-class FullScreenHelper(var binding:FragmentBrowserBinding,var activity: Activity){
+class FullScreenHelper(var binding:FragmentBrowserBinding,var activity: Activity,var session:Session,var fragment:BrowserFragment){
     var lastScreenMode:Int=-1
     private var behavior: WebViewToggleBehavior?=null
     init {
@@ -47,6 +49,7 @@ class FullScreenHelper(var binding:FragmentBrowserBinding,var activity: Activity
                    activity.requestedOrientation= ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
                }
                binding.browserContainer.fitsSystemWindows=false
+               binding.browserContainer.setBackgroundColor(0x000000)
            }else{ //退出全局视野
                StatusBarUtil.showStatusBar(activity)
                //退出全屏模式
@@ -74,6 +77,14 @@ class FullScreenHelper(var binding:FragmentBrowserBinding,var activity: Activity
                    activity.requestedOrientation= ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
                }
                binding.browserContainer.fitsSystemWindows=true
+               binding.browserContainer.setBackgroundColor(activity.resources.getColor(R.color.colorBlack))
+               val host = Uri.parse(session.url).host ?: ""
+               if (session.themeColorMap.containsKey(host)) {
+                   binding.browserContainer.setBackgroundColor(session.themeColorMap[host]!!)
+               } else {
+                   val color = fragment.activityViewModel.theme.value!!.colorPrimary
+                   binding.browserContainer.setBackgroundColor(color)
+               }
            }
     }
 }

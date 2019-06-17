@@ -175,7 +175,7 @@ class BrowserFragment : BaseFragment(), BackHandler, UserInteractionHandler {
                 this.setHelper(webViewVisionHelper)
             }
         }
-        fullScreenHelper = FullScreenHelper(binding, requireActivity())
+        fullScreenHelper = FullScreenHelper(binding, requireActivity(),session,this)
 
 
         bottomBarIntegration.set(

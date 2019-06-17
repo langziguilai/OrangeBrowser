@@ -64,6 +64,7 @@ import java.io.File
 import javax.inject.Inject
 import com.dev.orangebrowser.R
 import com.dev.orangebrowser.bloc.found.category.SiteListFragment
+import com.dev.orangebrowser.bloc.found.creator.SiteCreatorFragment
 import com.dev.orangebrowser.data.model.SimpleVideo
 
 const val APPLICATION_DATA = "application_data"
@@ -347,6 +348,15 @@ class MainActivity : BaseActivity(), DownloadManager.OnAutoInstallDownloadAppLis
     //加载发现页面
     fun loadSiteListFragment(categoryName:String, url:String) {
         val fragment = SiteListFragment.newInstance(categoryName=categoryName,url=url)
+        supportFragmentManager.beginTransaction()
+            .setCustomAnimations(R.anim.slide_left_in, R.anim.holder,R.anim.holder,R.anim.slide_right_out)
+            .add(R.id.root_container, fragment)
+            .addToBackStack(null)
+            .commit()
+    }
+    //添加到主页的创作页面
+    fun loadSiteCreatorFragment(sessionId:String="") {
+        val fragment = SiteCreatorFragment.newInstance(sessionId=sessionId)
         supportFragmentManager.beginTransaction()
             .setCustomAnimations(R.anim.slide_left_in, R.anim.holder,R.anim.holder,R.anim.slide_right_out)
             .add(R.id.root_container, fragment)

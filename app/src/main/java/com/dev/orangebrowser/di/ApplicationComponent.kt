@@ -12,6 +12,7 @@ import com.dev.orangebrowser.bloc.download.image.DownloadImageFragment
 import com.dev.orangebrowser.bloc.download.video.DownloadVideoFragment
 import com.dev.orangebrowser.bloc.found.FoundFragment
 import com.dev.orangebrowser.bloc.found.category.SiteListFragment
+import com.dev.orangebrowser.bloc.found.creator.SiteCreatorFragment
 import com.dev.orangebrowser.bloc.history.HistoryFragment
 import com.dev.orangebrowser.bloc.home.HomeFragment
 import com.dev.orangebrowser.bloc.host.MainActivity
@@ -52,6 +53,7 @@ interface ApplicationComponent {
     fun inject(tabFragment: TabFragment)
     fun inject(foundFragment: FoundFragment)
     fun inject(siteListFragment: SiteListFragment)
+    fun inject(siteCreatorFragment: SiteCreatorFragment)
     fun inject(historyFragment: HistoryFragment)
     fun inject(bookMarkFragment: BookMarkFragment)
     fun inject(themeFragment: ThemeFragment)

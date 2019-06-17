@@ -79,6 +79,9 @@ class FoundFragment : BaseFragment(), BackHandler {
     private var data: LinkedList<SiteCategory> = LinkedList()
     override fun initViewWithDataBinding(savedInstanceState: Bundle?) {
         StatusBarUtil.setIconColor(requireActivity(), activityViewModel.theme.value!!.colorPrimary)
+        binding.addNew.setOnClickListener {
+            RouterActivity?.loadSiteCreatorFragment()
+        }
         binding.recyclerView.layoutManager = GridLayoutManager(requireContext(), 2, RecyclerView.VERTICAL, false)
         val spanWidth = DensityUtil.dip2px(requireContext(), 18f)
         val spanHeight = spanWidth / 2

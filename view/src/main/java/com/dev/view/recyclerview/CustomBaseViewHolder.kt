@@ -144,19 +144,19 @@ open class CustomBaseViewHolder(view: View) : BaseViewHolder(view) {
     fun loadTextAsImage(
         @IdRes viewId: Int, text: String?,
         fontSize: Int = 42,
-        textColor: Int = 0x111111,
+        textColor: Int? = 0x111111,
         borderRadius: Int = 0,
         borderSize: Int = 0,
-        backgroundColor: Int = 0xEEEEEE
+        backgroundColor: Int? = 0xDDDDDD
     ): CustomBaseViewHolder {
         val view = getView<ImageView>(viewId)
         val textDrawable = TextDrawable.builder()
             .beginConfig()
             .fontSize(fontSize)
-            .textColor(textColor)
+            .textColor(textColor!!)
             .withBorder(borderSize)
             .endConfig()
-            .buildRoundRect(text?.substring(0, 1), backgroundColor, borderRadius) // radius in px
+            .buildRoundRect(text?.substring(0, 1), backgroundColor!!, borderRadius) // radius in px
         Glide.with(view.context).load(textDrawable)
             .into(view)
         return this

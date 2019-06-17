@@ -201,9 +201,11 @@ class TopPanelMenuIntegration(
                     fragment.RouterActivity?.loadResourceFragment(fragment.sessionId)
                 })
             }
-            //TODO:添加到主页
-            R.string.ic_store -> {
 
+            R.string.ic_store -> {
+                redirect(binding=binding,session = session,runnable = kotlinx.coroutines.Runnable {
+                    fragment.RouterActivity?.loadSiteCreatorFragment(fragment.sessionId)
+                })
             }
         }
     }

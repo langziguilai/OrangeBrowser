@@ -62,7 +62,7 @@
     <string name="ic_translate">&#xe633;</string>
     <string name="ic_ad_mark">&#xe650;</string>
     <string name="ic_download">&#xe7f1;</string>
-    <string name="ic_close">&#xe7fd;</string>
+    <string name="ic_close">&#xe7fe;</string>
     <string name="ic_lock_fill">&#xe86a;</string>
     <string name="ic_circle_plus">&#xe532;</string>
     <string name="ic_arrow_left">&#xe7f0;</string>
@@ -71,9 +71,10 @@
     <string name="ic_tag">&#xe7e4;</string>
     <string name="ic_tags">&#xe7e5;</string>
     <string name="ic_folder">&#xe7d1;</string>
-    <string name="ic_file">e</string>
+    <string name="ic_file">&#xe7bb;</string>
     <string name="ic_play">&#xe796;</string>
     <string name="ic_link">&#xe7e2;</string>
+    <string name="ic_check">&#xe7fd;</string>
 
 
     <string name="search_or_input">搜索或输入网址</string>
@@ -352,4 +353,10 @@
     <string name="load_fail">加载失败</string>
     <string name="added">已添加</string>
     <string name="add_home_page">加主页</string>
+    <string name="web_address">网址</string>
+    <string name="random_theme">随机主题</string>
+    <string name="sub_title">副标题</string>
+    <string name="name">名字</string>
+    <string name="get_theme_color_failed">获取主题失败</string>
+    <string name="save_success">保存成功</string>
 </resources>

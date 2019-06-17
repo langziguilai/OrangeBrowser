@@ -146,13 +146,13 @@ class HomeFragment : BaseLazyFragment(), BackHandler {
                     helper.itemView.findViewById<View>(R.id.delete_icon)?.hide()
                 }
                 helper.setTextToAppCompatTextView(R.id.title,item.data.name ?: "")
-                if (item.data.icon!=null){
+                if (item.data.icon!=null && item.data.icon!!.isNotBlank()){
                     helper.loadImage(R.id.icon,item.data.icon!!)
                 }else{
                     helper.loadTextAsImage(R.id.icon,text = item.data.textIcon ?: "",
-                        textColor = activityViewModel.theme.value!!.colorPrimary,
+                        textColor = item.data.textColor,
                         borderRadius = DensityUtil.dip2px(requireContext(),6f),
-                        backgroundColor =Color.parseColor(item.data.backgroundColor) )
+                        backgroundColor =item.data.backgroundColor)
                 }
             }
         }
