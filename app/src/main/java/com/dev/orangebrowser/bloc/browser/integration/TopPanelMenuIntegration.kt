@@ -204,7 +204,9 @@ class TopPanelMenuIntegration(
 
             R.string.ic_store -> {
                 redirect(binding=binding,session = session,runnable = kotlinx.coroutines.Runnable {
-                    fragment.RouterActivity?.loadSiteCreatorFragment(fragment.sessionId)
+                    topPanelHelper.toggleTopPanel(Runnable {
+                        fragment.RouterActivity?.loadSiteCreatorFragment(fragment.sessionId)
+                    })
                 })
             }
         }
