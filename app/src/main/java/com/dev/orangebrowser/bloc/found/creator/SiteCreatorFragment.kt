@@ -121,7 +121,9 @@ class SiteCreatorFragment : BaseFragment(), BackHandler {
     private fun parseThemes(){
         try {
             themes.addAll(appData.themes.themeSources.map{ Color.parseColor(it.colorPrimary) })
-            themes.add(0,color)
+            if (!themes.contains(color)){
+                themes.add(0,color)
+            }
             random= Random(themes.size)
         }catch (e:Exception){
             requireContext().showToast(getString(R.string.get_theme_color_failed))
