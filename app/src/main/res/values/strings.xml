@@ -359,4 +359,10 @@
     <string name="name">名字</string>
     <string name="get_theme_color_failed">获取主题失败</string>
     <string name="save_success">保存成功</string>
+    <string name="warning_url_not_valid">请输入正确的网址</string>
+    <string name="warning_name_not_valid">请输入名称</string>
+    <string name="warning_description_not_valid">请输入描述</string>
+    <string name="warning_input_sub_title">请输入副标题</string>
+    <string name="warning_input_title">请输入标题</string>
+    <string name="site_name">网站名称</string>
 </resources>

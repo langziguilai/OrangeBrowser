@@ -43,8 +43,11 @@ import com.dev.view.recyclerview.adapter.base.BaseItemDraggableAdapter
 import com.dev.view.recyclerview.adapter.base.callback.ItemDragAndSwipeCallback
 import com.dev.view.recyclerview.adapter.base.listener.OnItemDragListener
 import com.evernote.android.state.State
+import com.noober.background.drawable.DrawableCreator
 import java.util.*
 import javax.inject.Inject
+
+
 
 
 class HomeFragment : BaseLazyFragment(), BackHandler {
@@ -147,12 +150,23 @@ class HomeFragment : BaseLazyFragment(), BackHandler {
                 }
                 helper.setTextToAppCompatTextView(R.id.title,item.data.name ?: "")
                 if (item.data.icon!=null && item.data.icon!!.isNotBlank()){
+                    helper.itemView.findViewById<View>(R.id.text_image)?.hide()
+                    helper.itemView.findViewById<View>(R.id.icon)?.show()
                     helper.loadImage(R.id.icon,item.data.icon!!)
                 }else{
-                    helper.loadTextAsImage(R.id.icon,text = item.data.textIcon ?: "",
-                        textColor = item.data.textColor,
-                        borderRadius = DensityUtil.dip2px(requireContext(),6f),
-                        backgroundColor =item.data.backgroundColor)
+                    helper.itemView.findViewById<View>(R.id.text_image)?.show()
+                    helper.itemView.findViewById<View>(R.id.icon)?.hide()
+                    helper.setText(R.id.page_title,item.data.textIcon)
+                    helper.setTextColor(R.id.page_title, item.data.textColor ?: 0x000000)
+                    helper.setText(R.id.page_subtitle,item.data.subTextIcon)
+                    helper.setTextColor(R.id.page_subtitle, item.data.textColor ?: 0x000000)
+                    helper.setBackgroundColor(R.id.text_image,item.data.backgroundColor ?: activityViewModel.theme.value!!.colorPrimary)
+                    val drawable = DrawableCreator.Builder()
+                        .setSolidColor(item.data.backgroundColor ?: activityViewModel.theme.value!!.colorPrimary)
+                        .setCornersRadius(DensityUtil.dip2px(requireContext(), 2f).toFloat())
+                        .setStrokeWidth(1f)
+                        .setStrokeColor(0xdfdfdf).build()
+                    helper.itemView.findViewById<View>(R.id.text_image)?.background=drawable
                 }
             }
         }

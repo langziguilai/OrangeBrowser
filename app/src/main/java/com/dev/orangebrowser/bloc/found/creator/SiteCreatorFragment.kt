@@ -11,6 +11,7 @@ import androidx.lifecycle.ViewModelProviders
 import com.dev.base.BaseFragment
 import com.dev.base.extension.showToast
 import com.dev.base.support.BackHandler
+import com.dev.base.support.isUrl
 import com.dev.browser.session.SessionManager
 import com.dev.orangebrowser.R
 import com.dev.orangebrowser.bloc.host.MainViewModel
@@ -92,7 +93,7 @@ class SiteCreatorFragment : BaseFragment(), BackHandler {
         color = if (session != null) {
             binding.url.setText(session.url)
             binding.siteTitle.setText(session.title)
-            binding.siteDomain.setText(Uri.parse(session.url).host)
+            binding.siteSubTitle.setText(Uri.parse(session.url).host)
             binding.siteName.setText(session.title)
             session.themeColorMap[Uri.parse(session.url).host ?: ""] ?: activityViewModel.theme.value!!.colorPrimary
         }else{
@@ -154,25 +155,62 @@ class SiteCreatorFragment : BaseFragment(), BackHandler {
             textColor=getColor(R.color.colorBlack)
             binding.siteTitle.setTextColor(getColor(R.color.colorBlack))
             binding.siteTitle.setHintTextColor(getColor(R.color.colorBlack))
-            binding.siteDomain.setTextColor(getColor(R.color.colorBlack))
-            binding.siteDomain.setHintTextColor(getColor(R.color.colorBlack))
+            binding.siteSubTitle.setTextColor(getColor(R.color.colorBlack))
+            binding.siteSubTitle.setHintTextColor(getColor(R.color.colorBlack))
         } else {
             textColor=getColor(R.color.colorWhite)
             binding.siteTitle.setTextColor(getColor(R.color.colorWhite))
             binding.siteTitle.setHintTextColor(getColor(R.color.colorWhite))
-            binding.siteDomain.setTextColor(getColor(R.color.colorWhite))
-            binding.siteDomain.setHintTextColor(getColor(R.color.colorWhite))
+            binding.siteSubTitle.setTextColor(getColor(R.color.colorWhite))
+            binding.siteSubTitle.setHintTextColor(getColor(R.color.colorWhite))
         }
     }
 
     fun save() {
+        val url=binding.url.text.toString()
+        if (url.isBlank() || !url.isUrl()){
+            requireContext().apply {
+                showToast(getString(R.string.warning_url_not_valid))
+            }
+            return
+        }
+        val name=binding.siteName.text.toString()
+        if (name.isBlank()){
+            requireContext().apply {
+                showToast(getString(R.string.warning_name_not_valid))
+            }
+            return
+        }
+        val description=binding.siteSubTitle.text.toString()
+        if (description.isBlank()){
+            requireContext().apply {
+                showToast(getString(R.string.warning_input_sub_title))
+            }
+            return
+        }
+        val text=binding.siteTitle.text.toString()
+        if (text.isBlank()){
+            requireContext().apply {
+                showToast(getString(R.string.warning_input_title))
+            }
+            return
+        }
+        val subText=binding.siteSubTitle.text.toString()
+        if (subText.isBlank()){
+            requireContext().apply {
+                showToast(getString(R.string.warning_input_sub_title))
+            }
+            return
+        }
+
         val mainPageSite=MainPageSite(
             url=binding.url.text.toString(),
             name = binding.siteName.text.toString(),
             backgroundColor = color,
-            description = binding.siteDomain.text.toString(),
+            description = binding.siteSubTitle.text.toString(),
             textColor = textColor,
-            textIcon = binding.siteName.text.toString()
+            textIcon = binding.siteTitle.text.toString(),
+            subTextIcon = binding.siteSubTitle.text.toString()
         )
         viewModel.addToHomePage(mainPageSite)
     }
