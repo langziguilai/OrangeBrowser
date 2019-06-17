@@ -54,6 +54,8 @@ dependencies {
     releaseImplementation 'com.squareup.leakcanary:leakcanary-android-no-op:1.6.3'
     //debug tool
     implementation 'com.facebook.stetho:stetho:1.5.0'
+    //
+    implementation 'me.weishu:free_reflection:2.0.0'
     implementation project(':util')
     implementation project(':view')
 }

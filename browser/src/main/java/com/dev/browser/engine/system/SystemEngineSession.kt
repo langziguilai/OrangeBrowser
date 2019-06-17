@@ -402,7 +402,8 @@ class SystemEngineSession(
                 verticalScrollBarEnabled = it.verticalScrollBarEnabled
                 horizontalScrollBarEnabled = it.horizontalScrollBarEnabled
                 userAgentString = it.userAgentString
-                supportMultipleWindows = it.supportMultipleWindows and false  //暂时不支持多窗口，因为，yandex会崩溃，暂时不知道原因
+                //supportMultipleWindows = it.supportMultipleWindows and false  //暂时不支持多窗口，因为，yandex会崩溃，暂时不知道原因
+                supportMultipleWindows = it.supportMultipleWindows //暂时不支持多窗口，因为，yandex会崩溃，暂时不知道原因
             }
         }
     }

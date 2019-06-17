@@ -1,0 +1,10 @@
+package com.dev.base.crash;
+
+import android.os.IBinder;
+
+public class ClientTransaction {
+
+    public IBinder getActivityToken() {
+        return null;
+    }
+}

@@ -1,8 +1,12 @@
 package com.dev.orangebrowser
 
-import android.os.Environment
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
+import android.widget.Toast
 import com.dev.base.BaseApplication
+import com.dev.base.crash.cockroach.Cockroach
+import com.dev.base.crash.cockroach.ExceptionHandler
 import com.dev.browser.adblock.setting.AdblockHelper
 import com.dev.browser.session.Session
 import com.dev.browser.session.SessionManager
@@ -22,9 +26,11 @@ import kotlinx.coroutines.*
 import org.adblockplus.libadblockplus.android.AdblockEngine
 import org.adblockplus.libadblockplus.android.SingleInstanceEngineProvider
 import tv.danmaku.ijk.media.exo2.Exo2PlayerManager
-import java.lang.Exception
 import javax.inject.Inject
 import kotlin.coroutines.CoroutineContext
+
+
+
 
 class AndroidApplication:BaseApplication(),CoroutineScope {
     private val job= SupervisorJob()
@@ -53,6 +59,7 @@ class AndroidApplication:BaseApplication(),CoroutineScope {
     }
     lateinit var sessionClearObserver:SessionManager.Observer
     override fun initialize() {
+        initCrashHandler()
         YcShareElement.enableContentTransition(this)
         BigImageViewer.initialize(GlideImageLoader.with(this))
         sessionClearObserver=object:SessionManager.Observer{
@@ -118,6 +125,42 @@ class AndroidApplication:BaseApplication(),CoroutineScope {
 
         //设置GSYVideoPLAYER的播放方式
         PlayerFactory.setPlayManager(Exo2PlayerManager::class.java)
+    }
+    //
+    private fun initCrashHandler(){
+        val sysExceptionHandler = Thread.getDefaultUncaughtExceptionHandler()
+        val toast = Toast.makeText(this, "", Toast.LENGTH_SHORT)
+        Cockroach.install(this,object:ExceptionHandler(){
+            override fun onUncaughtExceptionHappened(thread: Thread, throwable: Throwable) {
+                Log.e("AndroidRuntime", "--->onUncaughtExceptionHappened:$thread<---", throwable)
+                if (BuildConfig.DEBUG) {
+                    Handler(Looper.getMainLooper()).post(Runnable {
+                        toast.setText(R.string.safe_mode_excep_tips)
+                        toast.show()
+                    })
+                }
+            }
+
+            override fun onBandageExceptionHappened(throwable: Throwable) {
+                throwable.printStackTrace()//打印警告级别log，该throwable可能是最开始的bug导致的，无需关心
+                if (BuildConfig.DEBUG) {
+                    toast.setText("Cockroach Worked")
+                    toast.show()
+                }
+            }
+
+            override fun onEnterSafeMode() {
+
+            }
+
+            override fun onMayBeBlackScreen(e: Throwable) {
+                super.onMayBeBlackScreen(e)
+                val thread = Looper.getMainLooper().thread
+                Log.e("AndroidRuntime", "--->onUncaughtExceptionHappened:$thread<---", e)
+                //黑屏时建议直接杀死app
+                sysExceptionHandler.uncaughtException(thread, RuntimeException("black screen"))
+            }
+        })
     }
     //注入自定义的Filter
     private fun injectFilterToAdBlock(engine:AdblockEngine){
