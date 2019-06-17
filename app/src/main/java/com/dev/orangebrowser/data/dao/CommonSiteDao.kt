@@ -23,6 +23,9 @@ interface CommonSiteDao {
     //更改是否已添加的状态
     @Query("UPDATE common_site SET added=:added where uid=:uid")
     fun updateAddStatus(uid:Int,added:Boolean)
+    //更改是否已添加的状态
+    @Query("UPDATE common_site SET added=:added where url=:url")
+    fun updateAddStatusByUrl(url:String,added:Boolean)
     //
     @Insert
     fun insertAll(vararg sites: CommonSite)
@@ -30,7 +33,9 @@ interface CommonSiteDao {
     //删除某个
     @Query("DELETE FROM common_site WHERE uid=:uid")
     fun delete(uid: Int)
-
+    //删除某个
+    @Query("DELETE FROM common_site WHERE url=:url")
+    fun deleteByUrl(url: String)
     //删除所有
     @Query("DELETE FROM common_site")
     fun deleteAll()

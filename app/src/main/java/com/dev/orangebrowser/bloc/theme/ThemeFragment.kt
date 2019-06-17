@@ -19,10 +19,7 @@ import com.dev.orangebrowser.R
 import com.dev.orangebrowser.bloc.host.MainViewModel
 import com.dev.orangebrowser.data.model.ThemeSource
 import com.dev.orangebrowser.databinding.FragmentThemeBinding
-import com.dev.orangebrowser.extension.RouterActivity
-import com.dev.orangebrowser.extension.appComponent
-import com.dev.orangebrowser.extension.appData
-import com.dev.orangebrowser.extension.getColor
+import com.dev.orangebrowser.extension.*
 import com.dev.util.DensityUtil
 import com.dev.view.StatusBarUtil
 import com.dev.view.recyclerview.CustomBaseViewHolder
@@ -101,6 +98,7 @@ class ThemeFragment : BaseFragment(), BackHandler {
                 helper.itemView.setOnClickListener {
                     val newTheme=item.toTheme()
                     activityViewModel.theme.postValue(newTheme)
+                    setSpString(R.string.pref_setting_theme,newTheme.name)
                 }
             }
         }

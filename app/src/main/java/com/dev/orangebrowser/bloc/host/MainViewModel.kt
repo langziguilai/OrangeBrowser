@@ -20,17 +20,18 @@ class MainViewModel @Inject constructor(var context: Context) : CoroutineViewMod
     val appData: MutableLiveData<Either<Failure, ApplicationData>> = MutableLiveData()
     val theme:MutableLiveData<Theme> = MutableLiveData()
     var quitSignalClear:MutableLiveData<Boolean> = MutableLiveData()
-    fun loadAppData()=launch(Dispatchers.IO){
+    fun loadAppData(activity:MainActivity)=launch(Dispatchers.IO){
         try {
-
-//            val favorSitesInputStream=context.assets.open("favor_site.json")
-//            val favorSites=Gson().fromJson<List<Site>>(InputStreamReader(favorSitesInputStream), object : TypeToken<List<Site>>(){}.type)
             val favorSites=context.loadJsonArray("favor_site.json",Site::class.java)
-//            val browserSetting=context.loadJsonObject<BrowserSetting>("browser_setting.json",BrowserSetting::class.java)
             val themes=ThemeSources.loadThemeSources(context)
             val applicationData=ApplicationData(favorSites,themes = themes)
             launch (Dispatchers.Main ){
-                theme.value=applicationData.themes.getActiveThemeSource()?.toTheme() ?: Theme.defaultTheme(context)
+                val themeName=activity.getPreferences(Context.MODE_PRIVATE).getString(activity.getString(R.string.pref_setting_theme),"") ?: ""
+                if (themeName.isNotBlank()){
+                    theme.value= applicationData.themes.themeSources.first { it.name==themeName }.toTheme()
+                }else{
+                    theme.value=applicationData.themes.getActiveThemeSource()?.toTheme() ?: Theme.defaultTheme(context)
+                }
                 appData.value=Either.Right(applicationData)
             }
         }catch (e: IOException){

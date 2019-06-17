@@ -5,6 +5,7 @@ import android.content.Context
 import androidx.lifecycle.MutableLiveData
 import com.dev.base.CoroutineViewModel
 import com.dev.orangebrowser.config.ErrorCode
+import com.dev.orangebrowser.data.dao.CommonSiteDao
 import com.dev.orangebrowser.data.dao.MainPageSiteDao
 import com.dev.orangebrowser.data.model.CloseItem
 import com.dev.orangebrowser.data.model.MainPageSite
@@ -22,6 +23,8 @@ class HomeViewModel @Inject constructor(var context: Context) : CoroutineViewMod
     }
     @Inject
     lateinit var mainPageSiteDao: MainPageSiteDao
+    @Inject
+    lateinit var commonSiteDao: CommonSiteDao
     val siteListLiveData: MutableLiveData<List<MainPageSite>> = MutableLiveData()
     val errorCodeLiveData:MutableLiveData<Int> = MutableLiveData()
     fun loadMainPageSites()=launch(Dispatchers.IO){
@@ -66,6 +69,7 @@ class HomeViewModel @Inject constructor(var context: Context) : CoroutineViewMod
                 item.data.rank=index
                 mainPageSiteDao.updateSiteRank(item.data.uid,item.data.rank)
             }
+            commonSiteDao.updateAddStatusByUrl(deletedSite.url ?: "",false)
         }catch (e:Exception){
             launch(Dispatchers.Main) {
                   errorCodeLiveData.value= ErrorCode.DELETE_FAIL

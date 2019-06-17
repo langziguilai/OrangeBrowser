@@ -145,11 +145,11 @@ class MainActivity : BaseActivity(), DownloadManager.OnAutoInstallDownloadAppLis
 
     override fun initData(savedInstanceState: Bundle?) {
         if (savedInstanceState == null) {
-            viewModel.loadAppData()
+            viewModel.loadAppData(this)
         } else {
             val data = savedInstanceState.getParcelable<ApplicationData>(APPLICATION_DATA)
             if (data == null) {
-                viewModel.loadAppData()
+                viewModel.loadAppData(this)
             } else {
                 myApplication.initApplicationData(data)
                 viewModel.initFromApplicationData(data)

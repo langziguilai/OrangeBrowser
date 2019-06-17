@@ -8,6 +8,7 @@ import com.dev.base.extension.loadJsonArray
 import com.dev.orangebrowser.R
 
 data class Theme(
+    var name:String,
     var colorPrimary: Int,
     var colorPrimaryDark: Int,
     var colorPrimaryActive: Int,
@@ -18,6 +19,7 @@ data class Theme(
 
     fun clone():Theme{
         return Theme(
+            name=this.name,
             colorPrimary=this.colorPrimary,
             colorAccent = this.colorAccent,
             colorPrimaryDark = this.colorPrimaryDark,
@@ -29,6 +31,7 @@ data class Theme(
     companion object {
         fun defaultTheme(context: Context):Theme {
             return Theme(
+                name="default",
                 colorPrimary = context.resources.getColor(R.color.colorPrimary),
                 colorPrimaryDark = context.resources.getColor(R.color.colorPrimaryDark),
                 colorAccent = context.resources.getColor(R.color.colorAccent),
@@ -53,6 +56,7 @@ data class ThemeSource(
     //转换为Theme
     fun toTheme(): Theme {
         return Theme(
+            name=name,
             colorPrimary = Color.parseColor(colorPrimary),
             colorPrimaryDark = Color.parseColor(colorPrimaryDark),
             colorPrimaryActive = Color.parseColor(colorPrimaryActive),
