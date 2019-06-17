@@ -68,9 +68,10 @@ class SearchFragment : BaseFragment(), SearchBar, BackHandler {
     private val originalSessionId: String
         get() = arguments?.getString(BrowserFragment.SESSION_ID) ?: ""
 
-    private val primaryColor:Int
-        get() = arguments?.getInt(COLOR_PRIMARY,activityViewModel.theme.value!!.colorPrimary) ?:activityViewModel.theme.value!!.colorPrimary
-
+    private val primaryColor: Int
+        get() = arguments?.getInt(COLOR_PRIMARY, activityViewModel.theme.value!!.colorPrimary)
+            ?: activityViewModel.theme.value!!.colorPrimary
+    private var lastUrl: String?=null
     private val awesomeBarFeature = ViewBoundFeatureWrapper<AwesomeBarFeature>()
 
     lateinit var viewModel: SearchViewModel
@@ -102,21 +103,22 @@ class SearchFragment : BaseFragment(), SearchBar, BackHandler {
     override fun useDataBinding(): Boolean {
         return true
     }
-    private fun updateStyle(color:Int){
+
+    private fun updateStyle(color: Int) {
         binding.topBar.setBackgroundColor(color)
         binding.containerWrapper.setBackgroundColor(color)
-        StatusBarUtil.setIconColor(requireActivity(),color)
-        NavigationBarUtil.setNavigationBarColor(requireActivity(),color)
+        StatusBarUtil.setIconColor(requireActivity(), color)
+        NavigationBarUtil.setNavigationBarColor(requireActivity(), color)
         //如果是白色背景
-        if(ColorKitUtil.isBackGroundWhiteMode(color)){
-             binding.clear.setTextColor(getColor(R.color.colorBlack))
-             binding.cancel.setTextColor(getColor(R.color.colorBlack))
-             binding.go.setTextColor(getColor(R.color.colorBlack))
-             binding.search.setTextColor(getColor(R.color.colorBlack))
-             binding.searchText.setTextColor(getColor(R.color.colorBlack))
-             binding.searchText.setHintTextColor(getColor(R.color.colorBlack))
-             binding.searchText.autoCompleteBackgroundColor=getColor(R.color.color_AFAFAF)
-        }else{
+        if (ColorKitUtil.isBackGroundWhiteMode(color)) {
+            binding.clear.setTextColor(getColor(R.color.colorBlack))
+            binding.cancel.setTextColor(getColor(R.color.colorBlack))
+            binding.go.setTextColor(getColor(R.color.colorBlack))
+            binding.search.setTextColor(getColor(R.color.colorBlack))
+            binding.searchText.setTextColor(getColor(R.color.colorBlack))
+            binding.searchText.setHintTextColor(getColor(R.color.colorBlack))
+            binding.searchText.autoCompleteBackgroundColor = getColor(R.color.color_AFAFAF)
+        } else {
             binding.clear.setTextColor(getColor(R.color.colorWhite))
             binding.cancel.setTextColor(getColor(R.color.colorWhite))
             binding.go.setTextColor(getColor(R.color.colorWhite))
@@ -125,7 +127,10 @@ class SearchFragment : BaseFragment(), SearchBar, BackHandler {
             binding.searchText.setHintTextColor(getColor(R.color.colorWhite))
         }
     }
+    var currentSessionId:String?=null
     override fun initViewWithDataBinding(savedInstanceState: Bundle?) {
+        lastUrl=sessionManager.selectedSession?.url
+        currentSessionId=sessionManager.selectedSession?.id
         //update style
         updateStyle(primaryColor)
         //设置跳转到本页面的时候就弹出键盘，并且光标闪烁
@@ -136,7 +141,7 @@ class SearchFragment : BaseFragment(), SearchBar, BackHandler {
         inputManager.showSoftInput(binding.searchText, 0)
         sessionManager.findSessionById(originalSessionId)?.apply {
 
-            if (!this.url.isBlank()){
+            if (!this.url.isBlank()) {
                 binding.searchText.applyAutocompleteResult(
                     InlineAutocompleteEditText.AutocompleteResult(text = this.url, source = "", totalItems = 1)
                 )
@@ -144,7 +149,7 @@ class SearchFragment : BaseFragment(), SearchBar, BackHandler {
                 binding.go.show()
                 binding.search.hide()
                 binding.cancel.hide()
-            }else{
+            } else {
                 binding.searchText.updateIme(EditorInfo.IME_ACTION_DONE)
                 binding.go.hide()
                 binding.search.hide()
@@ -156,14 +161,14 @@ class SearchFragment : BaseFragment(), SearchBar, BackHandler {
             binding.searchText.setText("")
         }
         binding.cancel.setOnClickListener {
-            RouterActivity?.loadHomeOrBrowserFragment(originalSessionId)
+            RouterActivity?.loadHomeOrBrowserFragment(originalSessionId,lastUrl = lastUrl)
         }
         binding.go.setOnClickListener {
             //跳转
             if (binding.searchText.imeOptions == EditorInfo.IME_ACTION_GO) {
                 sessionUseCases.loadUrl.invoke(getUrl(binding.searchText.text.toString()))
                 RouterActivity?.apply {
-                    this.loadBrowserFragment(originalSessionId)
+                    this.loadBrowserFragment(originalSessionId,lastUrl = lastUrl)
                 }
             }
         }
@@ -171,7 +176,7 @@ class SearchFragment : BaseFragment(), SearchBar, BackHandler {
             if (binding.searchText.imeOptions == EditorInfo.IME_ACTION_SEARCH) {
                 searchUseCases.defaultSearch.invoke(binding.searchText.text.toString(), getSearchEngine())
                 RouterActivity?.apply {
-                    this.loadBrowserFragment(originalSessionId)
+                    this.loadBrowserFragment(originalSessionId,lastUrl = lastUrl)
                 }
             }
         }
@@ -180,18 +185,18 @@ class SearchFragment : BaseFragment(), SearchBar, BackHandler {
             if (binding.searchText.imeOptions == EditorInfo.IME_ACTION_GO) {
                 sessionUseCases.loadUrl.invoke(getUrl(binding.searchText.text.toString()))
                 RouterActivity?.apply {
-                    this.loadBrowserFragment(originalSessionId)
+                    this.loadBrowserFragment(originalSessionId,lastUrl = lastUrl)
                 }
             }
             //搜索
             if (binding.searchText.imeOptions == EditorInfo.IME_ACTION_SEARCH) {
                 searchUseCases.defaultSearch.invoke(binding.searchText.text.toString(), getSearchEngine())
                 RouterActivity?.apply {
-                    this.loadBrowserFragment(originalSessionId)
+                    this.loadBrowserFragment(originalSessionId,lastUrl = lastUrl)
                 }
             }
         }
-        binding.searchText.setOnFilterListener(object:OnFilterListener{
+        binding.searchText.setOnFilterListener(object : OnFilterListener {
             override fun invoke(it: String) {
                 val defaultSuggestion = defaultDomainsProvider.getAutocompleteSuggestion(it)
                 if (defaultSuggestion != null) {
@@ -278,7 +283,7 @@ class SearchFragment : BaseFragment(), SearchBar, BackHandler {
     private fun getSearchEngine(): SearchEngine {
         return searchEngineManager.getDefaultSearchEngine(
             requireContext(),
-            getSpString(R.string.pref_setting_search_engine_name,"")
+            getSpString(R.string.pref_setting_search_engine_name, "")
         )
     }
 
@@ -323,7 +328,11 @@ class SearchFragment : BaseFragment(), SearchBar, BackHandler {
 
     private fun loadCurrentSelectSession() {
         sessionManager.selectedSession?.apply {
-            RouterActivity?.loadBrowserFragment(this.id)
+            if (currentSessionId!=null && this.id==currentSessionId){
+                RouterActivity?.loadBrowserFragment(this.id,lastUrl = lastUrl)
+            }else{
+                RouterActivity?.loadBrowserFragment(this.id)
+            }
         }
     }
 
@@ -344,7 +353,7 @@ class SearchFragment : BaseFragment(), SearchBar, BackHandler {
             return true
         }
         session.apply {
-            RouterActivity?.loadHomeOrBrowserFragment(this.id)
+            RouterActivity?.loadHomeOrBrowserFragment(this.id,lastUrl = lastUrl)
         }
         return true
     }
@@ -354,6 +363,7 @@ class SearchFragment : BaseFragment(), SearchBar, BackHandler {
         //再此处隐藏，不然，界面会跳动
         binding.searchText.hideKeyboard()
     }
+
     override fun onDestroy() {
         super.onDestroy()
         binding.searchText.updateIme(EditorInfo.IME_ACTION_GO)
@@ -361,12 +371,16 @@ class SearchFragment : BaseFragment(), SearchBar, BackHandler {
 
     companion object {
         val Tag = "SearchFragment"
-        const val COLOR_PRIMARY="color_primary"
-        fun newInstance(sessionId: String,color:Int?=null) = SearchFragment().apply {
+        const val COLOR_PRIMARY = "color_primary"
+        const val LAST_URL = "last_url"
+        fun newInstance(sessionId: String, color: Int? = null, lastUrl: String? = null) = SearchFragment().apply {
             arguments = Bundle().apply {
                 putString(BrowserFragment.SESSION_ID, sessionId)
-                if (color!=null){
-                    putInt(COLOR_PRIMARY,color)
+                if (color != null) {
+                    putInt(COLOR_PRIMARY, color)
+                }
+                if (lastUrl != null && lastUrl.isNotBlank()) {
+                    putString(LAST_URL, lastUrl)
                 }
             }
         }

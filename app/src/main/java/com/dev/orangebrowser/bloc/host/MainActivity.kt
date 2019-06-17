@@ -234,15 +234,15 @@ class MainActivity : BaseActivity(), DownloadManager.OnAutoInstallDownloadAppLis
     }
 
     //加载浏览器页面
-    fun loadBrowserFragment(sessionId: String, enterAnimationId: Int? = null, exitAnimationId: Int? = null) {
+    fun loadBrowserFragment(sessionId: String, enterAnimationId: Int? = null, exitAnimationId: Int? = null,lastUrl:String?=null) {
         if (enterAnimationId != null && exitAnimationId != null) {
             supportFragmentManager.beginTransaction()
                 .setCustomAnimations(enterAnimationId, exitAnimationId)
-                .replace(R.id.root_container, BrowserFragment.newInstance(sessionId))
+                .replace(R.id.root_container, BrowserFragment.newInstance(sessionId,lastUrl))
                 .commit()
         } else {
             supportFragmentManager.beginTransaction()
-                .replace(R.id.root_container, BrowserFragment.newInstance(sessionId))
+                .replace(R.id.root_container, BrowserFragment.newInstance(sessionId,lastUrl))
                 .commit()
         }
     }
@@ -265,13 +265,13 @@ class MainActivity : BaseActivity(), DownloadManager.OnAutoInstallDownloadAppLis
         }
     }
 
-    fun loadHomeOrBrowserFragment(sessionId: String, enterAnimationId: Int? = null, exitAnimationId: Int? = null) {
+    fun loadHomeOrBrowserFragment(sessionId: String, enterAnimationId: Int? = null, exitAnimationId: Int? = null,lastUrl: String?=null) {
         val session = sessionManager.findSessionById(sessionId)
         if (session != null) {
             if (session.screenNumber == Session.HOME_SCREEN) {
                 loadHomeFragment(sessionId, enterAnimationId, exitAnimationId)
             } else {
-                loadBrowserFragment(sessionId, enterAnimationId, exitAnimationId)
+                loadBrowserFragment(sessionId, enterAnimationId, exitAnimationId,lastUrl)
             }
         } else {
             loadHomeFragment(HomeFragment.NO_SESSION_ID, enterAnimationId, exitAnimationId)
@@ -323,16 +323,17 @@ class MainActivity : BaseActivity(), DownloadManager.OnAutoInstallDownloadAppLis
         sessionId: String,
         color: Int? = null,
         enterAnimationId: Int? = null,
-        exitAnimationId: Int? = null
+        exitAnimationId: Int? = null,
+        lastUrl:String?=null
     ) {
         if (enterAnimationId != null && exitAnimationId != null) {
             supportFragmentManager.beginTransaction()
                 .setCustomAnimations(enterAnimationId, exitAnimationId)
-                .replace(R.id.root_container, SearchFragment.newInstance(sessionId, color))
+                .replace(R.id.root_container, SearchFragment.newInstance(sessionId, color,lastUrl))
                 .commit()
         } else {
             supportFragmentManager.beginTransaction()
-                .replace(R.id.root_container, SearchFragment.newInstance(sessionId, color))
+                .replace(R.id.root_container, SearchFragment.newInstance(sessionId, color,lastUrl))
                 .commit()
         }
     }

@@ -30,7 +30,11 @@ class StyleIntegration(
     private var sessionObserver: Session.Observer
 
     init {
-        val host = Uri.parse(session.url).host ?: ""
+        var host = Uri.parse(session.url).host ?: ""
+        //如果是来自search Fragment的
+        if (fragment.lastUrl.isNotBlank()) {
+            host = Uri.parse(fragment.lastUrl).host ?: ""
+        }
         if (session.themeColorMap.containsKey(host)) {
             updateStyle(session.themeColorMap[host]!!)
         } else {
@@ -62,7 +66,7 @@ class StyleIntegration(
             Observer<Theme> { updateTheme(it) })
     }
 
-    private fun updateTheme(theme: Theme){
+    private fun updateTheme(theme: Theme) {
         //更新bottom bar
         //后退
         binding.back.setTextColor(theme.colorPrimary)
@@ -77,7 +81,7 @@ class StyleIntegration(
         binding.counterNumber.setTextColor(theme.colorPrimary)
         binding.menu.setTextColor(theme.colorPrimary)
         binding.home.setTextColor(theme.colorPrimary)
-        Util.setViewBorderColor(binding.counterNumberBox,theme.colorPrimary,1.3f)
+        Util.setViewBorderColor(binding.counterNumberBox, theme.colorPrimary, 1.3f)
         binding.bottomMenuGridView.adapter?.notifyDataSetChanged()
     }
 

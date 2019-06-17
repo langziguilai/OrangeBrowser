@@ -110,6 +110,8 @@ class BrowserFragment : BaseFragment(), BackHandler, UserInteractionHandler {
     //
     val sessionId: String
         get() = arguments?.getString(SESSION_ID) ?: ""
+    val lastUrl:String
+        get() = arguments?.getString(LAST_URL) ?: ""
     val session:Session
         get() = sessionManager.findSessionById(sessionId)!!
     override fun onAttach(context: Context) {
@@ -476,14 +478,16 @@ class BrowserFragment : BaseFragment(), BackHandler, UserInteractionHandler {
 
     companion object {
         const val SESSION_ID = "session_id"
+        const val LAST_URL="last_url"
         private const val BROWSER_SCREEN_NUM = Session.HOME_SCREEN + 1
         private const val REQUEST_CODE_DOWNLOAD_PERMISSIONS = 1
         private const val REQUEST_CODE_PROMPT_PERMISSIONS = 2
         private const val REQUEST_CODE_APP_PERMISSIONS = 3
 
-        fun newInstance(sessionId: String? = null): BrowserFragment = BrowserFragment().apply {
+        fun newInstance(sessionId: String? = null,lastUrl:String?=null): BrowserFragment = BrowserFragment().apply {
             arguments = Bundle().apply {
                 putString(SESSION_ID, sessionId)
+                putString(LAST_URL, lastUrl)
             }
         }
     }
