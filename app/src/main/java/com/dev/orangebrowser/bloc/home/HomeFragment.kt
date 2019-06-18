@@ -91,6 +91,7 @@ class HomeFragment : BaseLazyFragment(), BackHandler {
         binding.activityViewModel=activityViewModel
         super.onActivityCreated(savedInstanceState)
     }
+    private var lastUrl:String?=null
     //找到或者新建一个Session
     private fun initSession(){
         sessionId=arguments?.getString(BrowserFragment.SESSION_ID) ?: NO_SESSION_ID
@@ -100,6 +101,7 @@ class HomeFragment : BaseLazyFragment(), BackHandler {
             tabsUserCase.addTabWithoutUrl.invoke(selectTab = true)
             sessionId=sessionManager.selectedSession!!.id
         }else{
+            lastUrl=session.url
             //选中session
             sessionManager.select(session)
             //更新
@@ -179,7 +181,7 @@ class HomeFragment : BaseLazyFragment(), BackHandler {
                     item.url?.apply {
                         if (this.isUrl()){
                             sessionUseCases.loadUrl.invoke(this)
-                            RouterActivity?.loadBrowserFragment(sessionId)
+                            RouterActivity?.loadBrowserFragment(sessionId,lastUrl=lastUrl)
                         }
                     }
                 }
