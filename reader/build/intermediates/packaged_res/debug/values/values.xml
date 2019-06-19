@@ -1,0 +1,1022 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:ns1="http://schemas.android.com/tools">
+    <string-array name="NavBarColors">
+        <item>自动</item>
+        <item>黑色</item>
+        <item>白色</item>
+        <item>跟随背景</item>
+    </string-array>
+    <string-array name="book_group_array">
+        <item>@string/all_book</item>
+        <item>@string/pursue_more_book</item>
+        <item>@string/fattening_book</item>
+        <item>@string/finish_book</item>
+        <item>@string/local_book</item>
+    </string-array>
+    <string-array name="bookshelf_px_title">
+        <item>@string/bookshelf_px_0</item>
+        <item>@string/bookshelf_px_1</item>
+        <item>@string/bookshelf_px_2</item>
+    </string-array>
+    <string-array name="bookshelf_px_value">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+    </string-array>
+    <string-array name="convert_s">
+        <item>@string/jf_convert_o</item>
+        <item>@string/jf_convert_j</item>
+        <item>@string/jf_convert_f</item>
+    </string-array>
+    <string-array name="icon_names">
+        <item>icon1</item>
+        <item>icon2</item>
+    </string-array>
+    <string-array name="icons">
+        <item>@string/icon_main</item>
+        <item>@string/icon_book</item>
+    </string-array>
+    <string-array name="indent">
+        <item>@string/indent_0</item>
+        <item>@string/indent_1</item>
+        <item>@string/indent_2</item>
+        <item>@string/indent_3</item>
+        <item>@string/indent_4</item>
+    </string-array>
+    <string-array name="screen_direction_list_title">
+        <item>@string/screen_unspecified</item>
+        <item>@string/screen_portrait</item>
+        <item>@string/screen_landscape</item>
+        <item>@string/screen_sensor</item>
+    </string-array>
+    <string-array name="screen_time_out">
+        <item>默认</item>
+        <item>1分钟</item>
+        <item>2分钟</item>
+        <item>3分钟</item>
+        <item>常亮</item>
+    </string-array>
+    <integer-array name="screen_time_out_value">
+        <item>0</item>
+        <item>60</item>
+        <item>120</item>
+        <item>180</item>
+        <item>-1</item>
+    </integer-array>
+    <string-array name="text_suffix">
+        <item>.txt</item>
+        <item>.json</item>
+        <item>.xml</item>
+    </string-array>
+    <color name="ate_button_disabled_dark">#1F000000</color>
+    <color name="ate_button_disabled_light">#1F000000</color>
+    <color name="ate_button_text_disabled_dark">#4DFFFFFF</color>
+    <color name="ate_button_text_disabled_light">#43000000</color>
+    <color name="ate_control_disabled_dark">#4DFFFFFF</color>
+    <color name="ate_control_disabled_light">#43000000</color>
+    <color name="ate_control_normal_dark">#B3FFFFFF</color>
+    <color name="ate_control_normal_light">#8A000000</color>
+    <color name="ate_icon_dark">#B3FFFFFF</color>
+    <color name="ate_icon_light">#8A000000</color>
+    <color name="ate_navigation_drawer_selected_dark">#202020</color>
+    <color name="ate_navigation_drawer_selected_light">#E8E8E8</color>
+    <color name="ate_primary_text_dark">#FFFFFFFF</color>
+    <color name="ate_primary_text_light">#DE000000</color>
+    <color name="ate_secondary_text_dark">#B3FFFFFF</color>
+    <color name="ate_secondary_text_light">#8A000000</color>
+    <color name="ate_switch_thumb_disabled_dark">#FF424242</color>
+    <color name="ate_switch_thumb_disabled_light">#FFBDBDBD</color>
+    <color name="ate_switch_thumb_normal_dark">#FFBDBDBD</color>
+    <color name="ate_switch_thumb_normal_light">#FFFAFAFA</color>
+    <color name="ate_switch_track_disabled_dark">#1AFFFFFF</color>
+    <color name="ate_switch_track_disabled_light">#1F000000</color>
+    <color name="ate_switch_track_normal_dark">#4DFFFFFF</color>
+    <color name="ate_switch_track_normal_light">#43000000</color>
+    <color name="ate_text_disabled_dark">#4DFFFFFF</color>
+    <color name="ate_text_disabled_light">#61000000</color>
+    <color name="background">@color/md_grey_100</color>
+    <color name="background_card">#dedede</color>
+    <color name="background_menu">#fcfcfc</color>
+    <color name="bg_divider_line">#FFD4D4D4</color>
+    <color name="black">#000000</color>
+    <color name="book_launcher_background">#F9F9F9</color>
+    <color name="btn_bg_press">#80C0C0C0</color>
+    <color name="btn_bg_press_2">#80858585</color>
+    <color name="btn_bg_press_tp">#88000000</color>
+    <color name="colorAccent">@color/md_grey_900</color>
+    <color name="colorPrimary">@color/md_grey_100</color>
+    <color name="colorPrimaryDark">@color/md_grey_200</color>
+    <color name="common_gray">#EEEEEE</color>
+    <color name="darker_gray">#aaaaaaaa</color>
+    <color name="error">#eb4333</color>
+    <color name="highlight">#d3321b</color>
+    <color name="ic_launcher_background">#4f4f4f</color>
+    <color name="light_translucent">#23000000</color>
+    <color name="md_amber_100">#FFECB3</color>
+    <color name="md_amber_200">#FFE082</color>
+    <color name="md_amber_300">#FFD54F</color>
+    <color name="md_amber_400">#FFCA28</color>
+    <color name="md_amber_50">#FFF8E1</color>
+    <color name="md_amber_500">#FFC107</color>
+    <color name="md_amber_600">#FFB300</color>
+    <color name="md_amber_700">#FFA000</color>
+    <color name="md_amber_800">#FF8F00</color>
+    <color name="md_amber_900">#FF6F00</color>
+    <color name="md_amber_A100">#FFE57F</color>
+    <color name="md_amber_A200">#FFD740</color>
+    <color name="md_amber_A400">#FFC400</color>
+    <color name="md_amber_A700">#FFAB00</color>
+    <color name="md_black_1000">#000000</color>
+    <color name="md_blue_100">#BBDEFB</color>
+    <color name="md_blue_200">#90CAF9</color>
+    <color name="md_blue_300">#64B5F6</color>
+    <color name="md_blue_400">#42A5F5</color>
+    <color name="md_blue_50">#E3F2FD</color>
+    <color name="md_blue_500">#2196F3</color>
+    <color name="md_blue_600">#1E88E5</color>
+    <color name="md_blue_700">#1976D2</color>
+    <color name="md_blue_800">#1565C0</color>
+    <color name="md_blue_900">#0D47A1</color>
+    <color name="md_blue_A100">#82B1FF</color>
+    <color name="md_blue_A200">#448AFF</color>
+    <color name="md_blue_A400">#2979FF</color>
+    <color name="md_blue_A700">#2962FF</color>
+    <color name="md_blue_grey_100">#CFD8DC</color>
+    <color name="md_blue_grey_200">#B0BEC5</color>
+    <color name="md_blue_grey_300">#90A4AE</color>
+    <color name="md_blue_grey_400">#78909C</color>
+    <color name="md_blue_grey_50">#ECEFF1</color>
+    <color name="md_blue_grey_500">#607D8B</color>
+    <color name="md_blue_grey_600">#546E7A</color>
+    <color name="md_blue_grey_700">#455A64</color>
+    <color name="md_blue_grey_800">#37474F</color>
+    <color name="md_blue_grey_900">#263238</color>
+    <color name="md_brown_100">#D7CCC8</color>
+    <color name="md_brown_200">#BCAAA4</color>
+    <color name="md_brown_300">#A1887F</color>
+    <color name="md_brown_400">#8D6E63</color>
+    <color name="md_brown_50">#EFEBE9</color>
+    <color name="md_brown_500">#795548</color>
+    <color name="md_brown_600">#6D4C41</color>
+    <color name="md_brown_700">#5D4037</color>
+    <color name="md_brown_800">#4E342E</color>
+    <color name="md_brown_900">#3E2723</color>
+    <color name="md_cyan_100">#B2EBF2</color>
+    <color name="md_cyan_200">#80DEEA</color>
+    <color name="md_cyan_300">#4DD0E1</color>
+    <color name="md_cyan_400">#26C6DA</color>
+    <color name="md_cyan_50">#E0F7FA</color>
+    <color name="md_cyan_500">#00BCD4</color>
+    <color name="md_cyan_600">#00ACC1</color>
+    <color name="md_cyan_700">#0097A7</color>
+    <color name="md_cyan_800">#00838F</color>
+    <color name="md_cyan_900">#006064</color>
+    <color name="md_cyan_A100">#84FFFF</color>
+    <color name="md_cyan_A200">#18FFFF</color>
+    <color name="md_cyan_A400">#00E5FF</color>
+    <color name="md_cyan_A700">#00B8D4</color>
+    <color name="md_dark_appbar">@color/md_grey_900</color>
+    <color name="md_dark_background">@color/md_grey_850</color>
+    <color name="md_dark_cards">@color/md_grey_800</color>
+    <color name="md_dark_dialogs">@color/md_grey_800</color>
+    <color name="md_dark_disabled">#4DFFFFFF</color>
+    <color name="md_dark_dividers">#1FFFFFFF</color>
+    <color name="md_dark_primary_icon">#B3FFFFFF</color>
+    <color name="md_dark_primary_text">#FFFFFFFF</color>
+    <color name="md_dark_secondary">#B3FFFFFF</color>
+    <color name="md_dark_statusbar">@color/md_black_1000</color>
+    <color name="md_deep_orange_100">#FFCCBC</color>
+    <color name="md_deep_orange_200">#FFAB91</color>
+    <color name="md_deep_orange_300">#FF8A65</color>
+    <color name="md_deep_orange_400">#FF7043</color>
+    <color name="md_deep_orange_50">#FBE9E7</color>
+    <color name="md_deep_orange_500">#FF5722</color>
+    <color name="md_deep_orange_600">#F4511E</color>
+    <color name="md_deep_orange_700">#E64A19</color>
+    <color name="md_deep_orange_800">#D84315</color>
+    <color name="md_deep_orange_900">#BF360C</color>
+    <color name="md_deep_orange_A100">#FF9E80</color>
+    <color name="md_deep_orange_A200">#FF6E40</color>
+    <color name="md_deep_orange_A400">#FF3D00</color>
+    <color name="md_deep_orange_A700">#DD2C00</color>
+    <color name="md_deep_purple_100">#D1C4E9</color>
+    <color name="md_deep_purple_200">#B39DDB</color>
+    <color name="md_deep_purple_300">#9575CD</color>
+    <color name="md_deep_purple_400">#7E57C2</color>
+    <color name="md_deep_purple_50">#EDE7F6</color>
+    <color name="md_deep_purple_500">#673AB7</color>
+    <color name="md_deep_purple_600">#5E35B1</color>
+    <color name="md_deep_purple_700">#512DA8</color>
+    <color name="md_deep_purple_800">#4527A0</color>
+    <color name="md_deep_purple_900">#311B92</color>
+    <color name="md_deep_purple_A100">#B388FF</color>
+    <color name="md_deep_purple_A200">#7C4DFF</color>
+    <color name="md_deep_purple_A400">#651FFF</color>
+    <color name="md_deep_purple_A700">#6200EA</color>
+    <color name="md_green_100">#C8E6C9</color>
+    <color name="md_green_200">#A5D6A7</color>
+    <color name="md_green_300">#81C784</color>
+    <color name="md_green_400">#66BB6A</color>
+    <color name="md_green_50">#E8F5E9</color>
+    <color name="md_green_500">#4CAF50</color>
+    <color name="md_green_600">#43A047</color>
+    <color name="md_green_700">#388E3C</color>
+    <color name="md_green_800">#2E7D32</color>
+    <color name="md_green_900">#1B5E20</color>
+    <color name="md_green_A100">#B9F6CA</color>
+    <color name="md_green_A200">#69F0AE</color>
+    <color name="md_green_A400">#00E676</color>
+    <color name="md_green_A700">#00C853</color>
+    <color name="md_grey_100">#F5F5F5</color>
+    <color name="md_grey_200">#EEEEEE</color>
+    <color name="md_grey_300">#E0E0E0</color>
+    <color name="md_grey_400">#BDBDBD</color>
+    <color name="md_grey_50">#FAFAFA</color>
+    <color name="md_grey_500">#9E9E9E</color>
+    <color name="md_grey_600">#757575</color>
+    <color name="md_grey_700">#616161</color>
+    <color name="md_grey_800">#424242</color>
+    <color name="md_grey_850">#303030</color>
+    <color name="md_grey_900">#212121</color>
+    <color name="md_indigo_100">#C5CAE9</color>
+    <color name="md_indigo_200">#9FA8DA</color>
+    <color name="md_indigo_300">#7986CB</color>
+    <color name="md_indigo_400">#5C6BC0</color>
+    <color name="md_indigo_50">#E8EAF6</color>
+    <color name="md_indigo_500">#3F51B5</color>
+    <color name="md_indigo_600">#3949AB</color>
+    <color name="md_indigo_700">#303F9F</color>
+    <color name="md_indigo_800">#283593</color>
+    <color name="md_indigo_900">#1A237E</color>
+    <color name="md_indigo_A100">#8C9EFF</color>
+    <color name="md_indigo_A200">#536DFE</color>
+    <color name="md_indigo_A400">#3D5AFE</color>
+    <color name="md_indigo_A700">#304FFE</color>
+    <color name="md_light_appbar">@color/md_grey_100</color>
+    <color name="md_light_background">@color/md_grey_50</color>
+    <color name="md_light_blue_100">#B3E5FC</color>
+    <color name="md_light_blue_200">#81D4FA</color>
+    <color name="md_light_blue_300">#4FC3F7</color>
+    <color name="md_light_blue_400">#29B6F6</color>
+    <color name="md_light_blue_50">#E1F5FE</color>
+    <color name="md_light_blue_500">#03A9F4</color>
+    <color name="md_light_blue_600">#039BE5</color>
+    <color name="md_light_blue_700">#0288D1</color>
+    <color name="md_light_blue_800">#0277BD</color>
+    <color name="md_light_blue_900">#01579B</color>
+    <color name="md_light_blue_A100">#80D8FF</color>
+    <color name="md_light_blue_A200">#40C4FF</color>
+    <color name="md_light_blue_A400">#00B0FF</color>
+    <color name="md_light_blue_A700">#0091EA</color>
+    <color name="md_light_cards">@color/md_white_1000</color>
+    <color name="md_light_dialogs">@color/md_white_1000</color>
+    <color name="md_light_disabled">#61000000</color>
+    <color name="md_light_dividers">#1F000000</color>
+    <color name="md_light_green_100">#DCEDC8</color>
+    <color name="md_light_green_200">#C5E1A5</color>
+    <color name="md_light_green_300">#AED581</color>
+    <color name="md_light_green_400">#9CCC65</color>
+    <color name="md_light_green_50">#F1F8E9</color>
+    <color name="md_light_green_500">#8BC34A</color>
+    <color name="md_light_green_600">#7CB342</color>
+    <color name="md_light_green_700">#689F38</color>
+    <color name="md_light_green_800">#558B2F</color>
+    <color name="md_light_green_900">#33691E</color>
+    <color name="md_light_green_A100">#CCFF90</color>
+    <color name="md_light_green_A200">#B2FF59</color>
+    <color name="md_light_green_A400">#76FF03</color>
+    <color name="md_light_green_A700">#64DD17</color>
+    <color name="md_light_primary_icon">#8A000000</color>
+    <color name="md_light_primary_text">#DE000000</color>
+    <color name="md_light_secondary">#8A000000</color>
+    <color name="md_light_statusbar">@color/md_grey_300</color>
+    <color name="md_lime_100">#F0F4C3</color>
+    <color name="md_lime_200">#E6EE9C</color>
+    <color name="md_lime_300">#DCE775</color>
+    <color name="md_lime_400">#D4E157</color>
+    <color name="md_lime_50">#F9FBE7</color>
+    <color name="md_lime_500">#CDDC39</color>
+    <color name="md_lime_600">#C0CA33</color>
+    <color name="md_lime_700">#AFB42B</color>
+    <color name="md_lime_800">#9E9D24</color>
+    <color name="md_lime_900">#827717</color>
+    <color name="md_lime_A100">#F4FF81</color>
+    <color name="md_lime_A200">#EEFF41</color>
+    <color name="md_lime_A400">#C6FF00</color>
+    <color name="md_lime_A700">#AEEA00</color>
+    <color name="md_orange_100">#FFE0B2</color>
+    <color name="md_orange_200">#FFCC80</color>
+    <color name="md_orange_300">#FFB74D</color>
+    <color name="md_orange_400">#FFA726</color>
+    <color name="md_orange_50">#FFF3E0</color>
+    <color name="md_orange_500">#FF9800</color>
+    <color name="md_orange_600">#FB8C00</color>
+    <color name="md_orange_700">#F57C00</color>
+    <color name="md_orange_800">#EF6C00</color>
+    <color name="md_orange_900">#E65100</color>
+    <color name="md_orange_A100">#FFD180</color>
+    <color name="md_orange_A200">#FFAB40</color>
+    <color name="md_orange_A400">#FF9100</color>
+    <color name="md_orange_A700">#FF6D00</color>
+    <color name="md_pink_100">#F8BBD0</color>
+    <color name="md_pink_200">#F48FB1</color>
+    <color name="md_pink_300">#F06292</color>
+    <color name="md_pink_400">#EC407A</color>
+    <color name="md_pink_50">#FCE4EC</color>
+    <color name="md_pink_500">#E91E63</color>
+    <color name="md_pink_600">#D81B60</color>
+    <color name="md_pink_700">#C2185B</color>
+    <color name="md_pink_800">#AD1457</color>
+    <color name="md_pink_900">#880E4F</color>
+    <color name="md_pink_A100">#FF80AB</color>
+    <color name="md_pink_A200">#FF4081</color>
+    <color name="md_pink_A400">#F50057</color>
+    <color name="md_pink_A700">#C51162</color>
+    <color name="md_purple_100">#E1BEE7</color>
+    <color name="md_purple_200">#CE93D8</color>
+    <color name="md_purple_300">#BA68C8</color>
+    <color name="md_purple_400">#AB47BC</color>
+    <color name="md_purple_50">#F3E5F5</color>
+    <color name="md_purple_500">#9C27B0</color>
+    <color name="md_purple_600">#8E24AA</color>
+    <color name="md_purple_700">#7B1FA2</color>
+    <color name="md_purple_800">#6A1B9A</color>
+    <color name="md_purple_900">#4A148C</color>
+    <color name="md_purple_A100">#EA80FC</color>
+    <color name="md_purple_A200">#E040FB</color>
+    <color name="md_purple_A400">#D500F9</color>
+    <color name="md_purple_A700">#AA00FF</color>
+    <color name="md_red_100">#FFCDD2</color>
+    <color name="md_red_200">#EF9A9A</color>
+    <color name="md_red_300">#E57373</color>
+    <color name="md_red_400">#EF5350</color>
+    <color name="md_red_50">#FFEBEE</color>
+    <color name="md_red_500">#F44336</color>
+    <color name="md_red_600">#E53935</color>
+    <color name="md_red_700">#D32F2F</color>
+    <color name="md_red_800">#C62828</color>
+    <color name="md_red_900">#B71C1C</color>
+    <color name="md_red_A100">#FF8A80</color>
+    <color name="md_red_A200">#FF5252</color>
+    <color name="md_red_A400">#FF1744</color>
+    <color name="md_red_A700">#D50000</color>
+    <color name="md_teal_100">#B2DFDB</color>
+    <color name="md_teal_200">#80CBC4</color>
+    <color name="md_teal_300">#4DB6AC</color>
+    <color name="md_teal_400">#26A69A</color>
+    <color name="md_teal_50">#E0F2F1</color>
+    <color name="md_teal_500">#009688</color>
+    <color name="md_teal_600">#00897B</color>
+    <color name="md_teal_700">#00796B</color>
+    <color name="md_teal_800">#00695C</color>
+    <color name="md_teal_900">#004D40</color>
+    <color name="md_teal_A100">#A7FFEB</color>
+    <color name="md_teal_A200">#64FFDA</color>
+    <color name="md_teal_A400">#1DE9B6</color>
+    <color name="md_teal_A700">#00BFA5</color>
+    <color name="md_white_1000">#FFFFFF</color>
+    <color name="md_yellow_100">#FFF9C4</color>
+    <color name="md_yellow_200">#FFF59D</color>
+    <color name="md_yellow_300">#FFF176</color>
+    <color name="md_yellow_400">#FFEE58</color>
+    <color name="md_yellow_50">#FFFDE7</color>
+    <color name="md_yellow_500">#FFEB3B</color>
+    <color name="md_yellow_600">#FDD835</color>
+    <color name="md_yellow_700">#FBC02D</color>
+    <color name="md_yellow_800">#F9A825</color>
+    <color name="md_yellow_900">#F57F17</color>
+    <color name="md_yellow_A100">#FFFF8D</color>
+    <color name="md_yellow_A200">#FFFF00</color>
+    <color name="md_yellow_A400">#FFEA00</color>
+    <color name="md_yellow_A700">#FFD600</color>
+    <color name="menu_color_default">#383838</color>
+    <color name="navigation_bar_bag">#f4f4f4</color>
+    <color name="night_mask">#00000000</color>
+    <color name="status_bar_bag">#64000000</color>
+    <color name="success">#439b53</color>
+    <color name="translucent">#99343434</color>
+    <color name="transparent">#00000000</color>
+    <color name="transparent30">#30000000</color>
+    <color name="tv_btn_normal_black">#737373</color>
+    <color name="tv_btn_press_black">#adadad</color>
+    <color name="tv_text_book_detail">#dfdfdf</color>
+    <color name="tv_text_button_nor">#efefef</color>
+    <color name="tv_text_default">#de000000</color>
+    <color name="tv_text_secondary">#b2000000</color>
+    <color name="tv_text_summary">#8a000000</color>
+    <color name="white">#ffffff</color>
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+    <dimen name="desc_icon_size">18sp</dimen>
+    <dimen name="fast_scroll_min_thumb_height">24dp</dimen>
+    <dimen name="fastscroll_bubble_padding">16dp</dimen>
+    <dimen name="fastscroll_bubble_radius">44dp</dimen>
+    <dimen name="fastscroll_bubble_size">88dp</dimen>
+    <dimen name="fastscroll_bubble_textsize">48sp</dimen>
+    <dimen name="fastscroll_handle_height">40dp</dimen>
+    <dimen name="fastscroll_handle_radius">0dp</dimen>
+    <dimen name="fastscroll_handle_width">8dp</dimen>
+    <dimen name="fastscroll_scrollbar_margin_bottom">8dp</dimen>
+    <dimen name="fastscroll_scrollbar_margin_top">8dp</dimen>
+    <dimen name="fastscroll_scrollbar_padding_end">8dp</dimen>
+    <dimen name="fastscroll_scrollbar_padding_start">8dp</dimen>
+    <dimen name="fastscroll_track_width">2dp</dimen>
+    <dimen name="line_height">0.8dp</dimen>
+    <dimen name="shadow_height">10dp</dimen>
+    <dimen name="toolbar_elevation">4dp</dimen>
+    <item name="fast_scroller" type="id"/>
+    <item name="menu_allow_update" type="id"/>
+    <item name="menu_disable_update" type="id"/>
+    <item name="menu_edit_book_source" type="id"/>
+    <item name="menu_refresh" type="id"/>
+    <item name="tag1" type="id"/>
+    <item name="tag2" type="id"/>
+    <string name="about">关于</string>
+    <string name="about_description">\u3000\u3000这是一款开源的阅读软件，你可以fork我们的代码自己编译APK。欢迎提交代码帮助改善应用。\n\u3000\u3000公众号[开源阅读软件]！</string>
+    <string name="action_del">删除</string>
+    <string name="action_download">下载任务</string>
+    <string name="action_grid">网格视图</string>
+    <string name="action_list">列表视图</string>
+    <string name="action_list_grid">列表/网格</string>
+    <string name="action_save">保存</string>
+    <string name="action_search">搜索</string>
+    <string name="add">添加</string>
+    <string name="add_book_source">新建书源</string>
+    <string name="add_book_url">添加书籍网址</string>
+    <string name="add_to_shelf">放入书架</string>
+    <string name="add_url">添加网址</string>
+    <string name="adjust">调节</string>
+    <string name="all_book">所有书籍</string>
+    <string name="all_chapter_num">共%d章</string>
+    <string name="all_source">全部书源</string>
+    <string name="allow_update">允许更新</string>
+    <string name="aloud_can_not_auto_page">朗读正在运行,不能自动翻页</string>
+    <string name="aloud_stop">朗读停止</string>
+    <string name="aloud_volume_page">朗读时音量键翻页</string>
+    <string name="analyze_error">站点暂时不支持解析，请反馈</string>
+    <string name="and_char"><![CDATA[&]]></string>
+    <string name="app_name">阅读</string>
+    <string name="arrange_bookshelf">整理书架</string>
+    <string name="at_char">\@</string>
+    <string name="audio">音频</string>
+    <string name="author">作者</string>
+    <string name="auto_expand_find">自动展开发现</string>
+    <string name="auto_next_page">自动翻页</string>
+    <string name="auto_next_page_speed">自动翻页间隔</string>
+    <string name="auto_next_page_stop">停止自动翻页</string>
+    <string name="back">返回</string>
+    <string name="background">背景</string>
+    <string name="backup">备份</string>
+    <string name="backup_confirmation">确认备份吗？</string>
+    <string name="backup_fail">备份失败</string>
+    <string name="backup_message">新备份会替换原有备份。\n备份文件夹YueDu</string>
+    <string name="backup_permission">备份请给与存储权限</string>
+    <string name="backup_success">备份成功</string>
+    <string name="behavior_main_s">滚动书架时ToolBar自动隐藏与显示</string>
+    <string name="behavior_main_t">书架ToolBar自动隐藏</string>
+    <string name="bg_image_per">获取背景图片需存储权限</string>
+    <string name="black">黑色</string>
+    <string name="book">书</string>
+    <string name="book_file_selector">添加书籍</string>
+    <string name="book_info">书籍信息</string>
+    <string name="book_intro">内容简介</string>
+    <string name="book_library">书城</string>
+    <string name="book_local">添加本地</string>
+    <string name="book_name">书名</string>
+    <string name="book_search_last">最新: %s</string>
+    <string name="book_source_group">书源分组(bookSourceGroup)</string>
+    <string name="book_source_login_url">登录URL(loginUrl)</string>
+    <string name="book_source_manage">书源管理</string>
+    <string name="book_source_name">书源名称(bookSourceName)</string>
+    <string name="book_source_share_url">书源共享</string>
+    <string name="book_source_url">书源URL(bookSourceUrl)</string>
+    <string name="book_url_pattern">书籍详情URL正则(ruleBookUrlPattern)</string>
+    <string name="bookmark">书签</string>
+    <string name="bookmark_add">添加书签</string>
+    <string name="bookshelf">书架</string>
+    <string name="bookshelf_empty">书架还空着，先去添加吧！</string>
+    <string name="bookshelf_px">书架排序</string>
+    <string name="bookshelf_px_0">按阅读时间排序</string>
+    <string name="bookshelf_px_1">按更新时间排序</string>
+    <string name="bookshelf_px_2">手动排序</string>
+    <string name="bottom">下</string>
+    <string name="brightness">亮度</string>
+    <string name="camera_scan">扫描二维码</string>
+    <string name="can_not_open">无法打开</string>
+    <string name="cancel">取消</string>
+    <string name="cannot_empty">输入不能为空</string>
+    <string name="change_icon">切换图标</string>
+    <string name="change_icon_summary">切换软件显示在桌面的图标</string>
+    <string name="change_origin">换源</string>
+    <string name="chapter">章</string>
+    <string name="chapter_list">目录</string>
+    <string name="chapter_list_empty">目录列表为空</string>
+    <string name="chapter_list_size">目录(%d)</string>
+    <string name="chapter_s">章节:</string>
+    <string name="check_add_bookshelf">是否将《%s》放入书架？</string>
+    <string name="check_book_source">校验书源</string>
+    <string name="check_host_cookie">正在打开首页，成功自动返回主界面</string>
+    <string name="check_select_source">校验所选</string>
+    <string name="check_update">检查更新</string>
+    <string name="check_update_interval">检查更新间隔</string>
+    <string name="clear">清除</string>
+    <string name="clear_all_content">清除缓存会删除所有已保存章节,是否确认删除?</string>
+    <string name="clear_bookshelf_s">这将会删除所有书籍，请谨慎操作。</string>
+    <string name="clear_cache">清除缓存</string>
+    <string name="clear_find_cache">清空发现缓存</string>
+    <string name="clear_font">默认字体</string>
+    <string name="click_all_next_page">点击总是翻下一页</string>
+    <string name="click_check_after_success">登录成功后请点击右上角图标进行首页访问测试</string>
+    <string name="click_on_selected_show_menu">选中时点击可弹出菜单</string>
+    <string name="click_open_page">点击翻页</string>
+    <string name="click_to_day">点击可切换到白天模式</string>
+    <string name="click_to_night">点击可切换到夜间模式</string>
+    <string name="content">内容</string>
+    <string name="content_empty">文章内容为空</string>
+    <string name="content_padding">正文边距</string>
+    <string name="content_sl">这是一段测试文字\n\u3000\u3000只是让你看看效果的</string>
+    <string name="continue_read">继续阅读</string>
+    <string name="copy_complete">已拷贝</string>
+    <string name="copy_source">拷贝书源</string>
+    <string name="copy_text">拷贝内容</string>
+    <string name="cover_path">封面地址</string>
+    <string name="custom_font">字体</string>
+    <string name="darkStatusIcon">深色状态栏图标</string>
+    <string name="data_loading">加载数据中…</string>
+    <string name="debug_hint">书名、作者、URL</string>
+    <string name="debug_source">调试书源</string>
+    <string name="default_expand_first">默认展开第一组发现</string>
+    <string name="default_font">默认字体</string>
+    <string name="default_theme">默认主题</string>
+    <string name="del_all">删除所有</string>
+    <string name="del_file">删除文件</string>
+    <string name="del_file_success">删除文件成功</string>
+    <string name="del_msg">是否确认删除?</string>
+    <string name="del_select">删除所选</string>
+    <string name="delete">删除</string>
+    <string name="dialog_cancel">取消</string>
+    <string name="dialog_confirm">确定</string>
+    <string name="dialog_setting">去设置</string>
+    <string name="dialog_title">提示</string>
+    <string name="disable_book_source">禁用书源</string>
+    <string name="disable_update">禁止更新</string>
+    <string name="disclaimer">免责声明</string>
+    <string name="disclaimer_url">https://gedoor.github.io/MyBookshelf/disclaimer.html</string>
+    <string name="donate">捐赠</string>
+    <string name="donate_s">此书源使用了高级功能，请到捐赠里点击支付宝红包搜索码领取红包开启。</string>
+    <string name="double_click_exit">再按一次退出程序</string>
+    <string name="download_all">一键缓存</string>
+    <string name="download_cancel">取消下载</string>
+    <string name="download_offline">离线下载</string>
+    <string name="download_offline_s">下载选择的章节到本地</string>
+    <string name="download_offline_t">离线下载</string>
+    <string name="download_path">内容缓存路径</string>
+    <string name="download_start">开始下载</string>
+    <string name="download_update">下载更新</string>
+    <string name="e_ink_mode">E-Ink 模式</string>
+    <string name="e_ink_mode_detail">去除动画,优化电纸书使用体验</string>
+    <string name="edit">编辑</string>
+    <string name="edit_book_source">编辑书源</string>
+    <string name="edit_find">编辑发现</string>
+    <string name="exit">退出</string>
+    <string name="exit_no_save">还未保存,是否继续编辑</string>
+    <string name="faq">常见问题</string>
+    <string name="fattening">养肥</string>
+    <string name="fattening_book">养肥书籍</string>
+    <string name="files_tree">手机目录</string>
+    <string name="find">发现</string>
+    <string name="find_empty">没有内容,去书源里自定义吧!</string>
+    <string name="find_on_www">发现</string>
+    <string name="find_source_manage">发现管理</string>
+    <string name="finish">完结</string>
+    <string name="finish_book">完结书籍</string>
+    <string name="flow_sys">跟随系统</string>
+    <string name="fonts_folder">请将字体文件放到SD根目录Fonts文件夹下重新选择</string>
+    <string name="gallery">图库</string>
+    <string name="get_ali_pay_hb">领支付宝红包</string>
+    <string name="get_book_info_error">书籍信息获取失败</string>
+    <string name="get_book_list_success">搜索列表获取成功%d</string>
+    <string name="get_chapter_list_error">目录获取失败</string>
+    <string name="get_content_error">内容获取失败</string>
+    <string name="get_data_error">获取数据失败！</string>
+    <string name="get_storage_per">本软件需要存储权限来存储备份书籍信息</string>
+    <string name="get_web_content_error">访问网站失败:%s</string>
+    <string name="git_hub">GitHub</string>
+    <string name="go_to_bottom">滚动到底部</string>
+    <string name="go_to_top">滚动到顶部</string>
+    <string name="group_yf">养肥区</string>
+    <string name="group_zg">追更区</string>
+    <string name="home_page">软件主页</string>
+    <string name="home_page_url">https://gedoor.github.io/MyBookshelf/</string>
+    <string name="http_ip">http://%s:%d</string>
+    <string name="icon_book">book_launcher_round</string>
+    <string name="icon_main">ic_launcher_round</string>
+    <string name="img_cover">封面</string>
+    <string name="immersion_status_bar">沉浸式状态栏</string>
+    <string name="import_book_per">导入本地书籍需存储权限</string>
+    <string name="import_book_source">导入书源</string>
+    <string name="import_book_source_local">本地导入</string>
+    <string name="import_book_source_on_line">网络导入</string>
+    <string name="import_books_count">共%s个Text文件</string>
+    <string name="import_by_qr_code">二维码导入</string>
+    <string name="import_per">导入本地书籍需存储权限</string>
+    <string name="import_replace_rule">本地导入</string>
+    <string name="import_replace_rule_on_line">网络导入</string>
+    <string name="import_select_book">导入选择书籍</string>
+    <string name="indent">缩进</string>
+    <string name="indent_0">无缩进</string>
+    <string name="indent_1">一字符缩进</string>
+    <string name="indent_2">二字符缩进</string>
+    <string name="indent_3">三字符缩进</string>
+    <string name="indent_4">四字符缩进</string>
+    <string name="input_book_source_url">输入书源网址</string>
+    <string name="input_charset">输入编码</string>
+    <string name="input_replace_url">输入替换规则网址</string>
+    <string name="intelligent_import">智能导入</string>
+    <string name="interface_setting">界面</string>
+    <string name="is_enable">启用</string>
+    <string name="is_loading">加载中…</string>
+    <string name="jf_convert">简繁转换</string>
+    <string name="jf_convert_f">简转繁</string>
+    <string name="jf_convert_j">繁转简</string>
+    <string name="jf_convert_o">关闭</string>
+    <string name="join_group">关注:%s</string>
+    <string name="join_qq_group">加入QQ群</string>
+    <string name="keep_light">屏幕超时</string>
+    <string name="last_read">最后阅读</string>
+    <string name="latest_release_api">https://api.github.com/repos/gedoor/MyBookshelf/releases/latest</string>
+    <string name="latest_release_url">https://github.com/gedoor/MyBookshelf/releases/latest</string>
+    <string name="left">左</string>
+    <string name="line_size">行距</string>
+    <string name="load_error_msg">加载失败\n%s</string>
+    <string name="load_error_retry">加载失败,点击重试</string>
+    <string name="load_over_time">加载超时</string>
+    <string name="loading">加载中…</string>
+    <string name="local">本地</string>
+    <string name="local_book">本地书籍</string>
+    <string name="login">登录</string>
+    <string name="login_source">登录%s</string>
+    <string name="long_click_input_color">长按输入颜色值</string>
+    <string name="menu">菜单</string>
+    <string name="menu_action_group">分组</string>
+    <string name="music">音乐</string>
+    <string name="navigation_bar_color_change">导航栏变色</string>
+    <string name="navigation_bar_color_change_s">导航栏根据夜间模式变化</string>
+    <string name="navigation_drawer_close">关闭侧边栏</string>
+    <string name="navigation_drawer_open">打开侧边栏</string>
+    <string name="nb_file_add_shelf">加入书架</string>
+    <string name="nb_file_add_shelves">加入书架(%1$d)</string>
+    <string name="nb_file_add_succeed">成功添加%1$d本书</string>
+    <string name="nb_file_path">存储卡:</string>
+    <string name="nb_file_sub_count">%1$d 项</string>
+    <string name="net_error_10001">没有网络</string>
+    <string name="net_error_10002">网络连接超时</string>
+    <string name="net_error_10003">数据解析失败</string>
+    <string name="network_connection_unavailable">网络连接不可用</string>
+    <string name="new_version">新版本</string>
+    <string name="next_chapter">下一章</string>
+    <string name="night_theme">夜间模式</string>
+    <string name="no">否</string>
+    <string name="no_book_name">未获取到书名</string>
+    <string name="no_chapter">无章节</string>
+    <string name="no_download">暂无任务</string>
+    <string name="no_find">没有发现，可以在书源里添加。</string>
+    <string name="no_last_chapter">无最新章节信息</string>
+    <string name="non_null_source_name_url">书源名称和URL不能为空</string>
+    <string name="non_update_url">没有获取到更新地址</string>
+    <string name="ok">确认</string>
+    <string name="on_change_source">正在换源请等待…</string>
+    <string name="on_restore">正在恢复</string>
+    <string name="open_from_other">打开外部书籍</string>
+    <string name="open_local_book_per">打开外部书籍需获取存储权限</string>
+    <string name="open_page_anim">翻页动画</string>
+    <string name="origin">来源</string>
+    <string name="origin_format">来源: %s</string>
+    <string name="padding">边距:</string>
+    <string name="padding_bottom">下边距</string>
+    <string name="padding_left">左边距</string>
+    <string name="padding_right">右边距</string>
+    <string name="padding_top">上边距</string>
+    <string name="page_mode">翻页模式</string>
+    <string name="page_mode_COVER">覆盖</string>
+    <string name="page_mode_NONE">无动画</string>
+    <string name="page_mode_SCROLL">滚动</string>
+    <string name="page_mode_SIMULATION">仿真</string>
+    <string name="page_mode_SLIDE">滑动</string>
+    <string name="paragraph_size">段距</string>
+    <string name="paste_source">粘贴书源</string>
+    <string name="pause">暂停</string>
+    <string name="pk_auto_download">autoDownload</string>
+    <string name="pk_auto_refresh">auto_refresh</string>
+    <string name="pk_bookshelf_px">bookshelf_px</string>
+    <string name="pk_check_update">checkUpdate</string>
+    <string name="pk_default_read">defaultToRead</string>
+    <string name="pk_download_path">downloadPath</string>
+    <string name="pk_find_expand_group">expandGroupFind</string>
+    <string name="pk_full_screen">full_screen</string>
+    <string name="pk_read_type">read_type</string>
+    <string name="pk_screen_direction">list_screen_direction</string>
+    <string name="pk_threads_num">threads_num</string>
+    <string name="pk_user_agent">user_agent</string>
+    <string name="please_grant_storage_permission">请给于存储权限</string>
+    <string name="previous_chapter">上一章</string>
+    <string name="progress_show">进度 %d/%d</string>
+    <string name="ps_auto_download">更新书籍时自动下载最新章节</string>
+    <string name="ps_auto_refresh">打开软件时自动更新书籍</string>
+    <string name="ps_default_read">默认打开书架</string>
+    <string name="ps_hide_navigation_bar">阅读界面隐藏虚拟按键</string>
+    <string name="ps_hide_status_bar">阅读界面隐藏状态栏</string>
+    <string name="ps_read_line_adjust">阅读行数减一行,如阅读界面显示不全可启用</string>
+    <string name="ps_show_all_find">关闭则只显示勾选源的发现</string>
+    <string name="pt_auto_download">自动下载最新章节</string>
+    <string name="pt_auto_refresh">自动刷新</string>
+    <string name="pt_default_read">自动跳转最近阅读</string>
+    <string name="pt_hide_navigation_bar">隐藏导航栏</string>
+    <string name="pt_hide_status_bar">隐藏状态栏</string>
+    <string name="pt_read_line_adjust">阅读行数调整</string>
+    <string name="pt_show_all_find">显示所有发现</string>
+    <string name="pursue_more">追更</string>
+    <string name="pursue_more_book">追更书籍</string>
+    <string name="pv_user_agent">Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/62.0.2357.134 Safari/537.36</string>
+    <string name="qr_per">扫描二维码需相机权限</string>
+    <string name="qr_share">二维码分享</string>
+    <string name="re_navigation_bar_color">导航栏颜色</string>
+    <string name="read_aloud">朗读</string>
+    <string name="read_aloud_pause">朗读暂停</string>
+    <string name="read_aloud_s">点击打开阅读界面</string>
+    <string name="read_aloud_speed">朗读语速</string>
+    <string name="read_aloud_t">正在朗读</string>
+    <string name="read_aloud_timer">正在朗读(还剩%d分钟)</string>
+    <string name="read_dur_progress">最近: %s</string>
+    <string name="read_file_error">文件读取失败</string>
+    <string name="read_style">阅读样式设置</string>
+    <string name="read_summary">让阅读成为一种习惯。</string>
+    <string name="read_type">阅读方式</string>
+    <string name="read_y">已读: %s</string>
+    <string name="receiving_shared_label">阅读·搜索</string>
+    <string name="refresh">重新加载</string>
+    <string name="refresh_default">书源同步</string>
+    <string name="remove_from_bookshelf">删除书籍</string>
+    <string name="replace_rule">替换规则</string>
+    <string name="replace_rule_edit">替换规则编辑</string>
+    <string name="replace_rule_summary">替换规则名称</string>
+    <string name="replace_rule_title">替换净化</string>
+    <string name="replace_to">替换为</string>
+    <string name="restore">恢复</string>
+    <string name="restore_confirmation">确认恢复吗？</string>
+    <string name="restore_default">恢复默认</string>
+    <string name="restore_default_theme">恢复主题为默认配色</string>
+    <string name="restore_fail">恢复失败</string>
+    <string name="restore_message">恢复书架会覆盖现有书架。</string>
+    <string name="restore_permission">恢复请给与存储权限</string>
+    <string name="restore_success">恢复成功</string>
+    <string name="resume">继续</string>
+    <string name="retry">重试</string>
+    <string name="revert_selection">反转选择</string>
+    <string name="right">右</string>
+    <string name="rule_book_author">作者规则(ruleBookAuthor)</string>
+    <string name="rule_book_content">正文规则(ruleBookContent)</string>
+    <string name="rule_book_info_init">书籍详情预处理规则(ruleBookInfoInit)</string>
+    <string name="rule_book_kind">分类规则(ruleBookKind)</string>
+    <string name="rule_book_last_chapter">最新章节规则(ruleBookLastChapter)</string>
+    <string name="rule_book_name">书名规则(ruleBookName)</string>
+    <string name="rule_chapter_list">目录列表规则(ruleChapterList)</string>
+    <string name="rule_chapter_list_url">目录URL规则(ruleChapterUrl)</string>
+    <string name="rule_chapter_list_url_next">目录下一页规则(ruleChapterUrlNext)</string>
+    <string name="rule_chapter_name">章节名称规则(ruleChapterName)</string>
+    <string name="rule_content_url">章节URL规则(ruleContentUrl)</string>
+    <string name="rule_content_url_next">正文下一页URL规则(ruleContentUrlNext)</string>
+    <string name="rule_cover_url">封面规则(ruleCoverUrl)</string>
+    <string name="rule_find_author">发现作者规则(ruleFindAuthor)</string>
+    <string name="rule_find_cover_url">发现封面规则(ruleFindCoverUrl)</string>
+    <string name="rule_find_introduce">发现简介规则(ruleFindIntroduce)</string>
+    <string name="rule_find_kind">发现分类规则(ruleFindKind)</string>
+    <string name="rule_find_last_chapter">发现最新章节规则(ruleFindLastChapter)</string>
+    <string name="rule_find_list">发现列表规则(ruleFindList)</string>
+    <string name="rule_find_name">发现书名规则(ruleFindName)</string>
+    <string name="rule_find_note_url">发现书籍URL规则(ruleFindNoteUrl)</string>
+    <string name="rule_find_url">发现规则(ruleFindUrl)</string>
+    <string name="rule_introduce">简介规则(ruleIntroduce)</string>
+    <string name="rule_search_author">搜索作者规则(ruleSearchAuthor)</string>
+    <string name="rule_search_cover_url">搜索封面规则(ruleSearchCoverUrl)</string>
+    <string name="rule_search_introduce">搜索简介规则(ruleSearchIntroduce)</string>
+    <string name="rule_search_kind">搜索分类规则(ruleSearchKind)</string>
+    <string name="rule_search_last_chapter">搜索最新章节规则(ruleSearchLastChapter)</string>
+    <string name="rule_search_list">搜索列表规则(ruleSearchList)</string>
+    <string name="rule_search_name">搜索书名规则(ruleSearchName)</string>
+    <string name="rule_search_note_url">搜索书籍URL规则(ruleSearchNoteUrl)</string>
+    <string name="rule_search_url">搜索地址(ruleSearchUrl)</string>
+    <string name="rule_summary">规则说明</string>
+    <string name="scan_book_source">扫描</string>
+    <string name="scan_image">扫描本地图片</string>
+    <string name="scan_qr_code">扫描二维码</string>
+    <string name="scoring">评分</string>
+    <string name="screen_direction">屏幕方向</string>
+    <string name="screen_landscape">横向</string>
+    <string name="screen_portrait">竖向</string>
+    <string name="screen_sensor">跟随传感器</string>
+    <string name="screen_unspecified">跟随系统</string>
+    <string name="scroll_bar">滚动条</string>
+    <string name="search">搜索</string>
+    <string name="searchHistory">搜索历史</string>
+    <string name="search_book_key">搜索书名、作者</string>
+    <string name="search_book_source">搜索书源</string>
+    <string name="search_book_source_num">搜索(共%d个书源)</string>
+    <string name="select_all">全选</string>
+    <string name="select_font">选择字体</string>
+    <string name="select_sd_file">选择SD卡</string>
+    <string name="send_mail">发送邮件</string>
+    <string name="set_charset">设置编码</string>
+    <string name="set_download_per">自定义缓存路径需要存储权限</string>
+    <string name="set_timer">定时</string>
+    <string name="setting">设置</string>
+    <string name="share">分享</string>
+    <string name="share_app">软件分享</string>
+    <string name="showLine">显示分隔线</string>
+    <string name="showTimeBattery">显示时间和电量</string>
+    <string name="showTitle">正文显示标题</string>
+    <string name="skip_next">下一个</string>
+    <string name="skip_previous">上一个</string>
+    <string name="sort">排序</string>
+    <string name="sort_auto">智能排序</string>
+    <string name="sort_manual">手动排序</string>
+    <string name="sort_pin_yin">拼音排序</string>
+    <string name="source_no_login">当前源没有配置登陆地址</string>
+    <string name="source_rule_s">书源规则说明</string>
+    <string name="source_rule_url">https://gedoor.github.io/MyBookshelf/sourcerule.html</string>
+    <string name="source_user_agent">HttpUserAgent</string>
+    <string name="start">开始</string>
+    <string name="start_read">开始阅读</string>
+    <string name="status_bar_immersion">状态栏颜色透明</string>
+    <string name="stop">停止</string>
+    <string name="success">成功</string>
+    <string name="sure_del_all_book">是否删除全部书籍？</string>
+    <string name="sure_del_download_book">是否同时删除已下载的书籍目录？</string>
+    <string name="sure_del_file">确定删除文件吗?</string>
+    <string name="swap_sort">倒序-顺序</string>
+    <string name="switch_display_style">切换显示样式</string>
+    <string name="sys_file_picker">系统文件选择器</string>
+    <string name="text">文字</string>
+    <string name="text_bg_style">文字颜色和背景(长按自定义)</string>
+    <string name="text_bold">加粗</string>
+    <string name="text_chapter_list_rule">TXT目录规则</string>
+    <string name="text_letter_spacing">字距</string>
+    <string name="text_return">返回</string>
+    <string name="text_size">字号</string>
+    <string name="theme">主题</string>
+    <string name="theme_setting">主题设置</string>
+    <string name="this_github_url">https://github.com/gedoor/MyBookshelf</string>
+    <string name="threads_num">当前线程数 %s</string>
+    <string name="tip_cannot_jump_setting_page">无法跳转至设置界面</string>
+    <string name="tip_margin_change">Tip边距跟随边距调整</string>
+    <string name="tip_padding">Tip边距</string>
+    <string name="to">至</string>
+    <string name="to_top">置顶</string>
+    <string name="top">上</string>
+    <string name="tts_fix">请安装并选择中文TTS!</string>
+    <string name="tts_init_failed">TTS初始化失败!</string>
+    <string name="txt_chapter_regex">txt目录正则</string>
+    <string name="un_download">还剩%d章未下载</string>
+    <string name="up_change_source_last_chapter_s">开启则会在软件打开1分钟后开始更新</string>
+    <string name="up_change_source_last_chapter_t">后台更新换源最新章节</string>
+    <string name="update_chapter">更新目录</string>
+    <string name="update_log">更新日志</string>
+    <string name="update_search_threads_num">更新和搜索线程数,如感觉卡顿请减小线程数,量力而行</string>
+    <string name="use_regex">使用正则表达式</string>
+    <string name="use_to">替换范围，选填书名或者源名</string>
+    <string name="version_name">Version %s</string>
+    <string name="volume_open_page">音量键翻页</string>
+    <string name="web_edit_source">web编辑书源</string>
+    <string name="web_menu">Web服务</string>
+    <string name="web_port_summary">当前端口 %s</string>
+    <string name="web_port_title">web端口</string>
+    <string name="web_service">web服务</string>
+    <string name="welcome">启动页</string>
+    <string name="wifi_share">wifi分享</string>
+    <string name="yes">是</string>
+    <style name="Activity.Permission" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowDisablePreview">true</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowTranslucentStatus" ns1:targetApi="kitkat">true</item>
+        <item name="android:windowAnimationStyle">@null</item>
+    </style>
+    <style name="AppTheme.AppBarOverlay.Dark" parent="ThemeOverlay.AppCompat.Dark">
+        <item name="colorAccent">@color/md_grey_100</item>
+    </style>
+    <style name="AppTheme.AppBarOverlay.Light" parent="ThemeOverlay.AppCompat.Light">
+        <item name="colorAccent">@color/md_grey_900</item>
+    </style>
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light">
+        <item name="overlapAnchor">false</item>
+        <item name="colorAccent">@color/md_grey_900</item>
+    </style>
+    <style name="Base.AppTheme" parent="Theme.AppCompat.DayNight.NoActionBar">
+        <item name="android:windowBackground">@color/background</item>
+        <item name="android:windowTranslucentStatus">true</item>
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="actionOverflowMenuStyle">@style/PopupMenu</item>
+        <item name="android:itemTextAppearance">@style/MenuItemTextStyle</item>
+        <item name="android:popupMenuStyle">@style/PopupMenu</item>
+    </style>
+    <style name="CAppTheme" parent="Base.AppTheme">
+        <item name="actionBarStyle">@style/AppTheme.AppBarOverlay.Light</item>
+    </style>
+    <style name="CAppThemeBarDark" parent="Base.AppTheme">
+        <item name="actionBarStyle">@style/AppTheme.AppBarOverlay.Dark</item>
+    </style>
+    <style name="CAppTransparentTheme" parent="Base.AppTheme">
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+    </style>
+    <style name="CAppWelcomeTheme" parent="Base.AppTheme">
+        <item name="android:windowNoTitle">true</item>
+    </style>
+    <style name="MenuItemTextStyle" parent="@android:style/TextAppearance.Widget.IconMenu.Item">
+        <item name="android:textColor">@color/menu_color_default</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+    <style name="NavigationViewStyle">
+        <item name="android:listPreferredItemHeightSmall">44dp</item>
+    </style>
+    <style name="NoPaddingToolbar" parent="Base.Widget.AppCompat.Toolbar">
+        <item name="contentInsetStartWithNavigation">0dp</item>
+    </style>
+    <style name="PopupMenu" parent="Widget.AppCompat.PopupMenu">
+        <item name="android:popupBackground">@color/background_menu</item>
+    </style>
+    <style name="Style.Shadow.Bottom" parent="android:Widget">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/shadow_height</item>
+        <item name="android:background">@drawable/bg_shadow_bottom</item>
+    </style>
+    <style name="Style.Shadow.Top" parent="android:Widget">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/shadow_height</item>
+        <item name="android:background">@drawable/bg_shadow_top</item>
+    </style>
+    <style name="alertDialogTheme" parent="Theme.AppCompat.DayNight.Dialog.Alert"/>
+    <declare-styleable name="Battery">
+        <attr name="batteryOrientation">
+            <enum name="horizontal" value="0"/>
+            <enum name="vertical" value="1"/>
+        </attr>
+        <attr format="color" name="batteryColor"/>
+        <attr format="integer" name="batteryPower"/>
+    </declare-styleable>
+    <declare-styleable name="FastScroller">
+        <attr format="boolean" name="fadeScrollbar"/>
+        <attr format="boolean" name="showBubble"/>
+        <attr format="boolean" name="showTrack"/>
+        <attr format="color" name="trackColor"/>
+        <attr format="color" name="handleColor"/>
+        <attr format="color" name="bubbleColor"/>
+        <attr format="color" name="bubbleTextColor"/>
+    </declare-styleable>
+    <declare-styleable name="FilletImageView">
+        <attr format="dimension" name="radius"/>
+        <attr format="dimension" name="left_top_radius"/>
+        <attr format="dimension" name="right_top_radius"/>
+        <attr format="dimension" name="right_bottom_radius"/>
+        <attr format="dimension" name="left_bottom_radius"/>
+    </declare-styleable>
+    <declare-styleable name="IconListPreference">
+        <attr format="reference" name="icons"/>
+    </declare-styleable>
+    <declare-styleable name="NumberPickerPreference">
+        <attr format="integer" name="MinValue"/>
+        <attr format="integer" name="MaxValue"/>
+        <attr name="android:summary"/>
+    </declare-styleable>
+    <declare-styleable name="RefreshLayout">
+        <attr format="reference" name="layout_refresh_empty"/>
+        <attr format="reference" name="layout_refresh_error"/>
+        <attr format="reference" name="layout_refresh_loading"/>
+    </declare-styleable>
+    <declare-styleable name="RefreshProgressBar">
+        <attr format="integer" name="max_progress"/>
+        <attr format="integer" name="dur_progress"/>
+        <attr format="dimension" name="second_dur_progress"/>
+        <attr format="dimension" name="second_max_progress"/>
+        <attr format="color" name="bg_color"/>
+        <attr format="color" name="second_color"/>
+        <attr format="color" name="font_color"/>
+        <attr format="dimension" name="speed"/>
+    </declare-styleable>
+    <declare-styleable name="RotateLoading">
+        <attr format="dimension" name="loading_width"/>
+        <attr format="color" name="loading_color"/>
+        <attr format="integer" name="shadow_position"/>
+        <attr format="integer" name="loading_speed"/>
+    </declare-styleable>
+    <declare-styleable name="SmoothCheckBox">
+        <attr format="integer" name="duration"/>
+        <attr format="dimension" name="stroke_width"/>
+        <attr format="color" name="color_tick"/>
+        <attr format="color" name="color_checked"/>
+        <attr format="color" name="color_unchecked"/>
+        <attr format="color" name="color_unchecked_stroke"/>
+    </declare-styleable>
+</resources>

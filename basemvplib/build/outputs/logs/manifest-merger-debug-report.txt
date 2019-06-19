@@ -1,0 +1,37 @@
+-- Merging decision tree log ---
+manifest
+ADDED from D:\AndroidProject\OrangeBrowser\basemvplib\src\main\AndroidManifest.xml:1:1-2:44
+INJECTED from D:\AndroidProject\OrangeBrowser\basemvplib\src\main\AndroidManifest.xml:1:1-2:44
+INJECTED from D:\AndroidProject\OrangeBrowser\basemvplib\src\main\AndroidManifest.xml:1:1-2:44
+INJECTED from D:\AndroidProject\OrangeBrowser\basemvplib\src\main\AndroidManifest.xml:1:1-2:44
+INJECTED from D:\AndroidProject\OrangeBrowser\basemvplib\src\main\AndroidManifest.xml:1:1-2:44
+INJECTED from D:\AndroidProject\OrangeBrowser\basemvplib\src\main\AndroidManifest.xml:1:1-2:44
+INJECTED from D:\AndroidProject\OrangeBrowser\basemvplib\src\main\AndroidManifest.xml:1:1-2:44
+	package
+		ADDED from D:\AndroidProject\OrangeBrowser\basemvplib\src\main\AndroidManifest.xml:2:11-42
+		INJECTED from D:\AndroidProject\OrangeBrowser\basemvplib\src\main\AndroidManifest.xml
+		INJECTED from D:\AndroidProject\OrangeBrowser\basemvplib\src\main\AndroidManifest.xml
+	android:versionName
+		INJECTED from D:\AndroidProject\OrangeBrowser\basemvplib\src\main\AndroidManifest.xml
+		ADDED from D:\AndroidProject\OrangeBrowser\basemvplib\src\main\AndroidManifest.xml:1:1-2:44
+		INJECTED from D:\AndroidProject\OrangeBrowser\basemvplib\src\main\AndroidManifest.xml
+	android:versionCode
+		INJECTED from D:\AndroidProject\OrangeBrowser\basemvplib\src\main\AndroidManifest.xml
+		ADDED from D:\AndroidProject\OrangeBrowser\basemvplib\src\main\AndroidManifest.xml:1:1-2:44
+		INJECTED from D:\AndroidProject\OrangeBrowser\basemvplib\src\main\AndroidManifest.xml
+	xmlns:android
+		ADDED from D:\AndroidProject\OrangeBrowser\basemvplib\src\main\AndroidManifest.xml:1:11-69
+uses-sdk
+INJECTED from D:\AndroidProject\OrangeBrowser\basemvplib\src\main\AndroidManifest.xml reason: use-sdk injection requested
+INJECTED from D:\AndroidProject\OrangeBrowser\basemvplib\src\main\AndroidManifest.xml
+INJECTED from D:\AndroidProject\OrangeBrowser\basemvplib\src\main\AndroidManifest.xml
+INJECTED from D:\AndroidProject\OrangeBrowser\basemvplib\src\main\AndroidManifest.xml
+INJECTED from D:\AndroidProject\OrangeBrowser\basemvplib\src\main\AndroidManifest.xml
+	android:targetSdkVersion
+		INJECTED from D:\AndroidProject\OrangeBrowser\basemvplib\src\main\AndroidManifest.xml
+		ADDED from D:\AndroidProject\OrangeBrowser\basemvplib\src\main\AndroidManifest.xml
+		INJECTED from D:\AndroidProject\OrangeBrowser\basemvplib\src\main\AndroidManifest.xml
+	android:minSdkVersion
+		INJECTED from D:\AndroidProject\OrangeBrowser\basemvplib\src\main\AndroidManifest.xml
+		ADDED from D:\AndroidProject\OrangeBrowser\basemvplib\src\main\AndroidManifest.xml
+		INJECTED from D:\AndroidProject\OrangeBrowser\basemvplib\src\main\AndroidManifest.xml
