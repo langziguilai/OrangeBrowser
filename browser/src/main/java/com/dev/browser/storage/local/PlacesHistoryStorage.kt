@@ -75,7 +75,7 @@ open class PlacesHistoryStorage(context: Context) : HistoryStorage {
     override fun getSuggestions(query: String, limit: Int): List<SearchResult> {
         require(limit >= 0) { "Limit must be a positive integer" }
         return historyDao.getVisitHistoryByQuery("%$query%", limit = limit).map {
-            SearchResult(it.url, it.url, 1, it.title)
+            SearchResult(it.url+" at time : "+it.date, it.url, 1, it.title)
         }
        // return listOf()
     }

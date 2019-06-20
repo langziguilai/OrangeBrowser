@@ -7,6 +7,7 @@ import com.dev.orangebrowser.data.model.*
 
 @Database(
     entities = [
+        SearchHistoryItem::class,
         SiteCategory::class,
         MainPageSite::class,
         FavoriteSite::class,
@@ -19,6 +20,7 @@ import com.dev.orangebrowser.data.model.*
 abstract class AppDatabase : RoomDatabase() {
     //    abstract fun favoriteSiteDao(): FavoriteSiteDao
     abstract fun commonSiteDao(): CommonSiteDao
+    abstract fun searchHistoryItemDao(): SearchHistoryItemDao
     //    abstract fun newRecommendedDao(): NewRecommendedDao
     abstract fun siteCategoryDao(): SiteCategoryDao
     abstract fun mainPageSiteDao(): MainPageSiteDao

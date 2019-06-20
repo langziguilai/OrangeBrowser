@@ -34,11 +34,13 @@ import com.dev.browser.ui.inlineautocomplete.OnFilterListener
 import com.dev.orangebrowser.R
 import com.dev.orangebrowser.bloc.browser.BrowserFragment
 import com.dev.orangebrowser.bloc.host.MainViewModel
+import com.dev.orangebrowser.data.dao.SearchHistoryItemDao
 import com.dev.orangebrowser.databinding.FragmentSearchBinding
 import com.dev.orangebrowser.extension.RouterActivity
 import com.dev.orangebrowser.extension.appComponent
 import com.dev.orangebrowser.extension.getColor
 import com.dev.orangebrowser.extension.getSpString
+import com.dev.orangebrowser.utils.browser.SearchHistorySuggestionProvider
 import com.dev.util.ColorKitUtil
 import com.dev.view.NavigationBarUtil
 import com.dev.view.StatusBarUtil
@@ -65,6 +67,8 @@ class SearchFragment : BaseFragment(), SearchBar, BackHandler {
     lateinit var customDomainsProvider: CustomDomainsProvider
     @Inject
     lateinit var defaultDomainsProvider: ShippedDomainsProvider
+    @Inject
+    lateinit var searchHistoryItemDao: SearchHistoryItemDao
     private val originalSessionId: String
         get() = arguments?.getString(BrowserFragment.SESSION_ID) ?: ""
 
@@ -174,10 +178,12 @@ class SearchFragment : BaseFragment(), SearchBar, BackHandler {
         }
         binding.search.setOnClickListener {
             if (binding.searchText.imeOptions == EditorInfo.IME_ACTION_SEARCH) {
-                searchUseCases.defaultSearch.invoke(binding.searchText.text.toString(), getSearchEngine())
-                RouterActivity?.apply {
-                    this.loadBrowserFragment(originalSessionId,lastUrl = lastUrl)
-                }
+                viewModel.saveSearchItem(binding.searchText.text.toString().trim(), Runnable {
+                    searchUseCases.defaultSearch.invoke(binding.searchText.text.toString(), getSearchEngine())
+                    RouterActivity?.apply {
+                        this.loadBrowserFragment(originalSessionId,lastUrl = lastUrl)
+                    }
+                })
             }
         }
         binding.searchText.setOnCommitListener {
@@ -190,10 +196,12 @@ class SearchFragment : BaseFragment(), SearchBar, BackHandler {
             }
             //搜索
             if (binding.searchText.imeOptions == EditorInfo.IME_ACTION_SEARCH) {
-                searchUseCases.defaultSearch.invoke(binding.searchText.text.toString(), getSearchEngine())
-                RouterActivity?.apply {
-                    this.loadBrowserFragment(originalSessionId,lastUrl = lastUrl)
-                }
+                viewModel.saveSearchItem(binding.searchText.text.toString().trim(), Runnable {
+                    searchUseCases.defaultSearch.invoke(binding.searchText.text.toString(), getSearchEngine())
+                    RouterActivity?.apply {
+                        this.loadBrowserFragment(originalSessionId,lastUrl = lastUrl)
+                    }
+                })
             }
         }
         binding.searchText.setOnFilterListener(object : OnFilterListener {
@@ -267,10 +275,13 @@ class SearchFragment : BaseFragment(), SearchBar, BackHandler {
                     sessionManager,
                     tabsUseCases.selectTab
                 ) //点击后，选中session
+                //暂时停止使用历史记录搜索
                 addHistoryProvider(
                     historyStorage,
                     sessionUseCases.loadUrl
                 )  //点击后，//跳转页面
+                addCustomProvider(SearchHistorySuggestionProvider(searchEngine = getSearchEngine(),
+                    searchHistoryItemDao = searchHistoryItemDao,loadUrlUseCase = sessionUseCases.loadUrl))
                 addClipboardProvider(
                     requireContext(),
                     sessionUseCases.loadUrl

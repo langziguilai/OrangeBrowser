@@ -52,7 +52,15 @@ class AwesomeBarFeature(
             afterSuggestionClicked?.invoke()
         }
     }
-
+    /**
+     * Add a [AwesomeBar.SuggestionProvider] for search engine suggestions to the [AwesomeBar].
+     */
+    fun addCustomProvider(
+        customProvider: AwesomeBar.SuggestionProvider
+    ): AwesomeBarFeature {
+        awesomeBar.addProviders(customProvider)
+        return this
+    }
     /**
      * Add a [AwesomeBar.SuggestionProvider] for "Open tabs" to the [AwesomeBar].
      */

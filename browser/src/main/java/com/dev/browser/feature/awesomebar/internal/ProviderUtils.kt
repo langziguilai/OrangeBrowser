@@ -12,7 +12,7 @@ import com.dev.browser.icons.IconRequest
  * Helper that creates a suspendable lambda to either load a static bitmap ([default]) or from [BrowserIcons] if not
  * null.
  */
-internal fun BrowserIcons?.loadLambda(
+fun BrowserIcons?.loadLambda(
     url: String,
     default: Bitmap? = null
 ): (suspend (width: Int, height: Int) -> Bitmap?)? {

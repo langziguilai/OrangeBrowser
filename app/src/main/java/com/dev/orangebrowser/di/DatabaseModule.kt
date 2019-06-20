@@ -47,6 +47,11 @@ class DatabaseModule {
     }
     @Provides
     @Singleton
+    fun provideSearchHistoryItemDao(appDatabase: AppDatabase): SearchHistoryItemDao {
+        return appDatabase.searchHistoryItemDao()
+    }
+    @Provides
+    @Singleton
     fun provideSiteCategoryDao(appDatabase: AppDatabase): SiteCategoryDao {
         return appDatabase.siteCategoryDao()
     }
