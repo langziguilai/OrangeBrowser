@@ -367,4 +367,7 @@
     <string name="site_name">网站名称</string>
     <string name="pref_setting_theme">pref_setting_theme</string>
     <string name="download_failed">下载失败</string>
+    <string name="tip_replace_with_last_child">使用last-child替代nth-child</string>
+    <string name="next_page_selector">下一页CSS选择器:</string>
+    <string name="image_attribute">选择图片属性:</string>
 </resources>

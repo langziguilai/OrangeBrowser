@@ -9,6 +9,8 @@ import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import androidx.appcompat.widget.AppCompatCheckBox
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -17,22 +19,22 @@ import com.dev.base.extension.*
 import com.dev.base.support.BackHandler
 import com.dev.browser.feature.downloads.DownloadManager
 import com.dev.browser.session.Download
-import com.dev.browser.session.Session
 import com.dev.browser.session.SessionManager
 import com.dev.browser.support.DownloadUtils
 import com.dev.orangebrowser.R
 import com.dev.orangebrowser.bloc.browser.BrowserFragment
 import com.dev.orangebrowser.bloc.host.MainViewModel
+import com.dev.orangebrowser.config.ErrorCode
 import com.dev.orangebrowser.extension.RouterActivity
 import com.dev.orangebrowser.extension.appComponent
 import com.dev.orangebrowser.utils.PositionUtils
 import com.dev.orangebrowser.utils.PositionUtils.calculateRecyclerViewLeftMargin
 import com.dev.orangebrowser.utils.PositionUtils.calculateRecyclerViewTopMargin
-import com.dev.orangebrowser.utils.html2article.ContentExtractor
 import com.dev.orangebrowser.view.LongClickFrameLayout
 import com.dev.orangebrowser.view.contextmenu.Action
 import com.dev.orangebrowser.view.contextmenu.CommonContextMenuAdapter
 import com.dev.orangebrowser.view.contextmenu.MenuItem
+import com.dev.util.StringUtil
 import com.dev.view.StatusBarUtil
 import com.dev.view.dialog.DialogBuilder
 import com.dev.view.recyclerview.CustomBaseViewHolder
@@ -43,10 +45,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
-import java.lang.Exception
 import java.util.*
 import javax.inject.Inject
-import kotlin.collections.HashMap
 
 class ImageModeModeFragment : BaseFragment(), BackHandler {
 
@@ -82,6 +82,23 @@ class ImageModeModeFragment : BaseFragment(), BackHandler {
     lateinit var nextPageSpinner: Spinner
     lateinit var attrSpinner: Spinner
     lateinit var spinnerContainer: LinearLayout
+    lateinit var useLastChildCheckBox:AppCompatCheckBox
+    //data
+    private var images = LinkedList<String>()
+    lateinit var adapter: BaseQuickAdapter<String, CustomBaseViewHolder>
+    var showAllImages: Boolean = false
+    var html = ""
+    var imageAttr = "abs:src"
+    var nextPageSelector = ""
+    var sessionUrl=""
+    var nextPageUrl=""
+    var replaceNthChildWithLastChild=false
+    var loadCompleted=false
+    //图片属性
+    private var imageAttributes = LinkedList<KeyValue>()
+    //链接选择器
+    private var linkSelectors = LinkedList<KeyValue>()
+
     override fun onAttach(context: Context) {
         super.onAttach(context)
         //注入
@@ -98,12 +115,20 @@ class ImageModeModeFragment : BaseFragment(), BackHandler {
         topOverLayer = view.findViewById<FrameLayout>(R.id.top_over_lay).apply {
             setOnClickListener {
                 hideSettingView()
-                refresh()
+                viewModel.refresh(url = sessionUrl,showAllImages = showAllImages,imageAttr = imageAttr,nextPageSelector = nextPageSelector)
+            }
+        }
+        nextPageSpinner = view.findViewById(R.id.spinner_next)
+        attrSpinner = view.findViewById(R.id.spinner_attr)
+        useLastChildCheckBox=view.findViewById<AppCompatCheckBox>(R.id.use_last_child).apply{
+            this.setOnCheckedChangeListener { _, isChecked ->
+                replaceNthChildWithLastChild=isChecked
+                if (replaceNthChildWithLastChild){
+                    nextPageSelector=StringUtil.replaceLast(nextPageSelector,"nth-child\\(\\d\\)","last-child")
+                }
             }
         }
 
-        nextPageSpinner = view.findViewById(R.id.spinner_next)
-        attrSpinner = view.findViewById(R.id.spinner_attr)
         spinnerContainer = view.findViewById(R.id.spiner_container)
         recyclerView = view.findViewById(R.id.recycler_view)
         recyclerView.layoutManager = LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
@@ -128,16 +153,107 @@ class ImageModeModeFragment : BaseFragment(), BackHandler {
                 } else {
                     requireContext().showToast(getString(R.string.tip_switch_to_show_main_images))
                 }
-                sessionManager.selectedSession?.apply {
-                    getImages(this)
-                }
+                //刷新
+                viewModel.refresh(url = sessionUrl,showAllImages = showAllImages,imageAttr = imageAttr,nextPageSelector = nextPageSelector)
             }
         }
         spinnerContainer.onGlobalLayoutComplete {
             hideSettingView()
         }
+        //监听数据
+
+        viewModel.errCodeLiveData.observe(this,Observer<Int>{
+            when(it){
+                ErrorCode.LOAD_FAIL->{
+                    requireContext().apply {
+                        showToast(getString(R.string.load_fail))
+                    }
+                    adapter.loadMoreFail()
+                }
+            }
+        })
+        viewModel.nextPageUrlLiveData.observe(this,Observer<String>{
+            if (it!=nextPageUrl){
+                Log.d("nextPageUrlLiveData","is $it")
+                nextPageUrl=it
+            }else{
+                adapter.loadMoreEnd()
+                loadCompleted=true
+            }
+        })
+        viewModel.refreshImagesLiveData.observe(this,Observer<List<String>>{
+            images.clear()
+            images.addAll(it)
+            adapter.notifyDataSetChanged()
+        })
+        viewModel.loadMoreImagesLiveData.observe(this,Observer<List<String>>{
+            val oldSize=images.size
+            images.addAll(it)
+            adapter.notifyItemRangeInserted(oldSize,it.size)
+            adapter.loadMoreComplete()
+        })
+        viewModel.htmlLiveData.observe(this,Observer<String>{
+            html=it
+            //获取imageAttributes和LinkSelector
+            if (linkSelectors.size==0 && imageAttributes.size==0){
+                launch(Dispatchers.IO) {
+                    val doc=Jsoup.parse(html)
+                    doc.setBaseUri(sessionUrl)
+                    imageAttributes=getImageAttributes(doc)
+                    linkSelectors=getLinkSelectors(doc)
+                    launch(Dispatchers.Main) {
+                        initSpinner()
+                    }
+                }
+            }
+        })
+    }
+    private fun initSpinner(){
+        attrSpinner.adapter = KeyValueAdapter(data = imageAttributes)
+        attrSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+                if (imageAttributes.size > 0) {
+                    imageAttr = imageAttributes[0].value
+                }
+            }
+
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                imageAttr = imageAttributes[position].value
+            }
+        }
+        nextPageSpinner.adapter = KeyValueAdapter(data = linkSelectors)
+        nextPageSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+                if (linkSelectors.size > 0) {
+                    nextPageSelector = linkSelectors[0].key
+                }
+            }
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                nextPageSelector = if (replaceNthChildWithLastChild){
+                    StringUtil.replaceLast(linkSelectors[position].key,"nth-child\\(\\d\\)","last-child")
+                }else{
+                    linkSelectors[position].key
+                }
+            }
+        }
     }
 
+    private fun getImageAttributes(document:Document):LinkedList<KeyValue>{
+        val list=LinkedList<KeyValue>()
+        document.select("img").forEach {ele->
+            ele.attributes().forEach {
+                list.add(KeyValue(key = it.value,value = it.key))
+            }
+        }
+        return list
+    }
+    private fun getLinkSelectors(document: Document):LinkedList<KeyValue>{
+        val list=LinkedList<KeyValue>()
+        document.select("a").forEach {ele->
+            list.add(KeyValue(key = ele.cssSelector(), value = ele.text()))
+        }
+        return list
+    }
     private fun showSettingView() {
         topOverLayer.show()
         spinnerContainer.animate().apply {
@@ -154,6 +270,8 @@ class ImageModeModeFragment : BaseFragment(), BackHandler {
     }
 
     var downloadDialog: Dialog? = null
+
+
     private fun showDialog() {
         downloadDialog = DialogBuilder()
             .setLayoutId(R.layout.dialog_download_all_images)
@@ -179,15 +297,11 @@ class ImageModeModeFragment : BaseFragment(), BackHandler {
         downloadDialog?.show()
     }
 
-
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         activityViewModel = ViewModelProviders.of(activity!!, factory).get(MainViewModel::class.java)
         super.onActivityCreated(savedInstanceState)
     }
 
-    private var images = LinkedList<String>()
-    lateinit var adapter: BaseQuickAdapter<String, CustomBaseViewHolder>
-    var showAllImages: Boolean = false
     override fun initData(savedInstanceState: Bundle?) {
         StatusBarUtil.setIconColor(requireActivity(), activityViewModel.theme.value!!.colorPrimary)
         header.setBackgroundColor(activityViewModel.theme.value!!.colorPrimary)
@@ -208,224 +322,25 @@ class ImageModeModeFragment : BaseFragment(), BackHandler {
         }
         adapter.setPreLoadNumber(2)
         adapter.setOnLoadMoreListener({
-            extractNextPage(HashMap<String, String>().apply {
-                put(
-                    "User-Agent",
-                    "Mozilla/5.0 (Linux; Android 8.0; Pixel 2 Build/OPD3.170816.012) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.169 Mobile Safari/537.36"
-                )
-            })
+            //如果加载完成，则不再加载
+            if (loadCompleted){
+                adapter.loadMoreEnd()
+                return@setOnLoadMoreListener
+            }
+            Log.d("OnLoadMoreListener","nextPageUrl is $nextPageUrl")
+            if (nextPageUrl.isBlank()){
+                adapter.loadMoreComplete()
+            }else{
+                viewModel.loadMore(url = nextPageUrl,showAllImages = showAllImages,imageAttr = imageAttr,nextPageSelector = nextPageSelector)
+            }
         }, recyclerView)
         adapter.disableLoadMoreIfNotFullPage()
         adapter.setEnableLoadMore(true)
         initImageItemContextMenu(adapter)
         recyclerView.adapter = adapter
-        getImages(session)
-    }
+        sessionUrl=session.url
+        viewModel.refresh(url = sessionUrl,showAllImages = showAllImages,imageAttr = imageAttr,nextPageSelector = nextPageSelector)
 
-    var html = ""
-    var imageAttr = "abs:src"
-    var nextPageSelector = ""
-    var lastUrl = ""
-    private fun getImages(session: Session) {
-        initialExtractPage(session.url, HashMap<String, String>().apply {
-            put(
-                "User-Agent",
-                "Mozilla/5.0 (Linux; Android 8.0; Pixel 2 Build/OPD3.170816.012) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.169 Mobile Safari/537.36"
-            )
-        })
-    }
-
-    private val imageAttributes = LinkedList<KeyValue>()
-    private val linkSelectors = LinkedList<KeyValue>()
-    //反向获取selector及其文字
-    private fun parseLinkSelectors(document: Document) {
-        val elements = document.select("a")
-        for (ele in elements) {
-            linkSelectors.add(KeyValue(key = ele.cssSelector(), value = ele.text()))
-        }
-    }
-
-    private fun extractImage(document: Document): List<String> {
-        val list = LinkedList<String>()
-        val elements = document.select("img")
-        for (ele in elements) {
-            if (imageAttributes.isEmpty()) {
-                Log.d("extractImage","getImageAttributes")
-                for (attr in ele.attributes()) {
-                    Log.d("attr","attr.key")
-                    Log.d("attr","attr.value")
-                    imageAttributes.add(KeyValue(key = attr.value, value = attr.key))
-                }
-            }
-            val imageSrc = ele.attr(imageAttr).trim()
-            //如果不是直接设置数据的，就添加
-            if (!imageSrc.startsWith("data:") && imageSrc.isNotBlank()) {
-                list.add(imageSrc)
-            }
-        }
-        return list
-    }
-
-    private fun initialExtractPage(url: String, headers: Map<String, String>? = null) = launch(Dispatchers.IO) {
-        Log.d("initialExtractPage","initialExtractPage")
-        try {
-            //下载
-            var connection = Jsoup.connect(url)
-            lastUrl = url
-            headers?.apply {
-                connection = connection.headers(headers)
-            }
-            connection.timeout(20000)
-            html = connection.get().apply {
-                parseLinkSelectors(this)
-            }.html()
-            val document = if (!showAllImages) {
-                val article = ContentExtractor.getArticleByHtml(html)
-                Jsoup.parse(article.contentHtml)
-            } else {
-                Jsoup.parse(html)
-            }
-            document.setBaseUri(lastUrl)
-            val oldLength = images.size
-            val newImages = extractImage(document)
-            launch(Dispatchers.Main) {
-                adapter.loadMoreComplete()
-                images.addAll(newImages)
-                adapter.notifyItemRangeInserted(oldLength, newImages.size)
-                initSpinner()
-            }
-        } catch (e: Exception) {
-            launch(Dispatchers.Main) {
-                adapter.loadMoreFail()
-                e.printStackTrace()
-                requireContext().apply {
-                    showToast(getString(R.string.download_failed))
-                }
-            }
-        }
-    }
-
-    private fun refresh()=launch (Dispatchers.IO){
-        Log.d("refresh","refresh")
-        try {
-            //下载
-            var connection = Jsoup.connect(lastUrl)
-            connection = connection.headers(HashMap<String, String>().apply {
-                put(
-                    "User-Agent",
-                    "Mozilla/5.0 (Linux; Android 8.0; Pixel 2 Build/OPD3.170816.012) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.169 Mobile Safari/537.36"
-                )
-            })
-            connection.timeout(20000)
-            html = connection.get().apply {
-                parseLinkSelectors(this)
-            }.html()
-            val document = if (!showAllImages) {
-                val article = ContentExtractor.getArticleByHtml(html)
-                Jsoup.parse(article.contentHtml)
-            } else {
-                Jsoup.parse(html)
-            }
-            document.setBaseUri(lastUrl)
-            val newImages = extractImage(document)
-            launch(Dispatchers.Main) {
-                adapter.loadMoreComplete()
-                images.clear()
-                images.addAll(newImages)
-                adapter.setNewData(images)
-            }
-        } catch (e: Exception) {
-            launch(Dispatchers.Main) {
-                adapter.loadMoreFail()
-                e.printStackTrace()
-                requireContext().apply {
-                    showToast(getString(R.string.download_failed))
-                }
-            }
-        }
-    }
-
-    private fun initSpinner() {
-        attrSpinner.adapter = KeyValueAdapter(data = imageAttributes)
-        attrSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onNothingSelected(parent: AdapterView<*>?) {
-                if (imageAttributes.size > 0) {
-                    imageAttr = imageAttributes[0].value
-                }
-            }
-
-            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                imageAttr = imageAttributes[position].value
-            }
-        }
-        nextPageSpinner.adapter = KeyValueAdapter(data = linkSelectors)
-        nextPageSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onNothingSelected(parent: AdapterView<*>?) {
-                if (linkSelectors.size > 0) {
-                    nextPageSelector = linkSelectors[0].key
-                }
-            }
-
-            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                nextPageSelector = linkSelectors[position].key
-            }
-        }
-    }
-
-    private fun extractNextPage(headers: Map<String, String>? = null) = launch(Dispatchers.IO) {
-        Log.d("extractNextPage","extractNextPage")
-        if (html.isNotBlank() && nextPageSelector.isNotBlank()) {
-            var nextPageUrl = ""
-            Jsoup.parse(html).apply {
-                this.setBaseUri(lastUrl)
-            }.select(nextPageSelector).apply {
-                if (this.size > 0) {
-                    nextPageUrl = this[0].attr("abs:href")
-                }
-            }
-            if (nextPageUrl.isBlank() || lastUrl == nextPageUrl) {
-                launch(Dispatchers.Main) {
-                    adapter.loadMoreEnd()
-                }
-                return@launch
-            }
-            try {
-                //下载
-                var connection = Jsoup.connect(nextPageUrl)
-                lastUrl = nextPageUrl
-                headers?.apply {
-                    connection = connection.headers(headers)
-                }
-                connection.timeout(20000)
-                html = connection.get().html()
-                val document = if (!showAllImages) {
-                    val article = ContentExtractor.getArticleByHtml(html)
-                    Jsoup.parse(article.contentHtml)
-                } else {
-                    Jsoup.parse(html)
-                }
-                document.setBaseUri(lastUrl)
-                val oldLength = images.size
-                val newImages = extractImage(document)
-                launch(Dispatchers.Main) {
-                    if (newImages.isEmpty()) {
-                        adapter.loadMoreEnd()
-                    } else {
-                        adapter.loadMoreComplete()
-                    }
-                    images.addAll(newImages)
-                    adapter.notifyItemRangeInserted(oldLength, newImages.size)
-                }
-            } catch (e: Exception) {
-                launch(Dispatchers.Main) {
-                    adapter.loadMoreFail()
-                    e.printStackTrace()
-                    requireContext().apply {
-                        showToast(getString(R.string.download_failed))
-                    }
-                }
-            }
-        }
     }
 
     var imageItemContextMenu: Dialog? = null
@@ -527,15 +442,13 @@ class KeyValueAdapter(var data: List<KeyValue>) : BaseAdapter() {
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
         if (convertView != null) {
             (convertView.tag as? ViewHolder)?.apply {
-                this.title.text = data[position].value
-                this.subTitle.text = data[position].key
+                this.title.text = data[position].value+" => "+data[position].key
             }
             return convertView
         }
-        val view = View.inflate(parent.context, R.layout.item_title_sub_title_selector, null)
+        val view = View.inflate(parent.context, R.layout.item_title_selector, null)
         ViewHolder(view).apply {
-            this.title.text = data[position].value
-            this.subTitle.text = data[position].key
+            this.title.text = data[position].value+" => "+data[position].key
         }
         return view
     }
@@ -554,7 +467,6 @@ class KeyValueAdapter(var data: List<KeyValue>) : BaseAdapter() {
 
     class ViewHolder(var view: View) {
         val title: TextView = view.findViewById(R.id.title)
-        val subTitle: TextView = view.findViewById(R.id.sub_title)
 
         init {
             view.tag = this
