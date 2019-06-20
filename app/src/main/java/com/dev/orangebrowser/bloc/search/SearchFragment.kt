@@ -275,13 +275,12 @@ class SearchFragment : BaseFragment(), SearchBar, BackHandler {
                     sessionManager,
                     tabsUseCases.selectTab
                 ) //点击后，选中session
-                //暂时停止使用历史记录搜索
+                addCustomProvider(SearchHistorySuggestionProvider(searchEngine = getSearchEngine(),
+                    searchHistoryItemDao = searchHistoryItemDao,loadUrlUseCase = sessionUseCases.loadUrl))
                 addHistoryProvider(
                     historyStorage,
                     sessionUseCases.loadUrl
                 )  //点击后，//跳转页面
-                addCustomProvider(SearchHistorySuggestionProvider(searchEngine = getSearchEngine(),
-                    searchHistoryItemDao = searchHistoryItemDao,loadUrlUseCase = sessionUseCases.loadUrl))
                 addClipboardProvider(
                     requireContext(),
                     sessionUseCases.loadUrl
