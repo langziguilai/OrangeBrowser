@@ -10,8 +10,8 @@ class CommentListItemExtractorBuilder {
     private var dateMeta: ItemExtractorMeta? = null
     private var scoreMeta: ItemExtractorMeta? = null
     private var contentMeta: ItemExtractorMeta? = null
-    private lateinit var nextPageMeta: ItemExtractorMeta
-    private lateinit var listSelector: String
+    private  var nextPageMeta: ItemExtractorMeta?=null
+    private  var listSelector: String?=null
     private var userIdMeta: ItemExtractorMeta? = null
     private var userNameMeta: ItemExtractorMeta? = null
     private var userAvatarMeta: ItemExtractorMeta? = null

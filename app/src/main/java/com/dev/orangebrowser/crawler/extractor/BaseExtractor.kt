@@ -14,15 +14,24 @@ open class BaseExtractor {
      * */
     fun extractItem(element: Element, meta: ItemExtractorMeta?): String {
         if (meta==null) return EMPTY
-        if (meta.selector.isBlank()) return EMPTY
-        val elements = element.select(meta.selector)
-        if (elements.isEmpty()) return EMPTY
-        if (meta.attribute.isBlank()) return EMPTY
-        val result = if (meta.attribute == DEFAULT_TEXT_ATTRIBUTE) {
-            elements[0].text()
-        } else {
-            elements[0].attr(meta.attribute)
+        val result: String
+        if (meta.selector.isBlank()){
+            result=if (meta.attribute == DEFAULT_TEXT_ATTRIBUTE) {
+                element.text()
+            } else {
+                element.attr(meta.attribute)
+            }
+        }else{
+            val elements = element.select(meta.selector)
+            if (elements.isEmpty()) return EMPTY
+            if (meta.attribute.isBlank()) return EMPTY
+            result = if (meta.attribute == DEFAULT_TEXT_ATTRIBUTE) {
+                elements[0].text()
+            } else {
+                elements[0].attr(meta.attribute)
+            }
         }
+
         if (result.isNotBlank() && meta.script.isNotBlank()) {
             return executeScript(result, meta.script)
         }
@@ -35,10 +44,11 @@ open class BaseExtractor {
      * */
     fun <R> extractList(
         element: Element,
-        listSelector: String,
+        listSelector: String?,
         metaMap: Map<String, ItemExtractorMeta?>,
         mapper: (Map<String, String>) -> R
     ): List<R> {
+        if (listSelector==null || listSelector.isBlank()) return listOf()
         return element.select(listSelector).map {
             val map = HashMap<String, String>()
             for (entry in metaMap) {

@@ -13,8 +13,8 @@ class ArticleListItemExtractorBuilder {
     private var scoreMeta: ItemExtractorMeta? = null
     private var contentMeta: ItemExtractorMeta? = null
     private var viewCountMeta: ItemExtractorMeta? = null
-    private lateinit var nextPageMeta: ItemExtractorMeta
-    private lateinit var listSelector: String
+    private var nextPageMeta: ItemExtractorMeta?=null
+    private  var listSelector: String?=null
     private var authorIdMeta: ItemExtractorMeta? = null
     private var authorNameMeta: ItemExtractorMeta? = null
     private var authorAvatarMeta: ItemExtractorMeta? = null

@@ -10,8 +10,8 @@ class CategoryListItemExtractorBuilder {
     private var iconMeta: ItemExtractorMeta? =null
     private var lastUpdateMeta: ItemExtractorMeta? =null
     private var countMeta: ItemExtractorMeta? =null
-    lateinit var nextPageMeta: ItemExtractorMeta
-    lateinit var listSelector: String
+    private var nextPageMeta: ItemExtractorMeta? =null
+    private var listSelector: String? = null
     fun load(source: String) {
 
     }

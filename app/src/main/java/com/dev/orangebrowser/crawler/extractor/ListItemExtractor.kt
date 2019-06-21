@@ -5,7 +5,7 @@ import org.jsoup.nodes.Document
 import org.jsoup.nodes.Element
 
 class ListItemExtractor<T>(
-    var listSelector:String,
+    var listSelector:String?,
     var listItemMetaMap:Map<String, ItemExtractorMeta?>,
     var nextPageMeta: ItemExtractorMeta?=null,
     var mapper:(Map<String,String>)->T
