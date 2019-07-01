@@ -64,8 +64,8 @@ class ThumbnailFeature(
         }
         private var captured=false
         override fun onProgress(session: Session, progress: Int) {
-            //在progress大于70%时，capture图片
-            if (progress>70){
+            //在progress大于90%时，capture图片
+            if (progress>90){
                 if (!captured){
                     requestThumbnail(session)
                     captured=true
