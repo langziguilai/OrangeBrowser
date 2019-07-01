@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.dev.base.BaseFragment
 import com.dev.base.support.BackHandler
+import com.dev.browser.session.Session
 import com.dev.orangebrowser.R
 import com.dev.orangebrowser.bloc.host.MainViewModel
 import com.dev.orangebrowser.bloc.setting.adapter.Adapter
@@ -95,6 +96,25 @@ class GeneralSettingFragment : BaseFragment(), BackHandler {
                 action = object : Action<TileItem> {
                     override fun invoke(data: TileItem) {
                         RouterActivity?.loadAddressBarSettingFragment()
+                    }
+                })
+        )
+        var viewModeTitle = getString(R.string.normal_vision_mode)
+        getSpInt(R.string.pref_setting_view_mode, Session.NORMAL_SCREEN_MODE).apply {
+            when(this){
+                Session.NORMAL_SCREEN_MODE-> viewModeTitle=getString(R.string.normal_vision_mode)
+                Session.MAX_SCREEN_MODE-> viewModeTitle=getString(R.string.max_vision_mode)
+                Session.SCROLL_FULL_SCREEN_MODE-> viewModeTitle=getString(R.string.auto_vision_mode)
+            }
+        }
+        list.add(
+            TileItem(
+                title = getString(R.string.view_mode),
+                tip = viewModeTitle,
+                icon = getString(R.string.ic_right),
+                action = object : Action<TileItem> {
+                    override fun invoke(data: TileItem) {
+                        RouterActivity?.loadVisionModeSettingFragment()
                     }
                 })
         )

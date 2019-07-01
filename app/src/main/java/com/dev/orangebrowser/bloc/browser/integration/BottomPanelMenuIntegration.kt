@@ -102,6 +102,7 @@ class BottomPanelMenuIntegration(
             }else{
                 binding.miniBottomBar.visibility = View.GONE
             }
+
         }
 
         //设置UserAgent

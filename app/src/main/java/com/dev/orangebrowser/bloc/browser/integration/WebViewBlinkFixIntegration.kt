@@ -26,6 +26,7 @@ class WebViewBlinkFixIntegration(binding: FragmentBrowserBinding,fragment:Browse
                 //用完清理
                 imageView.postDelayed({
                     binding.webViewContainer.removeView(imageView)
+                    session.visionMode=fragment.getSpInt(R.string.pref_setting_view_mode,Session.NORMAL_SCREEN_MODE)
                 },500)
             }
         }
