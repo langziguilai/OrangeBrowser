@@ -42,20 +42,31 @@ class StyleIntegration(
             updateStyle(color)
         }
         sessionObserver = object : Session.Observer {
+            override fun onUrlChanged(session: Session, url: String) {
+                val currentHost = Uri.parse(session.url).host ?: ""
+                if (session.themeColorMap.containsKey(currentHost)) {
+                    updateStyle(session.themeColorMap[currentHost]!!)
+                    return
+                }
+            }
             override fun onThumbnailCapture(session: Session, bitmap: Bitmap?) {
+                val currentHost = Uri.parse(session.url).host ?: ""
+                if (session.themeColorMap.containsKey(currentHost)) {
+                    updateStyle(session.themeColorMap[currentHost]!!)
+                    return
+                }
                 bitmap?.apply {
                     val engineSession = sessionManager.getOrCreateEngineSession(session) as SystemEngineSession
                     val dy = engineSession.webView.scrollY
                     //在尚未滑动的时候，可以通过截图来获取颜色，否则，不改变style
                     if (dy == 0) {
-                        val host = Uri.parse(session.url).host ?: ""
-                        if (session.themeColorMap.containsKey(host)) {
-                            updateStyle(session.themeColorMap[host]!!)
+                        if (session.themeColorMap.containsKey(currentHost)) {
+                            updateStyle(session.themeColorMap[currentHost]!!)
                         } else {
                             bitmap.apply {
                                 val color = bitmap.getPixel(5, 5)
                                 updateStyle(color)
-                                session.themeColorMap[host] = color
+                                session.themeColorMap[currentHost] = color
                             }
                         }
                     }
