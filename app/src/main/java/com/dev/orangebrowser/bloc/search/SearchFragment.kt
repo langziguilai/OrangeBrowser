@@ -36,10 +36,7 @@ import com.dev.orangebrowser.bloc.browser.BrowserFragment
 import com.dev.orangebrowser.bloc.host.MainViewModel
 import com.dev.orangebrowser.data.dao.SearchHistoryItemDao
 import com.dev.orangebrowser.databinding.FragmentSearchBinding
-import com.dev.orangebrowser.extension.RouterActivity
-import com.dev.orangebrowser.extension.appComponent
-import com.dev.orangebrowser.extension.getColor
-import com.dev.orangebrowser.extension.getSpString
+import com.dev.orangebrowser.extension.*
 import com.dev.orangebrowser.utils.browser.SearchHistorySuggestionProvider
 import com.dev.util.ColorKitUtil
 import com.dev.view.NavigationBarUtil
@@ -136,7 +133,13 @@ class SearchFragment : BaseFragment(), SearchBar, BackHandler {
         lastUrl=sessionManager.selectedSession?.url
         currentSessionId=sessionManager.selectedSession?.id
         //update style
-        updateStyle(primaryColor)
+        //如果是沉浸式风格，则随页面变换颜色
+        if (getSpBool(R.string.pref_setting_user_immerse_browse_style, false)){
+            updateStyle(primaryColor)
+        }else{
+            updateStyle(activityViewModel.theme.value!!.colorPrimary)
+        }
+
         //设置跳转到本页面的时候就弹出键盘，并且光标闪烁
         binding.searchText.isFocusable = true
         binding.searchText.isFocusableInTouchMode = true
