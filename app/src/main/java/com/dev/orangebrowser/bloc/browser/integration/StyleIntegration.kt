@@ -15,6 +15,7 @@ import com.dev.orangebrowser.bloc.browser.BrowserFragment
 import com.dev.orangebrowser.data.model.Theme
 import com.dev.orangebrowser.databinding.FragmentBrowserBinding
 import com.dev.orangebrowser.databinding.Util
+import com.dev.orangebrowser.extension.getSpBool
 import com.dev.util.ColorKitUtil
 import com.dev.view.NavigationBarUtil
 import com.dev.view.StatusBarUtil
@@ -28,14 +29,14 @@ class StyleIntegration(
 ) :
     LifecycleAwareFeature {
     private var sessionObserver: Session.Observer
-
+    private var immerseStyle=fragment.getSpBool(R.string.pref_setting_user_immerse_browse_style, false)
     init {
         var host = Uri.parse(session.url).host ?: ""
         //如果是来自search Fragment的
         if (fragment.lastUrl.isNotBlank()) {
             host = Uri.parse(fragment.lastUrl).host ?: ""
         }
-        if (session.themeColorMap.containsKey(host)) {
+        if (session.themeColorMap.containsKey(host) && immerseStyle) {
             updateStyle(session.themeColorMap[host]!!)
         } else {
             val color = fragment.activityViewModel.theme.value!!.colorPrimary
@@ -44,12 +45,13 @@ class StyleIntegration(
         sessionObserver = object : Session.Observer {
             override fun onUrlChanged(session: Session, url: String) {
                 val currentHost = Uri.parse(session.url).host ?: ""
-                if (session.themeColorMap.containsKey(currentHost)) {
+                if (session.themeColorMap.containsKey(currentHost) && immerseStyle) {
                     updateStyle(session.themeColorMap[currentHost]!!)
                     return
                 }
             }
             override fun onThumbnailCapture(session: Session, bitmap: Bitmap?) {
+                if (!immerseStyle) return
                 val currentHost = Uri.parse(session.url).host ?: ""
                 if (session.themeColorMap.containsKey(currentHost)) {
                     updateStyle(session.themeColorMap[currentHost]!!)
