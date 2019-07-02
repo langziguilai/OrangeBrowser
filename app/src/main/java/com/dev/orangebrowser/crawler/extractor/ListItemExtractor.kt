@@ -11,8 +11,8 @@ class ListItemExtractor<T>(
     var mapper:(Map<String,String>)->T
 ):BaseExtractor(){
     //获取列表
-   fun extractList(document:Document): List<T> {
-      return extractList(element=document,listSelector = listSelector,metaMap = listItemMetaMap,mapper = mapper)
+   fun extractList(element:Element): List<T> {
+      return extractList(element=element,listSelector = listSelector,metaMap = listItemMetaMap,mapper = mapper)
    }
     //获取下一页的地址
    fun extractNextPageUrl(element:Element):String{

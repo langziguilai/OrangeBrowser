@@ -6,4 +6,4 @@ data class Category(
     var icon:String="",  //图标
     var lastUpdate:String="",  //最近更新
     var count:String=""  //文章总数
-)
+):Base()

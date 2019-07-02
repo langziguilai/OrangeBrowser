@@ -6,21 +6,18 @@ import com.dev.orangebrowser.crawler.model.ItemExtractorMeta
 import com.dev.orangebrowser.crawler.model.User
 
 class ArticleListItemExtractorBuilder {
-    private var titleMeta: ItemExtractorMeta? = null
-    private var dateMeta: ItemExtractorMeta? = null
-    private var coverMeta: ItemExtractorMeta? = null
-    private var abstractMeta: ItemExtractorMeta? = null
-    private var scoreMeta: ItemExtractorMeta? = null
-    private var contentMeta: ItemExtractorMeta? = null
-    private var viewCountMeta: ItemExtractorMeta? = null
-    private var nextPageMeta: ItemExtractorMeta?=null
-    private  var listSelector: String?=null
-    private var authorIdMeta: ItemExtractorMeta? = null
-    private var authorNameMeta: ItemExtractorMeta? = null
-    private var authorAvatarMeta: ItemExtractorMeta? = null
-    fun load(source: String) {
-
-    }
+     var titleMeta: ItemExtractorMeta? = null
+     var dateMeta: ItemExtractorMeta? = null
+     var coverMeta: ItemExtractorMeta? = null
+     var abstractMeta: ItemExtractorMeta? = null
+     var scoreMeta: ItemExtractorMeta? = null
+     var contentMeta: ItemExtractorMeta? = null
+     var viewCountMeta: ItemExtractorMeta? = null
+     var nextPageMeta: ItemExtractorMeta?=null
+      var listSelector: String?=null
+     var authorIdMeta: ItemExtractorMeta? = null
+     var authorNameMeta: ItemExtractorMeta? = null
+     var authorAvatarMeta: ItemExtractorMeta? = null
 
     fun build(): ListItemExtractor<Article> {
         val listItemMetaMap = HashMap<String, ItemExtractorMeta?>()

@@ -1,12 +1,13 @@
 package com.dev.orangebrowser.crawler.extractor
 
-import com.dev.orangebrowser.crawler.model.DEFAULT_TEXT_ATTRIBUTE
+import com.dev.orangebrowser.crawler.DEFAULT_EXTRACTOR_ID
+import com.dev.orangebrowser.crawler.DEFAULT_TEXT_ATTRIBUTE
+import com.dev.orangebrowser.crawler.EMPTY
 import com.dev.orangebrowser.crawler.model.ItemExtractorMeta
 import org.jsoup.nodes.Element
 
-const val EMPTY = ""
 
-open class BaseExtractor {
+open class BaseExtractor(var id:String= DEFAULT_EXTRACTOR_ID,var nextExtractorId:String?= DEFAULT_EXTRACTOR_ID) {
     /**
      * 1：获取元素
      * 2：获取属性
@@ -14,9 +15,9 @@ open class BaseExtractor {
      * */
     fun extractItem(element: Element, meta: ItemExtractorMeta?): String {
         if (meta==null) return EMPTY
-        val result: String
-        if (meta.selector.isBlank()){
-            result=if (meta.attribute == DEFAULT_TEXT_ATTRIBUTE) {
+        val result:String
+        result=if (meta.selector.isBlank()){
+            if (meta.attribute == DEFAULT_TEXT_ATTRIBUTE) {
                 element.text()
             } else {
                 element.attr(meta.attribute)
@@ -25,7 +26,7 @@ open class BaseExtractor {
             val elements = element.select(meta.selector)
             if (elements.isEmpty()) return EMPTY
             if (meta.attribute.isBlank()) return EMPTY
-            result = if (meta.attribute == DEFAULT_TEXT_ATTRIBUTE) {
+            if (meta.attribute == DEFAULT_TEXT_ATTRIBUTE) {
                 elements[0].text()
             } else {
                 elements[0].attr(meta.attribute)

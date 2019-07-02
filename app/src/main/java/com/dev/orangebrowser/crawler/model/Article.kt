@@ -1,5 +1,6 @@
 package com.dev.orangebrowser.crawler.model
 
+
 open class Article(
      var source:String="", //文章源地址
      var title:String="", //标题
@@ -10,4 +11,4 @@ open class Article(
      var score:String="", //得分
      var content:String="", //内容
      var viewCount:String="" //浏览数
-)
+):Base()

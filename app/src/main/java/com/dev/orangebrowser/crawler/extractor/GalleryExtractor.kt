@@ -22,7 +22,7 @@ class GalleryExtractor(
                 oldGallery.images.addAll(images)
             }
         }
-        articleExtractor.extract(element,oldGallery)
+        articleExtractor.extract(element,oldGallery.article)
     }
 
     fun extractNextPageUrl(element: Element): String {

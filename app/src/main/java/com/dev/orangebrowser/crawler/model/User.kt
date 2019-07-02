@@ -5,4 +5,4 @@ data class User(
     var username:String="",
     var avatar:String="",
     var link:String=""
-)
+):Base()

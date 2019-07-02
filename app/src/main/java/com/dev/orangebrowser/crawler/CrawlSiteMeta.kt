@@ -4,14 +4,16 @@ import com.dev.orangebrowser.crawler.model.ItemExtractorMeta
 
 
 class CrawlSiteMeta(
-    var categoryListMeta: CategoryListMeta,
-    var categoryMeta: CategoryMeta,
-    var articleListMeta: ArticleListMeta,
-    var articleMeta: ArticleMeta,
-    var commentListMeta: CommentListMeta,
-    var galleryMeta: GalleryMeta,
-    var videoMeta: VideoMeta
+    var categoryListMetaMap: Map<String, CategoryListMeta>?,
+    var categoryMetaMap: Map<String, CategoryMeta>?,
+    var articleListMetaMap: Map<String, ArticleListMeta>?,
+    var articleMetaMap: Map<String, ArticleMeta>?,
+    var commentListMetaMap: Map<String, CommentListMeta>?,
+    var galleryMetaMap: Map<String, GalleryMeta>?,
+    var videoMetaMap: Map<String, VideoMeta>?
 )
+
+open class BaseMeta(var id: String? = DEFAULT_EXTRACTOR_ID, var nextExtractorId: String? = DEFAULT_EXTRACTOR_ID)
 
 class CategoryListMeta(
     var nameMeta: ItemExtractorMeta?,
@@ -21,7 +23,7 @@ class CategoryListMeta(
     var countMeta: ItemExtractorMeta?,
     var nextPageMeta: ItemExtractorMeta?,
     var listSelector: String?
-)
+) : BaseMeta()
 
 class CategoryMeta(
     var nameMeta: ItemExtractorMeta?,
@@ -29,7 +31,7 @@ class CategoryMeta(
     var iconMeta: ItemExtractorMeta?,
     var lastUpdateMeta: ItemExtractorMeta?,
     var countMeta: ItemExtractorMeta?
-)
+) : BaseMeta()
 
 class ArticleListMeta(
     var titleMeta: ItemExtractorMeta?,
@@ -44,7 +46,7 @@ class ArticleListMeta(
     var authorIdMeta: ItemExtractorMeta?,
     var authorNameMeta: ItemExtractorMeta?,
     var authorAvatarMeta: ItemExtractorMeta?
-)
+) : BaseMeta()
 
 class ArticleMeta(
     var titleMeta: ItemExtractorMeta?,
@@ -59,7 +61,7 @@ class ArticleMeta(
     var authorIdMeta: ItemExtractorMeta?,
     var authorNameMeta: ItemExtractorMeta?,
     var authorAvatarMeta: ItemExtractorMeta?
-)
+) : BaseMeta()
 
 class CommentListMeta(
     var dateMeta: ItemExtractorMeta?,
@@ -73,7 +75,7 @@ class CommentListMeta(
     var repliedIdMeta: ItemExtractorMeta?,
     var repliedNameMeta: ItemExtractorMeta?,
     var repliedAvatarMeta: ItemExtractorMeta?
-)
+) : BaseMeta()
 
 class GalleryMeta(
     var titleMeta: ItemExtractorMeta?,
@@ -89,7 +91,8 @@ class GalleryMeta(
     var authorNameMeta: ItemExtractorMeta?,
     var authorAvatarMeta: ItemExtractorMeta?,
     var imageMeta: ItemExtractorMeta?
-)
+) : BaseMeta()
+
 class VideoMeta(
     var titleMeta: ItemExtractorMeta?,
     var dateMeta: ItemExtractorMeta?,
@@ -104,4 +107,4 @@ class VideoMeta(
     var authorNameMeta: ItemExtractorMeta?,
     var authorAvatarMeta: ItemExtractorMeta?,
     var videoMeta: ItemExtractorMeta?
-)
+) : BaseMeta()

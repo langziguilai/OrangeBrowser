@@ -13,7 +13,7 @@ class VideoExtractor(
                 oldVideo.videoes.add(this)
             }
         }
-        articleExtractor.extract(element,oldVideo)
+        articleExtractor.extract(element,oldVideo.article)
     }
 
     fun extractNextPageUrl(element: Element): String {

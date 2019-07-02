@@ -5,16 +5,13 @@ import com.dev.orangebrowser.crawler.model.Category
 import com.dev.orangebrowser.crawler.model.ItemExtractorMeta
 
 class CategoryListItemExtractorBuilder {
-    private  var nameMeta: ItemExtractorMeta? =null
-    private var linkMeta: ItemExtractorMeta? =null
-    private var iconMeta: ItemExtractorMeta? =null
-    private var lastUpdateMeta: ItemExtractorMeta? =null
-    private var countMeta: ItemExtractorMeta? =null
-    private var nextPageMeta: ItemExtractorMeta? =null
-    private var listSelector: String? = null
-    fun load(source: String) {
-
-    }
+      var nameMeta: ItemExtractorMeta? =null
+     var linkMeta: ItemExtractorMeta? =null
+     var iconMeta: ItemExtractorMeta? =null
+     var lastUpdateMeta: ItemExtractorMeta? =null
+     var countMeta: ItemExtractorMeta? =null
+     var nextPageMeta: ItemExtractorMeta? =null
+     var listSelector: String? = null
 
     fun build(): ListItemExtractor<Category> {
         val listItemMetaMap=HashMap<String,ItemExtractorMeta?>()
@@ -48,7 +45,7 @@ class CategoryListItemExtractorBuilder {
             mapper = mapper)
     }
     companion object{
-        const val NAME="name"
+        const val NAME="id"
         const val LINK="link"
         const val ICON="icon"
         const val LAST_UPDATE="last_update"

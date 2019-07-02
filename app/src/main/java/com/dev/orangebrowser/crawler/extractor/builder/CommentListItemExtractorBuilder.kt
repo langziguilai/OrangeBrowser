@@ -1,26 +1,23 @@
 package com.dev.orangebrowser.crawler.extractor.builder
 
+import com.dev.orangebrowser.crawler.REPLY_COMMENT_TYPE
 import com.dev.orangebrowser.crawler.extractor.ListItemExtractor
 import com.dev.orangebrowser.crawler.model.Comment
 import com.dev.orangebrowser.crawler.model.ItemExtractorMeta
-import com.dev.orangebrowser.crawler.model.REPLY_COMMENT_TYPE
 import com.dev.orangebrowser.crawler.model.User
 
 class CommentListItemExtractorBuilder {
-    private var dateMeta: ItemExtractorMeta? = null
-    private var scoreMeta: ItemExtractorMeta? = null
-    private var contentMeta: ItemExtractorMeta? = null
-    private  var nextPageMeta: ItemExtractorMeta?=null
-    private  var listSelector: String?=null
-    private var userIdMeta: ItemExtractorMeta? = null
-    private var userNameMeta: ItemExtractorMeta? = null
-    private var userAvatarMeta: ItemExtractorMeta? = null
-    private var repliedIdMeta: ItemExtractorMeta? = null
-    private var repliedNameMeta: ItemExtractorMeta? = null
-    private var repliedAvatarMeta: ItemExtractorMeta? = null
-    fun load(source: String) {
-
-    }
+    var dateMeta: ItemExtractorMeta? = null
+    var scoreMeta: ItemExtractorMeta? = null
+    var contentMeta: ItemExtractorMeta? = null
+    var nextPageMeta: ItemExtractorMeta? = null
+    var listSelector: String? = null
+    var userIdMeta: ItemExtractorMeta? = null
+    var userNameMeta: ItemExtractorMeta? = null
+    var userAvatarMeta: ItemExtractorMeta? = null
+    var repliedIdMeta: ItemExtractorMeta? = null
+    var repliedNameMeta: ItemExtractorMeta? = null
+    var repliedAvatarMeta: ItemExtractorMeta? = null
 
     fun build(): ListItemExtractor<Comment> {
         val listItemMetaMap = HashMap<String, ItemExtractorMeta?>()
@@ -66,8 +63,8 @@ class CommentListItemExtractorBuilder {
                 if (this.isNotBlank()) repliedUser.avatar = this
             }
             comment.repliedUser = repliedUser
-            if (repliedUser.id.isNotBlank()){
-                comment.type=REPLY_COMMENT_TYPE
+            if (repliedUser.id.isNotBlank()) {
+                comment.type = REPLY_COMMENT_TYPE
             }
             return comment
         }
