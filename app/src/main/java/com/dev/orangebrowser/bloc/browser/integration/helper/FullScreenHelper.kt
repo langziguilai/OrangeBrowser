@@ -45,11 +45,10 @@ class FullScreenHelper(var binding:FragmentBrowserBinding,var activity: Activity
                (activity as? MainActivity)?.apply {
                    enableAutoOrientation=false
                }
-               if (activity.resources.configuration.orientation==ActivityInfo.SCREEN_ORIENTATION_PORTRAIT){
+               if (activity.resources.configuration.orientation!=ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE){
                    activity.requestedOrientation= ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
                }
                binding.browserContainer.fitsSystemWindows=false
-               //binding.browserContainer.setBackgroundColor(0x000000)
                binding.browserContainer.setBackgroundColor(activity.resources.getColor(R.color.colorBlack))
            }else{ //退出全局视野
                StatusBarUtil.showStatusBar(activity)

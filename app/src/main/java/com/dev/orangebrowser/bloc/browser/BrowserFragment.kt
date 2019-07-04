@@ -390,10 +390,11 @@ class BrowserFragment : BaseFragment(), BackHandler, UserInteractionHandler {
 
         super.onResume()
         if (session.fullScreenMode){
-            StatusBarUtil.hideStatusBar(requireActivity())
-            //隐藏下部导航栏
-            requireActivity().enterToImmersiveMode()
-            binding.browserContainer.fitsSystemWindows=false
+//            StatusBarUtil.hideStatusBar(requireActivity())
+//            //隐藏下部导航栏
+//            requireActivity().enterToImmersiveMode()
+//            binding.browserContainer.fitsSystemWindows=false
+            fullScreenChanged(true)
         }
     }
     override fun initData(savedInstanceState: Bundle?) {

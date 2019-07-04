@@ -147,10 +147,11 @@ public class StatusBarUtil {
         if (Build.VERSION.SDK_INT < 16) {
             activity.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
         } else {
-            View decorView = activity.getWindow().getDecorView();
-            // Show Status Bar.
-            int uiOptions = View.SYSTEM_UI_FLAG_VISIBLE;
-            decorView.setSystemUiVisibility(uiOptions);
+//            View decorView = activity.getWindow().getDecorView();
+//            // Show Status Bar.
+//            int uiOptions = View.SYSTEM_UI_FLAG_VISIBLE;
+//            decorView.setSystemUiVisibility(uiOptions);
+            activity.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
         }
     }
 
@@ -160,10 +161,11 @@ public class StatusBarUtil {
             activity.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                     WindowManager.LayoutParams.FLAG_FULLSCREEN);
         } else {
-            View decorView = activity.getWindow().getDecorView();
-            // Hide Status Bar.
-            int uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN;
-            decorView.setSystemUiVisibility(uiOptions);
+//            View decorView = activity.getWindow().getDecorView();
+//            // Hide Status Bar.
+//            int uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN;
+//            decorView.setSystemUiVisibility(uiOptions);
+            activity.getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
         }
     }
 
