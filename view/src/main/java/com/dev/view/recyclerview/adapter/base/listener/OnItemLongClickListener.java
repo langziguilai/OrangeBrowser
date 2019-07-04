@@ -2,12 +2,13 @@ package com.dev.view.recyclerview.adapter.base.listener;
 
 import android.view.View;
 
+import com.dev.util.Keep;
 import com.dev.view.recyclerview.adapter.base.BaseQuickAdapter;
 
 /**
  * create by: allen on 16/8/3.
  */
-
+@Keep
 public abstract class OnItemLongClickListener extends SimpleClickListener {
     @Override
     public void onItemClick(BaseQuickAdapter adapter, View view, int position) {

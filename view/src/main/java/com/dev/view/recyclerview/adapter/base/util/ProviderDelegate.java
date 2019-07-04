@@ -2,6 +2,7 @@ package com.dev.view.recyclerview.adapter.base.util;
 
 import android.util.SparseArray;
 
+import com.dev.util.Keep;
 import com.dev.view.recyclerview.adapter.base.provider.BaseItemProvider;
 
 /**
@@ -9,7 +10,7 @@ import com.dev.view.recyclerview.adapter.base.provider.BaseItemProvider;
  * @author ChayChan
  * @date 2018/3/21  11:04
  */
-
+@Keep
 public class ProviderDelegate {
 
     private SparseArray<BaseItemProvider> mItemProviders = new SparseArray<>();

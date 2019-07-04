@@ -1,4 +1,4 @@
-package com.dev.base.view.recyclerview
+package com.dev.view.recyclerview
 
 import android.graphics.Canvas
 import android.graphics.Paint
@@ -7,7 +7,10 @@ import android.view.View
 import androidx.annotation.ColorInt
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
+import com.dev.util.Keep
+import com.dev.util.KeepNameIfNecessary
 
+@Keep
 class StaggeredGridDividerItemDecoration(private val dividerWidth:Int,@ColorInt  color:Int):RecyclerView.ItemDecoration(){
     private val mPaint: Paint?
     var firstFullSizeIndexForFirstRow:Int=-1

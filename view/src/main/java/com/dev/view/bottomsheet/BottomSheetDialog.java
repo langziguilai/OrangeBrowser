@@ -21,9 +21,11 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
+import com.dev.util.Keep;
 import com.dev.view.R;
 
 /** Base class for {@link android.app.Dialog}s styled as a bottom sheet. */
+@Keep
 public class BottomSheetDialog extends AppCompatDialog {
 
     private BottomSheetBehavior<FrameLayout> behavior;

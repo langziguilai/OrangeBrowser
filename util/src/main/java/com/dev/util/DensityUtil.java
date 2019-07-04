@@ -8,21 +8,24 @@ import android.content.res.Configuration;
 import android.util.DisplayMetrics;
 
 
-
+@KeepNameIfNecessary
 public class DensityUtil { ;
     private static float DesignWidth=360.0f;
     private static Activity activity;
     private static  Application application;
     private static float sNoncompatDensity;
     private static float sNoncompatScaledDensity;
+    @KeepNameIfNecessary
     public static void init(Activity mActivity,Application mApplication){
         activity=mActivity;
         application=mApplication;
     }
+    @KeepNameIfNecessary
     public static void clear(){
         activity=null;
         application=null;
     }
+    @KeepNameIfNecessary
     public static void resetDensity(){
         if (activity==null || application==null) return;
         final DisplayMetrics appDisplayMetrics=application.getResources().getDisplayMetrics();
@@ -56,10 +59,12 @@ public class DensityUtil { ;
         activityDisplayMetricvs.scaledDensity=targetScaledDensity;
         activityDisplayMetricvs.densityDpi=targetDensityDpi;
     }
+    @KeepNameIfNecessary
     public static int px2dip(Context context, float pxValue) {
         final float scale = context.getResources().getDisplayMetrics().density;
         return (int) (pxValue / scale + 0.5f);
     }
+    @KeepNameIfNecessary
     public static int dip2px(Context context, float dpValue) {
         float scale = context.getResources().getDisplayMetrics().density;
         return (int) (dpValue * scale + 0.5f);

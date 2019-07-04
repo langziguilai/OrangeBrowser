@@ -2,11 +2,13 @@ package com.dev.view.notchtools.helper;
 
 import android.os.Build;
 import android.text.TextUtils;
+import com.dev.util.Keep;
 
 /**
  * @author zhangzhun
  * @date 2018/11/4
  */
+@Keep
 public class DeviceBrandTools {
 
     private static DeviceBrandTools sDeviceBrandTools;

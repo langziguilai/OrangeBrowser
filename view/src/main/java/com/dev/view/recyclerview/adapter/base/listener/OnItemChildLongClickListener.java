@@ -1,6 +1,7 @@
 package com.dev.view.recyclerview.adapter.base.listener;
 
 import android.view.View;
+import com.dev.util.Keep;
 import com.dev.view.recyclerview.adapter.base.BaseQuickAdapter;
 
 
@@ -9,6 +10,7 @@ import com.dev.view.recyclerview.adapter.base.BaseQuickAdapter;
  * A convenience class to extend when you only want to OnItemChildLongClickListener for a subset
  * of all the SimpleClickListener. This implements all methods in the
  **/
+@Keep
 public abstract class OnItemChildLongClickListener extends SimpleClickListener {
     @Override
     public void onItemClick(BaseQuickAdapter adapter, View view, int position) {

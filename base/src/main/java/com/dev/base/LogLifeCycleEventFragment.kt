@@ -7,8 +7,9 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.dev.util.Keep
 import com.evernote.android.state.StateSaver
-
+@Keep
 abstract class LogLifeCycleEventFragment: CoroutineScopeFragment() {
     private  var onCreateTime:Long=0
     private  var onResumeTime:Long=0

@@ -8,6 +8,7 @@ import androidx.annotation.ColorInt;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
+import com.dev.util.Keep;
 
 /**
  * Gridview
@@ -18,7 +19,7 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager;
  * Desc:
  */
 
-
+@Keep
 public class GridDividerItemDecoration extends RecyclerView.ItemDecoration {
     private Paint mPaint;
     private int mDividerWidth;

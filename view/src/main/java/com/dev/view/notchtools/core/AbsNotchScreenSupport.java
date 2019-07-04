@@ -2,6 +2,7 @@ package com.dev.view.notchtools.core;
 
 import android.app.Activity;
 import android.view.Window;
+import com.dev.util.Keep;
 import com.dev.view.notchtools.helper.NotchStatusBarUtils;
 
 
@@ -9,7 +10,7 @@ import com.dev.view.notchtools.helper.NotchStatusBarUtils;
  * @author zhangzhun
  * @date 2018/11/4
  */
-
+@Keep
 public abstract class AbsNotchScreenSupport implements INotchSupport {
 
     @Override

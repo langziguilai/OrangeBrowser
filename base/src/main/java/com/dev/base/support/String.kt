@@ -6,6 +6,7 @@ package com.dev.base.support
 
 import android.net.Uri
 import android.text.TextUtils
+import com.dev.util.Keep
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -13,6 +14,7 @@ import java.util.Locale
 /**
  * Normalizes a URL String.
  */
+@Keep
 fun String.toNormalizedUrl(): String {
     val trimmedInput = this.trim()
     var uri = Uri.parse(trimmedInput)
@@ -25,6 +27,7 @@ fun String.toNormalizedUrl(): String {
 /**
  * Checks if this String is a URL.
  */
+@Keep
 fun String.isUrl(): Boolean {
     val trimmedUrl = this.trim()
     if (trimmedUrl.contains(" ")) {
@@ -34,11 +37,11 @@ fun String.isUrl(): Boolean {
     //return trimmedUrl.contains(".") || trimmedUrl.contains(":")
     return trimmedUrl.matches(Regex("""^(https?://)?(file:///)?(www\.)?([\w-]+\.)+\w+(:\d+)?.*"""))
 }
-
+@Keep
 fun String.isPhone(): Boolean = contains("tel:", true)
-
+@Keep
 fun String.isEmail(): Boolean = contains("mailto:", true)
-
+@Keep
 fun String.isGeoLocation(): Boolean = contains("geo:", true)
 
 /**
@@ -48,6 +51,7 @@ fun String.isGeoLocation(): Boolean = contains("geo:", true)
  * @return a [Date] object with the values in the provided in this string, if empty string was provided, a current date
  * will be returned.
  */
+@Keep
 fun String.toDate(format: String, locale: Locale = Locale.ROOT): Date {
     val formatter = SimpleDateFormat(format, locale)
     return if (!this.isEmpty()) {
@@ -60,4 +64,5 @@ fun String.toDate(format: String, locale: Locale = Locale.ROOT): Date {
 /**
  * Converts a [String] to a [Uri] object.
  */
+@Keep
 fun String.toUri() = Uri.parse(this)

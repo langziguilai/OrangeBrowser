@@ -31,6 +31,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
+import com.dev.util.Keep;
 import com.dev.view.recyclerview.adapter.base.animation.*;
 import com.dev.view.recyclerview.adapter.base.entity.IExpandable;
 import com.dev.view.recyclerview.adapter.base.loadmore.LoadMoreView;
@@ -55,6 +56,7 @@ import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
 /**
  * https://github.com/CymChad/BaseRecyclerViewAdapterHelper
  */
+@Keep
 public abstract class BaseQuickAdapter<T, K extends BaseViewHolder> extends RecyclerView.Adapter<K> {
 
     //load more

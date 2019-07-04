@@ -6,6 +6,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 import com.dev.base.crash.cockroach.compat.*;
+import com.dev.util.Keep;
 import me.weishu.reflection.Reflection;
 
 import java.lang.reflect.Field;
@@ -13,7 +14,7 @@ import java.lang.reflect.Field;
 /**
  * Created by wanjian on 2017/2/14.
  */
-
+@Keep
 public final class Cockroach {
 
     private static IActivityKiller sActivityKiller;

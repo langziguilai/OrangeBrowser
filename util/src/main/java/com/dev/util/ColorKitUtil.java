@@ -1,6 +1,7 @@
 package com.dev.util;
-
+@KeepNameIfNecessary
 public class ColorKitUtil{
+    @KeepMemberIfNecessary
     public static boolean isBackGroundWhiteMode(int color) {
         int red = (color & 0xff0000) >> 16;
         int green = (color & 0xff00) >> 8;
@@ -10,5 +11,6 @@ public class ColorKitUtil{
         }
         return false;
     }
+
 }
 

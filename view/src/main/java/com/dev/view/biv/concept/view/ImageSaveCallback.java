@@ -24,10 +24,12 @@
 
 package com.dev.view.biv.concept.view;
 
+import com.dev.util.Keep;
+
 /**
  * Created by Piasy{github.com/Piasy} on 10/11/2016.
  */
-
+@Keep
 public interface ImageSaveCallback {
     void onSuccess(String uri);
 

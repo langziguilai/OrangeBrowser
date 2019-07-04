@@ -20,9 +20,11 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import com.dev.base.exception.Failure
+import com.dev.util.Keep
 
+@Keep
 fun <T : Any, L : LiveData<T>> LifecycleOwner.observe(liveData: L, body: (T?) -> Unit) =
         liveData.observe(this, Observer(body))
-
+@Keep
 fun <L : LiveData<Failure>> LifecycleOwner.failure(liveData: L, body: (Failure?) -> Unit) =
         liveData.observe(this, Observer(body))

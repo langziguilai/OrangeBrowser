@@ -25,11 +25,12 @@
 package com.dev.view.biv.loader.glide;
 
 import android.graphics.drawable.Drawable;
+import com.dev.util.Keep;
 
 /**
  * Created by Piasy{github.com/Piasy} on 03/10/2017.
  */
-
+@Keep
 public class GlideLoaderException extends RuntimeException {
     private final Drawable mErrorDrawable;
 

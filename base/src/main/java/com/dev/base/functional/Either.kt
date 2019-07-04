@@ -15,6 +15,8 @@
  */
 package com.dev.base.functional
 
+import com.dev.util.Keep
+
 /**
  * Represents a value of one of two possible types (a disjoint union).
  * Instances of [Either] are either an instance of [Left] or [Right].
@@ -24,6 +26,7 @@ package com.dev.base.functional
  * @see Left
  * @see Right
  */
+@Keep
 sealed class Either<out L, out R> {
     /** * Represents the left side of [Either] class which by convention is a "Failure". */
     data class Left<out L>(val a: L) : Either<L, Nothing>()
@@ -45,14 +48,15 @@ sealed class Either<out L, out R> {
 
 // Credits to Alex Hart -> https://proandroiddev.com/kotlins-nothing-type-946de7d464fb
 // Composes 2 functions
+@Keep
 fun <A, B, C> ((A) -> B).c(f: (B) -> C): (A) -> C = {
     f(this(it))
 }
-
+@Keep
 fun <T, L, R> Either<L, R>.flatMap(fn: (R) -> Either<L, T>): Either<L, T> =
         when (this) {
             is Either.Left -> Either.Left(a)
             is Either.Right -> fn(b)
         }
-
+@Keep
 fun <T, L, R> Either<L, R>.map(fn: (R) -> (T)): Either<L, T> = this.flatMap(fn.c(::right))

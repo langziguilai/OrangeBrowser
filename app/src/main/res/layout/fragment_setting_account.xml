@@ -132,7 +132,7 @@
                            app:layout_constraintTop_toTopOf="parent"
                            app:layout_constraintStart_toStartOf="parent"
                            app:layout_constraintEnd_toEndOf="parent"
-                           android:src="@mipmap/ic_launcher_round"
+                           android:src="@mipmap/ic_launcher"
                            android:layout_width="130dp" android:layout_height="130dp"/>
                 <TextView android:id="@+id/user_account"
                           app:layout_constraintStart_toStartOf="parent"

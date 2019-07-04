@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.IBinder;
 import android.os.Message;
+import com.dev.util.Keep;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -12,7 +13,7 @@ import java.lang.reflect.Method;
  * Created by wanjian on 2018/5/24.
  * <p>
  */
-
+@Keep
 public class ActivityKillerV21_V23 implements IActivityKiller {
 
 

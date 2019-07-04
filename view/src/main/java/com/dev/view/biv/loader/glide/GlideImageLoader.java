@@ -41,6 +41,7 @@ import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 
 import androidx.annotation.NonNull;
+import com.dev.util.Keep;
 import com.dev.view.biv.concept.loader.ImageLoader;
 import com.dev.view.biv.concept.metadata.ImageInfoExtractor;
 import okhttp3.OkHttpClient;
@@ -48,7 +49,7 @@ import okhttp3.OkHttpClient;
 /**
  * Created by Piasy{github.com/Piasy} on 09/11/2016.
  */
-
+@Keep
 public class GlideImageLoader implements ImageLoader {
     protected final RequestManager mRequestManager;
 

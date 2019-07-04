@@ -19,6 +19,9 @@ import android.view.animation.ScaleAnimation;
 import android.widget.AdapterView;
 import android.widget.RelativeLayout;
 import androidx.annotation.ColorRes;
+import com.dev.util.Keep;
+import com.dev.util.KeepMemberIfNecessary;
+import com.dev.util.KeepNameIfNecessary;
 
 
 /**
@@ -29,6 +32,7 @@ import androidx.annotation.ColorRes;
  * @author Chutaux Robin
  * @version 2015.0512
  */
+@Keep
 public class RippleView extends RelativeLayout {
 
     private int WIDTH;
@@ -131,6 +135,7 @@ public class RippleView extends RelativeLayout {
         this.setClickable(true);
     }
 
+
     @Override
     public void draw(Canvas canvas) {
         super.draw(canvas);
@@ -185,6 +190,7 @@ public class RippleView extends RelativeLayout {
         }
     }
 
+
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
@@ -202,6 +208,7 @@ public class RippleView extends RelativeLayout {
      *
      * @param event MotionEvent registered by the Ripple gesture listener
      */
+
     public void animateRipple(MotionEvent event) {
         createAnimation(event.getX(), event.getY());
     }
@@ -212,6 +219,7 @@ public class RippleView extends RelativeLayout {
      * @param x Horizontal position of the ripple center
      * @param y Vertical position of the ripple center
      */
+
     public void animateRipple(final float x, final float y) {
         createAnimation(x, y);
     }
@@ -307,7 +315,7 @@ public class RippleView extends RelativeLayout {
      *
      * @param rippleColor New color resource
      */
-    @ColorRes
+
     public void setRippleColor(int rippleColor) {
         this.rippleColor = getResources().getColor(rippleColor);
     }
@@ -341,6 +349,7 @@ public class RippleView extends RelativeLayout {
      *
      * @param isCentered
      */
+
     public void setCentered(final Boolean isCentered)
     {
         this.isCentered = isCentered;
@@ -356,6 +365,7 @@ public class RippleView extends RelativeLayout {
      *
      * @param ripplePadding New Ripple padding in pixel, default is 0px
      */
+
     public void setRipplePadding(int ripplePadding)
     {
         this.ripplePadding = ripplePadding;
@@ -371,6 +381,7 @@ public class RippleView extends RelativeLayout {
      *
      * @param hasToZoom Do the child views have to zoom ? default is False
      */
+
     public void setZooming(Boolean hasToZoom)
     {
         this.hasToZoom = hasToZoom;
@@ -386,6 +397,7 @@ public class RippleView extends RelativeLayout {
      *
      * @param zoomScale Value of scale animation, default is 1.03f
      */
+
     public void setZoomScale(float zoomScale)
     {
         this.zoomScale = zoomScale;
@@ -401,6 +413,7 @@ public class RippleView extends RelativeLayout {
      *
      * @param zoomDuration Duration, default is 200ms
      */
+
     public void setZoomDuration(int zoomDuration)
     {
         this.zoomDuration = zoomDuration;
@@ -416,6 +429,7 @@ public class RippleView extends RelativeLayout {
      *
      * @param rippleDuration Duration, default is 400ms
      */
+
     public void setRippleDuration(int rippleDuration)
     {
         this.rippleDuration = rippleDuration;
@@ -431,6 +445,7 @@ public class RippleView extends RelativeLayout {
      *
      * @param frameRate New framerate value, default is 10
      */
+
     public void setFrameRate(int frameRate)
     {
         this.frameRate = frameRate;
@@ -446,6 +461,7 @@ public class RippleView extends RelativeLayout {
      *
      * @param rippleAlpha Alpha value between 0 and 255, default is 90
      */
+
     public void setRippleAlpha(int rippleAlpha)
     {
         this.rippleAlpha = rippleAlpha;
@@ -458,13 +474,17 @@ public class RippleView extends RelativeLayout {
     /**
      * Defines a callback called at the end of the Ripple effect
      */
+    @Keep
     public interface OnRippleCompleteListener {
         void onComplete(RippleView rippleView);
     }
-
+    @KeepNameIfNecessary
     public enum RippleType {
+        @KeepMemberIfNecessary
         SIMPLE(0),
+        @KeepMemberIfNecessary
         DOUBLE(1),
+        @KeepMemberIfNecessary
         RECTANGLE(2);
 
         int type;

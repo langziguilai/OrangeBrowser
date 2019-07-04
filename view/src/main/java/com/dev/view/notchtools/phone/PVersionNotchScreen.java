@@ -6,6 +6,7 @@ import android.view.Window;
 import android.view.WindowInsets;
 import android.view.WindowManager;
 import androidx.annotation.RequiresApi;
+import com.dev.util.Keep;
 import com.dev.view.notchtools.core.AbsNotchScreenSupport;
 import com.dev.view.notchtools.core.OnNotchCallBack;
 import com.dev.view.notchtools.helper.NotchStatusBarUtils;
@@ -15,7 +16,7 @@ import com.dev.view.notchtools.helper.NotchStatusBarUtils;
  * @author zhangzhun
  * @date 2018/11/5
  */
-
+@Keep
 public class PVersionNotchScreen extends AbsNotchScreenSupport {
 
     @RequiresApi(api = 28)

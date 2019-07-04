@@ -2,12 +2,14 @@ package com.dev.view.notchtools.core;
 
 import android.app.Activity;
 import android.view.Window;
+import com.dev.util.Keep;
 
 
 /**
  * @author zhangzhun
  * @date 2018/11/4
  */
+@Keep
 public interface INotchSupport {
 
     /**

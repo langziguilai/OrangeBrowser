@@ -37,6 +37,7 @@ import androidx.annotation.DrawableRes;
 import androidx.annotation.IdRes;
 import androidx.annotation.StringRes;
 import androidx.recyclerview.widget.RecyclerView;
+import com.dev.util.Keep;
 
 import java.util.HashSet;
 import java.util.LinkedHashSet;
@@ -46,6 +47,7 @@ import java.util.Set;
 /**
  * https://github.com/CymChad/BaseRecyclerViewAdapterHelper
  */
+@Keep
 public class BaseViewHolder extends RecyclerView.ViewHolder {
 
     /**

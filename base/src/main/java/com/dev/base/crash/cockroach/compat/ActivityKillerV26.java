@@ -5,6 +5,7 @@ import android.app.ActivityManager;
 import android.content.Intent;
 import android.os.IBinder;
 import android.os.Message;
+import com.dev.util.Keep;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -16,7 +17,7 @@ import java.lang.reflect.Method;
  * handleDestroyActivity((IBinder)msg.obj, msg.arg1 != 0,msg.arg2, false);
  * ActivityManager.getService().finishActivity(mToken, resultCode, resultData, finishTask)
  */
-
+@Keep
 public class ActivityKillerV26 implements IActivityKiller {
 
 

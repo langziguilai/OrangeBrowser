@@ -6,11 +6,12 @@ import android.content.Intent;
 import android.os.IBinder;
 import android.os.Message;
 import com.dev.base.crash.ClientTransaction;
+import com.dev.util.Keep;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
-
+@Keep
 public class ActivityKillerV28 implements IActivityKiller {
 
 

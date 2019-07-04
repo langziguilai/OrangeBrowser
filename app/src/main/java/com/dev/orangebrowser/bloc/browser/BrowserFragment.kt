@@ -40,6 +40,7 @@ import com.dev.browser.session.Session
 import com.dev.orangebrowser.data.dao.SavedFileDao
 import com.dev.orangebrowser.extension.appDataForFragment
 import com.dev.view.NavigationBarUtil
+import com.evernote.android.state.State
 
 
 class BrowserFragment : BaseFragment(), BackHandler, UserInteractionHandler {
@@ -59,7 +60,8 @@ class BrowserFragment : BaseFragment(), BackHandler, UserInteractionHandler {
     lateinit var bookMarkDao: BookMarkDao
     @Inject
     lateinit var savedFileDao: SavedFileDao
-
+    @State
+    var fullScreenMode:Boolean=false
     lateinit var viewModel: BrowserViewModel
     lateinit var activityViewModel: MainViewModel
 
@@ -374,6 +376,12 @@ class BrowserFragment : BaseFragment(), BackHandler, UserInteractionHandler {
             owner=this,
             view=binding.root
          )
+        //保存全局状态
+        if (savedInstanceState!=null){
+            if (fullScreenMode){
+                fullScreenChanged(fullScreenMode)
+            }
+        }
     }
 
     override fun onResume() {
@@ -394,6 +402,7 @@ class BrowserFragment : BaseFragment(), BackHandler, UserInteractionHandler {
 
 
     private fun fullScreenChanged(enabled: Boolean) {
+        fullScreenMode=enabled
         val session = sessionManager.findSessionById(sessionId)
         session?.apply {
             fullScreenHelper.toggleFullScreen(session = this, fullScreen = enabled)

@@ -2,12 +2,13 @@ package com.dev.view.recyclerview.adapter.base.loadmore;
 
 import androidx.annotation.IdRes;
 import androidx.annotation.LayoutRes;
+import com.dev.util.Keep;
 import com.dev.view.recyclerview.adapter.base.BaseViewHolder;
 
 /**
  * Created by BlingBling on 2016/11/11.
  */
-
+@Keep
 public abstract class LoadMoreView {
 
     public static final int STATUS_DEFAULT = 1;

@@ -26,7 +26,8 @@ package com.dev.view.biv.concept.utils;
 
 import android.os.Handler;
 import android.os.Looper;
-import androidx.annotation.Keep;
+import com.dev.util.KeepNameIfNecessary;
+
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
@@ -34,7 +35,7 @@ import java.lang.reflect.Proxy;
 /**
  * Created by Piasy{github.com/Piasy} on 08/04/2017.
  */
-@Keep
+@KeepNameIfNecessary
 public final class ThreadedCallbacks implements InvocationHandler {
 
     private static final Object NON_SENSE = new Object();

@@ -12,6 +12,7 @@ import android.view.ViewConfiguration;
 import android.view.animation.Interpolator;
 import android.view.animation.LinearInterpolator;
 
+import com.dev.util.Keep;
 import net.lucode.hackware.magicindicator.NavigatorHelper;
 import net.lucode.hackware.magicindicator.abs.IPagerNavigator;
 import net.lucode.hackware.magicindicator.buildins.ArgbEvaluatorHolder;
@@ -48,7 +49,7 @@ import java.util.List;
  * 类似CircleIndicator的效果
  * Created by hackware on 2016/9/3.
  */
-
+@Keep
 public class ScaleCircleNavigator extends View implements IPagerNavigator, NavigatorHelper.OnNavigatorScrollListener {
     private int mMinRadius;
     private int mMaxRadius;

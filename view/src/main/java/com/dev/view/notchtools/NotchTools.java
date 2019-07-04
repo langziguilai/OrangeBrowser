@@ -3,6 +3,7 @@ package com.dev.view.notchtools;
 import android.app.Activity;
 import android.os.Build;
 import android.view.Window;
+import com.dev.util.Keep;
 import com.dev.view.notchtools.core.INotchSupport;
 import com.dev.view.notchtools.core.OnNotchCallBack;
 import com.dev.view.notchtools.helper.DeviceBrandTools;
@@ -35,6 +36,7 @@ import com.dev.view.notchtools.phone.*;
  * @author zhangzhun
  * @date 2018/11/4
  */
+@Keep
 public class NotchTools implements INotchSupport {
 
     private static NotchTools sFullScreenTolls;

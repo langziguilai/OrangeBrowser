@@ -25,6 +25,7 @@
 package com.dev.view.biv.concept;
 
 import android.net.Uri;
+import com.dev.util.Keep;
 import com.dev.view.biv.concept.loader.ImageLoader;
 
 import java.util.Map;
@@ -35,7 +36,7 @@ import java.util.Map;
  * This is not a singleton, you can initialize it multiple times, but before you initialize it
  * again, it will use the same {@link ImageLoader} globally.
  */
-
+@Keep
 public final class BigImageViewer {
     private static volatile BigImageViewer sInstance;
 

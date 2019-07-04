@@ -2,6 +2,7 @@ package com.dev.view.recyclerview.adapter.base.listener;
 
 import android.view.View;
 
+import com.dev.util.Keep;
 import com.dev.view.recyclerview.adapter.base.BaseQuickAdapter;
 
 /**
@@ -12,6 +13,7 @@ import com.dev.view.recyclerview.adapter.base.BaseQuickAdapter;
  * of all the SimpleClickListener. This implements all methods in the
  * {@link SimpleClickListener}
  */
+@Keep
 public abstract class OnItemClickListener extends SimpleClickListener {
     @Override
     public void onItemClick(BaseQuickAdapter adapter, View view, int position) {

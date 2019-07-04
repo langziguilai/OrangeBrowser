@@ -5,7 +5,9 @@ import android.util.AttributeSet
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.dev.util.Keep
 
+@Keep
 class ListView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,

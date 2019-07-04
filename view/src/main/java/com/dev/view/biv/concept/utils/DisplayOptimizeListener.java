@@ -26,12 +26,13 @@ package com.dev.view.biv.concept.utils;
 
 import android.graphics.PointF;
 import com.davemorrissey.labs.subscaleview.SubsamplingScaleImageView;
+import com.dev.util.Keep;
 import com.dev.view.biv.concept.view.BigImageView;
 
 /**
  * credit: https://github.com/Piasy/BigImageViewer/issues/2
  */
-
+@Keep
 public class DisplayOptimizeListener implements SubsamplingScaleImageView.OnImageEventListener {
     private static final int LONG_IMAGE_SIZE_RATIO = 2;
 

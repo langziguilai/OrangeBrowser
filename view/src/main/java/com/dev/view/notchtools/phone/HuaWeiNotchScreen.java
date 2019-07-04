@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.Window;
 import android.view.WindowManager;
 import androidx.annotation.RequiresApi;
+import com.dev.util.Keep;
 import com.dev.view.notchtools.core.AbsNotchScreenSupport;
 import com.dev.view.notchtools.core.OnNotchCallBack;
 
@@ -21,6 +22,7 @@ import java.lang.reflect.Method;
  * @author zhangzhun
  * @date 2018/11/4
  */
+@Keep
 public class HuaWeiNotchScreen extends AbsNotchScreenSupport {
 
     private static final String TAG = HuaWeiNotchScreen.class.getSimpleName();

@@ -1,22 +1,18 @@
 package com.dev.view;
 
-import android.annotation.TargetApi;
 import android.app.Activity;
-import android.os.Build;
-import android.view.View;
 import android.view.Window;
-import android.view.WindowManager;
-import androidx.annotation.ColorInt;
-import androidx.annotation.NonNull;
-import com.dev.util.ColorKitUtil;
+import com.dev.util.Keep;
+import com.dev.util.KeepMemberIfNecessary;
+import com.dev.util.KeepNameIfNecessary;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
-
+@KeepNameIfNecessary
 public class NavigationBarUtil {
+    @KeepMemberIfNecessary
     public static void setNavigationBarColor(Activity activity,int color){
         activity.getWindow().setNavigationBarColor(color);
     }
+    @KeepMemberIfNecessary
     public static void setNavigationBarColor(Window window,int color){
         window.setNavigationBarColor(color);
     }

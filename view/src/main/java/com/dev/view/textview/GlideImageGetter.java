@@ -13,6 +13,9 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.Request;
 import com.bumptech.glide.request.target.ViewTarget;
 import com.bumptech.glide.request.transition.Transition;
+import com.dev.util.Keep;
+import com.dev.util.KeepMemberIfNecessary;
+import com.dev.util.KeepNameIfNecessary;
 import com.dev.view.R;
 
 import java.util.HashSet;
@@ -23,18 +26,18 @@ import java.util.Set;
  * @date: 2018/6/26
  * @description: glide 加载图片
  */
-
+@KeepNameIfNecessary
 public class GlideImageGetter implements Html.ImageGetter, Drawable.Callback {
     private final Context mContext;
 
     private final TextView mTextView;
 
     private final Set<ImageGetterViewTarget> mTargets;
-
+    @KeepMemberIfNecessary
     public static GlideImageGetter get(View view) {
         return (GlideImageGetter) view.getTag(R.id.drawable_tag);
     }
-
+    @KeepMemberIfNecessary
     public void clear() {
         GlideImageGetter prev = get(mTextView);
         if (prev == null) return;
@@ -43,7 +46,7 @@ public class GlideImageGetter implements Html.ImageGetter, Drawable.Callback {
             Glide.with(mContext).clear(target);
         }
     }
-
+    @KeepMemberIfNecessary
     public GlideImageGetter(Context context, TextView textView) {
         this.mContext = context;
         this.mTextView = textView;
@@ -52,7 +55,7 @@ public class GlideImageGetter implements Html.ImageGetter, Drawable.Callback {
         mTargets = new HashSet<>();
         mTextView.setTag(R.id.drawable_tag, this);
     }
-
+    @KeepMemberIfNecessary
     @Override
     public Drawable getDrawable(String url) {
         final UrlDrawableGlide urlDrawable = new UrlDrawableGlide();
@@ -63,17 +66,17 @@ public class GlideImageGetter implements Html.ImageGetter, Drawable.Callback {
                 .into(new ImageGetterViewTarget(mTextView, urlDrawable));
         return urlDrawable;
     }
-
+    @KeepMemberIfNecessary
     @Override
     public void invalidateDrawable(Drawable who) {
         mTextView.invalidate();
     }
-
+    @KeepMemberIfNecessary
     @Override
     public void scheduleDrawable(Drawable who, Runnable what, long when) {
 
     }
-
+    @KeepMemberIfNecessary
     @Override
     public void unscheduleDrawable(Drawable who, Runnable what) {
 

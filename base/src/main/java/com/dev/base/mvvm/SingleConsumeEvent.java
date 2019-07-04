@@ -1,7 +1,11 @@
 package com.dev.base.mvvm;
+
+import com.dev.util.Keep;
+
 /**
  * Event只能消费一次
  * */
+@Keep
 public class SingleConsumeEvent<T> {
 
     private T mContent;

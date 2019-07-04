@@ -23,6 +23,7 @@ import android.net.Uri
 import android.view.Gravity
 import androidx.core.content.ContextCompat.startActivity
 import com.dev.base.R
+import com.dev.util.Keep
 import com.dev.view.dialog.AlertDialogBuilder
 
 
@@ -30,6 +31,7 @@ import com.dev.view.dialog.AlertDialogBuilder
  * The (visible) version name of the application, as specified by the <manifest> tag's versionName
  * attribute. E.g. "2.0".
  */
+
 val Context.appVersionName: String?
     get() {
         val packageInfo = packageManager.getPackageInfo(packageName, 0)
@@ -39,6 +41,7 @@ val Context.appVersionName: String?
 /**
  * Returns the handle to a system-level service by name.
  */
+@Keep
 inline fun <reified T> Context.systemService(name: String): T {
     return getSystemService(name) as T
 }
@@ -46,6 +49,7 @@ inline fun <reified T> Context.systemService(name: String): T {
 /**
  * Returns whether or not the operating system is under low memory conditions.
  */
+@Keep
 fun Context.isOSOnLowMemory(): Boolean {
     val activityManager = systemService<ActivityManager>(Context.ACTIVITY_SERVICE)
     return ActivityManager.MemoryInfo().also { memoryInfo ->
@@ -57,17 +61,20 @@ fun Context.isOSOnLowMemory(): Boolean {
  * Returns if a list of permission have been granted, if all the permission have been granted
  * returns true otherwise false.
  */
+@Keep
 fun Context.isPermissionGranted(vararg permission: String): Boolean {
     return permission.all {
         ContextCompat.checkSelfPermission(this, it) == PERMISSION_GRANTED
     }
 }
+@Keep
 fun Context.showMessage(message:String){
 
 }
+@Keep
 fun Context.getPreferenceKey(@StringRes resourceId: Int): String =
     resources.getString(resourceId)
-
+@Keep
 fun <T>Context.loadJsonObject(path:String,mClass:Class<T>):T?{
     var result:T?=null
     try {
@@ -78,7 +85,7 @@ fun <T>Context.loadJsonObject(path:String,mClass:Class<T>):T?{
     }
     return result
 }
-
+@Keep
 fun <T> Context.loadJsonArray(path: String, clazz: Class<T>): List<T> {
     val stream=this.assets.open(path)
     val lst = ArrayList<T>()
@@ -92,13 +99,13 @@ fun <T> Context.loadJsonArray(path: String, clazz: Class<T>): List<T> {
     }
     return lst
 }
-
+@Keep
 fun Context.showToast(content:String){
     val toast=Toast.makeText(this,"",Toast.LENGTH_SHORT)
     toast.setText(content)
     toast.show()
 }
-
+@Keep
 fun Context.shareText(title:String,text:String):Boolean{
     return try {
         val intent = Intent(Intent.ACTION_SEND).apply {
@@ -118,6 +125,7 @@ fun Context.shareText(title:String,text:String):Boolean{
         false
     }
 }
+@Keep
 fun Context.shareLink(title:String,url:String):Boolean{
     return try {
         val intent = Intent(Intent.ACTION_SEND).apply {
@@ -138,12 +146,14 @@ fun Context.shareLink(title:String,url:String):Boolean{
     }
 }
 //拷贝文字
+@Keep
 fun Context.copyText(label:String,text:String){
     val cm = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
     val mClipData = ClipData.newPlainText(label, text)
     cm.primaryClip = mClipData
 }
 //拷贝链接
+@Keep
 fun Context.copyLink(label:String,link:String){
     val cm = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
     val mClipData = ClipData.newUri(contentResolver,label, Uri.parse(link))
@@ -154,6 +164,7 @@ fun Context.copyLink(label:String,link:String){
 var redirectDialog: Dialog?=null
 var redirectUrl:String=""
 //通过链接跳转到可以接收的应用
+@Keep
 fun Context.redirectToApp(url:String){
     Log.d("redirectToApp",url)
     redirectUrl=url

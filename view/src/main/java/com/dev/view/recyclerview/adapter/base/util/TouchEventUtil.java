@@ -1,7 +1,9 @@
 package com.dev.view.recyclerview.adapter.base.util;
 
 import android.view.MotionEvent;
+import com.dev.util.Keep;
 
+@Keep
 public class TouchEventUtil {
 
     public static String getTouchAction(int actionId) {

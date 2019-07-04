@@ -3,6 +3,7 @@ package com.dev.view.recyclerview.adapter.base.util;
 
 import android.util.SparseIntArray;
 import androidx.annotation.LayoutRes;
+import com.dev.util.Keep;
 
 import java.util.List;
 
@@ -18,7 +19,7 @@ import static com.dev.view.recyclerview.adapter.base.BaseSectionMultiItemQuickAd
  * <p>
  * more information: https://github.com/CymChad/BaseRecyclerViewAdapterHelper/issues/968
  */
-
+@Keep
 public abstract class MultiTypeDelegate<T> {
 
     private static final int DEFAULT_VIEW_TYPE = -0xff;

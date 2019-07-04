@@ -3,9 +3,10 @@ package com.dev.base
 import android.app.Dialog
 import android.os.Bundle
 import android.view.View
+import com.dev.util.Keep
 import com.google.android.material.bottomsheet.BottomSheetDialog
 
-
+@Keep
 abstract class BaseBottomSheetDialogFragment:CoroutineScopeBottomSheetDialogFragment(){
     abstract fun getLayoutResId():Int
     //自定义背景颜色,默认为透明色

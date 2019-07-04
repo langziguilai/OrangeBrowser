@@ -5,6 +5,7 @@ import android.util.SparseIntArray;
 import android.view.ViewGroup;
 import androidx.annotation.IntRange;
 import androidx.annotation.LayoutRes;
+import com.dev.util.Keep;
 import com.dev.view.recyclerview.adapter.base.entity.IExpandable;
 import com.dev.view.recyclerview.adapter.base.entity.MultiItemEntity;
 
@@ -13,6 +14,7 @@ import java.util.List;
 /**
  * https://github.com/CymChad/BaseRecyclerViewAdapterHelper
  */
+@Keep
 public abstract class BaseMultiItemQuickAdapter<T extends MultiItemEntity, K extends BaseViewHolder> extends BaseQuickAdapter<T, K> {
 
     /**

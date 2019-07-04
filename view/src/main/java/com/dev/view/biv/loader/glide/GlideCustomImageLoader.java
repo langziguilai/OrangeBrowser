@@ -8,8 +8,9 @@ import com.bumptech.glide.request.target.Target;
 import java.io.File;
 import java.util.Map;
 
+import com.dev.util.Keep;
 import okhttp3.OkHttpClient;
-
+@Keep
 public class GlideCustomImageLoader extends GlideImageLoader {
   private final Class<? extends GlideModel> mModel;
 

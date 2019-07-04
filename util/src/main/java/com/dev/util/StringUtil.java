@@ -8,11 +8,13 @@ import java.io.IOException;
 import java.io.StringReader;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
+@KeepNameIfNecessary
 public class StringUtil {
+    @KeepMemberIfNecessary
     public static String replaceLast(String text, String regex, String replacement) {
         return text.replaceFirst("(?s)(.*)" + regex, "$1" + replacement);
     }
+    @KeepMemberIfNecessary
     public static String makeQueryStringAllRegExp(String str) {
         if (str.trim().length()<=0) {
             return str;
@@ -26,6 +28,7 @@ public class StringUtil {
                 .replace("?", "\\?").replace(",", "\\,")
                 .replace(".", "\\.").replace("&", "\\&");
     }
+    @KeepMemberIfNecessary
     public static StringBuffer removeUTFCharacters(String data) {
         Pattern p = Pattern.compile("\\\\u(\\p{XDigit}{4})");
         Matcher m = p.matcher(data);
@@ -37,6 +40,7 @@ public class StringUtil {
         m.appendTail(buf);
         return buf;
     }
+    @KeepMemberIfNecessary
     public static String  unEscapeString(String str) {
         JsonReader reader = new JsonReader(new StringReader(str));
         reader.setLenient(true);
@@ -59,6 +63,7 @@ public class StringUtil {
         }
         return "";
     }
+    @KeepMemberIfNecessary
     public static String getHost(String url){
         String host= Uri.parse(url).getHost();
         if (host==null || host.trim().length()==0){

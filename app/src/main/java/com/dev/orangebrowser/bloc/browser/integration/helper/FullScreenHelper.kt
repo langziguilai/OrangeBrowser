@@ -49,7 +49,8 @@ class FullScreenHelper(var binding:FragmentBrowserBinding,var activity: Activity
                    activity.requestedOrientation= ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
                }
                binding.browserContainer.fitsSystemWindows=false
-               binding.browserContainer.setBackgroundColor(0x000000)
+               //binding.browserContainer.setBackgroundColor(0x000000)
+               binding.browserContainer.setBackgroundColor(activity.resources.getColor(R.color.colorBlack))
            }else{ //退出全局视野
                StatusBarUtil.showStatusBar(activity)
                //退出全屏模式
@@ -77,7 +78,7 @@ class FullScreenHelper(var binding:FragmentBrowserBinding,var activity: Activity
                    activity.requestedOrientation= ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
                }
                binding.browserContainer.fitsSystemWindows=true
-               binding.browserContainer.setBackgroundColor(activity.resources.getColor(R.color.colorBlack))
+
                val host = Uri.parse(session.url).host ?: ""
                if (session.themeColorMap.containsKey(host)) {
                    binding.browserContainer.setBackgroundColor(session.themeColorMap[host]!!)

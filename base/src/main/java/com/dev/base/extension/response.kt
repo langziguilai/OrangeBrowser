@@ -1,8 +1,9 @@
 package com.dev.base.extension
 
 import com.dev.base.exception.Failure
+import com.dev.util.Keep
 import retrofit2.Call
-
+@Keep
 fun <T> Call<T>.onResult(onSuccess:(T?)->Unit, onFail:(Failure)->Unit){
     val response=execute()
     if (response.isSuccessful){

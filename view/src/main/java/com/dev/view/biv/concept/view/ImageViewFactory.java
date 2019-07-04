@@ -29,6 +29,7 @@ import android.net.Uri;
 import android.view.View;
 import android.widget.ImageView;
 import com.davemorrissey.labs.subscaleview.SubsamplingScaleImageView;
+import com.dev.util.Keep;
 import com.dev.view.biv.concept.metadata.ImageInfoExtractor;
 
 import java.io.File;
@@ -36,6 +37,7 @@ import java.io.File;
 /**
  * Created by Piasy{github.com/Piasy} on 2018/8/12.
  */
+@Keep
 public class ImageViewFactory {
 
     public final View createMainView(Context context, int imageType, File imageFile,

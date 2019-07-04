@@ -1,5 +1,8 @@
 package com.dev.base.crash.cockroach;
 
+import com.dev.util.Keep;
+
+@Keep
 public abstract class ExceptionHandler {
     final void uncaughtExceptionHappened(Thread thread, Throwable throwable) {
         try {//捕获监听中异常，防止使用方代码抛出异常时导致的反复调用

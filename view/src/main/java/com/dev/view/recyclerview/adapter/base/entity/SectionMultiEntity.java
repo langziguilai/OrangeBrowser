@@ -1,11 +1,14 @@
 package com.dev.view.recyclerview.adapter.base.entity;
 
 
+import com.dev.util.Keep;
+
 import java.io.Serializable;
 
 /**
  * https://github.com/CymChad/BaseRecyclerViewAdapterHelper
  */
+@Keep
 public abstract class SectionMultiEntity<T> implements Serializable, MultiItemEntity {
 
     public boolean isHeader;

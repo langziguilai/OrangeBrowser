@@ -1,11 +1,13 @@
 package com.dev.view.notchtools.core;
 
+import com.dev.util.Keep;
+
 /**
  * 刘海适配回调接口
  * @author zhangzhun
  * @date 2018/11/7
  */
-
+@Keep
 public interface OnNotchCallBack {
 
     /**

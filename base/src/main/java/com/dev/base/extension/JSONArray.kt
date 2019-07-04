@@ -1,11 +1,13 @@
 package com.dev.base.extension
 
+import com.dev.util.Keep
 import org.json.JSONArray
 import org.json.JSONException
 
 /*
  * Convenience method to convert a JSONArray into a sequence.
  */
+@Keep
 fun JSONArray.asSequence(): Sequence<Any> {
     return object : Sequence<Any> {
 
@@ -28,6 +30,7 @@ fun JSONArray.asSequence(): Sequence<Any> {
  * @return list with the JSONArray values, or an empty list if the JSONArray was null
  */
 @Suppress("UNCHECKED_CAST")
+@Keep
 fun <T> JSONArray?.toList(): List<T> {
     if (this != null) {
         return asSequence().map { it as T }.toList()
@@ -46,6 +49,7 @@ fun <T> JSONArray?.toList(): List<T> {
  * jsonArray.mapNotNull(JSONArray::getJSONObject) { jsonObj -> jsonObj.getString("author") }
  * ```
  */
+@Keep
 fun <T, R : Any> JSONArray.mapNotNull(getFromArray: JSONArray.(index: Int) -> T, transform: (T) -> R?): List<R> {
     val transformedResults = mutableListOf<R>()
     for (i in 0 until this.length()) {

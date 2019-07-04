@@ -2,10 +2,12 @@ package com.dev.view.recyclerview.adapter.base.listener;
 
 
 import androidx.recyclerview.widget.RecyclerView;
+import com.dev.util.Keep;
 
 /**
  * Created by luoxw on 2016/6/20.
  */
+@Keep
 public interface OnItemDragListener {
     void onItemDragStart(RecyclerView.ViewHolder viewHolder, int pos);
 

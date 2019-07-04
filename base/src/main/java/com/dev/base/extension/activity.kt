@@ -3,10 +3,12 @@ package com.dev.base.extension
 import android.app.Activity
 import android.view.View
 import android.view.WindowManager
+import com.dev.util.Keep
 
 /**
  * Attempts to call immersive mode using the View to hide the status bar and navigation buttons.
  */
+@Keep
 fun Activity.enterToImmersiveMode() {
     window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
     window.decorView.systemUiVisibility = (View.SYSTEM_UI_FLAG_LAYOUT_STABLE
@@ -20,6 +22,7 @@ fun Activity.enterToImmersiveMode() {
 /**
  * Attempts to come out from immersive mode using the View.
  */
+@Keep
 fun Activity.exitImmersiveModeIfNeeded() {
     if (WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON and window.attributes.flags == 0) {
         // We left immersive mode already.

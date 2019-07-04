@@ -13,11 +13,13 @@ import android.os.Build
 import android.util.AttributeSet
 import android.view.Gravity
 import androidx.appcompat.widget.AppCompatButton
+import com.dev.util.Keep
 import com.dev.view.R
 
 /**
  * 通用shape样式按钮
  */
+@Keep
 class CommonShapeButton @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,

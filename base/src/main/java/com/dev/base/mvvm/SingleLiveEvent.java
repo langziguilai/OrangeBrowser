@@ -7,13 +7,14 @@ import androidx.annotation.Nullable;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
+import com.dev.util.Keep;
 /**
  * 仅仅消费一次：可以用于：
  * 1、当有多个observer时，仅仅有一个消费数据
  * 2、当LifecycleOwner的状态从inactive转换为active的时候（即恢复显示的时候，因为如果livedata设置了值，LifecycleOwner恢复时，会重新发送消息），不再消费消息（因为标志位已经设置过了）
  * */
 import java.util.concurrent.atomic.AtomicBoolean;
-
+@Keep
 public class SingleLiveEvent<T> extends MutableLiveData<T> {
 
     private static final String TAG = "SingleLiveEvent";

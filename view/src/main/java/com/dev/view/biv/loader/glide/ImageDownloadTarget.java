@@ -36,11 +36,12 @@ import java.io.File;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import com.dev.util.Keep;
 
 /**
  * Created by Piasy{github.com/Piasy} on 12/11/2016.
  */
-
+@Keep
 public abstract class ImageDownloadTarget implements Target<File>,
         GlideProgressSupport.ProgressListener {
 

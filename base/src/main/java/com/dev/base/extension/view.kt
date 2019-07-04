@@ -17,29 +17,30 @@ import com.dev.util.CommonUtil
 import java.lang.ref.WeakReference
 import android.opengl.ETC1.getHeight
 import android.opengl.ETC1.getWidth
-
+import com.dev.util.Keep
 
 
 const val FAST_ANIMATION = 200L
 const val NORMAL_ANIMATION = 300L
 const val SLOW_ANIMATION = 10000L
 val DEFAULT_INTERPOLATOR=AccelerateDecelerateInterpolator()
-
+@Keep
 fun View.isShowing(): Boolean {
     return this.visibility == View.VISIBLE
 }
-
+@Keep
 fun View.isHidden(): Boolean {
     return this.visibility == View.GONE
 }
-
+@Keep
 fun View.hide() {
     this.visibility = View.GONE
 }
-
+@Keep
 fun View.show() {
     this.visibility = View.VISIBLE
 }
+@Keep
 fun View.getBitmap():Bitmap{
     val b = Bitmap.createBitmap(
         this.width,
@@ -51,6 +52,7 @@ fun View.getBitmap():Bitmap{
     return b
 }
 //在layout之后调用：可以获取View的Height,Width等等属性
+@Keep
 fun View.onGlobalLayoutComplete(callback: (View) -> Unit) {
     var listener: ViewTreeObserver.OnGlobalLayoutListener? = null
     listener = ViewTreeObserver.OnGlobalLayoutListener {
@@ -63,6 +65,7 @@ fun View.onGlobalLayoutComplete(callback: (View) -> Unit) {
 /**
  * Performs the given action on each View in this ViewGroup.
  */
+@Keep
 fun ViewGroup.forEach(action: (View) -> Unit) {
     for (index in 0 until childCount) {
         action(getChildAt(index))
@@ -70,6 +73,7 @@ fun ViewGroup.forEach(action: (View) -> Unit) {
 }
 
 //截图
+@Keep
 fun View.capture(config: Bitmap.Config = Bitmap.Config.ARGB_8888): Bitmap? {
     val v = this
     if (v.width <= 0 || v.height <= 0)
@@ -83,7 +87,7 @@ fun View.capture(config: Bitmap.Config = Bitmap.Config.ARGB_8888): Bitmap? {
    // fullSizeBitmap?.recycle()
     return fullSizeBitmap
 }
-
+@Keep
 fun View.capture(config: Bitmap.Config = Bitmap.Config.ARGB_8888, width: Int, height: Int): Bitmap? {
     val v = this
     if (v.width <= 0 || v.height <= 0)
@@ -101,6 +105,7 @@ fun View.capture(config: Bitmap.Config = Bitmap.Config.ARGB_8888, width: Int, he
  *  @param flags Provides additional operating flags to be used with InputMethodManager.showSoftInput().
  *  Currently may be 0, SHOW_IMPLICIT or SHOW_FORCED.
  */
+@Keep
 fun View.showKeyboard(flags: Int = InputMethodManager.SHOW_IMPLICIT) {
     ShowKeyboard(this, flags).post()
 }
@@ -108,13 +113,14 @@ fun View.showKeyboard(flags: Int = InputMethodManager.SHOW_IMPLICIT) {
 /**
  * Hides the soft input window.
  */
+@Keep
 fun View.hideKeyboard() {
     val imm = (context.getSystemService(Context.INPUT_METHOD_SERVICE) ?: return)
             as InputMethodManager
 
     imm.hideSoftInputFromWindow(windowToken, 0)
 }
-
+@Keep
 private class ShowKeyboard(
     view: View,
     private val flags: Int = InputMethodManager.SHOW_IMPLICIT

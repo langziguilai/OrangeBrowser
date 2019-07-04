@@ -31,6 +31,7 @@ import android.widget.ImageView;
 import com.bumptech.glide.Glide;
 import java.io.File;
 
+import com.dev.util.Keep;
 import com.dev.view.biv.concept.metadata.ImageInfoExtractor;
 import com.dev.view.biv.concept.view.BigImageView;
 import com.dev.view.biv.concept.view.ImageViewFactory;
@@ -39,6 +40,7 @@ import pl.droidsonroids.gif.GifImageView;
 /**
  * Created by Piasy{github.com/Piasy} on 2018/8/12.
  */
+@Keep
 public class GlideImageViewFactory extends ImageViewFactory {
     @Override
     protected View createAnimatedImageView(final Context context, final int imageType,

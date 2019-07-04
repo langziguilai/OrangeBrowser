@@ -17,13 +17,16 @@ import android.text.style.URLSpan;
 import android.view.View;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
+import com.dev.util.Keep;
+import com.dev.util.KeepMemberIfNecessary;
+import com.dev.util.KeepNameIfNecessary;
 
 /**
  * @author: Allen.
  * @date: 2018/6/26
  * @description: 图片文本工具类
  */
-
+@KeepNameIfNecessary
 public class ImageTextUtil {
     public static Drawable getUrlDrawable(String source, TextView mTextView) {
         GlideImageGetter imageGetter = new GlideImageGetter(mTextView.getContext(), mTextView);
@@ -35,6 +38,7 @@ public class ImageTextUtil {
      * @param tv
      * @param html
      */
+    @KeepMemberIfNecessary
     public static void setImageText(TextView tv, String html) {
         if (!TextUtils.isEmpty(html)) {
             Spanned htmlStr = Html.fromHtml(html);
@@ -75,17 +79,18 @@ public class ImageTextUtil {
         }
     }
 }
-
+@KeepNameIfNecessary
 class CustomUrlSpan extends URLSpan{
-
+    @KeepMemberIfNecessary
     public CustomUrlSpan(String url) {
         super(url);
     }
-
+    @KeepMemberIfNecessary
     public CustomUrlSpan(@NonNull Parcel src) {
         super(src);
     }
 
+    @KeepMemberIfNecessary
     @Override
     public void onClick(View widget) {
         super.onClick(widget);

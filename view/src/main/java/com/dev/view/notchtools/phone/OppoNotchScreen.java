@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.os.Build;
 import android.view.Window;
 import androidx.annotation.RequiresApi;
+import com.dev.util.Keep;
 import com.dev.view.notchtools.core.AbsNotchScreenSupport;
 import com.dev.view.notchtools.core.OnNotchCallBack;
 import com.dev.view.notchtools.helper.NotchStatusBarUtils;
@@ -13,6 +14,7 @@ import com.dev.view.notchtools.helper.NotchStatusBarUtils;
  * @author zhangzhun
  * @date 2018/11/4
  */
+@Keep
 public class OppoNotchScreen extends AbsNotchScreenSupport {
 
     private static final String TAG = OppoNotchScreen.class.getSimpleName();

@@ -31,4 +31,5 @@
     <color name="color_AFAFAF">#AFAFAF</color>
     <color name="color_B7FFFFFF">#E1FFFFFF</color>
     <color name="color_EEEEEE">#EEEEEE</color>
+    <color name="transparent">#00FFFFFF</color>
 </resources>

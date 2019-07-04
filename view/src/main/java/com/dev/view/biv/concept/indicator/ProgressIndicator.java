@@ -25,12 +25,13 @@
 package com.dev.view.biv.concept.indicator;
 
 import android.view.View;
+import com.dev.util.Keep;
 import com.dev.view.biv.concept.view.BigImageView;
 
 /**
  * Created by Piasy{github.com/Piasy} on 12/11/2016.
  */
-
+@Keep
 public interface ProgressIndicator {
     /**
      * DO NOT add indicator view into parent! Only called once per load.

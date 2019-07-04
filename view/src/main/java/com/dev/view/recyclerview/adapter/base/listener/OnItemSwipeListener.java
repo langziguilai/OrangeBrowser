@@ -2,10 +2,12 @@ package com.dev.view.recyclerview.adapter.base.listener;
 
 import android.graphics.Canvas;
 import androidx.recyclerview.widget.RecyclerView;
+import com.dev.util.Keep;
 
 /**
  * Created by luoxw on 2016/6/23.
  */
+@Keep
 public interface OnItemSwipeListener {
     /**
      * Called when the swipe action start.

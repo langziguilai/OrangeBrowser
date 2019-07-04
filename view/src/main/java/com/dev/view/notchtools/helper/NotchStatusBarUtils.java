@@ -7,13 +7,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import com.dev.util.Keep;
 import com.dev.view.notchtools.NotchTools;
 
 /**
  * @author zhangzhun
  * @date 2018/11/7
  */
-
+@Keep
 public class NotchStatusBarUtils {
 
     private static int statusBarHeight = -1;

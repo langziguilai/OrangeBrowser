@@ -26,13 +26,15 @@ package com.dev.view.biv.concept.loader;
 
 import android.net.Uri;
 import androidx.annotation.UiThread;
+import com.dev.util.Keep;
+
 import java.io.File;
 import java.util.Map;
 
 /**
  * Created by Piasy{github.com/Piasy} on 08/11/2016.
  */
-
+@Keep
 public interface ImageLoader {
 
     void loadImage(int requestId, Uri uri, Map<String,String> headers, Callback callback);
@@ -43,6 +45,7 @@ public interface ImageLoader {
 
     void cancelAll();
 
+    @Keep
     @UiThread
     interface Callback {
         void onCacheHit(int imageType, File image);

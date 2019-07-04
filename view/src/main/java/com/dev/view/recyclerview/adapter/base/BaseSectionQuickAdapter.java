@@ -2,6 +2,7 @@ package com.dev.view.recyclerview.adapter.base;
 
 import android.view.ViewGroup;
 
+import com.dev.util.Keep;
 import com.dev.view.recyclerview.adapter.base.entity.SectionEntity;
 
 import java.util.List;
@@ -9,6 +10,7 @@ import java.util.List;
 /**
  * https://github.com/CymChad/BaseRecyclerViewAdapterHelper
  */
+@Keep
 public abstract class BaseSectionQuickAdapter<T extends SectionEntity, K extends BaseViewHolder> extends BaseQuickAdapter<T, K> {
 
 

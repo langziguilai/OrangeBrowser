@@ -4,9 +4,10 @@ import android.os.Build
 import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.ViewModelProvider
+import com.dev.util.Keep
 import javax.inject.Inject
 
-
+@Keep
 abstract class BaseActivity : AdaptUiBaseActivity() {
     @Inject
     lateinit var factory: ViewModelProvider.Factory

@@ -4,6 +4,7 @@ import android.util.SparseArray;
 import android.view.View;
 
 import androidx.annotation.Nullable;
+import com.dev.util.Keep;
 import com.dev.view.recyclerview.adapter.base.provider.BaseItemProvider;
 import com.dev.view.recyclerview.adapter.base.util.MultiTypeDelegate;
 import com.dev.view.recyclerview.adapter.base.util.ProviderDelegate;
@@ -18,7 +19,7 @@ import java.util.List;
  * 当有多种条目的时候，避免在convert()中做太多的业务逻辑，把逻辑放在对应的ItemProvider中
  * @date 2018/3/21  9:55
  */
-
+@Keep
 public abstract class MultipleItemRvAdapter<T,V extends BaseViewHolder> extends BaseQuickAdapter<T, V> {
 
     private SparseArray<BaseItemProvider> mItemProviders;

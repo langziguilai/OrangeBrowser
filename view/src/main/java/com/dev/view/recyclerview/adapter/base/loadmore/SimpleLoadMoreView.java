@@ -1,12 +1,13 @@
 package com.dev.view.recyclerview.adapter.base.loadmore;
 
 
+import com.dev.util.Keep;
 import com.dev.view.R;
 
 /**
  * Created by BlingBling on 2016/10/11.
  */
-
+@Keep
 public final class SimpleLoadMoreView extends LoadMoreView {
 
     @Override

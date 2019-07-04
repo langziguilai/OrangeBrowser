@@ -5,8 +5,10 @@ import android.util.AttributeSet
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.dev.util.DensityUtil
+import com.dev.util.Keep
 import com.dev.view.recyclerview.GridDividerItemDecoration
 
+@Keep
 class GridView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,

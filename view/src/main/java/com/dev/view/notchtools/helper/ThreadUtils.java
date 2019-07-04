@@ -7,11 +7,12 @@ import android.os.Looper;
 import android.os.SystemClock;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import com.dev.util.Keep;
 
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadFactory;
-
+@Keep
 public class ThreadUtils {
 
     private static Handler sMainHandler;

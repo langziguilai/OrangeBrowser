@@ -1,10 +1,12 @@
 package com.dev.base.support
 
 import android.app.Activity
+import com.dev.util.Keep
 
 /**
  * Interface for fragments that want to handle user interactions.
  */
+@Keep
 interface UserInteractionHandler {
     /**
      * In most cases, when the home button is pressed, we invoke this onResult to inform the app that the user

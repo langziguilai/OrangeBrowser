@@ -12,7 +12,9 @@ import java.io.File;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import com.dev.util.Keep;
 
+@Keep
 public class PrefetchTarget implements Target<File> {
 
     private final int width;

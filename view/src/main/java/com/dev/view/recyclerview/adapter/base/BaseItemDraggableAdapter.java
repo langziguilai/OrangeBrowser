@@ -8,6 +8,7 @@ import androidx.annotation.NonNull;
 import androidx.core.view.MotionEventCompat;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
+import com.dev.util.Keep;
 import com.dev.view.R;
 import com.dev.view.recyclerview.adapter.base.listener.OnItemDragListener;
 import com.dev.view.recyclerview.adapter.base.listener.OnItemSwipeListener;
@@ -18,6 +19,7 @@ import java.util.List;
 /**
  * Created by luoxw on 2016/7/13.
  */
+@Keep
 public abstract class BaseItemDraggableAdapter<T, K extends BaseViewHolder> extends BaseQuickAdapter<T, K> {
 
     private static final int NO_TOGGLE_VIEW = 0;

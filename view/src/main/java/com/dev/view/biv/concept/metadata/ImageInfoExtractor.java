@@ -24,6 +24,8 @@
 
 package com.dev.view.biv.concept.metadata;
 
+import com.dev.util.Keep;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -31,6 +33,7 @@ import java.io.IOException;
 /**
  * Created by Piasy{github.com/Piasy} on 2018/8/12.
  */
+@Keep
 public final class ImageInfoExtractor {
     public static final int TYPE_STILL_IMAGE = 0;
     public static final int TYPE_GIF = 1;

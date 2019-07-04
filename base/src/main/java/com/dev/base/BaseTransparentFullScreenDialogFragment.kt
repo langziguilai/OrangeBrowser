@@ -5,7 +5,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
+import com.dev.util.Keep
 
+@Keep
 abstract class BaseTransparentFullScreenDialogFragment : DialogFragment() {
     lateinit var rootView:View
     override fun onCreate(savedInstanceState: Bundle?) {

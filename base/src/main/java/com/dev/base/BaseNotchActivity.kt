@@ -4,9 +4,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.widget.FrameLayout
+import com.dev.util.Keep
 import com.dev.view.notchtools.NotchTools
 
-
+@Keep
 abstract class BaseNotchActivity : BaseActivity() {
     /**
      * 刘海容器

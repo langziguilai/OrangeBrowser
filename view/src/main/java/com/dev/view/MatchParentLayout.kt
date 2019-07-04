@@ -3,10 +3,15 @@ package com.dev.view
 import android.content.Context
 import android.util.AttributeSet
 import android.widget.FrameLayout
+import com.dev.util.Keep
+import com.dev.util.KeepMemberIfNecessary
+import com.dev.util.KeepNameIfNecessary
+
 /*
 * @doc
 *  容器让子View完全匹配父View的真实大小，而不管OnMeasure的大小
 * */
+@Keep
 open class MatchParentLayout:FrameLayout{
     constructor(context: Context):super(context)
     constructor(context: Context,attributeSet: AttributeSet?):super(context,attributeSet)

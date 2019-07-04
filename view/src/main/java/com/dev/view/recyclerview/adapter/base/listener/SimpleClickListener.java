@@ -8,6 +8,7 @@ import android.view.View;
 
 import androidx.core.view.GestureDetectorCompat;
 import androidx.recyclerview.widget.RecyclerView;
+import com.dev.util.Keep;
 import com.dev.view.recyclerview.adapter.base.BaseQuickAdapter;
 import com.dev.view.recyclerview.adapter.base.BaseViewHolder;
 
@@ -26,6 +27,7 @@ import static com.dev.view.recyclerview.adapter.base.BaseQuickAdapter.*;
  *
  * @see RecyclerView.OnItemTouchListener
  */
+@Keep
 public abstract class SimpleClickListener implements RecyclerView.OnItemTouchListener {
     public static String TAG = "SimpleClickListener";
 

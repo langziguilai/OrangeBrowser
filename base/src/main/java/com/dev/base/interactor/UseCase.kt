@@ -17,6 +17,7 @@ package com.dev.base.interactor
 
 import com.dev.base.exception.Failure
 import com.dev.base.functional.Either
+import com.dev.util.Keep
 import kotlinx.coroutines.*
 import kotlin.coroutines.CoroutineContext
 
@@ -29,6 +30,7 @@ import kotlin.coroutines.CoroutineContext
  * By convention each [UseCase] implementation will execute its job in a background thread
  * (kotlin coroutine) and will post the result in the UI thread.
  */
+@Keep
 abstract class UseCase<out Type, in Params> :CoroutineScope {
     private val job= SupervisorJob()
     override val coroutineContext: CoroutineContext

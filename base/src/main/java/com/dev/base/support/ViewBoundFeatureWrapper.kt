@@ -6,6 +6,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.OnLifecycleEvent
+import com.dev.util.Keep
 
 /**
  * Wrapper for [LifecycleAwareFeature] instances that keep a strong references to a [View]. This wrapper is helpful
@@ -49,6 +50,7 @@ import androidx.lifecycle.OnLifecycleEvent
  * }
  * ```
  */
+@Keep
 class ViewBoundFeatureWrapper<T : LifecycleAwareFeature>() {
     private var feature: T? = null
     private var owner: LifecycleOwner? = null
@@ -166,6 +168,7 @@ class ViewBoundFeatureWrapper<T : LifecycleAwareFeature>() {
  * detached.
  */
 @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
+@Keep
 internal class ViewBinding<T : LifecycleAwareFeature>(
     private val wrapper: ViewBoundFeatureWrapper<T>
 ) : View.OnAttachStateChangeListener {
@@ -181,6 +184,7 @@ internal class ViewBinding<T : LifecycleAwareFeature>(
  * this implementation will call [ViewBoundFeatureWrapper.clear] in case the [Lifecycle] gets destroyed.
  */
 @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
+@Keep
 internal class LifecycleBinding<T : LifecycleAwareFeature>(
     private val wrapper: ViewBoundFeatureWrapper<T>
 ) : LifecycleObserver {

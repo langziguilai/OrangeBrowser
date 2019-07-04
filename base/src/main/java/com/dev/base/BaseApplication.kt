@@ -2,10 +2,11 @@ package com.dev.base
 
 import android.app.Application
 import android.util.Log
+import com.dev.util.Keep
 
 import com.facebook.stetho.Stetho
 import com.squareup.leakcanary.LeakCanary
-
+@Keep
 abstract class BaseApplication : Application() {
 
 

@@ -1,5 +1,7 @@
 package com.dev.view.recyclerview.adapter.base.entity;
 
+import com.dev.util.Keep;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,6 +10,7 @@ import java.util.List;
  * <p>if you don't want to extent a class, you can also implement the interface IExpandable</p>
  * Created by luoxw on 2016/8/9.
  */
+@Keep
 public abstract class AbstractExpandableItem<T> implements IExpandable<T> {
     protected boolean mExpandable = false;
     protected List<T> mSubItems;

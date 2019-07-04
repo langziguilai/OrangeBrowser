@@ -12,15 +12,15 @@ import com.amulyakhare.textdrawable.TextDrawable
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.model.GlideUrl
 import com.bumptech.glide.load.model.Headers
-import com.bumptech.glide.load.resource.bitmap.DownsampleStrategy
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.bumptech.glide.request.RequestOptions
-import com.bumptech.glide.request.target.SimpleTarget
+import com.dev.util.Keep
 import com.dev.view.R
 import com.dev.view.recyclerview.adapter.base.BaseViewHolder
 import java.io.File
 import java.util.*
 
+@Keep
 fun getGlideUrlWithReferer(url: String, referer: String): GlideUrl {
     return GlideUrl(url, object : Headers {
         override fun getHeaders(): MutableMap<String, String> {
@@ -31,7 +31,7 @@ fun getGlideUrlWithReferer(url: String, referer: String): GlideUrl {
 
     })
 }
-
+@Keep
 open class CustomBaseViewHolder(view: View) : BaseViewHolder(view) {
     fun setTextToAppCompatTextView(@IdRes viewId: Int, value: CharSequence): CustomBaseViewHolder {
         val view = getView<AppCompatTextView>(viewId)

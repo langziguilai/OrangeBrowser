@@ -2,6 +2,7 @@ package com.dev.view.notchtools.phone;
 
 import android.app.Activity;
 import android.view.Window;
+import com.dev.util.Keep;
 import com.dev.view.notchtools.core.AbsNotchScreenSupport;
 import com.dev.view.notchtools.core.OnNotchCallBack;
 
@@ -9,7 +10,7 @@ import com.dev.view.notchtools.core.OnNotchCallBack;
  * @author zhangzhun
  * @date 2018/11/5
  */
-
+@Keep
 public class CommonScreen extends AbsNotchScreenSupport {
 
     @Override

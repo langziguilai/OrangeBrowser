@@ -1,6 +1,7 @@
 package com.dev.view.notchtools.helper;
 
 import android.util.Log;
+import com.dev.util.Keep;
 
 import java.lang.reflect.Method;
 
@@ -8,6 +9,7 @@ import java.lang.reflect.Method;
  * @author zhangzhun
  * @date 2018/11/4
  */
+@Keep
 public class SystemProperties {
 
     private static final String TAG = SystemProperties.class.getSimpleName();

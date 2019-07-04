@@ -2,7 +2,9 @@ package com.dev.base
 
 import android.os.Bundle
 import android.util.Log
+import com.dev.util.Keep
 
+@Keep
 open class LogLifeCycleEventActivity : CoroutineScopeActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         Log.d(this.javaClass.simpleName, "onCreate")

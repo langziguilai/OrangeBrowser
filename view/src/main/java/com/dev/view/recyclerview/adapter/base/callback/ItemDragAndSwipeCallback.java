@@ -6,6 +6,7 @@ import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
+import com.dev.util.Keep;
 import com.dev.view.R;
 import com.dev.view.recyclerview.adapter.base.BaseItemDraggableAdapter;
 import com.dev.view.recyclerview.adapter.base.BaseQuickAdapter;
@@ -15,6 +16,7 @@ import com.dev.view.recyclerview.adapter.base.BaseQuickAdapter;
  * @author luoxw
  * @date 2016/6/20
  */
+@Keep
 public class ItemDragAndSwipeCallback extends ItemTouchHelper.Callback {
 
 //    private static final String TAG = ItemDragAndSwipeCallback.class.getSimpleName();

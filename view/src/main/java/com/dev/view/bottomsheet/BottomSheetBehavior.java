@@ -3,6 +3,7 @@ package com.dev.view.bottomsheet;
 import android.annotation.SuppressLint;
 import android.util.Log;
 import androidx.viewpager.widget.ViewPager;
+import com.dev.util.Keep;
 import com.google.android.material.R;
 
 import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
@@ -47,6 +48,7 @@ import java.util.Map;
  * An interaction behavior plugin for a child view of {@link CoordinatorLayout} to make it work as a
  * bottom sheet.
  */
+@Keep
 public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behavior<V> {
 
     /** Callback for monitoring events about bottom sheets. */

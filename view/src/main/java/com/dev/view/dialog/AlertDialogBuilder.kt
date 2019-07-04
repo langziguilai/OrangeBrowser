@@ -5,9 +5,10 @@ import android.content.Context
 import android.view.Gravity
 import android.view.View
 import android.widget.TextView
+import com.dev.util.Keep
 import com.dev.view.R
 
-
+@Keep
 class AlertDialogBuilder{
     private var layoutId:Int=R.layout.dialog_alert
     private var onNegative:Runnable?=null

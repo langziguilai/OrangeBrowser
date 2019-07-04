@@ -3,10 +3,12 @@ package com.dev.view.recyclerview.adapter.base.animation;
 import android.animation.Animator;
 import android.animation.ObjectAnimator;
 import android.view.View;
+import com.dev.util.Keep;
 
 /**
  * https://github.com/CymChad/BaseRecyclerViewAdapterHelper
  */
+@Keep
 public class AlphaInAnimation implements BaseAnimation {
     private static final float DEFAULT_ALPHA_FROM = 0f;
     private final float mFrom;

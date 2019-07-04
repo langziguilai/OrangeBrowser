@@ -8,8 +8,10 @@ import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.FrameLayout
 import androidx.appcompat.app.AppCompatDialog
+import com.dev.util.Keep
 import com.dev.view.R
 
+@Keep
 open class DialogBuilder {
     interface OnViewCreateListener {
         fun onViewCreated(view: View)
@@ -135,7 +137,7 @@ open class DialogBuilder {
         return dialog
     }
 }
-
+@Keep
 open class MyDialog : AppCompatDialog {
     constructor(context: Context) : super(context)
     constructor(context: Context, themeId: Int) : super(context, themeId)

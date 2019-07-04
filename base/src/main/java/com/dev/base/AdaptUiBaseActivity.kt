@@ -4,7 +4,9 @@ import android.content.res.Configuration
 import android.os.Bundle
 import android.util.Log
 import com.dev.util.DensityUtil
+import com.dev.util.Keep
 
+@Keep
 open class AdaptUiBaseActivity : LogLifeCycleEventActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         DensityUtil.init(this,application)

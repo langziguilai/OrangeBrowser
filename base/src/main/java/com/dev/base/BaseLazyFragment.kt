@@ -6,9 +6,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
+import com.dev.util.Keep
 import javax.inject.Inject
 
-
+@Keep
 abstract class BaseLazyFragment : LogLifeCycleEventFragment() {
     @Inject
     lateinit var factory: ViewModelProvider.Factory

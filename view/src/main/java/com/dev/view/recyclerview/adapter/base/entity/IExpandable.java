@@ -1,11 +1,14 @@
 package com.dev.view.recyclerview.adapter.base.entity;
 
+import com.dev.util.Keep;
+
 import java.util.List;
 
 /**
  * implement the interface if the item is expandable
  * Created by luoxw on 2016/8/8.
  */
+@Keep
 public interface IExpandable<T> {
     boolean isExpanded();
     void setExpanded(boolean expanded);

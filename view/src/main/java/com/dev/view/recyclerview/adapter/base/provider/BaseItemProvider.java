@@ -2,6 +2,7 @@ package com.dev.view.recyclerview.adapter.base.provider;
 
 import android.content.Context;
 
+import com.dev.util.Keep;
 import com.dev.view.recyclerview.adapter.base.BaseViewHolder;
 
 import java.util.List;
@@ -12,7 +13,7 @@ import java.util.List;
  * @description: The base class of ItemProvider
  * @date 2018/3/21  10:41
  */
-
+@Keep
 public abstract class BaseItemProvider<T,V extends BaseViewHolder> {
 
     public Context mContext;

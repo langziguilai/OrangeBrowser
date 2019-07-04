@@ -9,10 +9,11 @@ import android.view.WindowManager;
 import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
 import com.dev.util.ColorKitUtil;
+import com.dev.util.Keep;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-
+@Keep
 public class StatusBarUtil {
     //黑色字体
     @TargetApi(Build.VERSION_CODES.M)

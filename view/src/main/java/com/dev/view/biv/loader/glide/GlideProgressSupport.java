@@ -33,6 +33,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
+
+import com.dev.util.Keep;
 import okhttp3.HttpUrl;
 import okhttp3.Interceptor;
 import okhttp3.MediaType;
@@ -49,7 +51,7 @@ import okio.Source;
 /**
  * Created by Piasy{github.com/Piasy} on 12/11/2016.
  */
-
+@Keep
 public class GlideProgressSupport {
     private static Interceptor createInterceptor(final ResponseProgressListener listener) {
         return new Interceptor() {

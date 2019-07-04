@@ -14,9 +14,10 @@ import androidx.annotation.Nullable;
 import java.io.File;
 import java.io.IOError;
 import java.io.IOException;
-
+@KeepNameIfNecessary
 public class CommonUtil {
     @Nullable
+    @KeepMemberIfNecessary
     public static Activity findActivity(Context context) {
         if (context instanceof Activity) {
             return (Activity) context;
@@ -28,7 +29,7 @@ public class CommonUtil {
             return null;
         }
     }
-
+    @KeepMemberIfNecessary
     public static Bitmap getResizedBitmap(Bitmap bm, int newHeight, int newWidth) {
 //
 //        int width = bm.getWidth();

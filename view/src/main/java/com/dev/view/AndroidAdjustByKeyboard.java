@@ -4,11 +4,15 @@ import android.graphics.Rect;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.FrameLayout;
+import com.dev.util.Keep;
+import com.dev.util.KeepMemberIfNecessary;
+import com.dev.util.KeepNameIfNecessary;
 
+@KeepNameIfNecessary
 public class AndroidAdjustByKeyboard {
     // For more information, see https://code.google.com/p/android/issues/detail?id=5497
     // To use this class, simply invoke assistActivity() on an Activity that already has its content view set.
-
+    @KeepMemberIfNecessary
     public static void assistActivity (View view) {
         new AndroidAdjustByKeyboard(view);
     }

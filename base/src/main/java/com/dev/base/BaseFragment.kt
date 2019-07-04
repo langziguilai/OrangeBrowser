@@ -9,9 +9,10 @@ import android.view.animation.Animation
 import androidx.core.view.ViewCompat
 import androidx.lifecycle.ViewModelProvider
 import com.dev.util.DensityUtil
+import com.dev.util.Keep
 import javax.inject.Inject
 
-
+@Keep
 abstract class BaseFragment : LogLifeCycleEventFragment() {
     @Inject
     lateinit var factory: ViewModelProvider.Factory
