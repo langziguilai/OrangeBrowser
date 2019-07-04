@@ -10,45 +10,53 @@ import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
 import com.dev.util.ColorKitUtil;
 import com.dev.util.Keep;
+import com.dev.util.KeepMemberIfNecessary;
+import com.dev.util.KeepNameIfNecessary;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-@Keep
+
+@KeepNameIfNecessary
 public class StatusBarUtil {
     //黑色字体
+    @KeepMemberIfNecessary
     @TargetApi(Build.VERSION_CODES.M)
     public static void setDarkIcon(Activity activity) {
         setMIUIStatusBarDarkIcon(activity, true);
         setMeizuStatusBarDarkIcon(activity, true);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             //addFlags
-            View decorView=activity.getWindow().getDecorView();
+            View decorView = activity.getWindow().getDecorView();
             int flags = decorView.getSystemUiVisibility();
-            flags = flags|View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR;
+            flags = flags | View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR;
             decorView.setSystemUiVisibility(flags);
         }
     }
+
     //黑色字体
+    @KeepMemberIfNecessary
     @TargetApi(Build.VERSION_CODES.M)
     public static void setDarkIcon(Window window) {
         setMIUIStatusBarDarkIcon(window, true);
         setMeizuStatusBarDarkIcon(window, true);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             //addFlags
-            View decorView=window.getDecorView();
+            View decorView = window.getDecorView();
             int flags = decorView.getSystemUiVisibility();
-            flags = flags|View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR;
+            flags = flags | View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR;
             decorView.setSystemUiVisibility(flags);
         }
     }
+
     //白色字体
+    @KeepMemberIfNecessary
     @TargetApi(Build.VERSION_CODES.M)
     public static void setLightIcon(Activity activity) {
         setMIUIStatusBarDarkIcon(activity, false);
         setMeizuStatusBarDarkIcon(activity, false);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             //clearFlag
-            View decorView=activity.getWindow().getDecorView();
+            View decorView = activity.getWindow().getDecorView();
             int flags = decorView.getSystemUiVisibility();
             flags &= ~View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR;
             decorView.setSystemUiVisibility(flags);
@@ -57,13 +65,14 @@ public class StatusBarUtil {
     }
 
     //白色字体
+    @KeepMemberIfNecessary
     @TargetApi(Build.VERSION_CODES.M)
     public static void setLightIcon(Window window) {
         setMIUIStatusBarDarkIcon(window, false);
         setMeizuStatusBarDarkIcon(window, false);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             //clearFlag
-            View decorView=window.getDecorView();
+            View decorView = window.getDecorView();
             int flags = decorView.getSystemUiVisibility();
             flags &= ~View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR;
             decorView.setSystemUiVisibility(flags);
@@ -86,6 +95,7 @@ public class StatusBarUtil {
             //e.printStackTrace();
         }
     }
+
     private static void setMIUIStatusBarDarkIcon(@NonNull Window window, boolean darkIcon) {
         Class<? extends Window> clazz = window.getClass();
         try {
@@ -98,6 +108,7 @@ public class StatusBarUtil {
             //e.printStackTrace();
         }
     }
+
     /**
      * 修改魅族状态栏字体颜色 Flyme 4.0
      */
@@ -142,7 +153,9 @@ public class StatusBarUtil {
             //e.printStackTrace();
         }
     }
+
     //显示StatusBar
+    @KeepMemberIfNecessary
     public static void showStatusBar(@NonNull Activity activity) {
         if (Build.VERSION.SDK_INT < 16) {
             activity.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
@@ -156,6 +169,7 @@ public class StatusBarUtil {
     }
 
     //隐藏StatusBar
+    @KeepMemberIfNecessary
     public static void hideStatusBar(@NonNull Activity activity) {
         if (Build.VERSION.SDK_INT < 16) {
             activity.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
@@ -170,14 +184,16 @@ public class StatusBarUtil {
     }
 
     //设置StatusBar背景颜色和Icon的颜色
+    @KeepMemberIfNecessary
     public static void setIconColor(@NonNull Activity activity, @ColorInt int color) {
-        if(ColorKitUtil.isBackGroundWhiteMode(color)){
+        if (ColorKitUtil.isBackGroundWhiteMode(color)) {
             setDarkIcon(activity);
-        }else{
+        } else {
             setLightIcon(activity);
         }
     }
-//    //设置StatusBar背景颜色和Icon的颜色
+
+    //    //设置StatusBar背景颜色和Icon的颜色
 //    public static void setIconColor(@NonNull Activity activity, @ColorInt int color) {
 //        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
 //            activity.getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
@@ -191,19 +207,22 @@ public class StatusBarUtil {
 //        }
 //    }
     //设置StatusBar背景颜色和Icon的颜色
+    @KeepMemberIfNecessary
     public static void setIconColor(@NonNull Window window, @ColorInt int color) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
             window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
             window.setStatusBarColor(color);
         }
-        if(ColorKitUtil.isBackGroundWhiteMode(color)){
+        if (ColorKitUtil.isBackGroundWhiteMode(color)) {
             setDarkIcon(window);
-        }else{
+        } else {
             setLightIcon(window);
         }
     }
+
     //设置StatusBar背景颜色
+    @KeepMemberIfNecessary
     public static void setStatusBarBackGroundColor(@NonNull Activity activity, @ColorInt int color) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             activity.getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
@@ -211,7 +230,9 @@ public class StatusBarUtil {
             activity.getWindow().setStatusBarColor(color);
         }
     }
+
     //设置StatusBar背景颜色
+    @KeepMemberIfNecessary
     public static void setStatusBarBackGroundColor(@NonNull Window window, @ColorInt int color) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);

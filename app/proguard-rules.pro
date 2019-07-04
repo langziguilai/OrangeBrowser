@@ -75,21 +75,22 @@
 -keep,allowshrinking class !com.dev.** {*;}
 -keep class org.adblockplus.libadblockplus.** {*;}
 -dontwarn **
+-keep class * extends android.view.View
 -keep class com.dev.orangebrowser.**{
   *;
 }
--keep class com.dev.base.**{
-  *;
-}
+#-keep class com.dev.base.**{
+#  *;
+#}
 -keep class com.dev.browser.**{
   *;
 }
 #-keep class com.dev.util.**{
 #  *;
 #}
--keep class com.dev.view.**{
-  *;
-}
+#-keep class com.dev.view.**{
+#  *;
+#}
 -keep interface com.dev.util.Keep
 -keep interface com.dev.util.KeepNameIfNecessary
 -keep interface com.dev.util.KeepMemberIfNecessary

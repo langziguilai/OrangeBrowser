@@ -5,6 +5,7 @@ import android.view.View;
 
 import androidx.annotation.Nullable;
 import com.dev.util.Keep;
+import com.dev.util.KeepNameIfNecessary;
 import com.dev.view.recyclerview.adapter.base.provider.BaseItemProvider;
 import com.dev.view.recyclerview.adapter.base.util.MultiTypeDelegate;
 import com.dev.view.recyclerview.adapter.base.util.ProviderDelegate;
@@ -21,10 +22,8 @@ import java.util.List;
  */
 @Keep
 public abstract class MultipleItemRvAdapter<T,V extends BaseViewHolder> extends BaseQuickAdapter<T, V> {
-
     private SparseArray<BaseItemProvider> mItemProviders;
     protected ProviderDelegate mProviderDelegate;
-
     public MultipleItemRvAdapter(@Nullable List<T> data) {
         super(data);
     }

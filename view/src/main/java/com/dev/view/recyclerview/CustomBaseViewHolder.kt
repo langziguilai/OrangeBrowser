@@ -15,6 +15,8 @@ import com.bumptech.glide.load.model.Headers
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.bumptech.glide.request.RequestOptions
 import com.dev.util.Keep
+import com.dev.util.KeepMemberIfNecessary
+import com.dev.util.KeepNameIfNecessary
 import com.dev.view.R
 import com.dev.view.recyclerview.adapter.base.BaseViewHolder
 import java.io.File
@@ -33,6 +35,7 @@ fun getGlideUrlWithReferer(url: String, referer: String): GlideUrl {
 }
 @Keep
 open class CustomBaseViewHolder(view: View) : BaseViewHolder(view) {
+
     fun setTextToAppCompatTextView(@IdRes viewId: Int, value: CharSequence): CustomBaseViewHolder {
         val view = getView<AppCompatTextView>(viewId)
         view.setTextFuture(
@@ -57,6 +60,7 @@ open class CustomBaseViewHolder(view: View) : BaseViewHolder(view) {
         const val CENTER_INSIDE=1
         const val CENTER_OUTSIDE=1
     }
+
     fun loadImage(
         @IdRes viewId: Int, url: String,
         referer: String,
@@ -88,6 +92,7 @@ open class CustomBaseViewHolder(view: View) : BaseViewHolder(view) {
     }
 
     //加载不被裁剪的图片
+
     fun loadNoCropImage(@IdRes viewId: Int, url: String, referer: String): CustomBaseViewHolder {
         val view = getView<ImageView>(viewId)
         Glide.with(view.context)

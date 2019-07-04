@@ -3,6 +3,7 @@ package com.dev.orangebrowser.bloc.browser
 
 import android.content.Context
 import android.content.Intent
+import android.content.pm.ActivityInfo
 import android.os.Bundle
 import android.view.*
 import androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -389,12 +390,11 @@ class BrowserFragment : BaseFragment(), BackHandler, UserInteractionHandler {
 
 
         super.onResume()
-        if (session.fullScreenMode){
-//            StatusBarUtil.hideStatusBar(requireActivity())
-//            //隐藏下部导航栏
-//            requireActivity().enterToImmersiveMode()
-//            binding.browserContainer.fitsSystemWindows=false
-            fullScreenChanged(true)
+        if (session.fullScreenMode ||fullScreenMode){
+            if (requireActivity().resources.configuration.orientation!= ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE){
+                requireActivity().resources.configuration.orientation= ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
+                fullScreenChanged(true)
+            }
         }
     }
     override fun initData(savedInstanceState: Bundle?) {

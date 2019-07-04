@@ -1,8 +1,9 @@
 package com.dev.base.util
 
+import com.dev.util.Keep
 import java.security.MessageDigest
 import java.security.NoSuchAlgorithmException
-
+@Keep
 object EncodeUtil{
     fun md5(str: String): String {
         try {
