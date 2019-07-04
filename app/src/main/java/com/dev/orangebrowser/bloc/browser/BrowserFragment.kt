@@ -141,7 +141,7 @@ class BrowserFragment : BaseFragment(), BackHandler, UserInteractionHandler {
         binding.activityViewModel = activityViewModel
         super.onActivityCreated(savedInstanceState)
     }
-
+    lateinit var engineView: SystemEngineView
     override fun initViewWithDataBinding(savedInstanceState: Bundle?) {
         sessionManager.findSessionById(sessionId)?.apply {
             this.screenNumber = BROWSER_SCREEN_NUM
@@ -156,7 +156,7 @@ class BrowserFragment : BaseFragment(), BackHandler, UserInteractionHandler {
         val webViewVisionHelper = WebViewVisionHelper(binding)
         //将EngineView添加到上面去
         binding.webViewContainer.removeAllViews()
-        val engineView = SystemEngineView(requireContext())
+        engineView = SystemEngineView(requireContext())
         val params = RelativeLayout.LayoutParams(
             RelativeLayout.LayoutParams.WRAP_CONTENT,
             RelativeLayout.LayoutParams.WRAP_CONTENT
@@ -377,32 +377,24 @@ class BrowserFragment : BaseFragment(), BackHandler, UserInteractionHandler {
             owner=this,
             view=binding.root
          )
-        //保存全局状态
-        if (savedInstanceState!=null){
-            if (fullScreenMode){
-                fullScreenChanged(fullScreenMode)
-            }
-        }
     }
 
+    private var isFirstTimeResume=true
     override fun onResume() {
         //set status bar icon color
-
-
         super.onResume()
-        if (session.fullScreenMode ||fullScreenMode){
-            if (requireActivity().resources.configuration.orientation!= ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE){
-                requireActivity().resources.configuration.orientation= ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
-                fullScreenMode=true
-                val session = sessionManager.findSessionById(sessionId)
-                session?.apply {
-                    fullScreenHelper.fullScreen()
-                }
+        if(!isFirstTimeResume){
+            if (engineView.fullScreenViewAdded) {
+                fullScreenChanged(true)
+            } else {
+                fullScreenChanged(false)
             }
+        }else{
+            isFirstTimeResume=false
         }
     }
     override fun initData(savedInstanceState: Bundle?) {
-        //TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+
     }
 
 
