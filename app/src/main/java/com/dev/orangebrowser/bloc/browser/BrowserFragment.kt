@@ -393,7 +393,11 @@ class BrowserFragment : BaseFragment(), BackHandler, UserInteractionHandler {
         if (session.fullScreenMode ||fullScreenMode){
             if (requireActivity().resources.configuration.orientation!= ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE){
                 requireActivity().resources.configuration.orientation= ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
-                fullScreenChanged(true)
+                fullScreenMode=true
+                val session = sessionManager.findSessionById(sessionId)
+                session?.apply {
+                    fullScreenHelper.fullScreen()
+                }
             }
         }
     }
