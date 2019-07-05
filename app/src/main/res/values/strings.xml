@@ -370,4 +370,5 @@
     <string name="tip_replace_with_last_child">使用last-child替代nth-child</string>
     <string name="next_page_selector">下一页CSS选择器:</string>
     <string name="image_attribute">选择图片属性:</string>
+    <string name="saved_html">保存的网页</string>
 </resources>

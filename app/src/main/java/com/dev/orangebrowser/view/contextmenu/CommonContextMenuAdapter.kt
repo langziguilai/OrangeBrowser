@@ -1,9 +1,11 @@
 package com.dev.orangebrowser.view.contextmenu
 
 import com.dev.orangebrowser.R
+import com.dev.util.Keep
 import com.dev.view.recyclerview.CustomBaseViewHolder
 import com.dev.view.recyclerview.adapter.base.BaseQuickAdapter
 
+@Keep
 class CommonContextMenuAdapter(menuItemLayout: Int, dataList: List<MenuItem>) :
     BaseQuickAdapter<MenuItem, CustomBaseViewHolder>(menuItemLayout, dataList) {
     override fun convert(helper: CustomBaseViewHolder, item: MenuItem) {

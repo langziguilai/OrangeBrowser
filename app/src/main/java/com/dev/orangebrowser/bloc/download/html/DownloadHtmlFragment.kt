@@ -25,6 +25,7 @@ import com.dev.orangebrowser.R
 import com.dev.orangebrowser.bloc.host.MainViewModel
 import com.dev.orangebrowser.data.dao.SavedFileDao
 import com.dev.orangebrowser.data.model.SavedFile
+import com.dev.orangebrowser.databinding.FragmentDownloadHtmlBinding
 import com.dev.orangebrowser.databinding.FragmentDownloadImageBinding
 import com.dev.orangebrowser.extension.RouterActivity
 import com.dev.orangebrowser.extension.appComponent
@@ -66,7 +67,7 @@ class DownloadHtmlFragment : BaseFragment(),BackHandler {
     lateinit var sessionManager:SessionManager
     lateinit var viewModel: DownloadHtmlViewModel
     lateinit var activityViewModel: MainViewModel
-    lateinit var binding: FragmentDownloadImageBinding
+    lateinit var binding: FragmentDownloadHtmlBinding
     override fun onAttach(context: Context) {
         super.onAttach(context)
         //注入
@@ -75,7 +76,7 @@ class DownloadHtmlFragment : BaseFragment(),BackHandler {
     }
 
     override fun getLayoutResId(): Int {
-        return R.layout.fragment_download_image
+        return R.layout.fragment_download_html
     }
 
     override fun useDataBinding(): Boolean {
@@ -83,7 +84,7 @@ class DownloadHtmlFragment : BaseFragment(),BackHandler {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        binding = FragmentDownloadImageBinding.bind(super.onCreateView(inflater, container, savedInstanceState))
+        binding = FragmentDownloadHtmlBinding.bind(super.onCreateView(inflater, container, savedInstanceState))
         binding.lifecycleOwner = this
         return binding.root
     }

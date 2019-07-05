@@ -4,7 +4,9 @@ import android.content.Context
 import android.util.AttributeSet
 import android.widget.LinearLayout
 import androidx.core.view.children
+import com.dev.util.Keep
 
+@Keep
 abstract class SingleSelectView<T:Any> : LinearLayout {
     interface OnItemSelectListener<T> {
         fun onItemSelect(data: T)

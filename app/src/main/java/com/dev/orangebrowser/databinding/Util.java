@@ -7,7 +7,9 @@ import androidx.databinding.BindingAdapter;
 import androidx.lifecycle.LiveData;
 import com.dev.orangebrowser.data.model.Theme;
 import com.dev.util.DensityUtil;
+import com.dev.util.Keep;
 
+@Keep
 public class Util {
     @BindingAdapter("bgColor")
     public static void setViewBackgroundColor(View view, int color) {

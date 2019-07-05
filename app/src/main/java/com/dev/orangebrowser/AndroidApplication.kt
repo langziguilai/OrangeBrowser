@@ -18,6 +18,7 @@ import com.dev.orangebrowser.di.ApplicationModule
 import com.dev.orangebrowser.di.DaggerApplicationComponent
 import com.dev.orangebrowser.di.DatabaseModule
 import com.dev.util.FileUtil
+import com.dev.util.Keep
 import com.dev.view.biv.concept.BigImageViewer
 import com.dev.view.biv.loader.glide.GlideImageLoader
 import com.hw.ycshareelement.YcShareElement
@@ -31,7 +32,7 @@ import kotlin.coroutines.CoroutineContext
 
 
 
-
+@Keep
 class AndroidApplication:BaseApplication(),CoroutineScope {
     private val job= SupervisorJob()
     override val coroutineContext: CoroutineContext

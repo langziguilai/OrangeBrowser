@@ -36,6 +36,7 @@ import com.dev.orangebrowser.view.contextmenu.CommonContextMenuAdapter
 import com.dev.orangebrowser.view.contextmenu.MenuItem
 import com.dev.util.DensityUtil
 import com.dev.util.FileUtil
+import com.dev.util.KeepMemberIfNecessary
 import com.dev.view.GlideHelper
 import com.dev.view.StatusBarUtil
 import com.dev.view.dialog.DialogBuilder
@@ -284,6 +285,7 @@ class DownloadVideoFragment : BaseFragment(), BackHandler, IShareElements {
             mLayoutManager.scrollToPosition(index)
         }
     }
+    @KeepMemberIfNecessary
     @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
     fun onChangeRecyclerViewItemIndex(event: ChangeRecyclerViewIndexEvent) {
         mLayoutManager.scrollToPosition(event.message)

@@ -7,7 +7,9 @@ import android.view.MotionEvent
 import android.view.View
 import android.view.ViewConfiguration
 import android.widget.FrameLayout
+import com.dev.util.Keep
 
+@Keep
 class LongClickFrameLayout :FrameLayout{
     constructor(context: Context) : this(context,null)
     constructor(context: Context, attrs: AttributeSet?) : this(context, attrs,0)

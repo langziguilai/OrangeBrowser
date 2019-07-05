@@ -31,6 +31,7 @@ import com.dev.orangebrowser.view.contextmenu.Action
 import com.dev.orangebrowser.view.contextmenu.CommonContextMenuAdapter
 import com.dev.orangebrowser.view.contextmenu.MenuItem
 import com.dev.util.DensityUtil
+import com.dev.util.Keep
 import com.dev.view.StatusBarUtil
 import com.dev.view.dialog.DialogBuilder
 import com.dev.view.recyclerview.CustomBaseViewHolder
@@ -41,7 +42,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.util.*
 import javax.inject.Inject
-
+@Keep
 class BookMarkFragment : BaseFragment(), BackHandler {
 
 

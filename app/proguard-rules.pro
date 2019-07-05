@@ -76,8 +76,19 @@
 -keep class org.adblockplus.libadblockplus.** {*;}
 -dontwarn **
 -keep class * extends android.view.View
--keep class com.dev.orangebrowser.**{
-  *;
+#-keep class com.dev.orangebrowser.**{
+#  *;
+#}
+-keep class com.dev.orangebrowser.data.**{
+ *;
+}
+-keep class com.dev.orangebrowser.bloc.browser.view.**{
+     public *;
+     protected *;
+}
+-keep class com.dev.orangebrowser.bloc.**Activity{
+     public *;
+     protected *;
 }
 #-keep class com.dev.base.**{
 #  *;
