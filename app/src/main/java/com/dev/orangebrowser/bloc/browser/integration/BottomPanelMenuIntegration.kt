@@ -83,47 +83,55 @@ class BottomPanelMenuIntegration(
             }
         }
     }
-    private fun initBottomMenuData(){
+
+    private fun initBottomMenuData() {
         //设置视野模式
-        fragment.appDataForFragment.bottomMenuActionItems.find { it.id==R.string.ic_normal_screen  }?.apply {
-            val viewMode=fragment.getSpInt(R.string.pref_setting_view_mode,Session.NORMAL_SCREEN_MODE)
-            if (viewMode==Session.NORMAL_SCREEN_MODE){
-                this.active=false
-                this.iconRes=R.string.ic_normal_screen
+        fragment.appDataForFragment.bottomMenuActionItems.find { it.id == R.string.ic_normal_screen }?.apply {
+
+            val viewMode = if (session.visionMode != Session.NO_SET_SCREEN_MODE) {
+                session.visionMode
+            } else {
+                fragment.getSpInt(R.string.pref_setting_view_mode, Session.NORMAL_SCREEN_MODE)
             }
-            if (viewMode==Session.SCROLL_FULL_SCREEN_MODE){
-                this.active=true
-                this.iconRes=R.string.ic_auto_fullscreen
+            session.visionMode=viewMode
+            if (viewMode == Session.NORMAL_SCREEN_MODE) {
+                this.active = false
+                this.iconRes = R.string.ic_normal_screen
             }
-            if (viewMode==Session.MAX_SCREEN_MODE){
-                this.active=true
-                this.iconRes=R.string.ic_fullscreen
+            if (viewMode == Session.SCROLL_FULL_SCREEN_MODE) {
+                this.active = true
+                this.iconRes = R.string.ic_auto_fullscreen
+            }
+            if (viewMode == Session.MAX_SCREEN_MODE) {
+                this.active = true
+                this.iconRes = R.string.ic_fullscreen
                 binding.miniBottomBar.visibility = View.VISIBLE
-            }else{
+            } else {
                 binding.miniBottomBar.visibility = View.GONE
             }
 
         }
 
         //设置UserAgent
-        fragment.appDataForFragment.bottomMenuActionItems.find { it.id== R.string.ic_desktop  }?.apply {
-                this.active=session.desktopMode
+        fragment.appDataForFragment.bottomMenuActionItems.find { it.id == R.string.ic_desktop }?.apply {
+            this.active = session.desktopMode
         }
         //设置无图模式
-        fragment.appDataForFragment.bottomMenuActionItems.find { it.id== R.string.ic_forbid_image  }?.apply {
-            if(session.forbidImageMode){
-                this.active=true
-                this.iconRes=R.string.ic_forbid_image
-            }else{
-                this.active=false
-                this.iconRes=R.string.ic_image
+        fragment.appDataForFragment.bottomMenuActionItems.find { it.id == R.string.ic_forbid_image }?.apply {
+            if (session.forbidImageMode) {
+                this.active = true
+                this.iconRes = R.string.ic_forbid_image
+            } else {
+                this.active = false
+                this.iconRes = R.string.ic_image
             }
         }
         //设置隐私模式
-        fragment.appDataForFragment.bottomMenuActionItems.find { it.id== R.string.ic_privacy  }?.apply {
+        fragment.appDataForFragment.bottomMenuActionItems.find { it.id == R.string.ic_privacy }?.apply {
             this.active = session.private
         }
     }
+
     private fun initBottomMenuGridView(bottomMenuGridView: GridView) {
         val adapter = object : BaseQuickAdapter<ActionItem, CustomBaseViewHolder>(
             R.layout.item_bottom_action_item,
@@ -190,7 +198,7 @@ class BottomPanelMenuIntegration(
                     session.visionMode == Session.NORMAL_SCREEN_MODE -> {
                         newVisionMode = Session.SCROLL_FULL_SCREEN_MODE
                         actionItem.active = true
-                        actionItem.iconRes=R.string.ic_auto_fullscreen
+                        actionItem.iconRes = R.string.ic_auto_fullscreen
                         view.findViewById<TextView>(R.id.icon)
                             .setTextColor(fragment.activityViewModel.theme.value!!.colorPrimaryActive)
                         view.findViewById<TextView>(R.id.icon).setText(R.string.ic_auto_fullscreen)
@@ -200,13 +208,13 @@ class BottomPanelMenuIntegration(
                     session.visionMode == Session.SCROLL_FULL_SCREEN_MODE -> {
                         newVisionMode = Session.MAX_SCREEN_MODE
                         actionItem.active = true
-                        actionItem.iconRes=R.string.ic_fullscreen
+                        actionItem.iconRes = R.string.ic_fullscreen
                         view.findViewById<TextView>(R.id.icon).setText(R.string.ic_fullscreen)
                     }
                     session.visionMode == Session.MAX_SCREEN_MODE -> {
                         newVisionMode = Session.NORMAL_SCREEN_MODE
                         actionItem.active = false
-                        actionItem.iconRes=R.string.ic_normal_screen
+                        actionItem.iconRes = R.string.ic_normal_screen
                         view.findViewById<TextView>(R.id.icon)
                             .setTextColor(fragment.activityViewModel.theme.value!!.colorPrimary)
                         view.findViewById<TextView>(R.id.icon).setText(R.string.ic_normal_screen)
@@ -225,20 +233,26 @@ class BottomPanelMenuIntegration(
             //电脑
             R.string.ic_desktop -> {
                 actionItem.active = !actionItem.active
-                session.desktopMode=actionItem.active
+                session.desktopMode = actionItem.active
                 if (actionItem.active) {
-                    sessionUseCases.setUserAgent.invoke(fragment.requireContext().getString(R.string.user_agent_pc),session)
+                    sessionUseCases.setUserAgent.invoke(
+                        fragment.requireContext().getString(R.string.user_agent_pc),
+                        session
+                    )
                     sessionUseCases.requestDesktopSite.invoke(true, session)
                     view.findViewById<TextView>(R.id.icon)
                         .setTextColor(fragment.activityViewModel.theme.value!!.colorPrimaryActive)
                     view.findViewById<TextView>(R.id.name)
                         .setTextColor(fragment.activityViewModel.theme.value!!.colorPrimaryActive)
                 } else {
-                    val ua=fragment.getSpString(R.string.pref_setting_ua)
-                    if (ua!=fragment.requireContext().getString(R.string.user_agent_pc)){
-                        sessionUseCases.setUserAgent.invoke(ua,session)
-                    }else{
-                        sessionUseCases.setUserAgent.invoke(fragment.requireContext().getString(R.string.user_agent_android),session)
+                    val ua = fragment.getSpString(R.string.pref_setting_ua)
+                    if (ua != fragment.requireContext().getString(R.string.user_agent_pc)) {
+                        sessionUseCases.setUserAgent.invoke(ua, session)
+                    } else {
+                        sessionUseCases.setUserAgent.invoke(
+                            fragment.requireContext().getString(R.string.user_agent_android),
+                            session
+                        )
                     }
                     sessionUseCases.requestDesktopSite.invoke(false, session)
                     view.findViewById<TextView>(R.id.icon)
@@ -251,7 +265,7 @@ class BottomPanelMenuIntegration(
             //发现
             R.string.ic_found -> {
                 bottomPanelHelper.toggleBottomPanel(Runnable {
-                    redirect(binding=binding,session = session,runnable = kotlinx.coroutines.Runnable {
+                    redirect(binding = binding, session = session, runnable = kotlinx.coroutines.Runnable {
                         fragment.RouterActivity?.loadFoundFragment()
                     })
                 })
@@ -259,7 +273,7 @@ class BottomPanelMenuIntegration(
             //历史
             R.string.ic_history -> {
                 bottomPanelHelper.toggleBottomPanel(Runnable {
-                    redirect(binding=binding,session = session,runnable = kotlinx.coroutines.Runnable {
+                    redirect(binding = binding, session = session, runnable = kotlinx.coroutines.Runnable {
                         fragment.RouterActivity?.loadHistoryFragment()
                     })
                 })
@@ -268,7 +282,7 @@ class BottomPanelMenuIntegration(
             //书签
             R.string.ic_bookmark -> {
                 bottomPanelHelper.toggleBottomPanel(Runnable {
-                    redirect(binding=binding,session = session,runnable = kotlinx.coroutines.Runnable {
+                    redirect(binding = binding, session = session, runnable = kotlinx.coroutines.Runnable {
                         fragment.RouterActivity?.loadBookMarkFragment()
                     })
                 })
@@ -291,7 +305,7 @@ class BottomPanelMenuIntegration(
             //主题
             R.string.ic_theme -> {
                 bottomPanelHelper.toggleBottomPanel(Runnable {
-                    redirect(binding=binding,session = session,runnable = kotlinx.coroutines.Runnable {
+                    redirect(binding = binding, session = session, runnable = kotlinx.coroutines.Runnable {
                         fragment.RouterActivity?.loadThemeFragment()
                     })
                 })
@@ -300,7 +314,7 @@ class BottomPanelMenuIntegration(
             //下载
             R.string.ic_download -> {
                 bottomPanelHelper.toggleBottomPanel(Runnable {
-                    redirect(binding=binding,session = session,runnable = kotlinx.coroutines.Runnable {
+                    redirect(binding = binding, session = session, runnable = kotlinx.coroutines.Runnable {
                         fragment.RouterActivity?.loadDownloadFragment()
                     })
                 })
@@ -309,7 +323,7 @@ class BottomPanelMenuIntegration(
             //设置
             R.string.ic_setting -> {
                 bottomPanelHelper.toggleBottomPanel(Runnable {
-                    redirect(binding=binding,session = session,runnable = kotlinx.coroutines.Runnable {
+                    redirect(binding = binding, session = session, runnable = kotlinx.coroutines.Runnable {
                         fragment.RouterActivity?.loadSettingFragment()
                     })
                 })
@@ -324,12 +338,12 @@ class BottomPanelMenuIntegration(
 
 
     private var editBookMarkDialog: Dialog? = null
-    private fun openBookMarkEditorDialog(bookMarkEntity: BookMarkEntity,editTextContainer: View) {
+    private fun openBookMarkEditorDialog(bookMarkEntity: BookMarkEntity, editTextContainer: View) {
         editBookMarkDialog = DialogBuilder()
             .setLayoutId(R.layout.dialog_add_bookmark)
             .setOnViewCreateListener(object : DialogBuilder.OnViewCreateListener {
                 override fun onViewCreated(view: View) {
-                    initEditBookMarkDialog(view, bookMarkEntity,editTextContainer)
+                    initEditBookMarkDialog(view, bookMarkEntity, editTextContainer)
                 }
             })
             .setCanceledOnTouchOutside(true)
@@ -342,7 +356,7 @@ class BottomPanelMenuIntegration(
 
     var categories: List<BookMarkCategoryEntity>? = null
     var selectedCategory: BookMarkCategoryEntity? = null
-    private fun initEditBookMarkDialog(view: View, bookMark: BookMarkEntity,editTextContainer:View) {
+    private fun initEditBookMarkDialog(view: View, bookMark: BookMarkEntity, editTextContainer: View) {
         fragment.launch(Dispatchers.IO) {
             val exitBookMark = bookMarkDao.getBookMarkByUrl(bookMark.url)
             categories = bookMarkCategoryDao.getCategoryList()
@@ -419,12 +433,12 @@ class BottomPanelMenuIntegration(
                     bookMark.title = title.text.toString()
                     bookMark.url = url.text.toString()
                     bookMark.categoryName = category.text.toString()
-                    bookMark.date=Date().time
+                    bookMark.date = Date().time
                     fragment.launch(Dispatchers.IO) {
                         bookMarkDao.delete(bookMark)
                         bookMarkDao.insert(bookMark)
                     }
-                     editBookMarkDialog?.dismiss()
+                    editBookMarkDialog?.dismiss()
                 }
             }
         }

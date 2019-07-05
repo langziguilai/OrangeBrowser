@@ -1,9 +1,6 @@
 package com.dev.orangebrowser.bloc.browser.integration
 
-import android.graphics.Bitmap
 import android.os.Bundle
-import android.util.Log
-import com.dev.base.extension.capture
 import com.dev.base.support.LifecycleAwareFeature
 import com.dev.browser.feature.session.SessionUseCases
 import com.dev.browser.session.Session
@@ -13,14 +10,10 @@ import com.dev.orangebrowser.bloc.browser.integration.helper.BottomPanelHelper
 import com.dev.orangebrowser.bloc.browser.integration.helper.redirect
 import com.dev.orangebrowser.databinding.FragmentBrowserBinding
 import com.dev.orangebrowser.extension.RouterActivity
-import com.dev.orangebrowser.extension.application
-import com.dev.util.DensityUtil
-import com.dev.util.FileUtil
-import kotlinx.coroutines.*
-import java.io.File
-import java.io.FileOutputStream
-import java.lang.ref.SoftReference
-import java.lang.ref.WeakReference
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Runnable
+import kotlinx.coroutines.SupervisorJob
 import kotlin.coroutines.CoroutineContext
 
 class BottomBarIntegration(

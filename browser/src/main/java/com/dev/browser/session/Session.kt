@@ -32,7 +32,7 @@ class Session(
     val source: Source = Source.NONE,
     val id: String = UUID.randomUUID().toString(),
     var forbidImageMode: Boolean = false,
-    var visionMode: Int = NORMAL_SCREEN_MODE,
+    var visionMode: Int = NO_SET_SCREEN_MODE,
     var enterFullScreenMode: Boolean = false,
     var themeColorMap: HashMap<String, Int> = HashMap(),
     var isStatusBarDarkMode: Boolean = false,
@@ -53,6 +53,7 @@ class Session(
         const val THUMBNAIL_DIR="thumbnail"
         const val HOME_SCREEN=1  //Home screen代表的值
         const val NO_EXIST_URL=""  //不存在的URL，表示还未加载过
+        const val NO_SET_SCREEN_MODE=-1
         const val NORMAL_SCREEN_MODE = 1  //正常模式
         const val SCROLL_FULL_SCREEN_MODE = 2  //滑动最大视野模式
         const val MAX_SCREEN_MODE = 3  //保持最大视野模式

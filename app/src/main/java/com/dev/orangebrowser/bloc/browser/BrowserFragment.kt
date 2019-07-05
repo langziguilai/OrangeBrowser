@@ -148,8 +148,6 @@ class BrowserFragment : BaseFragment(), BackHandler, UserInteractionHandler {
             this.screenNumber = BROWSER_SCREEN_NUM
         }
         var session = sessionManager.findSessionById(sessionId) ?: sessionManager.selectedSessionOrThrow
-        //重新加载的时候还原为正常模式
-        session.visionMode=Session.NORMAL_SCREEN_MODE
         //选中session
         sessionManager.select(session)
         val bottomPanelHelper = BottomPanelHelper(binding, this)
