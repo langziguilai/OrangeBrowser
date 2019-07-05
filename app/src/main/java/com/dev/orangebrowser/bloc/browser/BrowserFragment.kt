@@ -73,7 +73,7 @@ class BrowserFragment : BaseFragment(), BackHandler, UserInteractionHandler {
     private val sessionManagerListenerIntegration = ViewBoundFeatureWrapper<SessionManagerListenerIntegration>()
     private val downloadsFeature = ViewBoundFeatureWrapper<DownloadsFeature>()
     private val promptsFeature = ViewBoundFeatureWrapper<PromptFeature>()
-    private val fullScreenFeature = ViewBoundFeatureWrapper<FullScreenFeature>()
+    //private val fullScreenFeature = ViewBoundFeatureWrapper<FullScreenFeature>()
     //    private val customTabsIntegration = ViewBoundFeatureWrapper<CustomTabsIntegration>()
     private val findInPageIntegration = ViewBoundFeatureWrapper<FindInPageIntegration>()
     private val sitePermissionFeature = ViewBoundFeatureWrapper<SitePermissionsFeature>()
@@ -96,8 +96,10 @@ class BrowserFragment : BaseFragment(), BackHandler, UserInteractionHandler {
     //
     lateinit var fullScreenHelper: FullScreenHelper
     //
+    lateinit var fullScreenFeature:FullScreenFeature
     init {
-        backHandlers.add(adaptToBackHandler(fullScreenFeature))
+        //backHandlers.add(adaptToBackHandler(fullScreenFeature))
+
         backHandlers.add(adaptToBackHandler(sessionFeature))
         backHandlers.add(adaptToBackHandler(findInPageIntegration))
     }
@@ -318,15 +320,15 @@ class BrowserFragment : BaseFragment(), BackHandler, UserInteractionHandler {
             view = binding.root
         )
         //全局模式
-        fullScreenFeature.set(
-            feature = FullScreenFeature(
-                sessionManager = sessionManager,
-                sessionUseCases = sessionUseCases,
-                sessionId = sessionId, fullScreenChanged = ::fullScreenChanged
-            ),
-            owner = this,
-            view = binding.root
-        )
+        //fullScreenFeature.set(
+//            feature = FullScreenFeature(
+//                sessionManager = sessionManager,
+//                sessionUseCases = sessionUseCases,
+//                sessionId = sessionId, fullScreenChanged = ::fullScreenChanged
+//            ),
+//            owner = this,
+//            view = binding.root
+//        )
 
         sitePermissionFeature.set(
             feature = SitePermissionsFeature(
@@ -377,20 +379,29 @@ class BrowserFragment : BaseFragment(), BackHandler, UserInteractionHandler {
             owner=this,
             view=binding.root
          )
+        fullScreenFeature = FullScreenFeature(
+            sessionManager = sessionManager,
+            sessionUseCases = sessionUseCases,
+            sessionId = sessionId, fullScreenChanged = ::fullScreenChanged
+        )
+        backHandlers.add(fullScreenFeature)
     }
 
-    private var isFirstTimeResume=true
+    override fun onStart() {
+        super.onStart()
+        fullScreenFeature.start()
+    }
+
+    override fun onDestroyView() {
+        fullScreenFeature.stop()
+        super.onDestroyView()
+    }
     override fun onResume() {
         //set status bar icon color
         super.onResume()
-        if(!isFirstTimeResume){
-            if (engineView.fullScreenViewAdded) {
-                fullScreenChanged(true)
-            } else {
-                fullScreenChanged(false)
-            }
-        }else{
-            isFirstTimeResume=false
+        //如果时全屏模式，那么再恢复的时候，需要隐藏statusbar，navigationbar
+        if(session.fullScreenMode){
+            requireActivity().enterToImmersiveMode()
         }
     }
     override fun initData(savedInstanceState: Bundle?) {

@@ -18,7 +18,9 @@ class ObserverRegistry<T> : Observable<T> {
 
     override fun register(observer: T) {
         synchronized(observers) {
-            observers.add(observer)
+            if (!observers.contains(observer)){
+                observers.add(observer)
+            }
         }
     }
 

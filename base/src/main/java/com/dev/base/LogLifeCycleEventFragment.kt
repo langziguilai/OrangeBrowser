@@ -32,8 +32,6 @@ abstract class LogLifeCycleEventFragment: CoroutineScopeFragment() {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        Log.d(this.javaClass.simpleName+this.hashCode(), "backstackentrycount " + fragmentManager!!.backStackEntryCount)
-        Log.d(this.javaClass.simpleName+this.hashCode(), "getFragments size " + fragmentManager!!.fragments.size)
         Log.d(this.javaClass.simpleName+this.hashCode(), "onCreateView")
         return super.onCreateView(inflater, container, savedInstanceState)
     }
@@ -81,4 +79,5 @@ abstract class LogLifeCycleEventFragment: CoroutineScopeFragment() {
         super.onSaveInstanceState(outState)
         Log.d(this.javaClass.simpleName+this.hashCode(), "onSaveInstanceState")
     }
+
 }
