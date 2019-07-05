@@ -59,7 +59,8 @@ class BottomBarIntegration(
         //跳转到TabFragment
         binding.counter.setOnClickListener {
             redirect(binding=binding,session = session,runnable = Runnable {
-                val ratio = (binding.webViewContainer.height.toFloat()) / (binding.webViewContainer.width.toFloat())
+                val height=binding.fragmentContainer.height-binding.topBar.height-binding.bottomBar.height
+                val ratio = (height.toFloat()) / (binding.fragmentContainer.width.toFloat())
                 fragment.RouterActivity?.loadTabFragment(fragment.sessionId, ratio)
             })
         }

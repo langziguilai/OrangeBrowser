@@ -45,9 +45,9 @@ class ThumbnailIntergration(
                             val file = File(FileUtil.getOrCreateDir(context, Session.THUMBNAIL_DIR), fileName)
                             bitmap.compress(Bitmap.CompressFormat.WEBP, 80, FileOutputStream(file))
                             session.mainPageThumbnailPath = file.absolutePath
-                            Log.d("ThumbnailIntergration","save thumbnail success")
+                            Log.d("ThumbnailIntegration","save thumbnail success")
                         } catch (e: Exception) {
-                            Log.e("ThumbnailIntergration","save thumbnail fail")
+                            Log.e("ThumbnailIntegration","save thumbnail fail")
                         } finally {
                             coroutineContext.cancelChildren()
                         }

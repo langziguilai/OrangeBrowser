@@ -3,7 +3,6 @@ package com.dev.orangebrowser.bloc.browser
 
 import android.content.Context
 import android.content.Intent
-import android.content.pm.ActivityInfo
 import android.os.Bundle
 import android.view.*
 import androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -88,7 +87,7 @@ class BrowserFragment : BaseFragment(), BackHandler, UserInteractionHandler {
     private val styleIntegration = ViewBoundFeatureWrapper<StyleIntegration>()
     private val fullScreenProgressIntegration = ViewBoundFeatureWrapper<FullScreenProgressIntegration>()
     private val webSettingIntegration = ViewBoundFeatureWrapper<WebViewSettingIntegration>()
-    val thumbnailIntergration= ViewBoundFeatureWrapper<ThumbnailIntergration>()
+    val thumbnailIntergration= ViewBoundFeatureWrapper<ThumbnailIntegration>()
 
     lateinit var binding: FragmentBrowserBinding
     //
@@ -319,16 +318,6 @@ class BrowserFragment : BaseFragment(), BackHandler, UserInteractionHandler {
             owner = this,
             view = binding.root
         )
-        //全局模式
-        //fullScreenFeature.set(
-//            feature = FullScreenFeature(
-//                sessionManager = sessionManager,
-//                sessionUseCases = sessionUseCases,
-//                sessionId = sessionId, fullScreenChanged = ::fullScreenChanged
-//            ),
-//            owner = this,
-//            view = binding.root
-//        )
 
         sitePermissionFeature.set(
             feature = SitePermissionsFeature(
@@ -370,7 +359,11 @@ class BrowserFragment : BaseFragment(), BackHandler, UserInteractionHandler {
             view = binding.root
         )
         thumbnailIntergration.set(
-            feature = ThumbnailIntergration(context=requireContext(),view=binding.webViewContainer,sessionId = sessionId,sessionManager = sessionManager),
+            feature = ThumbnailIntegration(context=requireContext(),
+                view=binding.webViewContainer,
+                binding = binding,
+                sessionId = sessionId,
+                sessionManager = sessionManager),
             owner = this,
             view = binding.root
         )
