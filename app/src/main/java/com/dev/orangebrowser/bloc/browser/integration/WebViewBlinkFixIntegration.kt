@@ -1,18 +1,12 @@
 package com.dev.orangebrowser.bloc.browser.integration
 
-import android.view.ViewGroup
-import android.widget.FrameLayout
 import android.widget.ImageView
 import androidx.coordinatorlayout.widget.CoordinatorLayout
-import androidx.core.view.updateLayoutParams
-import com.dev.base.extension.onGlobalLayoutComplete
 import com.dev.browser.session.Session
-import com.dev.orangebrowser.R
 import com.dev.orangebrowser.bloc.browser.BrowserFragment
 import com.dev.orangebrowser.databinding.FragmentBrowserBinding
-import com.dev.orangebrowser.extension.getSpInt
 import com.dev.util.DensityUtil
-
+//NOTE:此处需要根据TopBar的高度来设置ImageView的位置，所以，如果TopBar的高度修改了，那么，这里也需要修改
 class WebViewBlinkFixIntegration(binding: FragmentBrowserBinding,fragment:BrowserFragment,session:Session){
     init {
         session.webPageThumbnailRef?.apply {
@@ -23,7 +17,8 @@ class WebViewBlinkFixIntegration(binding: FragmentBrowserBinding,fragment:Browse
                     this.width,
                     this.height
                 )
-                params2.setMargins(0,DensityUtil.dip2px(fragment.requireContext(),44f),0,0)
+                val topBarHeight=DensityUtil.dip2px(fragment.requireContext(),44f)
+                params2.setMargins(0,topBarHeight,0,0)
                 binding.fragmentContainer.addView(
                     imageView,
                     params2
