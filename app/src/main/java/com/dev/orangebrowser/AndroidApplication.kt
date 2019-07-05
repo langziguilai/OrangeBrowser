@@ -126,7 +126,9 @@ class AndroidApplication:BaseApplication(),CoroutineScope {
 
         //设置GSYVideoPLAYER的播放方式
         PlayerFactory.setPlayManager(Exo2PlayerManager::class.java)
+
     }
+
     //
     private fun initCrashHandler(){
         val sysExceptionHandler = Thread.getDefaultUncaughtExceptionHandler()

@@ -27,12 +27,11 @@ import androidx.annotation.VisibleForTesting
 import androidx.annotation.VisibleForTesting.PRIVATE
 import com.dev.base.extension.capture
 import com.dev.base.extension.redirectToApp
+import com.dev.base.extension.redirectToAppAsk
 import com.dev.base.support.isUrl
 import com.dev.browser.R
-import com.dev.browser.concept.EngineSession
+import com.dev.browser.concept.*
 import com.dev.browser.concept.EngineSession.TrackingProtectionPolicy
-import com.dev.browser.concept.EngineView
-import com.dev.browser.concept.HitResult
 import com.dev.browser.concept.prompt.PromptRequest
 import com.dev.browser.concept.request.RequestInterceptor.InterceptionResponse
 import com.dev.browser.engine.system.matcher.UrlMatcher
@@ -209,7 +208,11 @@ class SystemEngineView @JvmOverloads constructor(
         override fun shouldOverrideUrlLoading(view: WebView, request: WebResourceRequest): Boolean {
             //不是有效的URL则拦截
             if(!request.url.toString().isUrl()){
-                context.redirectToApp(request.url.toString())
+                if (BrowserSetting.RedirectToApp==REDIRECT_TO_APP_ASK){
+                    context.redirectToAppAsk(request.url.toString())
+                }else if(BrowserSetting.RedirectToApp==REDIRECT_TO_APP_YES){
+                    context.redirectToApp(request.url.toString())
+                }
                 return true
             }
             session?.internalNotifyObservers {
@@ -222,7 +225,12 @@ class SystemEngineView @JvmOverloads constructor(
         override fun shouldOverrideUrlLoading(view: WebView, url: String): Boolean {
             //不是有效的URL则拦截
             if (!url.isUrl()){
-                context.redirectToApp(url)
+                if (BrowserSetting.RedirectToApp==REDIRECT_TO_APP_ASK){
+                    context.redirectToAppAsk(url)
+                }else if(BrowserSetting.RedirectToApp==REDIRECT_TO_APP_YES){
+                    context.redirectToApp(url)
+                }
+
                 return true
             }
             session?.internalNotifyObservers {

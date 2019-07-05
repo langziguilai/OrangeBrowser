@@ -8,8 +8,11 @@ import com.dev.base.extension.getPreferenceKey
 import com.dev.base.extension.loadJsonArray
 import com.dev.base.extension.loadJsonObject
 import com.dev.base.functional.Either
+import com.dev.browser.concept.BrowserSetting
+import com.dev.browser.concept.REDIRECT_TO_APP_NO
 import com.dev.orangebrowser.R
 import com.dev.orangebrowser.data.model.*
+import com.dev.orangebrowser.extension.getSpInt
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -25,6 +28,7 @@ class MainViewModel @Inject constructor(var context: Context) : CoroutineViewMod
             val favorSites=context.loadJsonArray("favor_site.json",Site::class.java)
             val themes=ThemeSources.loadThemeSources(context)
             val applicationData=ApplicationData(favorSites,themes = themes)
+            getBrowserSetting(activity)
             launch (Dispatchers.Main ){
                 val themeName=activity.getPreferences(Context.MODE_PRIVATE).getString(activity.getString(R.string.pref_setting_theme),"") ?: ""
                 if (themeName.isNotBlank()){
@@ -39,6 +43,9 @@ class MainViewModel @Inject constructor(var context: Context) : CoroutineViewMod
                 appData.value=Either.Left(Failure.IOError)
             }
         }
+    }
+    private fun getBrowserSetting(activity: MainActivity){
+        BrowserSetting.RedirectToApp=activity.getSpInt(R.string.pref_setting_need_intercept_open_app_value, REDIRECT_TO_APP_NO)
     }
     fun initFromApplicationData(applicationData: ApplicationData){
         theme.value=applicationData.themes.getActiveThemeSource()?.toTheme() ?: Theme.defaultTheme(context)

@@ -165,8 +165,8 @@ var redirectDialog: Dialog?=null
 var redirectUrl:String=""
 //通过链接跳转到可以接收的应用
 @Keep
-fun Context.redirectToApp(url:String){
-    Log.d("redirectToApp",url)
+fun Context.redirectToAppAsk(url:String){
+    Log.d("redirectToAppAsk",url)
     redirectUrl=url
     if (redirectDialog==null){
         redirectDialog= AlertDialogBuilder()
@@ -192,5 +192,17 @@ fun Context.redirectToApp(url:String){
     }
     if(!redirectDialog!!.isShowing){
         redirectDialog?.show()
+    }
+}
+@Keep
+fun Context.redirectToApp(url:String){
+    try {
+        Log.d("app url is :",redirectUrl)
+        val intent = Intent(Intent.ACTION_VIEW,Uri.parse(redirectUrl)).apply {
+            flags = Intent.FLAG_ACTIVITY_NEW_TASK
+        }
+        startActivity(intent)
+    } catch (e: ActivityNotFoundException) {
+        Log.d("share error","No activity to share to found")
     }
 }

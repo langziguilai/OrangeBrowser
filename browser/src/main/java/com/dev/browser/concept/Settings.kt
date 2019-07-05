@@ -162,3 +162,4 @@ class UnsupportedSetting<T> {
  * Exception thrown by default if a setting is not supported by an engine or session.
  */
 class UnsupportedSettingException(message: String = "Setting not supported by this engine") : RuntimeException(message)
+
