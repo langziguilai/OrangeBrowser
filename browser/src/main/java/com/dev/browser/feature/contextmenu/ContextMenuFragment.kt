@@ -20,6 +20,7 @@ import com.dev.base.extension.onGlobalLayoutComplete
 import com.dev.browser.R
 import com.dev.browser.session.Session
 import com.dev.util.DensityUtil
+import com.dev.util.Keep
 
 private const val KEY_TITLE = "title"
 private const val KEY_SESSION_ID = "session_id"
@@ -31,6 +32,7 @@ private const val LONG_CLICK_Y = "long_click_y"
 /**
  * [DialogFragment] implementation to display the actual context menu dialog.
  */
+@Keep
 class ContextMenuFragment : BaseTransparentFullScreenDialogFragment() {
 
 

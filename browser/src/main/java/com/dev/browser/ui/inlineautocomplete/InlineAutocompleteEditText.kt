@@ -4,35 +4,25 @@
 
 package com.dev.browser.ui.inlineautocomplete
 
-import android.content.ClipboardManager
 import android.content.Context
 import android.content.Context.INPUT_METHOD_SERVICE
 import android.graphics.Rect
 import android.os.Build
 import android.provider.Settings.Secure.DEFAULT_INPUT_METHOD
 import android.provider.Settings.Secure.getString
-import android.text.Editable
-import android.text.NoCopySpan
-import android.text.Selection
-import android.text.Spanned
-import android.text.TextUtils
-import android.text.TextWatcher
+import android.text.*
 import android.text.style.BackgroundColorSpan
 import android.text.style.ForegroundColorSpan
 import android.util.AttributeSet
-import android.view.ContextMenu
 import android.view.KeyEvent
 import android.view.MotionEvent
 import android.view.View
 import android.view.accessibility.AccessibilityEvent
-import android.view.inputmethod.BaseInputConnection
-import android.view.inputmethod.EditorInfo
-import android.view.inputmethod.InputConnection
-import android.view.inputmethod.InputConnectionWrapper
-import android.view.inputmethod.InputMethodManager
+import android.view.inputmethod.*
 import android.widget.TextView
 import androidx.appcompat.widget.AppCompatEditText
 import com.dev.browser.R
+import com.dev.util.Keep
 
 typealias OnCommitListener = () -> Unit
 typealias OnFilterListener = (String) -> Unit

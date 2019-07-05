@@ -5,6 +5,8 @@
 package com.dev.browser.concept.fetch
 
 import android.net.Uri
+import com.dev.util.Keep
+import com.dev.util.KeepAll
 import java.io.Closeable
 import java.io.File
 import java.io.IOException
@@ -113,6 +115,7 @@ data class Request(
      *
      * https://tools.ietf.org/html/rfc7231#section-4
      */
+    @Keep
     enum class Method {
         GET,
         HEAD,
@@ -123,7 +126,7 @@ data class Request(
         OPTIONS,
         TRACE
     }
-
+    @Keep
     enum class Redirect {
         /**
          * Automatically follow redirects.
@@ -135,7 +138,7 @@ data class Request(
          */
         MANUAL
     }
-
+    @Keep
     enum class CookiePolicy {
         /**
          * Include cookies when sending the request.

@@ -4,6 +4,7 @@
 
 package com.dev.browser.session.manifest
 
+import com.dev.util.Keep
 import org.json.JSONException
 import org.json.JSONObject
 
@@ -14,6 +15,7 @@ class WebAppManifestParser {
     /**
      * A parsing result.
      */
+    @Keep
     sealed class Result {
         /**
          * The JSON was parsed successful.

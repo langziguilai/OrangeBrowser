@@ -108,7 +108,7 @@ class SettingFragment : BaseAdBlockSettingFragment(),BackHandler {
             }
         }))
         var adBlockTip=getString(R.string.closed)
-        settings?.isAdblockEnabled?.apply {
+        settings?.isAdBlockEnabled?.apply {
             if(this){
                 adBlockTip=getString(R.string.opened)
             }

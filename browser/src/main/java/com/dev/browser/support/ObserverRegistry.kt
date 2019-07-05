@@ -4,6 +4,8 @@ import android.view.View
 import androidx.lifecycle.GenericLifecycleObserver
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
+import com.dev.util.KeepMemberIfNecessary
+import com.dev.util.KeepNameIfNecessary
 import java.util.*
 
 /**

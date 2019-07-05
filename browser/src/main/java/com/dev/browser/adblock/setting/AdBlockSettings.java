@@ -17,6 +17,7 @@
 
 package com.dev.browser.adblock.setting;
 
+import com.dev.util.KeepAll;
 import org.adblockplus.libadblockplus.android.ConnectionType;
 import org.adblockplus.libadblockplus.android.Subscription;
 
@@ -26,7 +27,8 @@ import java.util.List;
 /**
  * Adblock settings
  */
-public class AdblockSettings implements Serializable
+@KeepAll
+public class AdBlockSettings implements Serializable
 {
   private volatile boolean adblockEnabled;
   private volatile boolean acceptableAdsEnabled;
@@ -34,14 +36,14 @@ public class AdblockSettings implements Serializable
   private List<String> whitelistedDomains;
   private ConnectionType allowedConnectionType;
 
-  public boolean isAdblockEnabled()
+  public boolean isAdBlockEnabled()
   {
     return adblockEnabled;
   }
 
-  public void setAdblockEnabled(boolean adblockEnabled)
+  public void setAdBlockEnabled(boolean adBlockEnabled)
   {
-    this.adblockEnabled = adblockEnabled;
+    this.adblockEnabled = adBlockEnabled;
   }
 
   public boolean isAcceptableAdsEnabled()
@@ -87,7 +89,7 @@ public class AdblockSettings implements Serializable
   @Override
   public String toString()
   {
-    return "AdblockSettings{" +
+    return "AdBlockSettings{" +
       "adblockEnabled=" + adblockEnabled +
       ", acceptableAdsEnabled=" + acceptableAdsEnabled +
       ", subscriptions:" + (subscriptions != null ? subscriptions.size() : 0) +

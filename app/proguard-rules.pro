@@ -82,7 +82,18 @@
 #-keep class com.dev.base.**{
 #  *;
 #}
--keep class com.dev.browser.**{
+#-keep class com.dev.browser.**{
+#  *;
+#}
+# 保证UI不被修改
+-keep class com.dev.browser.ui.**{
+ public *;
+ protected *;
+}
+-keep class com.dev.browser.database.**{
+ *;
+}
+-keep class com.dev.browser.feature.prompts.**{
   *;
 }
 #-keep class com.dev.util.**{
@@ -95,10 +106,16 @@
 -keep interface com.dev.util.KeepNameIfNecessary
 -keep interface com.dev.util.KeepMemberIfNecessary
 -keep interface com.dev.util.KeepClassOnMemberPresent
+-keep interface com.dev.util.KeepAll
 -keep,allowobfuscation @interface com.dev.util.Keep
 -keep,allowobfuscation @interface com.dev.util.KeepNameIfNecessary
 -keep,allowobfuscation @interface com.dev.util.KeepMemberIfNecessary
 -keep,allowobfuscation @interface com.dev.util.KeepClassOnMemberPresent
+-keep @interface com.dev.util.KeepAll
+
+-keep @com.dev.util.KeepAll class **{
+  *;
+}
 
 -keep @com.dev.util.Keep class *{
    public *;

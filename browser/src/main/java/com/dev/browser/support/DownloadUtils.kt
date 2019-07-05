@@ -2,10 +2,12 @@ package com.dev.browser.support
 
 import android.net.Uri
 import android.webkit.MimeTypeMap
+import com.dev.util.Keep
 import java.io.ByteArrayOutputStream
 import java.io.UnsupportedEncodingException
 import java.util.Locale
 import java.util.regex.Pattern
+
 
 object DownloadUtils {
 

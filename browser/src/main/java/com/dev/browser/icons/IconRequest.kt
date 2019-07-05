@@ -4,6 +4,8 @@
 
 package com.dev.browser.icons
 
+import com.dev.util.Keep
+
 /**
  * A request to load an [Icon].
  *
@@ -20,6 +22,7 @@ data class IconRequest(
      * We are trying to limit the supported sizes in order to optimize our caching strategy.
      */
     @Suppress("MagicNumber")
+    @Keep
     enum class Size(
         val value: Int
     ) {

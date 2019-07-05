@@ -7,6 +7,7 @@ package com.dev.browser.concept.media
 
 import com.dev.browser.support.Observable
 import com.dev.browser.support.ObserverRegistry
+import com.dev.util.Keep
 import kotlin.properties.Delegates
 
 /**
@@ -63,6 +64,7 @@ abstract class Media(
     // want to map this to a simpler model that doesn't contain all the in-between states?
     // For example we could try to map this to a PlaybackState of Android's media session right here.
     // https://developer.android.com/reference/android/media/session/PlaybackState
+    @Keep
     enum class PlaybackState {
         /**
          * Unknown. No state has been received from the engine yet.

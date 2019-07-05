@@ -13,6 +13,7 @@ import androidx.annotation.VisibleForTesting
 import androidx.core.view.NestedScrollingChild
 import androidx.core.view.NestedScrollingChildHelper
 import androidx.core.view.ViewCompat
+import com.dev.util.Keep
 
 /**
  * WebView that supports nested scrolls (for using in a CoordinatorLayout).
@@ -24,7 +25,7 @@ import androidx.core.view.ViewCompat
  * Based on:
  * https://github.com/takahirom/webview-in-coordinatorlayout
  */
-
+@Keep
 class NestedWebView: AdaptUIWebView, NestedScrollingChild {
     constructor(context: Context):super(context)
     constructor(context: Context, attrs: AttributeSet):super(context, attrs)

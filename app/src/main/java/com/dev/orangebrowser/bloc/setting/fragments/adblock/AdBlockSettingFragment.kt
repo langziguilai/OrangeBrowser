@@ -92,7 +92,7 @@ class AdBlockSettingFragment : BaseAdBlockSettingFragment(), BackHandler {
             override fun invoke(data: Boolean) {
                 handleEnabledChanged(data)
             }
-        }, value = settings?.isAdblockEnabled ?: false))
+        }, value = settings?.isAdBlockEnabled ?: false))
         list.add(SwitchItem(title = getString(R.string.accept_ad), action = object : Action<Boolean> {
             override fun invoke(data: Boolean) {
                 handleAcceptableAdsEnabledChanged(data)
@@ -207,7 +207,7 @@ class AdBlockSettingFragment : BaseAdBlockSettingFragment(), BackHandler {
 
     private fun handleEnabledChanged(newValue: Boolean) {
         // update and save settings
-        settings?.isAdblockEnabled = newValue
+        settings?.isAdBlockEnabled = newValue
         adBlockSettingsStorage.save(settings)
 
         // apply settings

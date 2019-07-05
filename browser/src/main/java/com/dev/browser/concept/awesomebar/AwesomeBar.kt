@@ -6,6 +6,7 @@ package com.dev.browser.concept.awesomebar
 
 import android.graphics.Bitmap
 import android.view.View
+import com.dev.util.Keep
 import java.util.UUID
 import java.util.zip.CRC32
 
@@ -120,6 +121,7 @@ interface AwesomeBar {
          * a specific [Suggestion]. For example an [AwesomeBar] could display a bookmark star icon next to [Suggestion]s
          * that contain the [BOOKMARK] flag.
          */
+        @Keep
         enum class Flag {
             BOOKMARK,
             OPEN_TAB,

@@ -4,6 +4,8 @@
 
 package com.dev.browser.concept.storage
 
+import com.dev.util.Keep
+
 /**
  * An interface which defines read/write methods for history data.
  */
@@ -85,6 +87,7 @@ data class VisitInfo(
  * Visit type constants as defined by Desktop Firefox.
  */
 @SuppressWarnings("MagicNumber")
+@Keep
 enum class VisitType(val type: Int) {
     // Internal visit type used for meta data updates. Doesn't represent an actual page visit.
     NOT_A_VISIT(-1),

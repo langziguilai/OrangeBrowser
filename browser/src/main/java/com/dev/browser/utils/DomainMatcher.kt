@@ -1,12 +1,14 @@
 package com.dev.browser.utils
 
 import android.net.Uri
+import com.dev.util.Keep
 import java.net.MalformedURLException
 
 data class DomainMatch(val url: String, val matchedSegment: String)
 
 // FIXME implement Fennec-style segment matching logic
 // See https://github.com/mozilla-mobile/android-components/issues/1279
+@Keep
 fun segmentAwareDomainMatch(query: String, urls: Iterable<String>): DomainMatch? {
     val caseInsensitiveQuery = query.toLowerCase()
     // Process input 'urls' lazily, as the list could be very large and likely we'll find a match

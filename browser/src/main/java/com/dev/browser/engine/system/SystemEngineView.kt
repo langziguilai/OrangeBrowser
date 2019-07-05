@@ -4,7 +4,7 @@
 
 package com.dev.browser.engine.system
 
-//import org.adblockplus.libadblockplus.android.settings.AdblockHelper
+//import org.adblockplus.libadblockplus.android.settings.AdBlockHelper
 import android.annotation.TargetApi
 import android.content.Context
 import android.graphics.Bitmap
@@ -41,7 +41,8 @@ import com.dev.browser.engine.system.permission.SystemPermissionRequest
 import com.dev.browser.engine.system.window.SystemWindowRequest
 import com.dev.browser.support.DownloadUtils
 import com.dev.browser.support.ErrorType
-import com.dev.browser.utils.WebviewUtils
+import com.dev.browser.utils.WebViewUtils
+import com.dev.util.Keep
 import com.dev.view.MatchParentLayout
 import kotlinx.coroutines.runBlocking
 import java.util.*
@@ -51,6 +52,7 @@ import java.util.*
  * WebView-based implementation of EngineView.
  */
 @Suppress("TooManyFunctions")
+@Keep
 class SystemEngineView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
@@ -393,7 +395,7 @@ class SystemEngineView @JvmOverloads constructor(
                 session?.internalNotifyObservers { onNavigationStateChange(view?.canGoBack(),view?.canGoForward()) }
                 if (!hasInjectedJavascriptFile){
                     //注入javascript
-                    WebviewUtils.injectScriptFile(view,"inject/tools.js")
+                    WebViewUtils.injectScriptFile(view,"inject/tools.js")
                     hasInjectedJavascriptFile=true
                 }
             }else{

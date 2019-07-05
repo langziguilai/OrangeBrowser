@@ -6,6 +6,8 @@ package com.dev.browser.concept.prompt
 
 import android.content.Context
 import android.net.Uri
+import com.dev.util.Keep
+import com.dev.util.KeepAll
 
 /**
  * Value type that represents a request for showing a native dialog for prompt web mContent.
@@ -137,11 +139,11 @@ sealed class PromptRequest {
         val onConfirm: (String, String) -> Unit,
         val onDismiss: () -> Unit
     ) : PromptRequest() {
-
+        @Keep
         enum class Level {
             NONE, PASSWORD_ENCRYPTED, SECURED
         }
-
+        @Keep
         enum class Method {
             HOST, PROXY
         }

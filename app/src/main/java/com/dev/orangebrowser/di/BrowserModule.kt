@@ -1,8 +1,8 @@
 package com.dev.orangebrowser.di
 
 import android.content.Context
-import com.dev.browser.adblock.setting.AdblockHelper
-import com.dev.browser.adblock.setting.AdblockSettingsStorage
+import com.dev.browser.adblock.setting.AdBlockHelper
+import com.dev.browser.adblock.setting.AdBlockSettingsStorage
 import com.dev.browser.concept.Engine
 import com.dev.browser.concept.fetch.Client
 import com.dev.browser.concept.history.HistoryTrackingDelegate
@@ -109,20 +109,20 @@ class BrowserModule {
     //AdBlockHelper
     @Provides
     @Singleton
-    fun provideAdBlockHelper(context: Context): AdblockHelper {
-        return AdblockHelper.get()
+    fun provideAdBlockHelper(context: Context): AdBlockHelper {
+        return AdBlockHelper.get()
     }
     //AdBlockEngine
     @Provides
     @Singleton
     fun provideAdBlockEngine(context: Context): AdblockEngine {
-        return AdblockHelper.get().provider.engine
+        return AdBlockHelper.get().provider.engine
     }
     //AdBlockSettingStorage
     @Provides
     @Singleton
-    fun provideAdBlockSettingStorage(context: Context): AdblockSettingsStorage {
-        return AdblockHelper.get().storage
+    fun provideAdBlockSettingStorage(context: Context): AdBlockSettingsStorage {
+        return AdBlockHelper.get().storage
     }
     @Provides
     @Singleton

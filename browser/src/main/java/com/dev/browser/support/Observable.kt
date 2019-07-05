@@ -2,6 +2,7 @@ package com.dev.browser.support
 
 import android.view.View
 import androidx.lifecycle.LifecycleOwner
+import com.dev.util.Keep
 
 /**
  * Interface for observables. This interface is implemented by ObserverRegistry so that classes that

@@ -5,6 +5,7 @@
 package com.dev.browser.feature.sitepermissions
 
 import com.dev.browser.feature.sitepermissions.SitePermissions.Status.NO_DECISION
+import com.dev.util.Keep
 
 /**
  * A site permissions and its state.
@@ -20,6 +21,7 @@ data class SitePermissions(
     val localStorage: Status = NO_DECISION,
     val savedAt: Long
 ) {
+    @Keep
     enum class Status(
         internal val id: Int
     ) {

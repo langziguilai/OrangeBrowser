@@ -1,7 +1,12 @@
 package com.dev.browser.support
+
+import com.dev.util.Keep
+import com.dev.util.KeepClassOnMemberPresent
+
 /**
  * A generic wrapper for values that can get consumed.
  */
+
 class Consumable<T> private constructor(
     internal var value: T?
 ) {

@@ -4,11 +4,15 @@ import android.content.Context;
 import android.os.Build;
 import android.util.Base64;
 import android.webkit.WebView;
+import com.dev.util.KeepMemberIfNecessary;
+import com.dev.util.KeepNameIfNecessary;
 
 import java.io.IOException;
 import java.io.InputStream;
 
-public class WebviewUtils {
+@KeepNameIfNecessary
+public class WebViewUtils {
+    @KeepMemberIfNecessary
     public static void injectScriptFile(WebView view, String scriptFile) {
         InputStream input;
         try {
@@ -38,6 +42,7 @@ public class WebviewUtils {
             e.printStackTrace();
         }
     }
+    @KeepMemberIfNecessary
     public static String getInjectFileContent(Context context, String fileName) {
         InputStream input;
         try {
@@ -54,6 +59,7 @@ public class WebviewUtils {
         }
         return "";
     }
+    @KeepMemberIfNecessary
     public static void injectCssFile(WebView view, String cssFile) {
         InputStream input;
         try {

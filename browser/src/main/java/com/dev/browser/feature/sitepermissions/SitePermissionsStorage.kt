@@ -16,6 +16,7 @@ import com.dev.browser.feature.sitepermissions.SitePermissionsStorage.Permission
 import com.dev.browser.feature.sitepermissions.SitePermissionsStorage.Permission.LOCATION
 import com.dev.browser.feature.sitepermissions.SitePermissionsStorage.Permission.NOTIFICATION
 import com.dev.browser.database.BrowserDatabase
+import com.dev.util.Keep
 
 /**
  * A storage implementation to save [SitePermissions].
@@ -122,7 +123,7 @@ class SitePermissionsStorage(
             }
         }
     }
-
+    @Keep
     enum class Permission {
         MICROPHONE, BLUETOOTH, CAMERA, LOCAL_STORAGE, NOTIFICATION, LOCATION
     }

@@ -28,7 +28,7 @@ import java.util.List;
 /**
  * Settings storage implementation in Shared Preferences
  */
-public class SharedPrefsStorage extends AdblockSettingsStorage
+public class SharedPrefsStorage extends AdBlockSettingsStorage
 {
   private static final String SETTINGS_ENABLED_KEY = "enabled";
   private static final String SETTINGS_AA_ENABLED_KEY = "aa_enabled";
@@ -65,7 +65,7 @@ public class SharedPrefsStorage extends AdblockSettingsStorage
   }
 
   @Override
-  public AdblockSettings load()
+  public AdBlockSettings load()
   {
     if (!prefs.contains(SETTINGS_ENABLED_KEY))
     {
@@ -73,8 +73,8 @@ public class SharedPrefsStorage extends AdblockSettingsStorage
       return null;
     }
 
-    AdblockSettings settings = new AdblockSettings();
-    settings.setAdblockEnabled(prefs.getBoolean(SETTINGS_ENABLED_KEY, true));
+    AdBlockSettings settings = new AdBlockSettings();
+    settings.setAdBlockEnabled(prefs.getBoolean(SETTINGS_ENABLED_KEY, true));
     settings.setAcceptableAdsEnabled(prefs.getBoolean(SETTINGS_AA_ENABLED_KEY, true));
     String connectionType = prefs.getString(SETTINGS_ALLOWED_CONNECTION_TYPE_KEY, null);
     settings.setAllowedConnectionType(ConnectionType.findByValue(connectionType));
@@ -85,7 +85,7 @@ public class SharedPrefsStorage extends AdblockSettingsStorage
     return settings;
   }
 
-  private void loadWhitelistedDomains(AdblockSettings settings)
+  private void loadWhitelistedDomains(AdBlockSettings settings)
   {
     if (prefs.contains(SETTINGS_WL_DOMAINS_KEY))
     {
@@ -103,7 +103,7 @@ public class SharedPrefsStorage extends AdblockSettingsStorage
     }
   }
 
-  private void loadSubscriptions(AdblockSettings settings)
+  private void loadSubscriptions(AdBlockSettings settings)
   {
     if (prefs.contains(SETTINGS_SUBSCRIPTIONS_KEY))
     {
@@ -152,12 +152,12 @@ public class SharedPrefsStorage extends AdblockSettingsStorage
   }
 
   @Override
-  public void save(AdblockSettings settings)
+  public void save(AdBlockSettings settings)
   {
     SharedPreferences.Editor editor = prefs
       .edit()
       .clear()
-      .putBoolean(SETTINGS_ENABLED_KEY, settings.isAdblockEnabled())
+      .putBoolean(SETTINGS_ENABLED_KEY, settings.isAdBlockEnabled())
       .putBoolean(SETTINGS_AA_ENABLED_KEY, settings.isAcceptableAdsEnabled());
 
     if (settings.getAllowedConnectionType() != null)
@@ -179,7 +179,7 @@ public class SharedPrefsStorage extends AdblockSettingsStorage
     }
   }
 
-  private void saveWhitelistedDomains(AdblockSettings settings, SharedPreferences.Editor editor)
+  private void saveWhitelistedDomains(AdBlockSettings settings, SharedPreferences.Editor editor)
   {
     if (settings.getWhitelistedDomains() != null)
     {
@@ -195,7 +195,7 @@ public class SharedPrefsStorage extends AdblockSettingsStorage
     }
   }
 
-  private void saveSubscriptions(AdblockSettings settings, SharedPreferences.Editor editor)
+  private void saveSubscriptions(AdBlockSettings settings, SharedPreferences.Editor editor)
   {
     if (settings.getSubscriptions() != null)
     {

@@ -27,12 +27,12 @@ import org.adblockplus.libadblockplus.android.SingleInstanceEngineProvider;
 import org.adblockplus.libadblockplus.android.Utils;
 
 /**
- * AdblockHelper shared resources
+ * AdBlockHelper shared resources
  * (singleton)
  */
-public class AdblockHelper
+public class AdBlockHelper
 {
-  private static final String TAG = Utils.getTag(AdblockHelper.class);
+  private static final String TAG = Utils.getTag(AdBlockHelper.class);
 
   /**
    * Suggested preference name to store settings
@@ -43,11 +43,11 @@ public class AdblockHelper
    * Suggested preference name to store intercepted subscription requests
    */
   public static final String PRELOAD_PREFERENCE_NAME = "ADBLOCK_PRELOAD";
-  private static AdblockHelper _instance;
+  private static AdBlockHelper _instance;
 
   private boolean isInitialized;
   private SingleInstanceEngineProvider provider;
-  private AdblockSettingsStorage storage;
+  private AdBlockSettingsStorage storage;
 
   private final SingleInstanceEngineProvider.EngineCreatedListener engineCreatedListener =
     new SingleInstanceEngineProvider.EngineCreatedListener()
@@ -55,14 +55,14 @@ public class AdblockHelper
     @Override
     public void onAdblockEngineCreated(AdblockEngine engine)
     {
-      AdblockSettings settings = storage.load();
+      AdBlockSettings settings = storage.load();
       if (settings != null)
       {
         Log.d(TAG, "Applying saved adblock settings to adblock engine");
         // apply last saved settings to adblock engine.
         // all the settings except `enabled` and whitelisted domains list
         // are saved by adblock engine itself
-        engine.setEnabled(settings.isAdblockEnabled());
+        engine.setEnabled(settings.isAdBlockEnabled());
         engine.setWhitelistedDomains(settings.getWhitelistedDomains());
 
         // allowed connection type is saved by filter engine but we need to override it
@@ -90,20 +90,20 @@ public class AdblockHelper
   };
 
   // singleton
-  protected AdblockHelper()
+  protected AdBlockHelper()
   {
     // prevents instantiation
   }
 
   /**
-   * Use to get AdblockHelper instance
+   * Use to get AdBlockHelper instance
    * @return adblock instance
    */
-  public static synchronized AdblockHelper get()
+  public static synchronized AdBlockHelper get()
   {
     if (_instance == null)
     {
-      _instance = new AdblockHelper();
+      _instance = new AdBlockHelper();
     }
 
     return _instance;
@@ -118,7 +118,7 @@ public class AdblockHelper
     return provider;
   }
 
-  public AdblockSettingsStorage getStorage()
+  public AdBlockSettingsStorage getStorage()
   {
     if (storage == null)
     {

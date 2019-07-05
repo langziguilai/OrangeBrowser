@@ -9,7 +9,7 @@ import android.view.View
 import androidx.lifecycle.ViewModelProviders
 import com.dev.base.BaseFragment
 import com.dev.browser.session.SessionManager
-import com.dev.browser.utils.WebviewUtils
+import com.dev.browser.utils.WebViewUtils
 import com.dev.orangebrowser.R
 import com.dev.orangebrowser.bloc.browser.BrowserFragment
 import com.dev.orangebrowser.extension.RouterActivity
@@ -239,8 +239,8 @@ class ReadModeFragment : BaseFragment(), BackHandler {
                 launch(Dispatchers.IO) {
                     val html = StringUtil.unEscapeString(value)
                     val article = ContentExtractor.getArticleByHtml(html)
-                    val css = WebviewUtils.getInjectFileContent(requireContext(), "inject/read_mode.css")
-                    val js = WebviewUtils.getInjectFileContent(requireContext(), "inject/read_mode.js")
+                    val css = WebViewUtils.getInjectFileContent(requireContext(), "inject/read_mode.css")
+                    val js = WebViewUtils.getInjectFileContent(requireContext(), "inject/read_mode.js")
                     launch(Dispatchers.Main) {
                         titleTextView.text = article.title
                         Log.d("html", article.contentHtml)

@@ -5,6 +5,7 @@
 package com.dev.browser.icons
 
 import android.graphics.Bitmap
+import com.dev.util.Keep
 
 /**
  * An [Icon] returned by [BrowserIcons] after processing an [IconRequest]
@@ -21,6 +22,7 @@ data class Icon(
     /**
      * The source of an [Icon].
      */
+    @Keep
     enum class Source {
         /**
          * This icon was generated.

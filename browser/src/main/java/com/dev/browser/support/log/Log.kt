@@ -1,5 +1,6 @@
 package com.dev.browser.support.log
 
+import androidx.annotation.Keep
 import androidx.annotation.VisibleForTesting
 
 /**
@@ -92,6 +93,7 @@ object Log {
     /**
      * Priority constants for logging calls.
      */
+    @Keep
     enum class Priority(val value: Int) {
         // For simplicity the values mirror the Android log constants values:
         // https://android.googlesource.com/platform/frameworks/base/+/refs/heads/master/core/java/android/util/Log.java

@@ -1,11 +1,13 @@
 package com.dev.browser.support
 
+import androidx.annotation.Keep
 import androidx.annotation.StringRes
 import com.dev.browser.R
 
 /**
  * Enum containing all supported error types that we can display an error page for.
  */
+@Keep
 enum class ErrorType(
     @StringRes val titleRes: Int,
     @StringRes val messageRes: Int

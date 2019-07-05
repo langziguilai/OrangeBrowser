@@ -7,6 +7,7 @@ import android.os.Bundle
 import androidx.fragment.app.DialogFragment
 import com.dev.base.BaseTransparentFullScreenDialogFragment
 import com.dev.browser.session.Download
+import com.dev.util.Keep
 
 /**
  * This is a general representation of a dialog meant to be used in collaboration with [DownloadsFeature]
@@ -14,6 +15,7 @@ import com.dev.browser.session.Download
  * If [SimpleDownloadDialogFragment] is not flexible enough for your use case you should inherit for this class.
  * Be mindful to call [onStartDownload] when you want to start the download.
  */
+@Keep
 abstract class DownloadDialogFragment : BaseTransparentFullScreenDialogFragment() {
 
     /**

@@ -27,23 +27,23 @@ import java.util.List;
 /**
  * Settings storage base class
  */
-public abstract class AdblockSettingsStorage
+public abstract class AdBlockSettingsStorage
 {
   /**
    * Load settings from the storage
    *
    * Warning: can return null if not saved yet
    * Warning: subscriptions can have `url` and `title` only to be identified among available in AdblockEngine
-   * @return AdblockSettings instance or null
+   * @return AdBlockSettings instance or null
    */
-  public abstract AdblockSettings load();
+  public abstract AdBlockSettings load();
 
   /**
    * Save settings to the storage
    *
    * @param settings should be not null
    */
-  public abstract void save(AdblockSettings settings);
+  public abstract void save(AdBlockSettings settings);
 
   /**
    * Get default settings
@@ -51,12 +51,12 @@ public abstract class AdblockSettingsStorage
    * @param adblockEngine adblock engine
    * @return not null default settings
    */
-  public static AdblockSettings getDefaultSettings(AdblockEngine adblockEngine)
+  public static AdBlockSettings getDefaultSettings(AdblockEngine adblockEngine)
   {
-    AdblockSettings settings = new AdblockSettings();
+    AdBlockSettings settings = new AdBlockSettings();
 
     // read actual values from adblock engine
-    settings.setAdblockEnabled(adblockEngine.isEnabled());
+    settings.setAdBlockEnabled(adblockEngine.isEnabled());
     settings.setAcceptableAdsEnabled(adblockEngine.isAcceptableAdsEnabled());
     String allowedConnectionTypeValue = adblockEngine.getFilterEngine().getAllowedConnectionType();
     settings.setAllowedConnectionType(ConnectionType.findByValue(allowedConnectionTypeValue));

@@ -4,6 +4,8 @@
 
 package com.dev.browser.session.manifest
 
+import com.dev.util.Keep
+
 /**
  * The web app manifest provides information about an application (such as its name, author, icon, and description).
  *
@@ -58,6 +60,7 @@ data class WebAppManifest(
     /**
      * Defines the developers’ preferred display mode for the website.
      */
+    @Keep
     enum class DisplayMode {
         /**
          * All of the available display area is used and no user agent chrome is shown.
@@ -100,6 +103,7 @@ data class WebAppManifest(
         val type: String? = null,
         val purpose: Purpose = Purpose.ANY
     ) {
+        @Keep
         enum class Purpose {
             /**
              * A user agent can present this icon where space constraints and/or color requirements differ from those
@@ -130,6 +134,7 @@ data class WebAppManifest(
     /**
      * Defines the default orientation for all the website's top level browsing contexts.
      */
+    @Keep
     enum class Orientation {
         ANY,
         NATURAL,
@@ -145,6 +150,7 @@ data class WebAppManifest(
      * Specifies the primary text direction for the name, short_name, and description members. Together with the lang
      * member, it helps the correct display of right-to-left languages.
      */
+    @Keep
     enum class TextDirection {
         /**
          * Left-to-right (LTR).

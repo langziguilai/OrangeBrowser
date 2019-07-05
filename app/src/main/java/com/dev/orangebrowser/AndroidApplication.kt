@@ -7,7 +7,7 @@ import android.widget.Toast
 import com.dev.base.BaseApplication
 import com.dev.base.crash.cockroach.Cockroach
 import com.dev.base.crash.cockroach.ExceptionHandler
-import com.dev.browser.adblock.setting.AdblockHelper
+import com.dev.browser.adblock.setting.AdBlockHelper
 import com.dev.browser.session.Session
 import com.dev.browser.session.SessionManager
 import com.dev.browser.session.storage.SessionStorage
@@ -113,7 +113,7 @@ class AndroidApplication:BaseApplication(),CoroutineScope {
             }
         }
         sessionManager.register(sessionClearObserver)
-        AdblockHelper.get().apply {
+        AdBlockHelper.get().apply {
             init(this@AndroidApplication, AdblockEngine.BASE_PATH_DIRECTORY,true,"adblock_pref")
             provider.retain(true)
             (provider as? SingleInstanceEngineProvider)?.apply {

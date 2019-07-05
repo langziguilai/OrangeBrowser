@@ -11,6 +11,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import androidx.annotation.Keep
 import androidx.annotation.VisibleForTesting
 import androidx.annotation.VisibleForTesting.PRIVATE
 import com.dev.base.extension.forEach
@@ -25,6 +26,7 @@ import com.dev.browser.R
  * @param buttons A list of buttons to be displayed in the prompt.
  * @param onDismiss that is called when the doorhanger is dismissed.
  */
+@Keep
 class DoorhangerPrompt(
     private val title: String,
     private val icon: Drawable? = null,

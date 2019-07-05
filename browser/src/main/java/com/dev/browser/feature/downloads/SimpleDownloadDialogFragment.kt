@@ -18,6 +18,7 @@ import androidx.appcompat.widget.AppCompatButton
 import androidx.appcompat.widget.AppCompatTextView
 import com.dev.browser.R
 import com.dev.util.DensityUtil
+import com.dev.util.Keep
 
 /**
  * A confirmation dialog to be called before a download is triggered.
@@ -28,7 +29,7 @@ import com.dev.util.DensityUtil
  * the download it triggered.
  *
  */
-
+@Keep
 class SimpleDownloadDialogFragment : DownloadDialogFragment() {
     override fun getLayoutId(): Int {
         return R.layout.fragment_mozac_feature_download

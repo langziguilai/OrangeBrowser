@@ -7,6 +7,7 @@ package com.dev.browser.feature.sitepermissions
 import android.net.Uri
 import com.dev.browser.concept.permission.Permission
 import com.dev.browser.concept.permission.PermissionRequest
+import com.dev.util.Keep
 
 /**
  * Indicate how site permissions must behave by permission category.
@@ -18,6 +19,7 @@ data class SitePermissionsRules(
     val microphone: Action,
     val exceptions: List<Uri>? = null
 ) {
+    @Keep
     enum class Action {
         BLOCKED, ASK_TO_ALLOW;
     }

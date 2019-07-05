@@ -55,7 +55,7 @@ class InMemoryHistoryStorage : HistoryStorage {
 
         pages.forEach {
             it.value.forEach { visit ->
-                if (visit.timestamp >= start && visit.timestamp <= end) {
+                if (visit.timestamp in start..end) {
                     visits.add(VisitInfo(
                         url = it.key,
                         title = pageMeta[it.key]?.title,

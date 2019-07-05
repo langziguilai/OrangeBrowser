@@ -26,12 +26,11 @@ import android.webkit.WebStorage;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
-import com.dev.browser.adblock.setting.AdblockHelper;
+import com.dev.browser.adblock.setting.AdBlockHelper;
+import com.dev.util.KeepAll;
 import org.adblockplus.libadblockplus.FilterEngine;
 import org.adblockplus.libadblockplus.Subscription;
-import org.adblockplus.libadblockplus.android.AdblockEngine;
 import org.adblockplus.libadblockplus.android.AdblockEngineProvider;
-import org.adblockplus.libadblockplus.android.SingleInstanceEngineProvider;
 import org.adblockplus.libadblockplus.android.Utils;
 
 import java.io.IOException;
@@ -47,6 +46,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 /**
  * WebView with ad blocking
  */
+@KeepAll
 public class AdblockWebView extends WebView {
     private static final String TAG = Utils.getTag(AdblockWebView.class);
 
@@ -847,7 +847,7 @@ public class AdblockWebView extends WebView {
         if (provider == null) {
 //            setProvider(new SingleInstanceEngineProvider(
 //                    getContext(), AdblockEngine.BASE_PATH_DIRECTORY, debugMode));
-            setProvider(AdblockHelper.get().getProvider());
+            setProvider(AdBlockHelper.get().getProvider());
         }
     }
 

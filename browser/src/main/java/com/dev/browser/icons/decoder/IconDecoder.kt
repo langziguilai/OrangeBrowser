@@ -5,6 +5,7 @@
 package com.dev.browser.icons.decoder
 
 import android.graphics.Bitmap
+import com.dev.util.Keep
 
 /**
  * An icon decoder that can decode a [ByteArray] into a [Bitmap].
@@ -23,6 +24,7 @@ interface IconDecoder {
 
     companion object {
         @Suppress("MagicNumber")
+        @Keep
         enum class ImageMagicNumbers(var value: ByteArray) {
             // It is irritating that Java bytes are signed...
             PNG(byteArrayOf((0x89 and 0xFF).toByte(), 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a)),
