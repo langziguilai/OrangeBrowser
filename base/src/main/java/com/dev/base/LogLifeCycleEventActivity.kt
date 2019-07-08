@@ -7,7 +7,7 @@ import com.dev.util.Keep
 @Keep
 open class LogLifeCycleEventActivity : CoroutineScopeActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
-        Log.d(this.javaClass.simpleName, "onCreate")
+        Log.d(this.toString(), "onCreate")
         super.onCreate(savedInstanceState)
     }
 

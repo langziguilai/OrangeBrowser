@@ -1,41 +1,57 @@
 [
   {
-    "name": "UI中国",
-    "description": "专业用户体验设计平台",
-    "icon": "https://i.loli.net/2019/06/13/5d01ef1a7d02812411.png",
-    "url": "https://www.ui.cn",
-    "category": "资讯",
-    "added": false
-  },
-  {
     "name": "百度",
-    "description": "百度一下你就知道",
+    "description": "百度一下",
     "icon": "https://i.loli.net/2019/06/13/5d01ee87aa0ea50345.png",
     "url": "https://www.baidu.com",
     "category": "资讯",
     "added": false
   },
   {
-    "name": "糗事百科",
-    "description": "超搞笑的原创糗事笑话分享社区",
-    "icon": "https://i.loli.net/2019/06/13/5d01eeb7e06ac57966.png",
-    "url": "https://www.qiushibaike.com",
+    "name": "腾讯",
+    "description": "腾讯",
+    "icon": "https://i.loli.net/2019/07/05/5d1f11ff3129043931.png",
+    "url": "https://www.qq.com",
     "category": "资讯",
     "added": false
   },
   {
-    "name": "起点中文网",
-    "description": "阅文集团旗下网站",
-    "icon": "https://i.loli.net/2019/06/13/5d01ef51b650930130.png",
-    "url": "https://www.qidian.com",
+    "name": "网易",
+    "description": "网易",
+    "icon": "https://i.loli.net/2019/07/05/5d1f10afde3a025121.png",
+    "url": "https://www.163.com",
     "category": "资讯",
     "added": false
   },
   {
-    "name": "豆瓣FM",
-    "description": "豆瓣FM",
-    "icon": "https://i.loli.net/2019/06/13/5d01efa4c07eb25519.png",
-    "url": "https://douban.fm",
+    "name": "新浪",
+    "description": "新浪",
+    "icon": "https://i.loli.net/2019/07/05/5d1f12a693ea333473.png",
+    "url": "https://sina.cn",
+    "category": "资讯",
+    "added": false
+  },
+  {
+    "name": "搜狐",
+    "description": "搜狐",
+    "icon": "https://i.loli.net/2019/07/05/5d1f130f8f93b55632.png",
+    "url": "https://m.sohu.com",
+    "category": "资讯",
+    "added": false
+  },
+  {
+    "name": "今日头条",
+    "description": "今日头条",
+    "icon": "https://i.loli.net/2019/07/05/5d1f14e4e876d34808.png",
+    "url": "https://m.toutiao.com",
+    "category": "资讯",
+    "added": false
+  },
+  {
+    "name": "凤凰新闻",
+    "description": "凤凰新闻",
+    "icon": "https://i.loli.net/2019/07/05/5d1f14e4e876d34808.png",
+    "url": "https://m.toutiao.com",
     "category": "资讯",
     "added": false
   },
@@ -52,6 +68,14 @@
     "description": "天气",
     "icon": "https://i.loli.net/2019/06/13/5d01f7229b70d21183.png",
     "url": "https://xw.tianqi.qq.com",
+    "category": "资讯",
+    "added": false
+  },
+  {
+    "name": "UI中国",
+    "description": "专业用户体验设计平台",
+    "icon": "https://i.loli.net/2019/06/13/5d01ef1a7d02812411.png",
+    "url": "https://www.ui.cn",
     "category": "资讯",
     "added": false
   }

@@ -84,9 +84,9 @@ data class ThemeSource(
         writeInt((if (active) 1 else 0))
         writeString(colorPrimary)
         writeString(colorPrimaryDark)
+        writeString(colorAccent)
         writeString(colorPrimaryActive)
         writeString(colorPrimaryDisable)
-        writeString(colorAccent)
         writeString(colorBackground)
     }
 

@@ -66,6 +66,7 @@ import com.dev.orangebrowser.bloc.found.category.SiteListFragment
 import com.dev.orangebrowser.bloc.found.creator.SiteCreatorFragment
 import com.dev.orangebrowser.data.model.SimpleVideo
 import com.dev.orangebrowser.extension.appDataForActivity
+import com.google.gson.Gson
 
 const val APPLICATION_DATA = "application_data"
 
