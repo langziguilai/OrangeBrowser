@@ -32,6 +32,7 @@ import org.adblockplus.libadblockplus.FilterEngine;
 import org.adblockplus.libadblockplus.Subscription;
 import org.adblockplus.libadblockplus.android.AdblockEngineProvider;
 import org.adblockplus.libadblockplus.android.Utils;
+import ren.yale.android.cachewebviewlib.WebViewCacheInterceptorInst;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -641,8 +642,8 @@ public class AdblockWebView extends WebView {
 
                 d("Allowed loading " + url);
 
-                // continue by returning null
-                return null;
+                // 没有命中，则缓存
+                return WebViewCacheInterceptorInst.getInstance().interceptRequest(url);
             }
         }
 

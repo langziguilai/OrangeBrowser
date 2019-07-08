@@ -372,4 +372,5 @@
     <string name="image_attribute">选择图片属性:</string>
     <string name="saved_html">保存的网页</string>
     <string name="pref_setting_need_intercept_open_app_value">pref_setting_need_intercept_open_app_value</string>
+    <string name="pref_setting_should_use_cache_mode">pref_setting_should_use_cache_mode</string>
 </resources>

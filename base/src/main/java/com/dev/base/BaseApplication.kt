@@ -40,4 +40,5 @@ abstract class BaseApplication : Application() {
         }
     }
     open fun initialize(){}
+
 }

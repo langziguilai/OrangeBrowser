@@ -12,6 +12,7 @@ import com.dev.browser.concept.BrowserSetting
 import com.dev.browser.concept.REDIRECT_TO_APP_NO
 import com.dev.orangebrowser.R
 import com.dev.orangebrowser.data.model.*
+import com.dev.orangebrowser.extension.getSpBool
 import com.dev.orangebrowser.extension.getSpInt
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -46,6 +47,7 @@ class MainViewModel @Inject constructor(var context: Context) : CoroutineViewMod
     }
     private fun getBrowserSetting(activity: MainActivity){
         BrowserSetting.RedirectToApp=activity.getSpInt(R.string.pref_setting_need_intercept_open_app_value, REDIRECT_TO_APP_NO)
+        BrowserSetting.ShouldUseCacheMode=activity.getSpBool(R.string.pref_setting_should_use_cache_mode, false)
     }
     fun initFromApplicationData(applicationData: ApplicationData){
         theme.value=applicationData.themes.getActiveThemeSource()?.toTheme() ?: Theme.defaultTheme(context)

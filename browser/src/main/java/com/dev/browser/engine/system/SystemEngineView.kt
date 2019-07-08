@@ -44,6 +44,7 @@ import com.dev.browser.utils.WebViewUtils
 import com.dev.util.Keep
 import com.dev.view.MatchParentLayout
 import kotlinx.coroutines.runBlocking
+import ren.yale.android.cachewebviewlib.WebViewCacheInterceptorInst
 import java.util.*
 
 
@@ -219,7 +220,8 @@ class SystemEngineView @JvmOverloads constructor(
                 onLoadingStateChange(true)
                 onLocationChange(request.url.toString())
             }
-            return super.shouldOverrideUrlLoading(view, request)
+            WebViewCacheInterceptorInst.getInstance().loadUrl(view,request.url.toString())
+            return true
         }
 
         override fun shouldOverrideUrlLoading(view: WebView, url: String): Boolean {
@@ -239,7 +241,8 @@ class SystemEngineView @JvmOverloads constructor(
                     onLocationChange(this)
                 }
             }
-            return super.shouldOverrideUrlLoading(view, url)
+            WebViewCacheInterceptorInst.getInstance().loadUrl(view,url)
+            return true
         }
         override fun doUpdateVisitedHistory(view: WebView, url: String, isReload: Boolean) {
             // TODO private browsing not supported for SystemEngine
