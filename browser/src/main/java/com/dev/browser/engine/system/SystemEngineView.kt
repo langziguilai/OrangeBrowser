@@ -220,8 +220,12 @@ class SystemEngineView @JvmOverloads constructor(
                 onLoadingStateChange(true)
                 onLocationChange(request.url.toString())
             }
-            WebViewCacheInterceptorInst.getInstance().loadUrl(view,request.url.toString())
-            return true
+            return if (BrowserSetting.ShouldUseCacheMode){
+                WebViewCacheInterceptorInst.getInstance().loadUrl(view,request.url.toString())
+                true
+            }else{
+                super.shouldOverrideUrlLoading(view,request)
+            }
         }
 
         override fun shouldOverrideUrlLoading(view: WebView, url: String): Boolean {
@@ -241,8 +245,12 @@ class SystemEngineView @JvmOverloads constructor(
                     onLocationChange(this)
                 }
             }
-            WebViewCacheInterceptorInst.getInstance().loadUrl(view,url)
-            return true
+            return if (BrowserSetting.ShouldUseCacheMode){
+                WebViewCacheInterceptorInst.getInstance().loadUrl(view,url)
+                true
+            }else{
+                super.shouldOverrideUrlLoading(view,url)
+            }
         }
         override fun doUpdateVisitedHistory(view: WebView, url: String, isReload: Boolean) {
             // TODO private browsing not supported for SystemEngine

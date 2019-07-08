@@ -373,4 +373,6 @@
     <string name="saved_html">保存的网页</string>
     <string name="pref_setting_need_intercept_open_app_value">pref_setting_need_intercept_open_app_value</string>
     <string name="pref_setting_should_use_cache_mode">pref_setting_should_use_cache_mode</string>
+    <string name="use_cache_mode">开启超级缓存模式</string>
+    <string name="tip_use_cache_mode">开启超级缓存之后，会加速网页加载，但可能会导致后退不加载最新的内容（此时你必须点击刷新按钮来进行刷新），请选择使用</string>
 </resources>

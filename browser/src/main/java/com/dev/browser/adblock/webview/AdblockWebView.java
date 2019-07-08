@@ -27,6 +27,7 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
 import com.dev.browser.adblock.setting.AdBlockHelper;
+import com.dev.browser.concept.BrowserSetting;
 import com.dev.util.KeepAll;
 import org.adblockplus.libadblockplus.FilterEngine;
 import org.adblockplus.libadblockplus.Subscription;
@@ -642,8 +643,12 @@ public class AdblockWebView extends WebView {
 
                 d("Allowed loading " + url);
 
-                // 没有命中，则缓存
-                return WebViewCacheInterceptorInst.getInstance().interceptRequest(url);
+                if (BrowserSetting.ShouldUseCacheMode) {
+                    // 没有命中，则缓存
+                    return WebViewCacheInterceptorInst.getInstance().interceptRequest(url);
+                } else {
+                    return null;
+                }
             }
         }
 
@@ -652,8 +657,8 @@ public class AdblockWebView extends WebView {
         public WebResourceResponse shouldInterceptRequest(WebView view, WebResourceRequest request) {
             //当上一步处理不为null时，表示已经处理过了，不再需要进一步拦截了
             if (extWebViewClient != null) {
-                WebResourceResponse response=extWebViewClient.shouldInterceptRequest(view, request);
-                if(response!=null) return response;
+                WebResourceResponse response = extWebViewClient.shouldInterceptRequest(view, request);
+                if (response != null) return response;
             }
             // here we just trying to fill url -> referrer map
             // blocking/allowing loading will happen in `shouldInterceptRequest(WebView,String)`
@@ -775,9 +780,9 @@ public class AdblockWebView extends WebView {
 //                            List<FilterEngine.EmulationSelector> emuSelectors = provider
 //                                    .getEngine()
 //                                    .getElementHidingEmulationSelectors(url, domain, referrers);
-                            emuSelectorsString="" ;
-                             //d("Finished requesting elemhideemu selectors, got " + emuSelectors.size() + " in " + this);
-                             //emuSelectorsString = Utils.emulationSelectorListToJsonArray(emuSelectors);
+                            emuSelectorsString = "";
+                            //d("Finished requesting elemhideemu selectors, got " + emuSelectors.size() + " in " + this);
+                            //emuSelectorsString = Utils.emulationSelectorListToJsonArray(emuSelectors);
 
                         }
                     }
