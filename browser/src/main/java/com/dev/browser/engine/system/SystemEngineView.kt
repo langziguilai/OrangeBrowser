@@ -73,6 +73,14 @@ class SystemEngineView @JvmOverloads constructor(
     internal var jsAlertCount = 0
     internal var shouldShowMoreDialogs = true
     internal var lastDialogShownAt = Date()
+    internal var lastUrl=""
+
+//  测试URL是否改变，来判断是否清空resources，每一次改变URL，都会重新加载资源
+    fun checkForClearRecordResources(url:String){
+        if (url!=lastUrl){
+            session?.clearRecordResources()
+        }
+    }
 
     /**
      * Render the mContent of the given session.
@@ -219,6 +227,7 @@ class SystemEngineView @JvmOverloads constructor(
             session?.internalNotifyObservers {
                 onLoadingStateChange(true)
                 onLocationChange(request.url.toString())
+                checkForClearRecordResources(request.url.toString())
             }
             return if (BrowserSetting.ShouldUseCacheMode){
                 WebViewCacheInterceptorInst.getInstance().loadUrl(view,request.url.toString())
@@ -243,6 +252,7 @@ class SystemEngineView @JvmOverloads constructor(
                 url.apply {
                     onLoadingStateChange(true)
                     onLocationChange(this)
+                    checkForClearRecordResources(this)
                 }
             }
             return if (BrowserSetting.ShouldUseCacheMode){
@@ -270,6 +280,7 @@ class SystemEngineView @JvmOverloads constructor(
                 session?.internalNotifyObservers {
                     onLoadingStateChange(true)
                     onLocationChange(it)
+                    checkForClearRecordResources(it)
                     onNavigationStateChange(view.canGoBack(), view.canGoForward())
                 }
             }
@@ -282,6 +293,7 @@ class SystemEngineView @JvmOverloads constructor(
                 val cert = view?.certificate
                 session?.internalNotifyObservers {
                     onLocationChange(it)
+                    checkForClearRecordResources(it)
                     onNavigationStateChange(view.canGoBack(), view.canGoForward())
                     onLoadingStateChange(false)
                     onSecurityChange(
@@ -294,6 +306,12 @@ class SystemEngineView @JvmOverloads constructor(
         }
         @Suppress("ReturnCount", "NestedBlockDepth")
         override fun shouldInterceptRequest(view: WebView, request: WebResourceRequest): WebResourceResponse? {
+            Log.d("get resource",request.url.toString())
+            Log.d("is iframe",request.isForMainFrame.toString())
+            request.requestHeaders.forEach {
+                Log.d("key",it.key)
+                Log.d("value",it.value)
+            }
             if (session?.webFontsEnabled == false && UrlMatcher.isWebFont(request.url)) {
                 return WebResourceResponse(null, null, null)
             }
@@ -344,11 +362,25 @@ class SystemEngineView @JvmOverloads constructor(
                     }
                 }
             }
+            //
+            addResource(request)
             //因为需要后续处理，所以，返回null，以便后面可以接着处理
             return null
             //return super.shouldInterceptRequest(view, request)
         }
-
+        //添加资源
+        private fun addResource(request: WebResourceRequest){
+            val referer= request.requestHeaders["Referer"] ?: ""
+            val url=request.url.toString()
+            val acceptHeader=request.requestHeaders["Accept"] ?: ""
+            val rangeHeaders = request.requestHeaders["Range"] ?: ""
+            //如果为media
+            if (rangeHeaders.isNotBlank()){
+                 session?.addResource(MediaResource(link = url,referer = referer))
+            }else if (acceptHeader.indexOf("image/")>=0){
+                session?.addResource(ImageResource(link = url,referer = referer))
+            }
+        }
         override fun onReceivedSslError(view: WebView, handler: SslErrorHandler, error: SslError) {
             handler.cancel()
             session?.let { session ->

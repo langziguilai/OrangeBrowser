@@ -9,6 +9,7 @@ import android.os.Bundle
 import android.webkit.*
 import com.dev.browser.concept.EngineSession
 import com.dev.browser.concept.EngineSessionState
+import com.dev.browser.concept.Resource
 import com.dev.browser.concept.Settings
 import com.dev.browser.concept.history.HistoryTrackingDelegate
 import com.dev.browser.concept.request.RequestInterceptor
@@ -19,6 +20,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import java.io.File
+import java.util.*
 import kotlin.reflect.KProperty
 
 internal val additionalHeaders = mapOf(
@@ -45,7 +47,7 @@ class SystemEngineSession(
     @Volatile internal var currentUrl = ""
     @Volatile internal var fullScreenCallback: WebChromeClient.CustomViewCallback? = null
     @Volatile internal var abBlockOn: Boolean=true
-
+    internal val resources=LinkedList<Resource>()  //网页资源
     // This is public for FFTV which needs access to the WebView instance. We can mark it internal once
     // https://github.com/mozilla-mobile/android-components/issues/1616 is resolved.
     @Volatile var webView: WebView = NestedWebView(context)
@@ -444,7 +446,18 @@ class SystemEngineSession(
     override fun exitFullScreenMode() {
         fullScreenCallback?.onCustomViewHidden()
     }
-
+   /**
+    * get Resources
+    */
+    override fun getResources(): List<Resource> {
+        return resources
+    }
+    fun clearRecordResources(){
+        resources.clear()
+    }
+    fun addResource(resource: Resource){
+        resources.add(resource)
+    }
     internal fun toggleDesktopUA(userAgent: String, requestDesktop: Boolean): String {
         return if (requestDesktop) {
             userAgent.replace("Mobile", "eliboM").replace("Android", "diordnA")

@@ -260,6 +260,10 @@ abstract class EngineSession(
      * */
     abstract fun forbidLoadingImage(b:Boolean,reload: Boolean = true)
     /**
+     * get Resource
+     * */
+    abstract fun getResources():List<Resource>
+    /**
      * Close the session. This may free underlying objects. Call this when you are finished using
      * this session.
      */
