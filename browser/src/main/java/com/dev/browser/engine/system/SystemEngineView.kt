@@ -325,14 +325,17 @@ class SystemEngineView @JvmOverloads constructor(
                                 WebResourceResponse(mimeType, encoding, data.byteInputStream())
                             is InterceptionResponse.Url -> {
                                 view.post { view.loadUrl(url) }
-                                super.shouldInterceptRequest(view, request)
+                                //因为需要后续处理，所以，返回null，以便后面可以接着处理
+                                return null
+                                //super.shouldInterceptRequest(view, request)
                             }
                         }
                     }
                 }
             }
-
-            return super.shouldInterceptRequest(view, request)
+            //因为需要后续处理，所以，返回null，以便后面可以接着处理
+            return null
+            //return super.shouldInterceptRequest(view, request)
         }
 
         override fun onReceivedSslError(view: WebView, handler: SslErrorHandler, error: SslError) {

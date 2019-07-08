@@ -649,6 +649,11 @@ public class AdblockWebView extends WebView {
         @TargetApi(Build.VERSION_CODES.LOLLIPOP)
         @Override
         public WebResourceResponse shouldInterceptRequest(WebView view, WebResourceRequest request) {
+            //当上一步处理不为null时，表示已经处理过了，不再需要进一步拦截了
+            if (extWebViewClient != null) {
+                WebResourceResponse response=extWebViewClient.shouldInterceptRequest(view, request);
+                if(response!=null) return response;
+            }
             // here we just trying to fill url -> referrer map
             // blocking/allowing loading will happen in `shouldInterceptRequest(WebView,String)`
             String url = request.getUrl().toString();
