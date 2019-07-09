@@ -17,6 +17,7 @@ import com.dev.util.CommonUtil
 import java.lang.ref.WeakReference
 import android.opengl.ETC1.getHeight
 import android.opengl.ETC1.getWidth
+import com.dev.util.DensityUtil
 import com.dev.util.Keep
 
 

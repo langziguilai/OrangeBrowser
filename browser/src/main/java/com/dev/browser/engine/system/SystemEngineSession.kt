@@ -307,6 +307,7 @@ class SystemEngineSession(
             //支持viewport
             webSettings.useWideViewPort=true
             initSettings(webView, webSettings)
+            webSettings.setRenderPriority(WebSettings.RenderPriority.HIGH)
         }
     }
 

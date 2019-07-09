@@ -10,6 +10,7 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.dev.base.BaseFragment
+import com.dev.base.extension.onGlobalLayoutComplete
 import com.dev.base.support.BackHandler
 import com.dev.browser.session.SessionManager
 import com.dev.orangebrowser.R
