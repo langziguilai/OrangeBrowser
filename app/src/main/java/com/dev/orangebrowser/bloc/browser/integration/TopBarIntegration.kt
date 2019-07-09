@@ -67,11 +67,14 @@ class TopBarIntegration(
             sessionUseCases.reload.invoke(session)
             binding.reloadIcon.hide()
             binding.stopIcon.show()
+            binding.progress.show()
+            binding.progress.progress=10
         }
         binding.stopIcon.setOnClickListener {
             sessionUseCases.stopLoading.invoke(session)
             binding.reloadIcon.show()
             binding.stopIcon.hide()
+            binding.progress.hide()
         }
 
 
