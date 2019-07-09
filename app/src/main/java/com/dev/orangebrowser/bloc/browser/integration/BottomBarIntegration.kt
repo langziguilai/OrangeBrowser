@@ -39,6 +39,11 @@ class BottomBarIntegration(
 
     private fun initBottomBar(savedInstanceState: Bundle?) {
         setBottomBarInitialState(savedInstanceState)
+        //后退
+        binding.back.setOnClickListener {
+            fragment.onBackPressed()
+        }
+        //前进
         binding.forward.setOnClickListener {
             if (session.canGoForward) {
                 sessionUseCases.goForward.invoke(session)
@@ -86,10 +91,6 @@ class BottomBarIntegration(
 
     //设置初始化状态
     private fun setBottomBarInitialState(savedInstanceState: Bundle?) {
-        //后退
-        binding.back.setOnClickListener {
-            fragment.onBackPressed()
-        }
         //设置forward颜色
         if (session.canGoForward) {
             binding.forward.setTextColor(fragment.activityViewModel.theme.value!!.colorPrimary)

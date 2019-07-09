@@ -282,7 +282,7 @@ class SystemEngineView @JvmOverloads constructor(
                     return
                 val cert = view?.certificate
                 session?.internalNotifyObservers {
-                    onLocationChange(it)
+                    //onLocationChange(it)
                     checkForClearRecordResources(it)
                     onNavigationStateChange(view.canGoBack(), view.canGoForward())
                     onLoadingStateChange(false)
