@@ -28,6 +28,7 @@ import com.dev.browser.feature.session.SessionUseCases
 import com.dev.browser.feature.tabs.TabsUseCases
 import com.dev.browser.search.SearchEngine
 import com.dev.browser.search.SearchEngineManager
+import com.dev.browser.session.Session
 import com.dev.browser.session.SessionManager
 import com.dev.browser.ui.inlineautocomplete.InlineAutocompleteEditText
 import com.dev.browser.ui.inlineautocomplete.OnFilterListener
@@ -148,7 +149,7 @@ class SearchFragment : BaseFragment(), SearchBar, BackHandler {
         inputManager.showSoftInput(binding.searchText, 0)
         sessionManager.findSessionById(originalSessionId)?.apply {
 
-            if (!this.url.isBlank()) {
+            if (!this.url.isBlank() && this.screenNumber!= Session.HOME_SCREEN) {
                 binding.searchText.applyAutocompleteResult(
                     InlineAutocompleteEditText.AutocompleteResult(text = this.url, source = "", totalItems = 1)
                 )

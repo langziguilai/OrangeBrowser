@@ -98,7 +98,7 @@ class AddressBarSettingFragment : BaseFragment(), BackHandler {
 
     //TODO:添加Action
     private fun getData(): List<Any> {
-        val showAddressBar = getSpString(R.string.pref_setting_show_address_bar, getString(R.string.show_title))
+        val showAddressBar = getSpString(R.string.pref_setting_address_bar_show_title, getString(R.string.show_title))
         val list = LinkedList<Any>()
         list.add(DividerItem(height = 24, background = getColor(R.color.color_F8F8F8)))
         list.add(TickItem(title = getString(R.string.show_domain), action = object : Action<TickItem> {

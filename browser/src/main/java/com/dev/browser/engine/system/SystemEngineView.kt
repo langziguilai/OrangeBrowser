@@ -78,6 +78,7 @@ class SystemEngineView @JvmOverloads constructor(
     fun checkForClearRecordResources(url:String){
         if (url!=lastUrl){
             session?.clearRecordResources()
+            lastUrl=url
         }
     }
 
@@ -359,7 +360,7 @@ class SystemEngineView @JvmOverloads constructor(
             val rangeHeaders = request.requestHeaders["Range"] ?: ""
             //如果为media
             if (rangeHeaders.isNotBlank()){
-                 session?.addResource(MediaInterceptResource(link = url,referer = referer))
+                session?.addResource(MediaInterceptResource(link = url,referer = referer))
             }else if (acceptHeader.indexOf("image/")>=0){
                 session?.addResource(ImageInterceptResource(link = url,referer = referer))
             }

@@ -19,7 +19,8 @@ import com.dev.base.extension.onGlobalLayoutComplete
 import com.dev.base.extension.shareLink
 import com.dev.base.extension.showToast
 import com.dev.base.support.BackHandler
-import com.dev.browser.concept.EngineSession
+import com.dev.browser.concept.ImageInterceptResource
+import com.dev.browser.concept.MediaInterceptResource
 import com.dev.browser.extension.isPermissionGranted
 import com.dev.browser.feature.downloads.DownloadManager
 import com.dev.browser.session.Download
@@ -163,12 +164,15 @@ class ResourceFragment : BaseFragment(), BackHandler {
         selectorRecyclerView?.adapter?.notifyDataSetChanged()
     }
     private  var allResource:LinkedList<Resource> = LinkedList()
-    private lateinit var imageResource:List<ImageResource>
-    private lateinit var videoResource:List<VideoResource>
-    private lateinit var audioResource:List<AudioResource>
+    private  var imageResource:LinkedList<ImageResource> = LinkedList()
+    private  var videoResource:LinkedList<VideoResource> = LinkedList()
+    private  var audioResource:LinkedList<AudioResource> = LinkedList()
     private  var displayRecyclerView:RecyclerView?=null
     private lateinit var  displayAdapter:BaseQuickAdapter<Resource,CustomBaseViewHolder>
     var session:Session?=null
+    private fun containsResources(resources:List<Resource>,url:String):Boolean{
+       return resources.any { it.link == url }
+    }
     override fun initData(savedInstanceState: Bundle?) {
         StatusBarUtil.setIconColor(requireActivity(),activityViewModel.theme.value!!.colorPrimary)
         header.setBackgroundColor(activityViewModel.theme.value!!.colorPrimary)
@@ -182,16 +186,16 @@ class ResourceFragment : BaseFragment(), BackHandler {
             ValueCallback<String> { value ->
                 launch(Dispatchers.IO) {
                     val html = StringUtil.unEscapeString(value)
-                    Log.d("html",html)
                     val doc=Jsoup.parse(html)
-                    imageResource= doc.select("img").map {
+                    val imageResourceTmp= doc.select("img").map {
                         val src=it.attr("src")
                         if(src.startsWith("//")){
                             it.attr("src", "http:$src")
                         }
-                        ImageResource(link=it.attr("abs:src").trim())
+                        ImageResource(link=it.attr("abs:src").trim(),referer = session?.url ?: "")
                     }.filter { it.link.isNotBlank()}
-                    videoResource= doc.select("video").map {
+                    imageResource.addAll(imageResourceTmp)
+                    val videoResourceTmp= doc.select("video").map {
                         val poster=it.attr("abs:poster")
                         val src=it.attr("src")
                         if(src.startsWith("//")){
@@ -207,9 +211,10 @@ class ResourceFragment : BaseFragment(), BackHandler {
                                 }
                             }
                         }
-                       VideoResource(link=link,poster = poster)
+                       VideoResource(link=link,poster = poster,referer = session?.url ?: "")
                     }.filter { it.link.isNotBlank() }
-                    audioResource= doc.select("audio").map {
+                    videoResource.addAll(videoResourceTmp)
+                    val audioResourceTmp= doc.select("audio").map {
                         val src=it.attr("src")
                         if(src.startsWith("//")){
                             it.attr("src", "http:$src")
@@ -224,8 +229,27 @@ class ResourceFragment : BaseFragment(), BackHandler {
                                 }
                             }
                         }
-                        AudioResource(link=link)
+                        AudioResource(link=link,referer = session?.url ?: "")
                     }.filter { it.link.isNotBlank() }
+                    audioResource.addAll(audioResourceTmp)
+                    if(session!=null){
+                        val interceptResourceList= sessionManager.getOrCreateEngineSession(session!!).getInterceptResources()
+                        interceptResourceList.forEach {
+                            when(it){
+                                is ImageInterceptResource ->{
+                                    if(!containsResources(imageResource,it.link)){
+                                        imageResource.add(ImageResource(link = it.link,referer = it.referer))
+                                    }
+                                }
+                                is MediaInterceptResource ->{
+                                    if(!containsResources(videoResource,it.link)){
+                                        videoResource.add(VideoResource(link = it.link,referer = it.referer))
+                                    }
+                                }
+                            }
+                        }
+                    }
+
                     allResource.addAll(imageResource)
                     allResource.addAll(videoResource)
                     allResource.addAll(audioResource)
@@ -253,6 +277,7 @@ class ResourceFragment : BaseFragment(), BackHandler {
                     }
 
                     launch(Dispatchers.Main) {
+
                         displayAdapter=object:BaseQuickAdapter<Resource,CustomBaseViewHolder>(R.layout.item_resource,allResource){
                             override fun convert(helper: CustomBaseViewHolder, item: Resource) {
                                 when (item) {
@@ -375,7 +400,7 @@ class ResourceFragment : BaseFragment(), BackHandler {
     }
 }
 
-abstract class Resource(var link:String="")
-class ImageResource(link:String):Resource(link)
-class VideoResource(link:String,var poster:String=""):Resource(link)
-class AudioResource(link:String):Resource(link)
+abstract class Resource(var link:String="",var referer:String="")
+class ImageResource(link:String,referer:String):Resource(link,referer = referer)
+class VideoResource(link:String,var poster:String="",referer:String):Resource(link,referer = referer)
+class AudioResource(link:String,referer:String):Resource(link,referer = referer)

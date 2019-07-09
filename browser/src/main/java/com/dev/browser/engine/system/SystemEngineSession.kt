@@ -21,6 +21,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import java.io.File
 import java.util.*
+import java.util.concurrent.CopyOnWriteArrayList
 import kotlin.reflect.KProperty
 
 internal val additionalHeaders = mapOf(
@@ -47,7 +48,7 @@ class SystemEngineSession(
     @Volatile internal var currentUrl = ""
     @Volatile internal var fullScreenCallback: WebChromeClient.CustomViewCallback? = null
     @Volatile internal var abBlockOn: Boolean=true
-    internal val resources=LinkedList<InterceptResource>()  //网页资源
+    internal val resources=CopyOnWriteArrayList<InterceptResource>()  //网页资源
     // This is public for FFTV which needs access to the WebView instance. We can mark it internal once
     // https://github.com/mozilla-mobile/android-components/issues/1616 is resolved.
     @Volatile var webView: WebView = NestedWebView(context)
