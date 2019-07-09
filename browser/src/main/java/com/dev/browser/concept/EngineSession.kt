@@ -260,9 +260,9 @@ abstract class EngineSession(
      * */
     abstract fun forbidLoadingImage(b:Boolean,reload: Boolean = true)
     /**
-     * get Resource
+     * get InterceptResource
      * */
-    abstract fun getResources():List<Resource>
+    abstract fun getInterceptResources():List<InterceptResource>
     /**
      * Close the session. This may free underlying objects. Call this when you are finished using
      * this session.

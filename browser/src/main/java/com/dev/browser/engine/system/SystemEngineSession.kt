@@ -9,7 +9,7 @@ import android.os.Bundle
 import android.webkit.*
 import com.dev.browser.concept.EngineSession
 import com.dev.browser.concept.EngineSessionState
-import com.dev.browser.concept.Resource
+import com.dev.browser.concept.InterceptResource
 import com.dev.browser.concept.Settings
 import com.dev.browser.concept.history.HistoryTrackingDelegate
 import com.dev.browser.concept.request.RequestInterceptor
@@ -47,7 +47,7 @@ class SystemEngineSession(
     @Volatile internal var currentUrl = ""
     @Volatile internal var fullScreenCallback: WebChromeClient.CustomViewCallback? = null
     @Volatile internal var abBlockOn: Boolean=true
-    internal val resources=LinkedList<Resource>()  //网页资源
+    internal val resources=LinkedList<InterceptResource>()  //网页资源
     // This is public for FFTV which needs access to the WebView instance. We can mark it internal once
     // https://github.com/mozilla-mobile/android-components/issues/1616 is resolved.
     @Volatile var webView: WebView = NestedWebView(context)
@@ -289,6 +289,7 @@ class SystemEngineSession(
             webSettings.setAppCachePath(context.applicationContext.getDir("browser_cache",
                 Context.MODE_PRIVATE).path)
             webSettings.setAppCacheEnabled(true)
+            webSettings.cacheMode=WebSettings.LOAD_DEFAULT
             //设置database
             webSettings.databasePath=context.applicationContext.getDir("browser_database",Context.MODE_PRIVATE).path
             webSettings.databaseEnabled = false
@@ -449,13 +450,13 @@ class SystemEngineSession(
    /**
     * get Resources
     */
-    override fun getResources(): List<Resource> {
+    override fun getInterceptResources(): List<InterceptResource> {
         return resources
     }
     fun clearRecordResources(){
         resources.clear()
     }
-    fun addResource(resource: Resource){
+    fun addResource(resource: InterceptResource){
         resources.add(resource)
     }
     internal fun toggleDesktopUA(userAgent: String, requestDesktop: Boolean): String {

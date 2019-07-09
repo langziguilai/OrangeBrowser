@@ -11,37 +11,16 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
-import android.webkit.ConsoleMessage;
-import android.webkit.GeolocationPermissions;
-import android.webkit.HttpAuthHandler;
-import android.webkit.JavascriptInterface;
-import android.webkit.JsPromptResult;
-import android.webkit.JsResult;
-import android.webkit.SslErrorHandler;
-import android.webkit.ValueCallback;
-import android.webkit.WebChromeClient;
-import android.webkit.WebResourceRequest;  // makes android min version to be 21
-import android.webkit.WebResourceResponse;
-import android.webkit.WebStorage;
-import android.webkit.WebView;
-import android.webkit.WebViewClient;
-
+import android.webkit.*;
 import com.dev.browser.adblock.setting.AdBlockHelper;
-import com.dev.browser.concept.BrowserSetting;
 import com.dev.util.KeepAll;
 import org.adblockplus.libadblockplus.FilterEngine;
 import org.adblockplus.libadblockplus.Subscription;
 import org.adblockplus.libadblockplus.android.AdblockEngineProvider;
 import org.adblockplus.libadblockplus.android.Utils;
-import ren.yale.android.cachewebviewlib.WebViewCacheInterceptorInst;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
+import java.util.*;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -643,12 +622,7 @@ public class AdblockWebView extends WebView {
 
                 d("Allowed loading " + url);
 
-                if (BrowserSetting.ShouldUseCacheMode) {
-                    // 没有命中，则缓存
-                    return WebViewCacheInterceptorInst.getInstance().interceptRequest(url);
-                } else {
-                    return null;
-                }
+                return null;
             }
         }
 

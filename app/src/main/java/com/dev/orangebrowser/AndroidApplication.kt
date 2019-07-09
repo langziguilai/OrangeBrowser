@@ -29,11 +29,6 @@ import org.adblockplus.libadblockplus.android.SingleInstanceEngineProvider
 import tv.danmaku.ijk.media.exo2.Exo2PlayerManager
 import javax.inject.Inject
 import kotlin.coroutines.CoroutineContext
-import ren.yale.android.cachewebviewlib.WebViewCacheInterceptor
-import ren.yale.android.cachewebviewlib.WebViewCacheInterceptorInst
-
-
-
 
 
 @Keep
@@ -65,7 +60,6 @@ class AndroidApplication:BaseApplication(),CoroutineScope {
     lateinit var sessionClearObserver:SessionManager.Observer
     override fun initialize() {
         initCrashHandler()
-        initCacheWebView()
         YcShareElement.enableContentTransition(this)
         BigImageViewer.initialize(GlideImageLoader.with(this))
         sessionClearObserver=object:SessionManager.Observer{
@@ -169,9 +163,6 @@ class AndroidApplication:BaseApplication(),CoroutineScope {
                 sysExceptionHandler.uncaughtException(thread, RuntimeException("black screen"))
             }
         })
-    }
-    private fun initCacheWebView(){
-        WebViewCacheInterceptorInst.getInstance().init(WebViewCacheInterceptor.Builder(this))
     }
     //注入自定义的Filter
     private fun injectFilterToAdBlock(engine:AdblockEngine){

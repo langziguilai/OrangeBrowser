@@ -108,8 +108,8 @@ class OpenAppSettingFragment : BaseFragment(), BackHandler {
         list.add(DividerItem(height = 24, background = getColor(R.color.color_F8F8F8)))
         list.add(TickItem(title = getString(R.string.not_intercept), action = object : Action<TickItem> {
             override fun invoke(data: TickItem) {
-                BrowserSetting.RedirectToApp= REDIRECT_TO_APP_NO
-                setSpInt(R.string.pref_setting_need_intercept_open_app_value,REDIRECT_TO_APP_NO)
+                BrowserSetting.RedirectToApp= REDIRECT_TO_APP_YES
+                setSpInt(R.string.pref_setting_need_intercept_open_app_value,REDIRECT_TO_APP_YES)
                 onSelect(data)
             }
         }, value = interceptApp==getString(R.string.not_intercept)))
@@ -122,8 +122,8 @@ class OpenAppSettingFragment : BaseFragment(), BackHandler {
         }, value = interceptApp==getString(R.string.give_tip)))
         list.add(TickItem(title = getString(R.string.intercept_all), action = object : Action<TickItem> {
             override fun invoke(data: TickItem) {
-                BrowserSetting.RedirectToApp= REDIRECT_TO_APP_YES
-                setSpInt(R.string.pref_setting_need_intercept_open_app_value,REDIRECT_TO_APP_YES)
+                BrowserSetting.RedirectToApp= REDIRECT_TO_APP_NO
+                setSpInt(R.string.pref_setting_need_intercept_open_app_value,REDIRECT_TO_APP_NO)
                 onSelect(data)
             }
         }, value = interceptApp==getString(R.string.intercept_all)))

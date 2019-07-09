@@ -141,19 +141,6 @@ class WebSettingFragment : BaseFragment(), BackHandler {
                     }
                 })
         )
-        list.add(DividerItem(height = 24, background = getColor(R.color.color_F8F8F8)))
-        list.add(SwitchItem(title = getString(R.string.use_cache_mode), action = object : Action<Boolean> {
-            override fun invoke(data: Boolean) {
-                setSpBool(R.string.pref_setting_should_use_cache_mode, data)
-            }
-        }, value = getSpBool(R.string.pref_setting_should_use_cache_mode, false)))
-        list.add(
-            CategoryHeaderItem(
-                height = 48,
-                title = getString(R.string.tip_use_cache_mode),
-                background = getColor(R.color.color_F8F8F8)
-            )
-        )
 //        list.add(DividerItem(height = 24, background = getColor(R.color.color_F8F8F8)))
 //        list.add(SwitchItem(title = getString(R.string.keep_last_page), action = object : Action<Boolean> {
 //            override fun invoke(data: Boolean) {

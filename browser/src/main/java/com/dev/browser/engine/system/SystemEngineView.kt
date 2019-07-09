@@ -44,7 +44,6 @@ import com.dev.browser.utils.WebViewUtils
 import com.dev.util.Keep
 import com.dev.view.MatchParentLayout
 import kotlinx.coroutines.runBlocking
-import ren.yale.android.cachewebviewlib.WebViewCacheInterceptorInst
 import java.util.*
 
 
@@ -229,12 +228,7 @@ class SystemEngineView @JvmOverloads constructor(
                 onLocationChange(request.url.toString())
                 checkForClearRecordResources(request.url.toString())
             }
-            return if (BrowserSetting.ShouldUseCacheMode){
-                WebViewCacheInterceptorInst.getInstance().loadUrl(view,request.url.toString())
-                true
-            }else{
-                super.shouldOverrideUrlLoading(view,request)
-            }
+            return super.shouldOverrideUrlLoading(view,request)
         }
 
         override fun shouldOverrideUrlLoading(view: WebView, url: String): Boolean {
@@ -255,12 +249,7 @@ class SystemEngineView @JvmOverloads constructor(
                     checkForClearRecordResources(this)
                 }
             }
-            return if (BrowserSetting.ShouldUseCacheMode){
-                WebViewCacheInterceptorInst.getInstance().loadUrl(view,url)
-                true
-            }else{
-                super.shouldOverrideUrlLoading(view,url)
-            }
+            return super.shouldOverrideUrlLoading(view,url)
         }
         override fun doUpdateVisitedHistory(view: WebView, url: String, isReload: Boolean) {
             // TODO private browsing not supported for SystemEngine
@@ -376,9 +365,9 @@ class SystemEngineView @JvmOverloads constructor(
             val rangeHeaders = request.requestHeaders["Range"] ?: ""
             //如果为media
             if (rangeHeaders.isNotBlank()){
-                 session?.addResource(MediaResource(link = url,referer = referer))
+                 session?.addResource(MediaInterceptResource(link = url,referer = referer))
             }else if (acceptHeader.indexOf("image/")>=0){
-                session?.addResource(ImageResource(link = url,referer = referer))
+                session?.addResource(ImageInterceptResource(link = url,referer = referer))
             }
         }
         override fun onReceivedSslError(view: WebView, handler: SslErrorHandler, error: SslError) {
@@ -445,7 +434,7 @@ class SystemEngineView @JvmOverloads constructor(
         override fun onProgressChanged(view: WebView?, newProgress: Int) {
             session?.internalNotifyObservers { onProgress(newProgress) }
             //这里这样做是因为：onPageFinished不一定会调用，所以通过progress来判断
-            if (newProgress>90){
+            if (newProgress>95){
                 session?.internalNotifyObservers { onNavigationStateChange(view?.canGoBack(),view?.canGoForward()) }
                 if (!hasInjectedJavascriptFile){
                     //注入javascript

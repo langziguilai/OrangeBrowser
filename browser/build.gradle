@@ -53,7 +53,6 @@ dependencies {
     implementation 'com.hankcs:aho-corasick-double-array-trie:1.2.1'
     implementation 'org.adblockplus:adblock-android-webview:3.0'
     implementation "androidx.preference:preference:1.1.0-alpha04"
-    implementation 'ren.yale.android:cachewebviewlib:2.1.8'
     implementation project(':util')
     implementation project(path: ':base')
     implementation project(':view')

@@ -121,10 +121,20 @@ class TopBarIntegration(
                     }
                 }
             }
-
+            var isLoading=false
             //加载状态改变
             override fun onProgress(session: Session, progress: Int) {
                 binding.progress.progress = progress
+                if(progress>95){
+                    if(isLoading){
+                        binding.reloadIcon.show()
+                        binding.stopIcon.hide()
+                        binding.progress.hide()
+                        isLoading=false
+                    }
+                }else{
+                    isLoading=true
+                }
             }
         }
     }
