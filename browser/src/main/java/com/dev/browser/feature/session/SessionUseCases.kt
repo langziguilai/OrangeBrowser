@@ -59,7 +59,7 @@ class SessionUseCases(
             loadSession.title=""
             loadSession.securityInfo= Session.SecurityInfo(secure = false)
             loadSession.loading=true
-            loadSession.progress=0
+            loadSession.progress=10
             sessionManager.getOrCreateEngineSession(loadSession).loadUrl(url)
         }
     }

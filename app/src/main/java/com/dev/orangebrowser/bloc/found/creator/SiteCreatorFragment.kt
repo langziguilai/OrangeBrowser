@@ -12,6 +12,7 @@ import com.dev.base.BaseFragment
 import com.dev.base.extension.showToast
 import com.dev.base.support.BackHandler
 import com.dev.base.support.isUrl
+import com.dev.browser.session.Session
 import com.dev.browser.session.SessionManager
 import com.dev.orangebrowser.R
 import com.dev.orangebrowser.bloc.host.MainViewModel
@@ -95,7 +96,7 @@ class SiteCreatorFragment : BaseFragment(), BackHandler {
             binding.siteTitle.setText(session.title)
             binding.siteSubTitle.setText(Uri.parse(session.url).host)
             binding.siteName.setText(session.title)
-            session.themeColorMap[Uri.parse(session.url).host ?: ""] ?: activityViewModel.theme.value!!.colorPrimary
+            Session.THEME_COLOR_MAP[Uri.parse(session.url).host ?: ""] ?: activityViewModel.theme.value!!.colorPrimary
         }else{
             activityViewModel.theme.value!!.colorPrimary
         }

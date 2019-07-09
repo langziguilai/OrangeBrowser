@@ -97,8 +97,8 @@ class FullScreenHelper(
             binding.browserContainer.fitsSystemWindows = true
 
             val host = Uri.parse(session.url).host ?: ""
-            if (session.themeColorMap.containsKey(host)) {
-                binding.browserContainer.setBackgroundColor(session.themeColorMap[host]!!)
+            if (Session.THEME_COLOR_MAP.containsKey(host)) {
+                binding.browserContainer.setBackgroundColor(Session.THEME_COLOR_MAP[host]!!)
             } else {
                 val color = fragment.activityViewModel.theme.value!!.colorPrimary
                 binding.browserContainer.setBackgroundColor(color)

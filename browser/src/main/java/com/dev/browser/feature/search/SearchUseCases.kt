@@ -64,7 +64,7 @@ class SearchUseCases(
             searchSession.title=""
             searchSession.securityInfo= Session.SecurityInfo(secure = false)
             searchSession.loading=true
-            searchSession.progress=0
+            searchSession.progress=10
             searchSession.searchTerms = searchTerms
 
             sessionManager.getOrCreateEngineSession(searchSession).loadUrl(searchUrl)

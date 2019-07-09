@@ -110,7 +110,7 @@ class TopBarIntegration(
     //显示
     fun show(session:Session){
         setTopbarBySession(session)
-        val color=session.themeColorMap[session.url] ?: fragment.activityViewModel.theme.value!!.colorPrimary
+        val color=Session.THEME_COLOR_MAP[session.url] ?: fragment.activityViewModel.theme.value!!.colorPrimary
         updateTextColor(color)
         updateTopBarBackGround(color)
         binding.topBar.animate().setDuration(NORMAL_ANIMATION).setInterpolator(DEFAULT_INTERPOLATOR).alpha(1f).withEndAction{

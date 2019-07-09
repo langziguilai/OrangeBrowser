@@ -36,8 +36,8 @@ class StyleIntegration(
         if (fragment.lastUrl.isNotBlank()) {
             host = Uri.parse(fragment.lastUrl).host ?: ""
         }
-        if (session.themeColorMap.containsKey(host) && immerseStyle) {
-            updateStyle(session.themeColorMap[host]!!)
+        if (Session.THEME_COLOR_MAP.containsKey(host) && immerseStyle) {
+            updateStyle(Session.THEME_COLOR_MAP[host]!!)
         } else {
             val color = fragment.activityViewModel.theme.value!!.colorPrimary
             updateStyle(color)
@@ -45,16 +45,16 @@ class StyleIntegration(
         sessionObserver = object : Session.Observer {
             override fun onUrlChanged(session: Session, url: String) {
                 val currentHost = Uri.parse(session.url).host ?: ""
-                if (session.themeColorMap.containsKey(currentHost) && immerseStyle) {
-                    updateStyle(session.themeColorMap[currentHost]!!)
+                if (Session.THEME_COLOR_MAP.containsKey(currentHost) && immerseStyle) {
+                    updateStyle(Session.THEME_COLOR_MAP[currentHost]!!)
                     return
                 }
             }
             override fun onThumbnailCapture(session: Session, bitmap: Bitmap?) {
                 if (!immerseStyle) return
                 val currentHost = Uri.parse(session.url).host ?: ""
-                if (session.themeColorMap.containsKey(currentHost)) {
-                    updateStyle(session.themeColorMap[currentHost]!!)
+                if (Session.THEME_COLOR_MAP.containsKey(currentHost)) {
+                    updateStyle(Session.THEME_COLOR_MAP[currentHost]!!)
                     return
                 }
                 bitmap?.apply {
@@ -62,13 +62,13 @@ class StyleIntegration(
                     val dy = engineSession.webView.scrollY
                     //在尚未滑动的时候，可以通过截图来获取颜色，否则，不改变style
                     if (dy == 0) {
-                        if (session.themeColorMap.containsKey(currentHost)) {
-                            updateStyle(session.themeColorMap[currentHost]!!)
+                        if (Session.THEME_COLOR_MAP.containsKey(currentHost)) {
+                            updateStyle(Session.THEME_COLOR_MAP[currentHost]!!)
                         } else {
                             bitmap.apply {
                                 val color = bitmap.getPixel(5, 5)
                                 updateStyle(color)
-                                session.themeColorMap[currentHost] = color
+                                Session.THEME_COLOR_MAP[currentHost] = color
                             }
                         }
                     }

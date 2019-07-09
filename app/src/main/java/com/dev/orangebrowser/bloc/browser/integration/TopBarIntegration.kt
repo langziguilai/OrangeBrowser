@@ -46,12 +46,12 @@ class TopBarIntegration(
             if (!binding.overLayerTopPanel.isHidden()) {
                 topPanelHelper.toggleTopPanel(Runnable {
                     redirect(binding = binding, session = session, runnable = Runnable {
-                        fragment.RouterActivity?.loadSearchFragment(fragment.sessionId, session.themeColorMap[host])
+                        fragment.RouterActivity?.loadSearchFragment(fragment.sessionId, Session.THEME_COLOR_MAP[host])
                     })
                 })
             } else {
                 redirect(binding = binding, session = session, runnable = Runnable {
-                    fragment.RouterActivity?.loadSearchFragment(fragment.sessionId, session.themeColorMap[host])
+                    fragment.RouterActivity?.loadSearchFragment(fragment.sessionId, Session.THEME_COLOR_MAP[host])
                 })
             }
         }
@@ -82,6 +82,9 @@ class TopBarIntegration(
                     binding.reloadIcon.hide()
                     binding.stopIcon.show()
                     binding.progress.show()
+                    if (binding.progress.progress<=10){
+                        binding.progress.progress = 10
+                    }
                 } else {
                     binding.reloadIcon.show()
                     binding.stopIcon.hide()
@@ -124,7 +127,11 @@ class TopBarIntegration(
             var isLoading=false
             //加载状态改变
             override fun onProgress(session: Session, progress: Int) {
-                binding.progress.progress = progress
+                if (progress>10){
+                    binding.progress.progress = progress
+                }else{
+                    binding.progress.progress = 10
+                }
                 if(progress>95){
                     if(isLoading){
                         binding.reloadIcon.show()
@@ -161,10 +168,15 @@ class TopBarIntegration(
         } else {
             binding.securityIcon.hide()
         }
-        if (session.loading) {
+        if (session.progress in 1..99) {
             binding.reloadIcon.hide()
             binding.stopIcon.show()
             binding.progress.show()
+            if (session.progress>10){
+                binding.progress.progress=session.progress
+            }else{
+                binding.progress.progress=10
+            }
         } else {
             binding.reloadIcon.show()
             binding.stopIcon.hide()

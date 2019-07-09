@@ -109,8 +109,8 @@ class ThemeFragment : BaseFragment(), BackHandler {
         //恢复StatusBar
         sessionManager.selectedSession?.apply {
             val host = Uri.parse(this.url).host ?: ""
-            if (this.screenNumber!= Session.HOME_SCREEN && this.themeColorMap.containsKey(host)){
-                StatusBarUtil.setIconColor(requireActivity(), this.themeColorMap[host]!!)
+            if (this.screenNumber!= Session.HOME_SCREEN && Session.THEME_COLOR_MAP.containsKey(host)){
+                StatusBarUtil.setIconColor(requireActivity(), Session.THEME_COLOR_MAP[host]!!)
             }else{
                 StatusBarUtil.setIconColor(requireActivity(),activityViewModel.theme.value!!.colorPrimary)
             }

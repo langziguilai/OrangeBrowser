@@ -283,8 +283,8 @@ class MainActivity : BaseActivity(), DownloadManager.OnAutoInstallDownloadAppLis
         val session = sessionManager.selectedSession!!
         if (session.screenNumber != Session.HOME_SCREEN) {
             val host = Uri.parse(session.url).host ?: ""
-            if (session.themeColorMap.containsKey(host)) {
-                StatusBarUtil.setIconColor(this, session.themeColorMap[host]!!)
+            if (Session.THEME_COLOR_MAP.containsKey(host)) {
+                StatusBarUtil.setIconColor(this, Session.THEME_COLOR_MAP[host]!!)
             } else {
                 StatusBarUtil.setIconColor(this, viewModel.theme.value!!.colorPrimary)
             }

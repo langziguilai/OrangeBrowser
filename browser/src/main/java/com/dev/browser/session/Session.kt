@@ -22,6 +22,8 @@ import java.lang.ref.WeakReference
 import java.util.UUID
 import kotlin.properties.Delegates
 
+val ThemeColorMap=HashMap<String,Int>()
+
 /**
  * Value type that represents the state of a browser session. Changes can be observed.
  */
@@ -34,7 +36,6 @@ class Session(
     var forbidImageMode: Boolean = false,
     var visionMode: Int = NO_SET_SCREEN_MODE,
     var enterFullScreenMode: Boolean = false,
-    var themeColorMap: HashMap<String, Int> = HashMap(),
     var isStatusBarDarkMode: Boolean = false,
     var screenNumber:Int=HOME_SCREEN,//screenNumber默认为
     var webPageThumbnailRef:SoftReference<Bitmap>?=null,
@@ -58,6 +59,7 @@ class Session(
         const val SCROLL_FULL_SCREEN_MODE = 2  //滑动最大视野模式
         const val MAX_SCREEN_MODE = 3  //保持最大视野模式
         const val STATIC_FULL_SCREEN_MODE = 4 //全局模式，不可以滑动，如视频这类的应用
+        val THEME_COLOR_MAP=HashMap<String,Int>() //全局保存主题颜色
     }
 
     /**
