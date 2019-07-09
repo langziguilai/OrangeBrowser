@@ -295,12 +295,6 @@ class SystemEngineView @JvmOverloads constructor(
         }
         @Suppress("ReturnCount", "NestedBlockDepth")
         override fun shouldInterceptRequest(view: WebView, request: WebResourceRequest): WebResourceResponse? {
-            Log.d("get resource",request.url.toString())
-            Log.d("is iframe",request.isForMainFrame.toString())
-            request.requestHeaders.forEach {
-                Log.d("key",it.key)
-                Log.d("value",it.value)
-            }
             if (session?.webFontsEnabled == false && UrlMatcher.isWebFont(request.url)) {
                 return WebResourceResponse(null, null, null)
             }
