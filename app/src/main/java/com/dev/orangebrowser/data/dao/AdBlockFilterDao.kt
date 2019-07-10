@@ -24,4 +24,5 @@ interface AdBlockFilterDao {
     //删除所有
     @Query("DELETE FROM ad_block_filter")
     fun deleteAll()
+
 }

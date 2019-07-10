@@ -494,7 +494,16 @@ public abstract class BaseQuickAdapter<T, K extends BaseViewHolder> extends Recy
         mLastPosition = -1;
         notifyDataSetChanged();
     }
-
+    public void reset(){
+        if (mRequestLoadMoreListener != null) {
+            mNextLoadEnable = true;
+            mLoadMoreEnable = true;
+            mLoading = false;
+            mLoadMoreView.setLoadMoreStatus(LoadMoreView.STATUS_DEFAULT);
+        }
+        mLastPosition = -1;
+        notifyDataSetChanged();
+    }
     public void setNewDataForDiffUtil(@Nullable List<T> data){
         this.mData = data == null ? new ArrayList<T>() : data;
         if (mRequestLoadMoreListener != null) {

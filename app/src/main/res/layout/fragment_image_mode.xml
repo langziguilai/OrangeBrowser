@@ -17,8 +17,8 @@
                 android:focusable="true"
                 app:backgroundTint="@color/color_AFAFAF"
                 app:rippleColor="@color/color_8F8F8F"
-                app:srcCompat="@drawable/ic_switch"
-                android:id="@+id/switchToggle"
+                app:srcCompat="@drawable/ic_file_download_white_24dp"
+                android:id="@+id/downloadButton"
                 app:layout_constraintEnd_toEndOf="parent"
                 android:layout_marginEnd="16dp"
                 android:layout_marginBottom="16dp"
@@ -85,11 +85,55 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/header">
+
             <LinearLayout android:orientation="vertical"
                           android:id="@+id/spiner_container"
                           android:background="@color/colorPrimary"
                           android:layout_width="match_parent"
                           android:layout_height="wrap_content">
+                <LinearLayout android:layout_width="match_parent"
+                              android:layout_height="44dp"
+                              android:background="@color/colorAccent"
+                              android:orientation="horizontal">
+                    <TextView android:layout_width="180dp"
+                              android:layout_height="match_parent"
+                              android:paddingStart="8dp"
+                              android:paddingEnd="8dp"
+                              android:textSize="12sp"
+                              android:textColor="@color/colorBlack"
+                              android:text="@string/choose_image_mode_meta"
+                              android:gravity="start|center_vertical"/>
+                    <Spinner
+                            android:id="@+id/image_mode_meta_spinner"
+                            android:layout_width="match_parent"
+                            android:layout_height="44dp"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:spinnerMode="dropdown"
+                            android:dropDownVerticalOffset="88dp"
+                            android:dropDownWidth="360dp"
+                            android:popupBackground="@color/colorWhite"
+                    />
+                </LinearLayout>
+                <LinearLayout android:layout_width="match_parent" android:layout_height="44dp"
+                              android:orientation="horizontal">
+                    <TextView android:layout_width="180dp"
+                              android:layout_height="match_parent"
+                              android:paddingStart="8dp"
+                              android:paddingEnd="8dp"
+                              android:textSize="12sp"
+                              android:textColor="@color/colorBlack"
+                              android:text="@string/tip_show_all_images"
+                              android:gravity="start|center_vertical"/>
+                    <androidx.appcompat.widget.AppCompatToggleButton
+                            android:id="@+id/show_all_images"
+                            android:checked="false"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="8dp"
+                            android:layout_marginStart="8dp"
+                            android:layout_gravity="end|center_vertical"/>
+                </LinearLayout>
                 <LinearLayout android:layout_width="match_parent" android:layout_height="44dp"
                               android:orientation="horizontal">
                     <TextView android:layout_width="180dp"
@@ -151,6 +195,26 @@
                             android:layout_height="wrap_content"
                             android:layout_marginEnd="8dp"
                             android:layout_marginStart="8dp"
+                            android:layout_gravity="end|center_vertical"/>
+                </LinearLayout>
+                <LinearLayout android:layout_width="match_parent" android:layout_height="44dp"
+                              android:orientation="horizontal">
+                    <TextView android:layout_width="0dp"
+                              android:layout_height="match_parent"
+                              android:layout_weight="1"
+                              android:paddingStart="8dp"
+                              android:paddingEnd="8dp"
+                              android:textSize="12sp"
+                              android:textColor="@color/colorBlack"
+                              android:text="@string/tip_remember_for_site"
+                              android:gravity="start|center_vertical"/>
+                    <androidx.appcompat.widget.AppCompatCheckBox
+                            android:id="@+id/remember_it"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="8dp"
+                            android:layout_marginStart="8dp"
+                            android:checked="true"
                             android:layout_gravity="end|center_vertical"/>
                 </LinearLayout>
             </LinearLayout>

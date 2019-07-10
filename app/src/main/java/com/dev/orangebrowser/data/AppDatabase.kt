@@ -14,12 +14,14 @@ import com.dev.orangebrowser.data.model.*
         CommonSite::class,
         NewRecommendedSite::class,
         AdBlockFilter::class,
-        SavedFile::class
+        SavedFile::class,
+        ImageModeMeta::class
     ], version = 2, exportSchema = false
 )
 abstract class AppDatabase : RoomDatabase() {
     //    abstract fun favoriteSiteDao(): FavoriteSiteDao
     abstract fun commonSiteDao(): CommonSiteDao
+    abstract fun imageModeMetaDao(): ImageModeMetaDao
     abstract fun searchHistoryItemDao(): SearchHistoryItemDao
     //    abstract fun newRecommendedDao(): NewRecommendedDao
     abstract fun siteCategoryDao(): SiteCategoryDao

@@ -1,8 +1,11 @@
 package com.dev.orangebrowser.bloc.imageMode
 
+import android.net.Uri
 import androidx.lifecycle.MutableLiveData
 import com.dev.base.CoroutineViewModel
 import com.dev.orangebrowser.config.ErrorCode
+import com.dev.orangebrowser.data.dao.ImageModeMetaDao
+import com.dev.orangebrowser.data.model.ImageModeMeta
 import com.dev.orangebrowser.utils.html2article.ContentExtractor
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -13,11 +16,33 @@ import java.util.*
 import javax.inject.Inject
 
 class ImageModeViewModel @Inject constructor() : CoroutineViewModel() {
+    @Inject
+    lateinit var imageModeMetaDao: ImageModeMetaDao
     var refreshImagesLiveData = MutableLiveData<List<String>>()
     var loadMoreImagesLiveData = MutableLiveData<List<String>>()
     var nextPageUrlLiveData = MutableLiveData<String>()
     var htmlLiveData = MutableLiveData<String>()
     var errCodeLiveData=MutableLiveData<Int>()
+    var imageModeMetasLiveData = MutableLiveData<List<ImageModeMeta>>()
+
+    fun upSertImageModeMeta(imageSiteMeta:ImageModeMeta)=launch(Dispatchers.IO){
+        val existMeta= imageModeMetaDao.getByUniqueKey(imageSiteMeta.uniqueKey)
+        if (existMeta!=null){
+            existMeta.site=imageSiteMeta.site
+            existMeta.imageAttr=imageSiteMeta.imageAttr
+            existMeta.nextPageSelector=imageSiteMeta.nextPageSelector
+            existMeta.replaceNthChildWithLastChild=imageSiteMeta.replaceNthChildWithLastChild
+            existMeta.uniqueKey=imageSiteMeta.uniqueKey
+            imageModeMetaDao.update(existMeta)
+        }else{
+            imageModeMetaDao.insertAll(imageSiteMeta)
+        }
+    }
+    fun loadImageModeMetas(url:String)=launch(Dispatchers.IO){
+        //加载ImageModeMeta
+        val host=Uri.parse(url).host ?: ""
+        imageModeMetasLiveData.postValue(imageModeMetaDao.get(host))
+    }
     fun refresh(
         url: String,
         showAllImages: Boolean = false,
@@ -30,6 +55,8 @@ class ImageModeViewModel @Inject constructor() : CoroutineViewModel() {
             )
         }
     ) =launch(Dispatchers.IO){
+
+        //下载首页
         try {
             //下载
             var connection = Jsoup.connect(url)

@@ -57,6 +57,11 @@ class DatabaseModule {
     }
     @Provides
     @Singleton
+    fun provideImageModeMetaDao(appDatabase: AppDatabase): ImageModeMetaDao {
+        return appDatabase.imageModeMetaDao()
+    }
+    @Provides
+    @Singleton
     fun provideBrowserDatabase(applicationContext: Context): BrowserDatabase {
         return BrowserDatabase.get(applicationContext.applicationContext)
     }

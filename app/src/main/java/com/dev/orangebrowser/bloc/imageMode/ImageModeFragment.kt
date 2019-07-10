@@ -3,6 +3,7 @@ package com.dev.orangebrowser.bloc.imageMode
 import android.annotation.SuppressLint
 import android.app.Dialog
 import android.content.Context
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.Gravity
@@ -10,6 +11,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.appcompat.widget.AppCompatCheckBox
+import androidx.appcompat.widget.AppCompatToggleButton
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -25,6 +27,7 @@ import com.dev.orangebrowser.R
 import com.dev.orangebrowser.bloc.browser.BrowserFragment
 import com.dev.orangebrowser.bloc.host.MainViewModel
 import com.dev.orangebrowser.config.ErrorCode
+import com.dev.orangebrowser.data.model.ImageModeMeta
 import com.dev.orangebrowser.extension.RouterActivity
 import com.dev.orangebrowser.extension.appComponent
 import com.dev.orangebrowser.utils.PositionUtils
@@ -71,6 +74,7 @@ class ImageModeModeFragment : BaseFragment(), BackHandler {
     lateinit var sessionManager: SessionManager
     @Inject
     lateinit var downloadManager: DownloadManager
+
     lateinit var viewModel: ImageModeViewModel
     lateinit var activityViewModel: MainViewModel
 
@@ -81,8 +85,12 @@ class ImageModeModeFragment : BaseFragment(), BackHandler {
     lateinit var topOverLayer: FrameLayout
     lateinit var nextPageSpinner: Spinner
     lateinit var attrSpinner: Spinner
+    lateinit var imageModeMetaSpinner: Spinner
     lateinit var spinnerContainer: LinearLayout
     lateinit var useLastChildCheckBox:AppCompatCheckBox
+    lateinit var showAllImageToggleButton: AppCompatToggleButton
+    lateinit var rememberItCheckBox: AppCompatCheckBox
+    lateinit var imageModeMetaList:List<ImageModeMeta>
     //data
     private var images = LinkedList<String>()
     lateinit var adapter: BaseQuickAdapter<String, CustomBaseViewHolder>
@@ -98,6 +106,8 @@ class ImageModeModeFragment : BaseFragment(), BackHandler {
     private var imageAttributes = LinkedList<KeyValue>()
     //链接选择器
     private var linkSelectors = LinkedList<KeyValue>()
+    //图片提取器
+    private var imageModeMetaKeyValues = LinkedList<KeyValue>()
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -115,10 +125,14 @@ class ImageModeModeFragment : BaseFragment(), BackHandler {
         topOverLayer = view.findViewById<FrameLayout>(R.id.top_over_lay).apply {
             setOnClickListener {
                 hideSettingView()
+                if (rememberItCheckBox.isChecked){
+                    saveSiteRecord()
+                }
                 viewModel.refresh(url = sessionUrl,showAllImages = showAllImages,imageAttr = imageAttr,nextPageSelector = nextPageSelector)
             }
         }
         nextPageSpinner = view.findViewById(R.id.spinner_next)
+        imageModeMetaSpinner = view.findViewById(R.id.image_mode_meta_spinner)
         attrSpinner = view.findViewById(R.id.spinner_attr)
         useLastChildCheckBox=view.findViewById<AppCompatCheckBox>(R.id.use_last_child).apply{
             this.setOnCheckedChangeListener { _, isChecked ->
@@ -128,7 +142,19 @@ class ImageModeModeFragment : BaseFragment(), BackHandler {
                 }
             }
         }
-
+        showAllImageToggleButton=view.findViewById<AppCompatToggleButton>(R.id.show_all_images).apply {
+            this.setOnCheckedChangeListener { _, isChecked ->
+                showAllImages = !showAllImages
+                if (showAllImages) {
+                    requireContext().showToast(getString(R.string.tip_switch_to_show_all_images))
+                } else {
+                    requireContext().showToast(getString(R.string.tip_switch_to_show_main_images))
+                }
+                //刷新
+                viewModel.refresh(url = sessionUrl,showAllImages = showAllImages,imageAttr = imageAttr,nextPageSelector = nextPageSelector)
+            }
+        }
+        rememberItCheckBox=view.findViewById(R.id.remember_it)
         spinnerContainer = view.findViewById(R.id.spiner_container)
         recyclerView = view.findViewById(R.id.recycler_view)
         recyclerView.layoutManager = LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
@@ -145,16 +171,9 @@ class ImageModeModeFragment : BaseFragment(), BackHandler {
             }
         }
         container = view.findViewById(R.id.container)
-        view.findViewById<View>(R.id.switchToggle)?.apply {
+        view.findViewById<View>(R.id.downloadButton)?.apply {
             setOnClickListener {
-                showAllImages = !showAllImages
-                if (showAllImages) {
-                    requireContext().showToast(getString(R.string.tip_switch_to_show_all_images))
-                } else {
-                    requireContext().showToast(getString(R.string.tip_switch_to_show_main_images))
-                }
-                //刷新
-                viewModel.refresh(url = sessionUrl,showAllImages = showAllImages,imageAttr = imageAttr,nextPageSelector = nextPageSelector)
+                showDownloadDialog()
             }
         }
         spinnerContainer.onGlobalLayoutComplete {
@@ -182,9 +201,10 @@ class ImageModeModeFragment : BaseFragment(), BackHandler {
             }
         })
         viewModel.refreshImagesLiveData.observe(this,Observer<List<String>>{
+            loadCompleted=false
             images.clear()
             images.addAll(it)
-            adapter.notifyDataSetChanged()
+            adapter.setNewData(images)
         })
         viewModel.loadMoreImagesLiveData.observe(this,Observer<List<String>>{
             val oldSize=images.size
@@ -202,33 +222,79 @@ class ImageModeModeFragment : BaseFragment(), BackHandler {
                     imageAttributes=getImageAttributes(doc)
                     linkSelectors=getLinkSelectors(doc)
                     launch(Dispatchers.Main) {
-                        initSpinner()
+                        initAttrSpinner()
+                        initNextPageSpinner()
+                        //初始化数据后更新ImageModeMeta
+                        updateSelectedImageModeMeta(0)
                     }
                 }
             }
         })
+        viewModel.imageModeMetasLiveData.observe(this, Observer {
+            imageModeMetaList=it
+            imageModeMetaList.forEachIndexed{index, _ ->
+                imageModeMetaKeyValues.add(KeyValue(key = index.toString(),value=""))
+            }
+            initImageModeMetaSpinner()
+            if(imageModeMetaList.isNotEmpty()){
+                selectedImageModeMeta=imageModeMetaList[0]
+                imageAttr=selectedImageModeMeta.imageAttr
+                nextPageSelector=selectedImageModeMeta.nextPageSelector
+                replaceNthChildWithLastChild=selectedImageModeMeta.replaceNthChildWithLastChild
+                showAllImages=selectedImageModeMeta.showAllImages
+            }
+            //加载完ImageModeMetas之后再加载images
+            viewModel.refresh(url = sessionUrl,showAllImages = showAllImages,imageAttr = imageAttr,nextPageSelector = nextPageSelector)
+        })
     }
-    private fun initSpinner(){
+
+    private fun saveSiteRecord() {
+        val host= Uri.parse(sessionUrl).host ?: ""
+        if (host.isNotBlank()){
+            viewModel.upSertImageModeMeta(ImageModeMeta(
+                uid = 0,
+                imageAttr = imageAttr,
+                nextPageSelector = nextPageSelector,
+                site = host,
+                replaceNthChildWithLastChild = useLastChildCheckBox.isChecked,
+                showAllImages = showAllImageToggleButton.isChecked,
+                uniqueKey = host+"_"+imageAttr+"_"+nextPageSelector,
+                imageAttrTitle = imageAttributeKeyValue.getDescription(),
+                nextPageSelectorTitle = linkSelectorKeyValue.getDescription()
+                ))
+        }
+
+    }
+    private lateinit var imageAttributeKeyValue:KeyValue
+    private lateinit var linkSelectorKeyValue:KeyValue
+    private lateinit var selectedImageModeMeta: ImageModeMeta
+    private fun initAttrSpinner(){
         attrSpinner.adapter = KeyValueAdapter(data = imageAttributes)
         attrSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onNothingSelected(parent: AdapterView<*>?) {
                 if (imageAttributes.size > 0) {
                     imageAttr = imageAttributes[0].value
+                    imageAttributeKeyValue=imageAttributes[0]
                 }
             }
 
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                 imageAttr = imageAttributes[position].value
+                imageAttributeKeyValue=imageAttributes[position]
             }
         }
+    }
+    private fun initNextPageSpinner(){
         nextPageSpinner.adapter = KeyValueAdapter(data = linkSelectors)
         nextPageSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onNothingSelected(parent: AdapterView<*>?) {
                 if (linkSelectors.size > 0) {
                     nextPageSelector = linkSelectors[0].key
+                    linkSelectorKeyValue= linkSelectors[0]
                 }
             }
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                linkSelectorKeyValue=linkSelectors[position]
                 nextPageSelector = if (replaceNthChildWithLastChild){
                     StringUtil.replaceLast(linkSelectors[position].key,"nth-child\\(\\d\\)","last-child")
                 }else{
@@ -237,12 +303,48 @@ class ImageModeModeFragment : BaseFragment(), BackHandler {
             }
         }
     }
+    private fun initImageModeMetaSpinner(){
+        imageModeMetaSpinner.adapter=KeyValueAdapter(data=imageModeMetaKeyValues)
+        imageModeMetaSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+                updateSelectedImageModeMeta(0)
+            }
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                updateSelectedImageModeMeta(position)
+            }
+        }
+    }
+    //根据选择器来更新View
+    private fun updateSelectedImageModeMeta(position: Int) {
+          if (imageModeMetaList.size>position){
+              selectedImageModeMeta=imageModeMetaList[position]
+              imageModeMetaSpinner.setSelection(position)
+              useLastChildCheckBox.isChecked=selectedImageModeMeta.replaceNthChildWithLastChild
+              showAllImageToggleButton.isChecked=selectedImageModeMeta.showAllImages
+              imageAttr=selectedImageModeMeta.imageAttr
+              nextPageSelector=selectedImageModeMeta.nextPageSelector
+              replaceNthChildWithLastChild=selectedImageModeMeta.replaceNthChildWithLastChild
+              showAllImages=selectedImageModeMeta.showAllImages
+              val imageAttributeKv=KeyValue.parse(selectedImageModeMeta.imageAttrTitle)
+              imageAttributes.forEachIndexed { index, keyValue ->
+                  if(keyValue.key==imageAttributeKv.key && keyValue.value==imageAttributeKv.value){
+                      attrSpinner.setSelection(index)
+                  }
+              }
+              val nextPageSelectorKV=KeyValue.parse(selectedImageModeMeta.nextPageSelectorTitle)
+              linkSelectors.forEachIndexed { index, keyValue ->
+                  if(keyValue.key==nextPageSelectorKV.key && keyValue.value==nextPageSelectorKV.value){
+                      nextPageSpinner.setSelection(index)
+                  }
+              }
 
+          }
+    }
     private fun getImageAttributes(document:Document):LinkedList<KeyValue>{
         val list=LinkedList<KeyValue>()
         document.select("img").forEach {ele->
             ele.attributes().forEach {
-                list.add(KeyValue(key = it.value,value = it.key))
+                list.add(KeyValue(key = it.value.trim(),value = it.key.trim()))
             }
         }
         return list
@@ -250,7 +352,7 @@ class ImageModeModeFragment : BaseFragment(), BackHandler {
     private fun getLinkSelectors(document: Document):LinkedList<KeyValue>{
         val list=LinkedList<KeyValue>()
         document.select("a").forEach {ele->
-            list.add(KeyValue(key = ele.cssSelector(), value = ele.text()))
+            list.add(KeyValue(key = ele.cssSelector().trim(), value = ele.text().trim()))
         }
         return list
     }
@@ -272,7 +374,7 @@ class ImageModeModeFragment : BaseFragment(), BackHandler {
     var downloadDialog: Dialog? = null
 
 
-    private fun showDialog() {
+    private fun showDownloadDialog() {
         downloadDialog = DialogBuilder()
             .setLayoutId(R.layout.dialog_download_all_images)
             .setGravity(Gravity.CENTER)
@@ -339,8 +441,7 @@ class ImageModeModeFragment : BaseFragment(), BackHandler {
         initImageItemContextMenu(adapter)
         recyclerView.adapter = adapter
         sessionUrl=session.url
-        viewModel.refresh(url = sessionUrl,showAllImages = showAllImages,imageAttr = imageAttr,nextPageSelector = nextPageSelector)
-
+        viewModel.loadImageModeMetas(sessionUrl)
     }
 
     var imageItemContextMenu: Dialog? = null
@@ -436,19 +537,39 @@ class ImageModeModeFragment : BaseFragment(), BackHandler {
     }
 }
 
-data class KeyValue(val key: String, val value: String)
+data class KeyValue(var key: String="", var value: String=""){
+    fun getDescription():String{
+        if (key.isNotBlank() && value.isNotBlank()) return "$value => $key"
+        if (key.isNotBlank()) return key
+        if (value.isNotBlank()) return value
+        return ""
+    }
+    companion object{
+        fun parse(description:String):KeyValue{
+            val kv=KeyValue()
+            val list=description.split("=>")
+            if (list.isNotEmpty()){
+                kv.value=list[0].trim()
+            }
+            if (list.size>1){
+                kv.key=list[1].trim()
+            }
+            return kv
+        }
+    }
+}
 
 class KeyValueAdapter(var data: List<KeyValue>) : BaseAdapter() {
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
         if (convertView != null) {
             (convertView.tag as? ViewHolder)?.apply {
-                this.title.text = data[position].value+" => "+data[position].key
+                this.title.text = data[position].getDescription()
             }
             return convertView
         }
         val view = View.inflate(parent.context, R.layout.item_title_selector, null)
         ViewHolder(view).apply {
-            this.title.text = data[position].value+" => "+data[position].key
+            this.title.text = data[position].getDescription()
         }
         return view
     }
