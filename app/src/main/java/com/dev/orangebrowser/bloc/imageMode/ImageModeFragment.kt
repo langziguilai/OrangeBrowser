@@ -250,7 +250,7 @@ class ImageModeModeFragment : BaseFragment(), BackHandler {
 
     private fun saveSiteRecord() {
         val host= Uri.parse(sessionUrl).host ?: ""
-        if (host.isNotBlank()){
+        if (host.isNotBlank() && imageAttributes.isNotEmpty() && linkSelectors.isNotEmpty()){
             viewModel.upSertImageModeMeta(ImageModeMeta(
                 uid = 0,
                 imageAttr = imageAttr,

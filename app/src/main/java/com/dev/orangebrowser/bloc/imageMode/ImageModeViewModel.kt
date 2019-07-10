@@ -30,9 +30,12 @@ class ImageModeViewModel @Inject constructor() : CoroutineViewModel() {
         if (existMeta!=null){
             existMeta.site=imageSiteMeta.site
             existMeta.imageAttr=imageSiteMeta.imageAttr
+            existMeta.imageAttrTitle=imageSiteMeta.imageAttrTitle
             existMeta.nextPageSelector=imageSiteMeta.nextPageSelector
+            existMeta.nextPageSelectorTitle=imageSiteMeta.nextPageSelectorTitle
             existMeta.replaceNthChildWithLastChild=imageSiteMeta.replaceNthChildWithLastChild
             existMeta.uniqueKey=imageSiteMeta.uniqueKey
+            existMeta.showAllImages=imageSiteMeta.showAllImages
             imageModeMetaDao.update(existMeta)
         }else{
             imageModeMetaDao.insertAll(imageSiteMeta)

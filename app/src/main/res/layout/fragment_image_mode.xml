@@ -15,7 +15,7 @@
                 android:layout_height="wrap_content"
                 android:clickable="true"
                 android:focusable="true"
-                app:backgroundTint="@color/color_AFAFAF"
+                app:backgroundTint="@color/colorAccent"
                 app:rippleColor="@color/color_8F8F8F"
                 app:srcCompat="@drawable/ic_file_download_white_24dp"
                 android:id="@+id/downloadButton"
@@ -110,7 +110,7 @@
                             android:layout_weight="1"
                             android:gravity="center"
                             android:spinnerMode="dropdown"
-                            android:dropDownVerticalOffset="88dp"
+                            android:dropDownVerticalOffset="44dp"
                             android:dropDownWidth="360dp"
                             android:popupBackground="@color/colorWhite"
                     />
@@ -173,7 +173,7 @@
                             android:layout_weight="1"
                             android:gravity="center"
                             android:spinnerMode="dropdown"
-                            android:dropDownVerticalOffset="132dp"
+                            android:dropDownVerticalOffset="88dp"
                             android:popupBackground="@color/colorWhite"
                             android:dropDownWidth="360dp"
                     />
