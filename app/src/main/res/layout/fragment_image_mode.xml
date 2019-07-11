@@ -117,22 +117,51 @@
                 </LinearLayout>
                 <LinearLayout android:layout_width="match_parent" android:layout_height="44dp"
                               android:orientation="horizontal">
-                    <TextView android:layout_width="180dp"
+                    <TextView android:layout_width="0dp"
+                              android:layout_weight="1"
                               android:layout_height="match_parent"
                               android:paddingStart="8dp"
                               android:paddingEnd="8dp"
                               android:textSize="12sp"
                               android:textColor="@color/colorBlack"
-                              android:text="@string/tip_show_all_images"
+                              android:text="@string/content_selector"
                               android:gravity="start|center_vertical"/>
-                    <androidx.appcompat.widget.AppCompatToggleButton
-                            android:id="@+id/show_all_images"
-                            android:checked="false"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginEnd="8dp"
-                            android:layout_marginStart="8dp"
-                            android:layout_gravity="end|center_vertical"/>
+                    <TextView android:layout_width="0dp"
+                              android:layout_weight="1"
+                              android:id="@+id/content_selector"
+                              android:layout_height="match_parent"
+                              android:paddingStart="8dp"
+                              android:paddingEnd="8dp"
+                              android:textSize="12sp"
+                              android:textColor="@color/colorBlack"
+                              android:hint="@string/html"
+                              android:textColorHint="@color/color_6C6C6C"
+                              android:gravity="start|center_vertical"/>
+                </LinearLayout>
+                <LinearLayout android:layout_width="match_parent" android:layout_height="44dp"
+                              android:orientation="horizontal">
+                    <androidx.appcompat.widget.AppCompatButton
+                            android:id="@+id/next_level"
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_height="match_parent"
+                            android:paddingStart="8dp"
+                            android:paddingEnd="8dp"
+                            android:textSize="12sp"
+                            android:textColor="@color/colorBlack"
+                            android:text="@string/next_level"
+                            android:gravity="start|center_vertical"/>
+                    <androidx.appcompat.widget.AppCompatButton
+                            android:id="@+id/pre_level"
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_height="match_parent"
+                            android:paddingStart="8dp"
+                            android:paddingEnd="8dp"
+                            android:textSize="12sp"
+                            android:textColor="@color/colorBlack"
+                            android:text="@string/pre_level"
+                            android:gravity="start|center_vertical"/>
                 </LinearLayout>
                 <LinearLayout android:layout_width="match_parent" android:layout_height="44dp"
                               android:orientation="horizontal">

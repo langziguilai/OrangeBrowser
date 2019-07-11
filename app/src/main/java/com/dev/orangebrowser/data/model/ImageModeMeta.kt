@@ -14,5 +14,5 @@ data class ImageModeMeta(
     @ColumnInfo(name = "next_page_selector") var nextPageSelector:String,
     @ColumnInfo(name = "next_page_selector_title") var nextPageSelectorTitle:String,
     @ColumnInfo(name = "replace_nth_with_last") var replaceNthChildWithLastChild:Boolean,
-    @ColumnInfo(name = "show_all_images") var showAllImages:Boolean,
+    @ColumnInfo(name = "content_selector") var contentSelector:String,
     @ColumnInfo(name = "unique_key") var uniqueKey:String)

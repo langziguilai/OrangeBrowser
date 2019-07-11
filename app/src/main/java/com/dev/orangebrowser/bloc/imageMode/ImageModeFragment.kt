@@ -10,8 +10,8 @@ import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import androidx.appcompat.widget.AppCompatButton
 import androidx.appcompat.widget.AppCompatCheckBox
-import androidx.appcompat.widget.AppCompatToggleButton
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -88,19 +88,27 @@ class ImageModeModeFragment : BaseFragment(), BackHandler {
     lateinit var imageModeMetaSpinner: Spinner
     lateinit var spinnerContainer: LinearLayout
     lateinit var useLastChildCheckBox:AppCompatCheckBox
-    lateinit var showAllImageToggleButton: AppCompatToggleButton
     lateinit var rememberItCheckBox: AppCompatCheckBox
+    lateinit var contentSelectTextView:TextView
+    lateinit var nextLevelButton:AppCompatButton
+    lateinit var preLevelButton:AppCompatButton
     lateinit var imageModeMetaList:List<ImageModeMeta>
     //data
-    private var images = LinkedList<String>()
-    lateinit var adapter: BaseQuickAdapter<String, CustomBaseViewHolder>
-    var showAllImages: Boolean = false
+    private var images = LinkedList<ImageInfo>()
+    lateinit var adapter: BaseQuickAdapter<ImageInfo, CustomBaseViewHolder>
     var html = ""
     var imageAttr = "abs:src"
     var nextPageSelector = ""
     var sessionUrl=""
     var nextPageUrl=""
     var replaceNthChildWithLastChild=false
+
+    private lateinit var document:Document //原始文档
+    var targetImageSelector=""  //目标图片的Selector
+    var contentSelector=""  //内容选择器
+    var contentSelectorPartList=LinkedList<String>()
+    var contentSelectorContainerIndex=-1
+    val SEPARATOR:String=">"
     var loadCompleted=false
     //图片属性
     private var imageAttributes = LinkedList<KeyValue>()
@@ -128,30 +136,42 @@ class ImageModeModeFragment : BaseFragment(), BackHandler {
                 if (rememberItCheckBox.isChecked){
                     saveSiteRecord()
                 }
-                viewModel.refresh(url = sessionUrl,showAllImages = showAllImages,imageAttr = imageAttr,nextPageSelector = nextPageSelector)
+                refresh()
+            }
+        }
+        imageModeMetaSpinner = view.findViewById(R.id.image_mode_meta_spinner)
+        contentSelectTextView=view.findViewById(R.id.content_selector)
+        //下一个层级
+        nextLevelButton=view.findViewById<AppCompatButton>(R.id.next_level).apply {
+            setOnClickListener {
+               if (contentSelectorPartList.isNotEmpty()){
+                   if(contentSelectorContainerIndex < this@ImageModeModeFragment.contentSelectorPartList.size-1){
+                       this@ImageModeModeFragment.contentSelectorContainerIndex += 1
+                       this@ImageModeModeFragment.contentSelector=contentSelectorPartList.subList(0,this@ImageModeModeFragment.contentSelectorContainerIndex+1).joinToString(SEPARATOR)
+                       this@ImageModeModeFragment.contentSelectTextView.text=this@ImageModeModeFragment.contentSelector
+                       this@ImageModeModeFragment.refresh()
+                   }
+               }
+            }
+        }
+        //上一个层级
+        preLevelButton=view.findViewById<AppCompatButton>(R.id.pre_level).apply {
+            setOnClickListener {
+                if (contentSelectorPartList.isNotEmpty()){
+                    if(contentSelectorContainerIndex>0){
+                        this@ImageModeModeFragment.contentSelectorContainerIndex -= 1
+                        this@ImageModeModeFragment.contentSelector=contentSelectorPartList.subList(0,this@ImageModeModeFragment.contentSelectorContainerIndex+1).joinToString(SEPARATOR)
+                        this@ImageModeModeFragment.contentSelectTextView.text=this@ImageModeModeFragment.contentSelector
+                        this@ImageModeModeFragment.refresh()
+                    }
+                }
             }
         }
         nextPageSpinner = view.findViewById(R.id.spinner_next)
-        imageModeMetaSpinner = view.findViewById(R.id.image_mode_meta_spinner)
         attrSpinner = view.findViewById(R.id.spinner_attr)
         useLastChildCheckBox=view.findViewById<AppCompatCheckBox>(R.id.use_last_child).apply{
             this.setOnCheckedChangeListener { _, isChecked ->
                 replaceNthChildWithLastChild=isChecked
-                if (replaceNthChildWithLastChild){
-                    nextPageSelector=StringUtil.replaceLast(nextPageSelector,"nth-child\\(\\d\\)","last-child")
-                }
-            }
-        }
-        showAllImageToggleButton=view.findViewById<AppCompatToggleButton>(R.id.show_all_images).apply {
-            this.setOnCheckedChangeListener { _, isChecked ->
-                showAllImages = !showAllImages
-                if (showAllImages) {
-                    requireContext().showToast(getString(R.string.tip_switch_to_show_all_images))
-                } else {
-                    requireContext().showToast(getString(R.string.tip_switch_to_show_main_images))
-                }
-                //刷新
-                viewModel.refresh(url = sessionUrl,showAllImages = showAllImages,imageAttr = imageAttr,nextPageSelector = nextPageSelector)
             }
         }
         rememberItCheckBox=view.findViewById(R.id.remember_it)
@@ -200,13 +220,13 @@ class ImageModeModeFragment : BaseFragment(), BackHandler {
                 loadCompleted=true
             }
         })
-        viewModel.refreshImagesLiveData.observe(this,Observer<List<String>>{
+        viewModel.refreshImagesLiveData.observe(this,Observer<List<ImageInfo>>{
             loadCompleted=false
             images.clear()
             images.addAll(it)
             adapter.setNewData(images)
         })
-        viewModel.loadMoreImagesLiveData.observe(this,Observer<List<String>>{
+        viewModel.loadMoreImagesLiveData.observe(this,Observer<List<ImageInfo>>{
             val oldSize=images.size
             images.addAll(it)
             adapter.notifyItemRangeInserted(oldSize,it.size)
@@ -230,6 +250,9 @@ class ImageModeModeFragment : BaseFragment(), BackHandler {
                 }
             }
         })
+        viewModel.documentLiveData.observe(this, Observer {
+             document=it
+        })
         viewModel.imageModeMetasLiveData.observe(this, Observer {
             imageModeMetaList=it
             imageModeMetaList.forEachIndexed{index, _ ->
@@ -241,13 +264,18 @@ class ImageModeModeFragment : BaseFragment(), BackHandler {
                 imageAttr=selectedImageModeMeta.imageAttr
                 nextPageSelector=selectedImageModeMeta.nextPageSelector
                 replaceNthChildWithLastChild=selectedImageModeMeta.replaceNthChildWithLastChild
-                showAllImages=selectedImageModeMeta.showAllImages
+                contentSelector=selectedImageModeMeta.contentSelector
+                contentSelectorPartList.clear()
+                contentSelectorPartList.addAll(contentSelector.split(SEPARATOR).map { str->str.trim() })
+                contentSelectorContainerIndex=contentSelectorPartList.size-1
             }
             //加载完ImageModeMetas之后再加载images
-            viewModel.refresh(url = sessionUrl,showAllImages = showAllImages,imageAttr = imageAttr,nextPageSelector = nextPageSelector)
+            refresh()
         })
     }
-
+    private fun refresh(){
+        viewModel.refresh(url = sessionUrl,contentSelector = contentSelector,imageAttr = imageAttr,nextPageSelector = getRealNextPageSelector())
+    }
     private fun saveSiteRecord() {
         val host= Uri.parse(sessionUrl).host ?: ""
         if (host.isNotBlank() && imageAttributes.isNotEmpty() && linkSelectors.isNotEmpty()){
@@ -257,7 +285,7 @@ class ImageModeModeFragment : BaseFragment(), BackHandler {
                 nextPageSelector = nextPageSelector,
                 site = host,
                 replaceNthChildWithLastChild = useLastChildCheckBox.isChecked,
-                showAllImages = showAllImageToggleButton.isChecked,
+                contentSelector = contentSelector,
                 uniqueKey = host+"_"+imageAttr+"_"+nextPageSelector,
                 imageAttrTitle = imageAttributeKeyValue.getDescription(),
                 nextPageSelectorTitle = linkSelectorKeyValue.getDescription()
@@ -288,7 +316,7 @@ class ImageModeModeFragment : BaseFragment(), BackHandler {
         nextPageSpinner.adapter = KeyValueAdapter(data = linkSelectors)
         nextPageSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onNothingSelected(parent: AdapterView<*>?) {
-                if (linkSelectors.size > 0) {
+                if (linkSelectors.size > 0 && nextPageSelector.isBlank()) {
                     nextPageSelector = linkSelectors[0].key
                     linkSelectorKeyValue= linkSelectors[0]
                 }
@@ -320,11 +348,11 @@ class ImageModeModeFragment : BaseFragment(), BackHandler {
               selectedImageModeMeta=imageModeMetaList[position]
               imageModeMetaSpinner.setSelection(position)
               useLastChildCheckBox.isChecked=selectedImageModeMeta.replaceNthChildWithLastChild
-              showAllImageToggleButton.isChecked=selectedImageModeMeta.showAllImages
               imageAttr=selectedImageModeMeta.imageAttr
               nextPageSelector=selectedImageModeMeta.nextPageSelector
               replaceNthChildWithLastChild=selectedImageModeMeta.replaceNthChildWithLastChild
-              showAllImages=selectedImageModeMeta.showAllImages
+              contentSelector=selectedImageModeMeta.contentSelector
+              contentSelectTextView.text=contentSelector
               val imageAttributeKv=KeyValue.parse(selectedImageModeMeta.imageAttrTitle)
               imageAttributes.forEachIndexed { index, keyValue ->
                   if(keyValue.key==imageAttributeKv.key && keyValue.value==imageAttributeKv.value){
@@ -414,9 +442,9 @@ class ImageModeModeFragment : BaseFragment(), BackHandler {
             return
         }
         adapter = object :
-            BaseQuickAdapter<String, CustomBaseViewHolder>(R.layout.item_scroll_parallax_image, images) {
-            override fun convert(helper: CustomBaseViewHolder, item: String) {
-                helper.loadNoCropImage(R.id.image, url = item, referer = session.url)
+            BaseQuickAdapter<ImageInfo, CustomBaseViewHolder>(R.layout.item_scroll_parallax_image, images) {
+            override fun convert(helper: CustomBaseViewHolder, item: ImageInfo) {
+                helper.loadNoCropImage(R.id.image, url = item.url, referer = session.url)
                 helper.itemView.findViewById<ScrollParallaxImageView>(R.id.image).setParallaxStyles(
                     VerticalMovingStyle()
                 )
@@ -433,7 +461,7 @@ class ImageModeModeFragment : BaseFragment(), BackHandler {
             if (nextPageUrl.isBlank()){
                 adapter.loadMoreComplete()
             }else{
-                viewModel.loadMore(url = nextPageUrl,showAllImages = showAllImages,imageAttr = imageAttr,nextPageSelector = nextPageSelector)
+                viewModel.loadMore(url = nextPageUrl,contentSelector = contentSelector,imageAttr = imageAttr,nextPageSelector = getRealNextPageSelector())
             }
         }, recyclerView)
         adapter.disableLoadMoreIfNotFullPage()
@@ -443,9 +471,15 @@ class ImageModeModeFragment : BaseFragment(), BackHandler {
         sessionUrl=session.url
         viewModel.loadImageModeMetas(sessionUrl)
     }
-
+    private fun getRealNextPageSelector():String{
+        return if (replaceNthChildWithLastChild){
+            StringUtil.replaceLast(nextPageSelector,"nth-child\\(\\d\\)","last-child")
+        }else{
+            nextPageSelector
+        }
+    }
     var imageItemContextMenu: Dialog? = null
-    private fun initImageItemContextMenu(adapter: BaseQuickAdapter<String, CustomBaseViewHolder>?) {
+    private fun initImageItemContextMenu(adapter: BaseQuickAdapter<ImageInfo, CustomBaseViewHolder>?) {
         adapter?.setOnItemLongClickListener { _, _, position ->
             imageItemContextMenu = DialogBuilder()
                 .setLayoutId(R.layout.dialog_context_menu)
@@ -470,7 +504,7 @@ class ImageModeModeFragment : BaseFragment(), BackHandler {
                 R.layout.mozac_feature_contextmenu_item, listOf(
                     MenuItem(label = getString(R.string.menu_download_image), action = object : Action<MenuItem> {
                         override fun execute(data: MenuItem) {
-                            downloadImage(url = images[position], referer = sessionManager.selectedSession?.url ?: "")
+                            downloadImage(url = images[position].url, referer = sessionManager.selectedSession?.url ?: "")
                             imageItemContextMenu?.dismiss()
                         }
                     }),
@@ -478,7 +512,7 @@ class ImageModeModeFragment : BaseFragment(), BackHandler {
                         override fun execute(data: MenuItem) {
                             if (!requireContext().shareLink(
                                     title = getString(R.string.share_image),
-                                    url = images[position]
+                                    url = images[position].url
                                 )
                             ) {
                                 requireContext().showToast(getString(R.string.tip_share_fail))
@@ -488,8 +522,25 @@ class ImageModeModeFragment : BaseFragment(), BackHandler {
                     }),
                     MenuItem(label = getString(R.string.menu_copy_link), action = object : Action<MenuItem> {
                         override fun execute(data: MenuItem) {
-                            requireContext().copyText(getString(R.string.link), images[position])
+                            requireContext().copyText(getString(R.string.link), images[position].url)
                             requireContext().showToast(getString(R.string.tip_copy_link))
+                            imageItemContextMenu?.dismiss()
+                        }
+                    }),
+                    MenuItem(label = getString(R.string.set_as_target), action = object : Action<MenuItem> {
+                        override fun execute(data: MenuItem) {
+                            targetImageSelector=images[position].selector
+                            val parentContainerLastIndex=targetImageSelector.lastIndexOf(SEPARATOR)
+                            contentSelector = if (parentContainerLastIndex>=0){
+                                targetImageSelector.substring(0,parentContainerLastIndex).trim()
+                            }else{
+                                ""
+                            }
+                            contentSelectorPartList.clear()
+                            contentSelectorPartList.addAll(contentSelector.split(SEPARATOR).map { it.trim() })
+                            contentSelectorContainerIndex=contentSelectorPartList.size-1
+                            contentSelectTextView.text = contentSelector
+                            requireContext().showToast(getString(R.string.tip_set_content_selector))
                             imageItemContextMenu?.dismiss()
                         }
                     })
@@ -523,11 +574,11 @@ class ImageModeModeFragment : BaseFragment(), BackHandler {
     @SuppressLint("MissingPermission")
     private fun downloadAllImages() {
         val referer = sessionManager.selectedSession?.url ?: ""
-        for (url in images) {
-            val fileName = DownloadUtils.guessFileName("", url, "")
+        for (image in images) {
+            val fileName = DownloadUtils.guessFileName("", image.url, "")
             downloadManager.download(
                 Download(
-                    url = url,
+                    url = image.url,
                     fileName = fileName,
                     referer = referer,
                     contentType = "image/*"

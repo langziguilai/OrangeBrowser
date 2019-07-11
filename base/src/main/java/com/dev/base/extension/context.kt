@@ -106,6 +106,12 @@ fun Context.showToast(content:String){
     toast.show()
 }
 @Keep
+fun Context.showLongToast(content:String){
+    val toast=Toast.makeText(this,"",Toast.LENGTH_LONG)
+    toast.setText(content)
+    toast.show()
+}
+@Keep
 fun Context.shareText(title:String,text:String):Boolean{
     return try {
         val intent = Intent(Intent.ACTION_SEND).apply {

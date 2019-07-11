@@ -378,4 +378,10 @@
     <string name="tip_remember_for_site">记住这次选择</string>
     <string name="tip_show_all_images">显示所有图片</string>
     <string name="choose_image_mode_meta">选择图片提取规则</string>
+    <string name="set_as_target">设为目标</string>
+    <string name="tip_set_content_selector">已经设置好目标，现在请进入设置界面，开始选择内容提取规则</string>
+    <string name="content_selector">主要内容选择器</string>
+    <string name="html">html</string>
+    <string name="next_level">下一级</string>
+    <string name="pre_level">上一级</string>
 </resources>

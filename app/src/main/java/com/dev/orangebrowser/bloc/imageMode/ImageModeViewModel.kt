@@ -11,6 +11,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
+import org.jsoup.nodes.Element
 import java.lang.Exception
 import java.util.*
 import javax.inject.Inject
@@ -18,13 +19,13 @@ import javax.inject.Inject
 class ImageModeViewModel @Inject constructor() : CoroutineViewModel() {
     @Inject
     lateinit var imageModeMetaDao: ImageModeMetaDao
-    var refreshImagesLiveData = MutableLiveData<List<String>>()
-    var loadMoreImagesLiveData = MutableLiveData<List<String>>()
+    var refreshImagesLiveData = MutableLiveData<List<ImageInfo>>()
+    var loadMoreImagesLiveData = MutableLiveData<List<ImageInfo>>()
     var nextPageUrlLiveData = MutableLiveData<String>()
     var htmlLiveData = MutableLiveData<String>()
     var errCodeLiveData=MutableLiveData<Int>()
     var imageModeMetasLiveData = MutableLiveData<List<ImageModeMeta>>()
-
+    var documentLiveData = MutableLiveData<Document>()
     fun upSertImageModeMeta(imageSiteMeta:ImageModeMeta)=launch(Dispatchers.IO){
         val existMeta= imageModeMetaDao.getByUniqueKey(imageSiteMeta.uniqueKey)
         if (existMeta!=null){
@@ -35,7 +36,7 @@ class ImageModeViewModel @Inject constructor() : CoroutineViewModel() {
             existMeta.nextPageSelectorTitle=imageSiteMeta.nextPageSelectorTitle
             existMeta.replaceNthChildWithLastChild=imageSiteMeta.replaceNthChildWithLastChild
             existMeta.uniqueKey=imageSiteMeta.uniqueKey
-            existMeta.showAllImages=imageSiteMeta.showAllImages
+            existMeta.contentSelector=imageSiteMeta.contentSelector
             imageModeMetaDao.update(existMeta)
         }else{
             imageModeMetaDao.insertAll(imageSiteMeta)
@@ -48,7 +49,7 @@ class ImageModeViewModel @Inject constructor() : CoroutineViewModel() {
     }
     fun refresh(
         url: String,
-        showAllImages: Boolean = false,
+        contentSelector: String = "",
         imageAttr: String = "abs:src",
         nextPageSelector: String = "",
         headers: Map<String, String>? = HashMap<String, String>().apply {
@@ -68,6 +69,7 @@ class ImageModeViewModel @Inject constructor() : CoroutineViewModel() {
             }
             connection.timeout(20000)
             val documentOriginal = connection.get()
+            documentLiveData.postValue(documentOriginal)
             val html=documentOriginal.html()
             htmlLiveData.postValue(html)
             if (nextPageSelector.isNotBlank()){
@@ -77,23 +79,24 @@ class ImageModeViewModel @Inject constructor() : CoroutineViewModel() {
                     }
                 }
             }
-            val document = if (!showAllImages) {
-                val article = ContentExtractor.getArticleByHtml(html)
-                Jsoup.parse(article.contentHtml)
-            } else {
-                Jsoup.parse(html)
-            }
+            val document=Jsoup.parse(html)
             document.setBaseUri(url)
-            val newImages = extractImage(document,imageAttr)
+            val contentElement:Element? = if (contentSelector.isNotBlank()) {
+                Jsoup.parse(html).select(contentSelector).first()
+            } else {
+                document
+            }
+            val newImages = extractImage(contentElement,imageAttr)
             refreshImagesLiveData.postValue(newImages)
         }catch (e:Exception){
             e.printStackTrace()
             errCodeLiveData.postValue(ErrorCode.LOAD_FAIL)
         }
     }
-    private fun extractImage(document: Document,imageAttr: String="abs:src"): List<String> {
-        val list = LinkedList<String>()
-        val elements = document.select("img")
+    private fun extractImage(element: Element?, imageAttr: String="abs:src"): List<ImageInfo> {
+        val list = LinkedList<ImageInfo>()
+        if (element==null) return list
+        val elements = element.select("img")
         for (ele in elements) {
             val imageSrc = if (imageAttr.startsWith("abs:")){
                 ele.attr(imageAttr).trim()
@@ -102,7 +105,8 @@ class ImageModeViewModel @Inject constructor() : CoroutineViewModel() {
             }
             //如果不是直接设置数据的，就添加
             if (!imageSrc.startsWith("data:") && imageSrc.isNotBlank()) {
-                list.add(imageSrc)
+                val info=ImageInfo(url = imageSrc,selector = ele.cssSelector())
+                list.add(info)
             }
         }
         return list
@@ -110,7 +114,7 @@ class ImageModeViewModel @Inject constructor() : CoroutineViewModel() {
 
     fun loadMore(
         url: String,
-        showAllImages: Boolean = false,
+        contentSelector: String = "",
         imageAttr: String = "",
         nextPageSelector: String = "",
         headers: Map<String, String>? = HashMap<String, String>().apply {
@@ -135,14 +139,14 @@ class ImageModeViewModel @Inject constructor() : CoroutineViewModel() {
                     nextPageUrlLiveData.postValue(this[0].attr("abs:href"))
                 }
             }
-            val document = if (!showAllImages) {
-                val article = ContentExtractor.getArticleByHtml(html)
-                Jsoup.parse(article.contentHtml)
-            } else {
-                Jsoup.parse(html)
-            }
+            val document=Jsoup.parse(html)
             document.setBaseUri(url)
-            val newImages = extractImage(document,imageAttr)
+            val contentElement:Element? = if (contentSelector.isNotBlank()) {
+                Jsoup.parse(html).select(contentSelector).first()
+            } else {
+                document
+            }
+            val newImages = extractImage(contentElement,imageAttr)
             loadMoreImagesLiveData.postValue(newImages)
         }catch (e:Exception){
             e.printStackTrace()
@@ -150,3 +154,5 @@ class ImageModeViewModel @Inject constructor() : CoroutineViewModel() {
         }
     }
 }
+
+data class ImageInfo(var url:String,var selector:String)
