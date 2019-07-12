@@ -43,12 +43,7 @@ open class LogLifeCycleEventActivity : CoroutineScopeActivity() {
         super.onResume()
     }
     override fun onConfigurationChanged(newConfig: Configuration) {
+        Log.d(this.javaClass.simpleName, "orentation:"+newConfig.orientation)
         super.onConfigurationChanged(newConfig)
-
-        if(newConfig.orientation== Configuration.ORIENTATION_LANDSCAPE){
-
-        }else{
-            DensityUtil.resetDensity()
-        }
     }
 }
