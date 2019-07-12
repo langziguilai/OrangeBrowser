@@ -12,6 +12,8 @@ import android.view.ViewGroup
 import android.widget.*
 import androidx.appcompat.widget.AppCompatButton
 import androidx.appcompat.widget.AppCompatCheckBox
+import androidx.core.view.isGone
+import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -135,15 +137,18 @@ class ImageModeModeFragment : BaseFragment(), BackHandler {
     override fun getLayoutResId(): Int {
         return R.layout.fragment_image_mode
     }
+    private fun toggleSettingView(){
+        if (topOverLayer.isGone){
+            showSettingView()
+        }else{
+            hideSettingView()
+        }
+    }
 
     override fun initView(view: View, savedInstanceState: Bundle?) {
         topOverLayer = view.findViewById<FrameLayout>(R.id.top_over_lay).apply {
             setOnClickListener {
-                if (spinnerContainer.translationY<0){
-                    hideSettingView()
-                }else{
-                    showSettingView()
-                }
+                toggleSettingView()
             }
         }
         loadingView=view.findViewById<AVLoadingIndicatorView>(R.id.loadingView).apply {
@@ -202,11 +207,13 @@ class ImageModeModeFragment : BaseFragment(), BackHandler {
         deleteButton = view.findViewById<CommonShapeButton>(R.id.delete).apply {
             setOnClickListener {
                 deleteSiteRecord()
+                hideSettingView()
             }
         }
         saveButton = view.findViewById<CommonShapeButton>(R.id.save).apply {
             setOnClickListener {
                 saveSiteRecord()
+                hideSettingView()
             }
         }
         spinnerContainer = view.findViewById(R.id.spiner_container)
@@ -217,7 +224,7 @@ class ImageModeModeFragment : BaseFragment(), BackHandler {
         view.findViewById<View>(R.id.setting)?.apply {
             setOnClickListener {
                 if (!isLoading){
-                    showSettingView()
+                    toggleSettingView()
                 }else{
                     requireContext().apply {
                         showToast(getString(R.string.tip_wait_for_load_finish))
