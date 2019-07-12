@@ -16,7 +16,7 @@ import com.dev.browser.session.Session
 import com.dev.browser.session.SessionManager
 import com.dev.orangebrowser.R
 import com.dev.orangebrowser.bloc.host.MainViewModel
-import com.dev.orangebrowser.config.ErrorCode
+import com.dev.orangebrowser.config.ResultCode
 import com.dev.orangebrowser.data.model.MainPageSite
 import com.dev.orangebrowser.databinding.FragmentSiteCreatorBinding
 import com.dev.orangebrowser.extension.appComponent
@@ -104,7 +104,7 @@ class SiteCreatorFragment : BaseFragment(), BackHandler {
         updateTheme(color)
         viewModel.errorCodeLiveData.observe(this, androidx.lifecycle.Observer {
             when (it) {
-                ErrorCode.LOAD_FAIL -> {
+                ResultCode.LOAD_FAIL -> {
                     requireContext().showToast(getString(R.string.load_fail))
                 }
             }

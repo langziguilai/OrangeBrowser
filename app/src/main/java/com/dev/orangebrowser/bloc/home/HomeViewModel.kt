@@ -4,7 +4,7 @@ package com.dev.orangebrowser.bloc.home
 import android.content.Context
 import androidx.lifecycle.MutableLiveData
 import com.dev.base.CoroutineViewModel
-import com.dev.orangebrowser.config.ErrorCode
+import com.dev.orangebrowser.config.ResultCode
 import com.dev.orangebrowser.data.dao.CommonSiteDao
 import com.dev.orangebrowser.data.dao.MainPageSiteDao
 import com.dev.orangebrowser.data.model.CloseItem
@@ -48,7 +48,7 @@ class HomeViewModel @Inject constructor(var context: Context) : CoroutineViewMod
         }catch (e: Exception){
             e.printStackTrace()
             launch (Dispatchers.Main ){
-                errorCodeLiveData.value= ErrorCode.LOAD_FAIL
+                errorCodeLiveData.value= ResultCode.LOAD_FAIL
             }
         }
     }
@@ -59,7 +59,7 @@ class HomeViewModel @Inject constructor(var context: Context) : CoroutineViewMod
                 mainPageSiteDao.updateSiteRank(item.data.uid,item.data.rank)
             }
         }catch (e:Exception){
-            errorCodeLiveData.value= ErrorCode.MOVE_FAIL
+            errorCodeLiveData.value= ResultCode.MOVE_FAIL
         }
     }
     fun delete(deletedSite:MainPageSite,closeItems: List<CloseItem<MainPageSite>>)=launch(Dispatchers.IO) {
@@ -72,7 +72,7 @@ class HomeViewModel @Inject constructor(var context: Context) : CoroutineViewMod
             commonSiteDao.updateAddStatusByUrl(deletedSite.url ?: "",false)
         }catch (e:Exception){
             launch(Dispatchers.Main) {
-                  errorCodeLiveData.value= ErrorCode.DELETE_FAIL
+                  errorCodeLiveData.value= ResultCode.DELETE_FAIL
             }
         }
     }

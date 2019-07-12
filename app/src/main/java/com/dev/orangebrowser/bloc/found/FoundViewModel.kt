@@ -3,7 +3,7 @@ package com.dev.orangebrowser.bloc.found
 import android.content.Context
 import androidx.lifecycle.MutableLiveData
 import com.dev.base.CoroutineViewModel
-import com.dev.orangebrowser.config.ErrorCode
+import com.dev.orangebrowser.config.ResultCode
 import com.dev.orangebrowser.data.dao.SiteCategoryDao
 import com.dev.orangebrowser.data.model.SiteCategory
 import com.google.gson.Gson
@@ -39,7 +39,7 @@ class FoundViewModel @Inject constructor(var context: Context) : CoroutineViewMo
         }catch (e: Exception){
             e.printStackTrace()
             launch (Dispatchers.Main ){
-                errorCodeLiveData.value= ErrorCode.LOAD_FAIL
+                errorCodeLiveData.value= ResultCode.LOAD_FAIL
             }
         }
     }

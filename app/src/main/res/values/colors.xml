@@ -32,4 +32,6 @@
     <color name="color_B7FFFFFF">#E1FFFFFF</color>
     <color name="color_EEEEEE">#EEEEEE</color>
     <color name="transparent">#00FFFFFF</color>
+    <color name="colorWarning">#F14B4B</color>
+    <color name="colorSuccess">#81C784</color>
 </resources>

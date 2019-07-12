@@ -14,7 +14,7 @@ import com.dev.base.support.BackHandler
 import com.dev.browser.session.SessionManager
 import com.dev.orangebrowser.R
 import com.dev.orangebrowser.bloc.host.MainViewModel
-import com.dev.orangebrowser.config.ErrorCode
+import com.dev.orangebrowser.config.ResultCode
 import com.dev.orangebrowser.data.model.SiteCategory
 import com.dev.orangebrowser.databinding.FragmentFoundBinding
 import com.dev.orangebrowser.extension.RouterActivity
@@ -113,7 +113,7 @@ class FoundFragment : BaseFragment(), BackHandler {
         })
         viewModel.errorCodeLiveData.observe(this, androidx.lifecycle.Observer {
             when (it) {
-                ErrorCode.LOAD_FAIL -> {
+                ResultCode.LOAD_FAIL -> {
                     requireContext().showToast(getString(R.string.load_fail))
                 }
             }

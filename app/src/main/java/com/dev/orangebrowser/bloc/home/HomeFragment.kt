@@ -1,7 +1,6 @@
 package com.dev.orangebrowser.bloc.home
 
 import android.content.Context
-import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -29,7 +28,7 @@ import com.dev.orangebrowser.bloc.home.helper.TopBarHelper
 import com.dev.orangebrowser.bloc.home.intergration.ContentBlinkFixIntegration
 import com.dev.orangebrowser.bloc.home.intergration.ThumbnailIntergration
 import com.dev.orangebrowser.bloc.host.MainViewModel
-import com.dev.orangebrowser.config.ErrorCode
+import com.dev.orangebrowser.config.ResultCode
 import com.dev.orangebrowser.data.model.CloseItem
 import com.dev.orangebrowser.data.model.MainPageSite
 import com.dev.orangebrowser.data.model.Site
@@ -222,9 +221,9 @@ class HomeFragment : BaseLazyFragment(), BackHandler {
         })
         viewModel.errorCodeLiveData.observe(this, Observer<Int> {
             when(it){
-                ErrorCode.DELETE_FAIL->{requireContext().showToast(getString(R.string.delete_fail))}
-                ErrorCode.MOVE_FAIL->{requireContext().showToast(getString(R.string.move_site_fail))}
-                ErrorCode.LOAD_FAIL->{requireContext().showToast(getString(R.string.load_fail))}
+                ResultCode.DELETE_FAIL->{requireContext().showToast(getString(R.string.delete_fail))}
+                ResultCode.MOVE_FAIL->{requireContext().showToast(getString(R.string.move_site_fail))}
+                ResultCode.LOAD_FAIL->{requireContext().showToast(getString(R.string.load_fail))}
             }
         })
     }

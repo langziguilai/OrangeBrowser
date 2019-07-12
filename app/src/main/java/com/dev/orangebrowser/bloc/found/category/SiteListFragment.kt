@@ -7,7 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.lifecycle.ViewModelProviders
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.dev.base.BaseFragment
@@ -16,7 +15,7 @@ import com.dev.base.support.BackHandler
 import com.dev.browser.session.SessionManager
 import com.dev.orangebrowser.R
 import com.dev.orangebrowser.bloc.host.MainViewModel
-import com.dev.orangebrowser.config.ErrorCode
+import com.dev.orangebrowser.config.ResultCode
 import com.dev.orangebrowser.data.model.CommonSite
 import com.dev.orangebrowser.databinding.FragmentSiteListBinding
 import com.dev.orangebrowser.extension.appComponent
@@ -114,7 +113,7 @@ class SiteListFragment : BaseFragment(), BackHandler {
         })
         viewModel.errorCodeLiveData.observe(this, androidx.lifecycle.Observer {
             when (it) {
-                ErrorCode.LOAD_FAIL -> {
+                ResultCode.LOAD_FAIL -> {
                     requireContext().showToast(getString(R.string.load_fail))
                 }
             }

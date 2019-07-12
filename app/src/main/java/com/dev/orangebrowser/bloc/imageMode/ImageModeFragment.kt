@@ -26,7 +26,7 @@ import com.dev.browser.support.DownloadUtils
 import com.dev.orangebrowser.R
 import com.dev.orangebrowser.bloc.browser.BrowserFragment
 import com.dev.orangebrowser.bloc.host.MainViewModel
-import com.dev.orangebrowser.config.ErrorCode
+import com.dev.orangebrowser.config.ResultCode
 import com.dev.orangebrowser.data.model.ImageModeMeta
 import com.dev.orangebrowser.extension.RouterActivity
 import com.dev.orangebrowser.extension.appComponent
@@ -39,6 +39,8 @@ import com.dev.orangebrowser.view.contextmenu.CommonContextMenuAdapter
 import com.dev.orangebrowser.view.contextmenu.MenuItem
 import com.dev.util.StringUtil
 import com.dev.view.StatusBarUtil
+import com.dev.view.button.CommonShapeButton
+import com.dev.view.dialog.AlertDialogBuilder
 import com.dev.view.dialog.DialogBuilder
 import com.dev.view.recyclerview.CustomBaseViewHolder
 import com.dev.view.recyclerview.adapter.base.BaseQuickAdapter
@@ -50,6 +52,8 @@ import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import java.util.*
 import javax.inject.Inject
+
+const val SEPARATOR: String = ">"
 
 class ImageModeModeFragment : BaseFragment(), BackHandler {
 
@@ -87,36 +91,35 @@ class ImageModeModeFragment : BaseFragment(), BackHandler {
     lateinit var attrSpinner: Spinner
     lateinit var imageModeMetaSpinner: Spinner
     lateinit var spinnerContainer: LinearLayout
-    lateinit var useLastChildCheckBox:AppCompatCheckBox
-    lateinit var rememberItCheckBox: AppCompatCheckBox
-    lateinit var contentSelectTextView:TextView
-    lateinit var nextLevelButton:AppCompatButton
-    lateinit var preLevelButton:AppCompatButton
-    lateinit var imageModeMetaList:List<ImageModeMeta>
+    lateinit var useLastChildCheckBox: AppCompatCheckBox
+    lateinit var deleteButton: CommonShapeButton
+    lateinit var saveButton: CommonShapeButton
+    lateinit var contentSelectTextView: TextView
+    lateinit var nextLevelButton: AppCompatButton
+    lateinit var preLevelButton: AppCompatButton
+    lateinit var imageModeMetaList: LinkedList<ImageModeMeta>
     //data
     private var images = LinkedList<ImageInfo>()
     lateinit var adapter: BaseQuickAdapter<ImageInfo, CustomBaseViewHolder>
     var html = ""
-    var imageAttr = "abs:src"
-    var nextPageSelector = ""
-    var sessionUrl=""
-    var nextPageUrl=""
-    var replaceNthChildWithLastChild=false
+    var sessionUrl = ""
+    var nextPageUrl = ""
+    var imageModeMeta = ImageModeMeta.default()
 
-    private lateinit var document:Document //原始文档
-    var targetImageSelector=""  //目标图片的Selector
-    var contentSelector=""  //内容选择器
-    var contentSelectorPartList=LinkedList<String>()
-    var contentSelectorContainerIndex=-1
-    val SEPARATOR:String=">"
-    var loadCompleted=false
+    private lateinit var document: Document //原始文档
+    var targetImageSelector = ""  //目标图片的Selector
+    var contentSelector = ""  //内容选择器
+    var contentSelectorPartList = LinkedList<String>()
+    var contentSelectorContainerIndex = -1
+
+    var loadCompleted = false
     //图片属性
     private var imageAttributes = LinkedList<KeyValue>()
     //链接选择器
     private var linkSelectors = LinkedList<KeyValue>()
     //图片提取器
     private var imageModeMetaKeyValues = LinkedList<KeyValue>()
-
+    private var isLoading=true
     override fun onAttach(context: Context) {
         super.onAttach(context)
         //注入
@@ -133,35 +136,39 @@ class ImageModeModeFragment : BaseFragment(), BackHandler {
         topOverLayer = view.findViewById<FrameLayout>(R.id.top_over_lay).apply {
             setOnClickListener {
                 hideSettingView()
-                if (rememberItCheckBox.isChecked){
-                    saveSiteRecord()
-                }
-                refresh()
             }
         }
         imageModeMetaSpinner = view.findViewById(R.id.image_mode_meta_spinner)
-        contentSelectTextView=view.findViewById(R.id.content_selector)
+        contentSelectTextView = view.findViewById(R.id.content_selector)
         //下一个层级
-        nextLevelButton=view.findViewById<AppCompatButton>(R.id.next_level).apply {
+        nextLevelButton = view.findViewById<AppCompatButton>(R.id.next_level).apply {
             setOnClickListener {
-               if (contentSelectorPartList.isNotEmpty()){
-                   if(contentSelectorContainerIndex < this@ImageModeModeFragment.contentSelectorPartList.size-1){
-                       this@ImageModeModeFragment.contentSelectorContainerIndex += 1
-                       this@ImageModeModeFragment.contentSelector=contentSelectorPartList.subList(0,this@ImageModeModeFragment.contentSelectorContainerIndex+1).joinToString(SEPARATOR)
-                       this@ImageModeModeFragment.contentSelectTextView.text=this@ImageModeModeFragment.contentSelector
-                       this@ImageModeModeFragment.refresh()
-                   }
-               }
+                if (contentSelectorPartList.isNotEmpty()) {
+                    if (contentSelectorContainerIndex < this@ImageModeModeFragment.contentSelectorPartList.size - 1) {
+                        this@ImageModeModeFragment.contentSelectorContainerIndex += 1
+                        this@ImageModeModeFragment.contentSelector = contentSelectorPartList.subList(
+                            0,
+                            this@ImageModeModeFragment.contentSelectorContainerIndex + 1
+                        ).joinToString(SEPARATOR)
+                        this@ImageModeModeFragment.contentSelectTextView.text =
+                            this@ImageModeModeFragment.contentSelector
+                        this@ImageModeModeFragment.refresh()
+                    }
+                }
             }
         }
         //上一个层级
-        preLevelButton=view.findViewById<AppCompatButton>(R.id.pre_level).apply {
+        preLevelButton = view.findViewById<AppCompatButton>(R.id.pre_level).apply {
             setOnClickListener {
-                if (contentSelectorPartList.isNotEmpty()){
-                    if(contentSelectorContainerIndex>0){
+                if (contentSelectorPartList.isNotEmpty()) {
+                    if (contentSelectorContainerIndex > 0) {
                         this@ImageModeModeFragment.contentSelectorContainerIndex -= 1
-                        this@ImageModeModeFragment.contentSelector=contentSelectorPartList.subList(0,this@ImageModeModeFragment.contentSelectorContainerIndex+1).joinToString(SEPARATOR)
-                        this@ImageModeModeFragment.contentSelectTextView.text=this@ImageModeModeFragment.contentSelector
+                        this@ImageModeModeFragment.contentSelector = contentSelectorPartList.subList(
+                            0,
+                            this@ImageModeModeFragment.contentSelectorContainerIndex + 1
+                        ).joinToString(SEPARATOR)
+                        this@ImageModeModeFragment.contentSelectTextView.text =
+                            this@ImageModeModeFragment.contentSelector
                         this@ImageModeModeFragment.refresh()
                     }
                 }
@@ -169,12 +176,22 @@ class ImageModeModeFragment : BaseFragment(), BackHandler {
         }
         nextPageSpinner = view.findViewById(R.id.spinner_next)
         attrSpinner = view.findViewById(R.id.spinner_attr)
-        useLastChildCheckBox=view.findViewById<AppCompatCheckBox>(R.id.use_last_child).apply{
+        useLastChildCheckBox = view.findViewById<AppCompatCheckBox>(R.id.use_last_child).apply {
             this.setOnCheckedChangeListener { _, isChecked ->
-                replaceNthChildWithLastChild=isChecked
+                imageModeMeta.replaceNthChildWithLastChild = isChecked
+                refresh()
             }
         }
-        rememberItCheckBox=view.findViewById(R.id.remember_it)
+        deleteButton = view.findViewById<CommonShapeButton>(R.id.delete).apply {
+            setOnClickListener {
+                deleteSiteRecord()
+            }
+        }
+        saveButton = view.findViewById<CommonShapeButton>(R.id.save).apply {
+            setOnClickListener {
+                saveSiteRecord()
+            }
+        }
         spinnerContainer = view.findViewById(R.id.spiner_container)
         recyclerView = view.findViewById(R.id.recycler_view)
         recyclerView.layoutManager = LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
@@ -182,7 +199,13 @@ class ImageModeModeFragment : BaseFragment(), BackHandler {
         containerWrapper = view.findViewById(R.id.container_wrapper)
         view.findViewById<View>(R.id.setting)?.apply {
             setOnClickListener {
-                showSettingView()
+                if (!isLoading){
+                    showSettingView()
+                }else{
+                    requireContext().apply {
+                        showToast(getString(R.string.tip_wait_for_load_finish))
+                    }
+                }
             }
         }
         view.findViewById<View>(R.id.back)?.apply {
@@ -200,190 +223,251 @@ class ImageModeModeFragment : BaseFragment(), BackHandler {
             hideSettingView()
         }
         //监听数据
-
-        viewModel.errCodeLiveData.observe(this,Observer<Int>{
-            when(it){
-                ErrorCode.LOAD_FAIL->{
+        viewModel.resultCodeLiveData.observe(this, Observer<Int> {
+            when (it) {
+                ResultCode.LOAD_FAIL -> {
+                    isLoading=false
                     requireContext().apply {
                         showToast(getString(R.string.load_fail))
                     }
                     adapter.loadMoreFail()
                 }
+                ResultCode.SAVE_SUCCESS -> {
+                    requireContext().apply {
+                        showToast(getString(R.string.save_success))
+                    }
+                }
+                ResultCode.SAVE_FAIL -> {
+                    requireContext().apply {
+                        showToast(getString(R.string.save_fail))
+                    }
+                }
+                ResultCode.DELETE_FAIL -> {
+                    requireContext().apply {
+                        showToast(getString(R.string.delete_fail))
+                    }
+                }
+                ResultCode.DELETE_SUCCESS -> {
+                    requireContext().apply {
+                        showToast(getString(R.string.delete_success))
+                    }
+                }
             }
         })
-        viewModel.nextPageUrlLiveData.observe(this,Observer<String>{
-            if (it!=nextPageUrl){
-                Log.d("nextPageUrlLiveData","is $it")
-                nextPageUrl=it
-            }else{
+        viewModel.nextPageUrlLiveData.observe(this, Observer<String> {
+            if (it != nextPageUrl) {
+                Log.d("nextPageUrlLiveData", "is $it")
+                nextPageUrl = it
+            } else {
                 adapter.loadMoreEnd()
-                loadCompleted=true
+                loadCompleted = true
             }
         })
-        viewModel.refreshImagesLiveData.observe(this,Observer<List<ImageInfo>>{
-            loadCompleted=false
+        viewModel.refreshImagesLiveData.observe(this, Observer<List<ImageInfo>> {
+            isLoading=false
+            loadCompleted = false
             images.clear()
             images.addAll(it)
             adapter.setNewData(images)
         })
-        viewModel.loadMoreImagesLiveData.observe(this,Observer<List<ImageInfo>>{
-            val oldSize=images.size
+        viewModel.loadMoreImagesLiveData.observe(this, Observer<List<ImageInfo>> {
+            val oldSize = images.size
             images.addAll(it)
-            adapter.notifyItemRangeInserted(oldSize,it.size)
+            adapter.notifyItemRangeInserted(oldSize, it.size)
             adapter.loadMoreComplete()
         })
-        viewModel.htmlLiveData.observe(this,Observer<String>{
-            html=it
+        viewModel.htmlLiveData.observe(this, Observer<String> {
+            html = it
             //获取imageAttributes和LinkSelector
-            if (linkSelectors.size==0 && imageAttributes.size==0){
+            if (linkSelectors.size == 0 && imageAttributes.size == 0) {
                 launch(Dispatchers.IO) {
-                    val doc=Jsoup.parse(html)
+                    val doc = Jsoup.parse(html)
                     doc.setBaseUri(sessionUrl)
-                    imageAttributes=getImageAttributes(doc)
-                    linkSelectors=getLinkSelectors(doc)
+                    imageAttributes = getImageAttributes(doc)
+                    linkSelectors = getLinkSelectors(doc)
                     launch(Dispatchers.Main) {
                         initAttrSpinner()
                         initNextPageSpinner()
                         //初始化数据后更新ImageModeMeta
-                        updateSelectedImageModeMeta(0)
+                        if (imageModeMetaList.isNotEmpty()) {
+                            resetImageSiteMetaSetting(imageModeMetaList[0])
+                        }
+                        refresh()
                     }
                 }
             }
         })
         viewModel.documentLiveData.observe(this, Observer {
-             document=it
+            document = it
         })
         viewModel.imageModeMetasLiveData.observe(this, Observer {
-            imageModeMetaList=it
-            imageModeMetaList.forEachIndexed{index, _ ->
-                imageModeMetaKeyValues.add(KeyValue(key = index.toString(),value=""))
-            }
+            imageModeMetaList = LinkedList(it)
             initImageModeMetaSpinner()
-            if(imageModeMetaList.isNotEmpty()){
-                selectedImageModeMeta=imageModeMetaList[0]
-                imageAttr=selectedImageModeMeta.imageAttr
-                nextPageSelector=selectedImageModeMeta.nextPageSelector
-                replaceNthChildWithLastChild=selectedImageModeMeta.replaceNthChildWithLastChild
-                contentSelector=selectedImageModeMeta.contentSelector
-                contentSelectorPartList.clear()
-                contentSelectorPartList.addAll(contentSelector.split(SEPARATOR).map { str->str.trim() })
-                contentSelectorContainerIndex=contentSelectorPartList.size-1
-            }
-            //加载完ImageModeMetas之后再加载images
-            refresh()
         })
     }
-    private fun refresh(){
-        viewModel.refresh(url = sessionUrl,contentSelector = contentSelector,imageAttr = imageAttr,nextPageSelector = getRealNextPageSelector())
+
+
+    private fun resetImageSiteMetaSetting(newImageModeMeta: ImageModeMeta) {
+        imageModeMeta = newImageModeMeta
+        contentSelectorPartList.clear()
+        contentSelectorPartList.addAll(contentSelector.split(SEPARATOR).map { str -> str.trim() })
+        contentSelectorContainerIndex = contentSelectorPartList.size - 1
+        updateImageSiteMetaSettingView(imageModeMeta)
     }
+
+    //根据选择器来更新View
+    private fun updateImageSiteMetaSettingView(imageModeMeta: ImageModeMeta) {
+        val index = imageModeMetaList.indexOf(imageModeMeta)
+        if (index >= 0) {
+            imageModeMetaSpinner.setSelection(index)
+        }
+
+        useLastChildCheckBox.isChecked = imageModeMeta.replaceNthChildWithLastChild
+        contentSelectTextView.text = imageModeMeta.contentSelector
+        val imageAttributeKv = KeyValue.parse(imageModeMeta.imageAttrTitle)
+        imageAttributes.forEachIndexed { index, keyValue ->
+            if (keyValue.key == imageAttributeKv.key && keyValue.value == imageAttributeKv.value) {
+                attrSpinner.setSelection(index)
+            }
+        }
+        val nextPageSelectorKV = KeyValue.parse(imageModeMeta.nextPageSelectorTitle)
+        linkSelectors.forEachIndexed { index, keyValue ->
+            if (keyValue.key == nextPageSelectorKV.key && keyValue.value == nextPageSelectorKV.value) {
+                nextPageSpinner.setSelection(index)
+            }
+        }
+    }
+
+    private fun refresh() {
+        isLoading=true
+        viewModel.refresh(
+            url = sessionUrl,
+            contentSelector = contentSelector,
+            imageAttr = imageModeMeta.imageAttr,
+            nextPageSelector = getRealNextPageSelector()
+        )
+    }
+
+    private fun deleteSiteRecord() {
+        AlertDialogBuilder()
+            .setTitle(R.id.title, getString(R.string.delete_record))
+            .setContent(R.id.content, getString(R.string.tip_delete_record))
+            .setOnPositive(Runnable {
+                imageModeMeta = if (imageModeMetaList.indexOf(imageModeMeta) >= 0) {
+                    imageModeMetaList.remove(imageModeMeta)
+                    if (imageModeMetaList.isNotEmpty()) {
+                        imageModeMetaList[0]
+                    } else {
+                        ImageModeMeta.default()
+                    }
+                } else {
+                    ImageModeMeta.default()
+                }
+                initImageModeMetaSpinner()
+                resetImageSiteMetaSetting(imageModeMeta)
+                viewModel.deleteImageModeMeta(imageModeMeta)
+            }).build(requireContext()).show()
+    }
+
     private fun saveSiteRecord() {
-        val host= Uri.parse(sessionUrl).host ?: ""
-        if (host.isNotBlank() && imageAttributes.isNotEmpty() && linkSelectors.isNotEmpty()){
-            viewModel.upSertImageModeMeta(ImageModeMeta(
-                uid = 0,
-                imageAttr = imageAttr,
-                nextPageSelector = nextPageSelector,
-                site = host,
-                replaceNthChildWithLastChild = useLastChildCheckBox.isChecked,
-                contentSelector = contentSelector,
-                uniqueKey = host+"_"+imageAttr+"_"+nextPageSelector,
-                imageAttrTitle = imageAttributeKeyValue.getDescription(),
-                nextPageSelectorTitle = linkSelectorKeyValue.getDescription()
-                ))
+        val host = Uri.parse(sessionUrl).host ?: ""
+        if (host.isNotBlank() && imageAttributes.isNotEmpty() && linkSelectors.isNotEmpty()) {
+            viewModel.upSertImageModeMeta(
+                ImageModeMeta(
+                    uid = 0,
+                    imageAttr = imageModeMeta.imageAttr,
+                    nextPageSelector = imageModeMeta.nextPageSelector,
+                    site = host,
+                    replaceNthChildWithLastChild = useLastChildCheckBox.isChecked,
+                    contentSelector = contentSelector,
+                    uniqueKey = host + "_" + imageModeMeta.imageAttr + "_" + imageModeMeta.nextPageSelector,
+                    imageAttrTitle = imageAttributeKeyValue.getDescription(),
+                    nextPageSelectorTitle = linkSelectorKeyValue.getDescription()
+                )
+            )
         }
 
     }
-    private lateinit var imageAttributeKeyValue:KeyValue
-    private lateinit var linkSelectorKeyValue:KeyValue
-    private lateinit var selectedImageModeMeta: ImageModeMeta
-    private fun initAttrSpinner(){
+
+    private fun initImageModeMetaSpinner() {
+        imageModeMetaKeyValues.clear()
+        imageModeMetaList.forEachIndexed { index, _ ->
+            imageModeMetaKeyValues.add(KeyValue(key = index.toString(), value = ""))
+        }
+        imageModeMetaSpinner.adapter = KeyValueAdapter(data = imageModeMetaKeyValues)
+        imageModeMetaSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+                if (imageModeMetaList.isNotEmpty()) {
+                    resetImageSiteMetaSetting(imageModeMetaList.first())
+                }
+            }
+
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                if (imageModeMetaList.size > position) {
+                    resetImageSiteMetaSetting(imageModeMetaList[position])
+                    refresh()
+                }
+            }
+        }
+    }
+
+    private lateinit var imageAttributeKeyValue: KeyValue
+    private fun initAttrSpinner() {
         attrSpinner.adapter = KeyValueAdapter(data = imageAttributes)
         attrSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onNothingSelected(parent: AdapterView<*>?) {
                 if (imageAttributes.size > 0) {
-                    imageAttr = imageAttributes[0].value
-                    imageAttributeKeyValue=imageAttributes[0]
+                    imageModeMeta.imageAttr = imageAttributes[0].value
+                    imageAttributeKeyValue = imageAttributes[0]
                 }
             }
 
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                imageAttr = imageAttributes[position].value
-                imageAttributeKeyValue=imageAttributes[position]
+                imageModeMeta.imageAttr = imageAttributes[position].value
+                imageAttributeKeyValue = imageAttributes[position]
+                refresh()
             }
         }
     }
-    private fun initNextPageSpinner(){
+
+    private lateinit var linkSelectorKeyValue: KeyValue
+    private fun initNextPageSpinner() {
         nextPageSpinner.adapter = KeyValueAdapter(data = linkSelectors)
         nextPageSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onNothingSelected(parent: AdapterView<*>?) {
-                if (linkSelectors.size > 0 && nextPageSelector.isBlank()) {
-                    nextPageSelector = linkSelectors[0].key
-                    linkSelectorKeyValue= linkSelectors[0]
+                if (linkSelectors.size > 0 && imageModeMeta.nextPageSelector.isBlank()) {
+                    imageModeMeta.nextPageSelector = linkSelectors[0].key
+                    linkSelectorKeyValue = linkSelectors[0]
                 }
             }
-            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                linkSelectorKeyValue=linkSelectors[position]
-                nextPageSelector = if (replaceNthChildWithLastChild){
-                    StringUtil.replaceLast(linkSelectors[position].key,"nth-child\\(\\d\\)","last-child")
-                }else{
-                    linkSelectors[position].key
-                }
-            }
-        }
-    }
-    private fun initImageModeMetaSpinner(){
-        imageModeMetaSpinner.adapter=KeyValueAdapter(data=imageModeMetaKeyValues)
-        imageModeMetaSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onNothingSelected(parent: AdapterView<*>?) {
-                updateSelectedImageModeMeta(0)
-            }
-            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                updateSelectedImageModeMeta(position)
-            }
-        }
-    }
-    //根据选择器来更新View
-    private fun updateSelectedImageModeMeta(position: Int) {
-          if (imageModeMetaList.size>position){
-              selectedImageModeMeta=imageModeMetaList[position]
-              imageModeMetaSpinner.setSelection(position)
-              useLastChildCheckBox.isChecked=selectedImageModeMeta.replaceNthChildWithLastChild
-              imageAttr=selectedImageModeMeta.imageAttr
-              nextPageSelector=selectedImageModeMeta.nextPageSelector
-              replaceNthChildWithLastChild=selectedImageModeMeta.replaceNthChildWithLastChild
-              contentSelector=selectedImageModeMeta.contentSelector
-              contentSelectTextView.text=contentSelector
-              val imageAttributeKv=KeyValue.parse(selectedImageModeMeta.imageAttrTitle)
-              imageAttributes.forEachIndexed { index, keyValue ->
-                  if(keyValue.key==imageAttributeKv.key && keyValue.value==imageAttributeKv.value){
-                      attrSpinner.setSelection(index)
-                  }
-              }
-              val nextPageSelectorKV=KeyValue.parse(selectedImageModeMeta.nextPageSelectorTitle)
-              linkSelectors.forEachIndexed { index, keyValue ->
-                  if(keyValue.key==nextPageSelectorKV.key && keyValue.value==nextPageSelectorKV.value){
-                      nextPageSpinner.setSelection(index)
-                  }
-              }
 
-          }
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                linkSelectorKeyValue = linkSelectors[position]
+                imageModeMeta.nextPageSelector = linkSelectors[position].key
+                refresh()
+            }
+        }
     }
-    private fun getImageAttributes(document:Document):LinkedList<KeyValue>{
-        val list=LinkedList<KeyValue>()
-        document.select("img").forEach {ele->
+
+
+    private fun getImageAttributes(document: Document): LinkedList<KeyValue> {
+        val list = LinkedList<KeyValue>()
+        document.select("img").forEach { ele ->
             ele.attributes().forEach {
-                list.add(KeyValue(key = it.value.trim(),value = it.key.trim()))
+                list.add(KeyValue(key = it.value.trim(), value = it.key.trim()))
             }
         }
         return list
     }
-    private fun getLinkSelectors(document: Document):LinkedList<KeyValue>{
-        val list=LinkedList<KeyValue>()
-        document.select("a").forEach {ele->
+
+    private fun getLinkSelectors(document: Document): LinkedList<KeyValue> {
+        val list = LinkedList<KeyValue>()
+        document.select("a").forEach { ele ->
             list.add(KeyValue(key = ele.cssSelector().trim(), value = ele.text().trim()))
         }
         return list
     }
+
     private fun showSettingView() {
         topOverLayer.show()
         spinnerContainer.animate().apply {
@@ -453,31 +537,38 @@ class ImageModeModeFragment : BaseFragment(), BackHandler {
         adapter.setPreLoadNumber(2)
         adapter.setOnLoadMoreListener({
             //如果加载完成，则不再加载
-            if (loadCompleted){
+            if (loadCompleted) {
                 adapter.loadMoreEnd()
                 return@setOnLoadMoreListener
             }
-            Log.d("OnLoadMoreListener","nextPageUrl is $nextPageUrl")
-            if (nextPageUrl.isBlank()){
+            Log.d("OnLoadMoreListener", "nextPageUrl is $nextPageUrl")
+            if (nextPageUrl.isBlank()) {
                 adapter.loadMoreComplete()
-            }else{
-                viewModel.loadMore(url = nextPageUrl,contentSelector = contentSelector,imageAttr = imageAttr,nextPageSelector = getRealNextPageSelector())
+            } else {
+                viewModel.loadMore(
+                    url = nextPageUrl,
+                    contentSelector = contentSelector,
+                    imageAttr = imageModeMeta.imageAttr,
+                    nextPageSelector = getRealNextPageSelector()
+                )
             }
         }, recyclerView)
         adapter.disableLoadMoreIfNotFullPage()
         adapter.setEnableLoadMore(true)
         initImageItemContextMenu(adapter)
         recyclerView.adapter = adapter
-        sessionUrl=session.url
+        sessionUrl = session.url
         viewModel.loadImageModeMetas(sessionUrl)
     }
-    private fun getRealNextPageSelector():String{
-        return if (replaceNthChildWithLastChild){
-            StringUtil.replaceLast(nextPageSelector,"nth-child\\(\\d\\)","last-child")
-        }else{
-            nextPageSelector
+
+    private fun getRealNextPageSelector(): String {
+        return if (imageModeMeta.replaceNthChildWithLastChild) {
+            StringUtil.replaceLast(imageModeMeta.nextPageSelector, "nth-child\\(\\d\\)", "last-child")
+        } else {
+            imageModeMeta.nextPageSelector
         }
     }
+
     var imageItemContextMenu: Dialog? = null
     private fun initImageItemContextMenu(adapter: BaseQuickAdapter<ImageInfo, CustomBaseViewHolder>?) {
         adapter?.setOnItemLongClickListener { _, _, position ->
@@ -504,7 +595,10 @@ class ImageModeModeFragment : BaseFragment(), BackHandler {
                 R.layout.mozac_feature_contextmenu_item, listOf(
                     MenuItem(label = getString(R.string.menu_download_image), action = object : Action<MenuItem> {
                         override fun execute(data: MenuItem) {
-                            downloadImage(url = images[position].url, referer = sessionManager.selectedSession?.url ?: "")
+                            downloadImage(
+                                url = images[position].url,
+                                referer = sessionManager.selectedSession?.url ?: ""
+                            )
                             imageItemContextMenu?.dismiss()
                         }
                     }),
@@ -529,16 +623,16 @@ class ImageModeModeFragment : BaseFragment(), BackHandler {
                     }),
                     MenuItem(label = getString(R.string.set_as_target), action = object : Action<MenuItem> {
                         override fun execute(data: MenuItem) {
-                            targetImageSelector=images[position].selector
-                            val parentContainerLastIndex=targetImageSelector.lastIndexOf(SEPARATOR)
-                            contentSelector = if (parentContainerLastIndex>=0){
-                                targetImageSelector.substring(0,parentContainerLastIndex).trim()
-                            }else{
+                            targetImageSelector = images[position].selector
+                            val parentContainerLastIndex = targetImageSelector.lastIndexOf(SEPARATOR)
+                            contentSelector = if (parentContainerLastIndex >= 0) {
+                                targetImageSelector.substring(0, parentContainerLastIndex).trim()
+                            } else {
                                 ""
                             }
                             contentSelectorPartList.clear()
                             contentSelectorPartList.addAll(contentSelector.split(SEPARATOR).map { it.trim() })
-                            contentSelectorContainerIndex=contentSelectorPartList.size-1
+                            contentSelectorContainerIndex = contentSelectorPartList.size - 1
                             contentSelectTextView.text = contentSelector
                             requireContext().showToast(getString(R.string.tip_set_content_selector))
                             imageItemContextMenu?.dismiss()
@@ -588,22 +682,23 @@ class ImageModeModeFragment : BaseFragment(), BackHandler {
     }
 }
 
-data class KeyValue(var key: String="", var value: String=""){
-    fun getDescription():String{
+data class KeyValue(var key: String = "", var value: String = "") {
+    fun getDescription(): String {
         if (key.isNotBlank() && value.isNotBlank()) return "$value => $key"
         if (key.isNotBlank()) return key
         if (value.isNotBlank()) return value
         return ""
     }
-    companion object{
-        fun parse(description:String):KeyValue{
-            val kv=KeyValue()
-            val list=description.split("=>")
-            if (list.isNotEmpty()){
-                kv.value=list[0].trim()
+
+    companion object {
+        fun parse(description: String): KeyValue {
+            val kv = KeyValue()
+            val list = description.split("=>")
+            if (list.isNotEmpty()) {
+                kv.value = list[0].trim()
             }
-            if (list.size>1){
-                kv.key=list[1].trim()
+            if (list.size > 1) {
+                kv.key = list[1].trim()
             }
             return kv
         }

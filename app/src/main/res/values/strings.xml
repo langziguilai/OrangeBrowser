@@ -384,5 +384,13 @@
     <string name="html">html</string>
     <string name="next_level">下一级</string>
     <string name="pre_level">上一级</string>
-    <string name="tip_no_usable_source">无可用的资源</string>
+    <string name="tip_no_usable_source">请输入有效的资源地址</string>
+    <string name="delete">删除</string>
+    <string name="save">保存</string>
+    <string name="save_fail">保存失败</string>
+    <string name="delete_success">删除成功</string>
+    <string name="delete_record">删除记录</string>
+    <string name="tip_delete_record">确认删除记录?</string>
+    <string name="tip_wait_for_load_finish">请等待加载完成</string>
+    <string name="tip_fail_and_click_to_reload">加载失败,点击重新加载</string>
 </resources>

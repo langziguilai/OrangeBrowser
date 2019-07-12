@@ -150,7 +150,7 @@
                             android:textSize="12sp"
                             android:textColor="@color/colorBlack"
                             android:text="@string/next_level"
-                            android:gravity="start|center_vertical"/>
+                            android:gravity="center"/>
                     <androidx.appcompat.widget.AppCompatButton
                             android:id="@+id/pre_level"
                             android:layout_width="0dp"
@@ -161,7 +161,7 @@
                             android:textSize="12sp"
                             android:textColor="@color/colorBlack"
                             android:text="@string/pre_level"
-                            android:gravity="start|center_vertical"/>
+                            android:gravity="center"/>
                 </LinearLayout>
                 <LinearLayout android:layout_width="match_parent" android:layout_height="44dp"
                               android:orientation="horizontal">
@@ -226,27 +226,65 @@
                             android:layout_marginStart="8dp"
                             android:layout_gravity="end|center_vertical"/>
                 </LinearLayout>
-                <LinearLayout android:layout_width="match_parent" android:layout_height="44dp"
+                <LinearLayout android:layout_width="match_parent"
+                              android:layout_height="56dp"
+                              android:paddingTop="8dp"
+                              android:paddingBottom="8dp"
                               android:orientation="horizontal">
-                    <TextView android:layout_width="0dp"
-                              android:layout_height="match_parent"
-                              android:layout_weight="1"
-                              android:paddingStart="8dp"
-                              android:paddingEnd="8dp"
-                              android:textSize="12sp"
-                              android:textColor="@color/colorBlack"
-                              android:text="@string/tip_remember_for_site"
-                              android:gravity="start|center_vertical"/>
-                    <androidx.appcompat.widget.AppCompatCheckBox
-                            android:id="@+id/remember_it"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginEnd="8dp"
-                            android:layout_marginStart="8dp"
-                            android:checked="true"
-                            android:layout_gravity="end|center_vertical"/>
+                    <com.dev.view.button.CommonShapeButton android:layout_width="0dp"
+                                                           android:id="@+id/delete"
+                                                           android:layout_height="match_parent"
+                                                           android:layout_weight="1"
+                                                           android:layout_marginLeft="8dp"
+                                                           android:layout_marginRight="4dp"
+                                                           android:textSize="16sp"
+                                                           app:csb_cornerRadius="50dp"
+                                                           app:csb_fillColor="@color/colorWarning"
+                                                           android:textColor="@color/colorWhite"
+                                                           android:text="@string/delete"
+                                                           android:gravity="center"/>
+                    <com.dev.view.button.CommonShapeButton android:layout_width="0dp"
+                                                           android:id="@+id/save"
+                                                           android:layout_height="match_parent"
+                                                           android:layout_weight="1"
+                                                           android:layout_marginLeft="4dp"
+                                                           android:layout_marginRight="8dp"
+                                                           android:textSize="16sp"
+                                                           app:csb_cornerRadius="50dp"
+                                                           app:csb_fillColor="@color/colorSuccess"
+                                                           android:textColor="@color/colorWhite"
+                                                           android:text="@string/save"
+                                                           android:gravity="center"/>
                 </LinearLayout>
             </LinearLayout>
+        </FrameLayout>
+        <FrameLayout android:layout_width="0dp"
+                     android:layout_height="0dp"
+                     android:visibility="gone"
+                     android:id="@+id/status_container"
+                     app:layout_constraintStart_toStartOf="parent"
+                     app:layout_constraintEnd_toEndOf="parent"
+                     app:layout_constraintTop_toTopOf="parent"
+                     app:layout_constraintBottom_toBottomOf="parent">
+            <com.wang.avi.AVLoadingIndicatorView
+                    android:id="@+id/loadingView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@style/AVLoadingIndicatorView"
+                    android:visibility="visible"
+                    app:indicatorName="BallPulseIndicator"
+                    app:indicatorColor="#DA4141"
+            />
+            <TextView android:id="@+id/refresh"
+                      android:layout_gravity="center"
+                      android:visibility="gone"
+                      android:gravity="center"
+                      android:textSize="18sp"
+                      android:singleLine="true"
+                      android:ellipsize="end"
+                      android:text="@string/tip_fail_and_click_to_reload"
+                      android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"/>
         </FrameLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
