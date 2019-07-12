@@ -5,7 +5,6 @@
         android:layout_height="match_parent">
     <com.shuyu.gsyvideoplayer.video.StandardGSYVideoPlayer
             android:id="@+id/content_item_video"
-            android:visibility="gone"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
     <ImageView
