@@ -267,6 +267,18 @@ abstract class EngineSession(
      * Close the session. This may free underlying objects. Call this when you are finished using
      * this session.
      */
+    /**
+     * add InterceptResourceListener
+     * */
+    open fun addResourceDetectListener(listener:InterceptResourceListener)=Unit
+    /**
+     * remove InterceptResourceListener
+     * */
+    open fun removeResourceDetectListener(listener:InterceptResourceListener)=Unit
+    /**
+     * clear InterceptResourceListener
+     * */
+    open fun clearResourceDetectListener()=Unit
     @CallSuper
     open fun close() = delegate.unregisterObservers()
     abstract fun getCookies(url:String):String

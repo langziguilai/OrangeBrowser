@@ -7,10 +7,7 @@ package com.dev.browser.engine.system
 import android.content.Context
 import android.os.Bundle
 import android.webkit.*
-import com.dev.browser.concept.EngineSession
-import com.dev.browser.concept.EngineSessionState
-import com.dev.browser.concept.InterceptResource
-import com.dev.browser.concept.Settings
+import com.dev.browser.concept.*
 import com.dev.browser.concept.history.HistoryTrackingDelegate
 import com.dev.browser.concept.request.RequestInterceptor
 import com.dev.browser.session.Session
@@ -460,6 +457,22 @@ class SystemEngineSession(
     }
     fun addResource(resource: InterceptResource){
         resources.add(resource)
+        resourceDetectedListeners.forEach {
+            it.onResourceDeteceted(resource)
+        }
+    }
+    /**
+     * 添加资源加载侦听
+     */
+    private val resourceDetectedListeners=LinkedList<InterceptResourceListener>()
+    override fun addResourceDetectListener(listener: InterceptResourceListener){
+        resourceDetectedListeners.add(listener)
+    }
+    override fun removeResourceDetectListener(listener: InterceptResourceListener){
+        resourceDetectedListeners.remove(listener)
+    }
+    override fun clearResourceDetectListener(){
+        resourceDetectedListeners.clear()
     }
     internal fun toggleDesktopUA(userAgent: String, requestDesktop: Boolean): String {
         return if (requestDesktop) {

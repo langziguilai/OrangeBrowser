@@ -384,4 +384,5 @@
     <string name="html">html</string>
     <string name="next_level">下一级</string>
     <string name="pre_level">上一级</string>
+    <string name="tip_no_usable_source">无可用的资源</string>
 </resources>
