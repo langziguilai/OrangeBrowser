@@ -1,5 +1,5 @@
 package com.dev.util.filetypehelper
-
+const val IMAGE_MAX_BYTE=20
 fun Jpeg(buf :ByteArray) :Boolean {
     return buf.size > 2 &&
             buf[0] == 0xFF.toByte() &&

@@ -1,5 +1,5 @@
 package com.dev.util.filetypehelper
-
+const val AUDIO_MAX_BYTE=20
 fun Midi(buf :ByteArray) :Boolean {
     return buf.size > 3 &&
             buf[0] == 0x4D.toByte() && buf[1] == 0x54.toByte() &&

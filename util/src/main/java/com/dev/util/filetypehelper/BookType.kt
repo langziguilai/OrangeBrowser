@@ -1,5 +1,5 @@
 package com.dev.util.filetypehelper
-
+const val BOOK_MAX_BYTE=60
 fun Epub(buf :ByteArray) :Boolean {
     return buf.size > 57 &&
             buf[0] == 0x50.toByte() && buf[1] == 0x4B.toByte() && buf[2] == 0x3.toByte() && buf[3] == 0x4.toByte() &&

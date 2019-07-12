@@ -1,5 +1,7 @@
 package com.dev.util.filetypehelper
 
+const val VIDEO_MAX_BYTE=40
+
 fun M4v(buf:ByteArray) :Boolean {
     return buf.size > 10 &&
             buf[4] == 0x66.toByte() && buf[5] == 0x74.toByte() &&

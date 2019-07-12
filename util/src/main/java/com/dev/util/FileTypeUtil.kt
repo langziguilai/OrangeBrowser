@@ -1,10 +1,21 @@
 package com.dev.util
 
 import com.dev.util.filetypehelper.*
+import java.io.File
+import java.io.FileInputStream
+
 //借鉴的库：https://github.com/h2non/filetype/blob/master/matchers/document.go
 object FileTypeUtil {
     //检查是否是视频文件
-    fun isVideo(buf: ByteArray): Boolean {
+    fun isVideo(path:String): Boolean {
+        val buf=ByteArray(VIDEO_MAX_BYTE)
+        try {
+            val fis=FileInputStream(File(path))
+            fis.read(buf,0,VIDEO_MAX_BYTE)
+        }catch(e:Exception){
+            e.printStackTrace()
+            return false
+        }
         return Mp4(buf)
                 || M4v(buf)
                 || Mkv(buf)
@@ -16,7 +27,15 @@ object FileTypeUtil {
                 || Flv(buf)
     }
     //检查图片
-    fun isImage(buf:ByteArray):Boolean{
+    fun isImage(path:String):Boolean{
+        val buf=ByteArray(IMAGE_MAX_BYTE)
+        try {
+            val fis=FileInputStream(File(path))
+            fis.read(buf,0,IMAGE_MAX_BYTE)
+        }catch(e:Exception){
+            e.printStackTrace()
+            return false
+        }
         return Jpeg(buf)
                 || Jpeg2000(buf)
                 ||Png(buf)
@@ -31,7 +50,15 @@ object FileTypeUtil {
                 ||Dwg(buf)
     }
     //检查音频
-    fun isAudio(buf:ByteArray):Boolean{
+    fun isAudio(path:String):Boolean{
+        val buf=ByteArray(AUDIO_MAX_BYTE)
+        try {
+            val fis=FileInputStream(File(path))
+            fis.read(buf,0,AUDIO_MAX_BYTE)
+        }catch(e:Exception){
+            e.printStackTrace()
+            return false
+        }
         return Midi(buf)
                 ||Mp3(buf)
                 ||M4a(buf)
@@ -42,7 +69,15 @@ object FileTypeUtil {
                 ||Aac(buf)
     }
     //压缩文件
-    fun isArchive(buf: ByteArray):Boolean{
+    fun isArchive(path:String):Boolean{
+        val buf=ByteArray(ARCHIVE_MAX_BYTE)
+        try {
+            val fis=FileInputStream(File(path))
+            fis.read(buf,0,ARCHIVE_MAX_BYTE)
+        }catch(e:Exception){
+            e.printStackTrace()
+            return false
+        }
         return Zip(buf)
                 ||Tar(buf)
                 ||Rar(buf)

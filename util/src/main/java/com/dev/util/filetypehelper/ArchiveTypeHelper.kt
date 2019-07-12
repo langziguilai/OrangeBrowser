@@ -1,6 +1,7 @@
 package com.dev.util.filetypehelper
 
 
+const val ARCHIVE_MAX_BYTE=300
 
 fun Zip(buf :ByteArray) :Boolean {
     return buf.size > 3 &&
