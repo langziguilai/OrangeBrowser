@@ -46,6 +46,7 @@ import com.dev.view.recyclerview.CustomBaseViewHolder
 import com.dev.view.recyclerview.adapter.base.BaseQuickAdapter
 import com.gjiazhe.scrollparallaximageview.ScrollParallaxImageView
 import com.gjiazhe.scrollparallaximageview.parallaxstyle.VerticalMovingStyle
+import com.wang.avi.AVLoadingIndicatorView
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.jsoup.Jsoup
@@ -97,6 +98,10 @@ class ImageModeModeFragment : BaseFragment(), BackHandler {
     lateinit var contentSelectTextView: TextView
     lateinit var nextLevelButton: AppCompatButton
     lateinit var preLevelButton: AppCompatButton
+    lateinit var loadingView: AVLoadingIndicatorView
+    lateinit var refreshTextView:TextView
+    lateinit var statusContainer:FrameLayout
+
     lateinit var imageModeMetaList: LinkedList<ImageModeMeta>
     //data
     private var images = LinkedList<ImageInfo>()
@@ -108,7 +113,6 @@ class ImageModeModeFragment : BaseFragment(), BackHandler {
 
     private lateinit var document: Document //原始文档
     var targetImageSelector = ""  //目标图片的Selector
-    var contentSelector = ""  //内容选择器
     var contentSelectorPartList = LinkedList<String>()
     var contentSelectorContainerIndex = -1
 
@@ -135,9 +139,22 @@ class ImageModeModeFragment : BaseFragment(), BackHandler {
     override fun initView(view: View, savedInstanceState: Bundle?) {
         topOverLayer = view.findViewById<FrameLayout>(R.id.top_over_lay).apply {
             setOnClickListener {
-                hideSettingView()
+                if (spinnerContainer.translationY<0){
+                    hideSettingView()
+                }else{
+                    showSettingView()
+                }
             }
         }
+        loadingView=view.findViewById<AVLoadingIndicatorView>(R.id.loadingView).apply {
+            smoothToShow()
+        }
+        refreshTextView=view.findViewById<TextView>(R.id.refresh).apply{
+            setOnClickListener {
+                 refresh()
+            }
+        }
+        statusContainer=view.findViewById(R.id.status_container)
         imageModeMetaSpinner = view.findViewById(R.id.image_mode_meta_spinner)
         contentSelectTextView = view.findViewById(R.id.content_selector)
         //下一个层级
@@ -146,12 +163,12 @@ class ImageModeModeFragment : BaseFragment(), BackHandler {
                 if (contentSelectorPartList.isNotEmpty()) {
                     if (contentSelectorContainerIndex < this@ImageModeModeFragment.contentSelectorPartList.size - 1) {
                         this@ImageModeModeFragment.contentSelectorContainerIndex += 1
-                        this@ImageModeModeFragment.contentSelector = contentSelectorPartList.subList(
+                        this@ImageModeModeFragment.imageModeMeta.contentSelector = contentSelectorPartList.subList(
                             0,
                             this@ImageModeModeFragment.contentSelectorContainerIndex + 1
                         ).joinToString(SEPARATOR)
                         this@ImageModeModeFragment.contentSelectTextView.text =
-                            this@ImageModeModeFragment.contentSelector
+                            this@ImageModeModeFragment.imageModeMeta.contentSelector
                         this@ImageModeModeFragment.refresh()
                     }
                 }
@@ -163,12 +180,12 @@ class ImageModeModeFragment : BaseFragment(), BackHandler {
                 if (contentSelectorPartList.isNotEmpty()) {
                     if (contentSelectorContainerIndex > 0) {
                         this@ImageModeModeFragment.contentSelectorContainerIndex -= 1
-                        this@ImageModeModeFragment.contentSelector = contentSelectorPartList.subList(
+                        this@ImageModeModeFragment.imageModeMeta.contentSelector = contentSelectorPartList.subList(
                             0,
                             this@ImageModeModeFragment.contentSelectorContainerIndex + 1
                         ).joinToString(SEPARATOR)
                         this@ImageModeModeFragment.contentSelectTextView.text =
-                            this@ImageModeModeFragment.contentSelector
+                            this@ImageModeModeFragment.imageModeMeta.contentSelector
                         this@ImageModeModeFragment.refresh()
                     }
                 }
@@ -225,8 +242,13 @@ class ImageModeModeFragment : BaseFragment(), BackHandler {
         //监听数据
         viewModel.resultCodeLiveData.observe(this, Observer<Int> {
             when (it) {
+                ResultCode.LOAD_SUCCESS->{
+                    isLoading=false
+                    setNormalState()
+                }
                 ResultCode.LOAD_FAIL -> {
                     isLoading=false
+                    setLoadFailState()
                     requireContext().apply {
                         showToast(getString(R.string.load_fail))
                     }
@@ -264,7 +286,6 @@ class ImageModeModeFragment : BaseFragment(), BackHandler {
             }
         })
         viewModel.refreshImagesLiveData.observe(this, Observer<List<ImageInfo>> {
-            isLoading=false
             loadCompleted = false
             images.clear()
             images.addAll(it)
@@ -292,7 +313,6 @@ class ImageModeModeFragment : BaseFragment(), BackHandler {
                         if (imageModeMetaList.isNotEmpty()) {
                             resetImageSiteMetaSetting(imageModeMetaList[0])
                         }
-                        refresh()
                     }
                 }
             }
@@ -303,14 +323,29 @@ class ImageModeModeFragment : BaseFragment(), BackHandler {
         viewModel.imageModeMetasLiveData.observe(this, Observer {
             imageModeMetaList = LinkedList(it)
             initImageModeMetaSpinner()
+            refresh()
         })
+        setLoadingState()
     }
 
+    private fun setNormalState(){
+        statusContainer.hide()
+    }
+    private fun setLoadingState(){
+        statusContainer.show()
+        loadingView.show()
+        refreshTextView.hide()
+    }
+    private fun setLoadFailState(){
+        statusContainer.show()
+        loadingView.hide()
+        refreshTextView.show()
+    }
 
     private fun resetImageSiteMetaSetting(newImageModeMeta: ImageModeMeta) {
         imageModeMeta = newImageModeMeta
         contentSelectorPartList.clear()
-        contentSelectorPartList.addAll(contentSelector.split(SEPARATOR).map { str -> str.trim() })
+        contentSelectorPartList.addAll(imageModeMeta.contentSelector.split(SEPARATOR).map { str -> str.trim() })
         contentSelectorContainerIndex = contentSelectorPartList.size - 1
         updateImageSiteMetaSettingView(imageModeMeta)
     }
@@ -340,9 +375,10 @@ class ImageModeModeFragment : BaseFragment(), BackHandler {
 
     private fun refresh() {
         isLoading=true
+        setLoadingState()
         viewModel.refresh(
             url = sessionUrl,
-            contentSelector = contentSelector,
+            contentSelector = imageModeMeta.contentSelector,
             imageAttr = imageModeMeta.imageAttr,
             nextPageSelector = getRealNextPageSelector()
         )
@@ -352,7 +388,10 @@ class ImageModeModeFragment : BaseFragment(), BackHandler {
         AlertDialogBuilder()
             .setTitle(R.id.title, getString(R.string.delete_record))
             .setContent(R.id.content, getString(R.string.tip_delete_record))
+            .setPositiveButtonText(text = getString(R.string.sure))
+            .setNegativeButtonText(text = getString(R.string.cancel))
             .setOnPositive(Runnable {
+                val uid=imageModeMeta.uid
                 imageModeMeta = if (imageModeMetaList.indexOf(imageModeMeta) >= 0) {
                     imageModeMetaList.remove(imageModeMeta)
                     if (imageModeMetaList.isNotEmpty()) {
@@ -365,8 +404,13 @@ class ImageModeModeFragment : BaseFragment(), BackHandler {
                 }
                 initImageModeMetaSpinner()
                 resetImageSiteMetaSetting(imageModeMeta)
-                viewModel.deleteImageModeMeta(imageModeMeta)
-            }).build(requireContext()).show()
+                viewModel.deleteImageModeMeta(uid)
+                hideSettingView()
+            })
+            .setOnNegative(Runnable {
+                hideSettingView()
+            })
+            .build(requireContext()).show()
     }
 
     private fun saveSiteRecord() {
@@ -379,7 +423,7 @@ class ImageModeModeFragment : BaseFragment(), BackHandler {
                     nextPageSelector = imageModeMeta.nextPageSelector,
                     site = host,
                     replaceNthChildWithLastChild = useLastChildCheckBox.isChecked,
-                    contentSelector = contentSelector,
+                    contentSelector = imageModeMeta.contentSelector,
                     uniqueKey = host + "_" + imageModeMeta.imageAttr + "_" + imageModeMeta.nextPageSelector,
                     imageAttrTitle = imageAttributeKeyValue.getDescription(),
                     nextPageSelectorTitle = linkSelectorKeyValue.getDescription()
@@ -547,7 +591,7 @@ class ImageModeModeFragment : BaseFragment(), BackHandler {
             } else {
                 viewModel.loadMore(
                     url = nextPageUrl,
-                    contentSelector = contentSelector,
+                    contentSelector = imageModeMeta.contentSelector,
                     imageAttr = imageModeMeta.imageAttr,
                     nextPageSelector = getRealNextPageSelector()
                 )
@@ -625,15 +669,15 @@ class ImageModeModeFragment : BaseFragment(), BackHandler {
                         override fun execute(data: MenuItem) {
                             targetImageSelector = images[position].selector
                             val parentContainerLastIndex = targetImageSelector.lastIndexOf(SEPARATOR)
-                            contentSelector = if (parentContainerLastIndex >= 0) {
+                            imageModeMeta.contentSelector = if (parentContainerLastIndex >= 0) {
                                 targetImageSelector.substring(0, parentContainerLastIndex).trim()
                             } else {
                                 ""
                             }
                             contentSelectorPartList.clear()
-                            contentSelectorPartList.addAll(contentSelector.split(SEPARATOR).map { it.trim() })
+                            contentSelectorPartList.addAll(imageModeMeta.contentSelector.split(SEPARATOR).map { it.trim() })
                             contentSelectorContainerIndex = contentSelectorPartList.size - 1
-                            contentSelectTextView.text = contentSelector
+                            contentSelectTextView.text = imageModeMeta.contentSelector
                             requireContext().showToast(getString(R.string.tip_set_content_selector))
                             imageItemContextMenu?.dismiss()
                         }

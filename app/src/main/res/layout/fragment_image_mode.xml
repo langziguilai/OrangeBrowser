@@ -261,6 +261,9 @@
         <FrameLayout android:layout_width="0dp"
                      android:layout_height="0dp"
                      android:visibility="gone"
+                     android:clickable="true"
+                     android:focusable="true"
+                     android:background="@color/color_8F8F8F"
                      android:id="@+id/status_container"
                      app:layout_constraintStart_toStartOf="parent"
                      app:layout_constraintEnd_toEndOf="parent"
@@ -268,6 +271,7 @@
                      app:layout_constraintBottom_toBottomOf="parent">
             <com.wang.avi.AVLoadingIndicatorView
                     android:id="@+id/loadingView"
+                    android:layout_gravity="center"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     style="@style/AVLoadingIndicatorView"
@@ -277,6 +281,8 @@
             />
             <TextView android:id="@+id/refresh"
                       android:layout_gravity="center"
+                      android:clickable="true"
+                      android:focusable="true"
                       android:visibility="gone"
                       android:gravity="center"
                       android:textSize="18sp"

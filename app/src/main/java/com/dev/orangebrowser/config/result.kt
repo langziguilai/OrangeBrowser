@@ -8,4 +8,5 @@ object ResultCode{
     const val UPDATE_FAIL=0x05
     const val DELETE_SUCCESS=0xFF01
     const val SAVE_SUCCESS=0xFF02
+    const val LOAD_SUCCESS=0xFF04
 }

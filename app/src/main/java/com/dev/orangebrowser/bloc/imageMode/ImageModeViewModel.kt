@@ -47,10 +47,10 @@ class ImageModeViewModel @Inject constructor() : CoroutineViewModel() {
             resultCodeLiveData.postValue(ResultCode.SAVE_FAIL)
         }
     }
-    fun deleteImageModeMeta(imageSiteMeta:ImageModeMeta)=launch(Dispatchers.IO){
-        if (imageSiteMeta.uid>=0){
+    fun deleteImageModeMeta(uid:Int)=launch(Dispatchers.IO){
+        if (uid>=0){
             try {
-                imageModeMetaDao.delete(uid = imageSiteMeta.uid)
+                imageModeMetaDao.delete(uid = uid)
                 resultCodeLiveData.postValue(ResultCode.DELETE_SUCCESS)
             }catch (e:Exception){
                 e.printStackTrace()
@@ -75,7 +75,6 @@ class ImageModeViewModel @Inject constructor() : CoroutineViewModel() {
             )
         }
     ) =launch(Dispatchers.IO){
-
         //下载首页
         try {
             //下载
@@ -104,6 +103,7 @@ class ImageModeViewModel @Inject constructor() : CoroutineViewModel() {
             }
             val newImages = extractImage(contentElement,imageAttr)
             refreshImagesLiveData.postValue(newImages)
+            resultCodeLiveData.postValue(ResultCode.LOAD_SUCCESS)
         }catch (e:Exception){
             e.printStackTrace()
             resultCodeLiveData.postValue(ResultCode.LOAD_FAIL)
