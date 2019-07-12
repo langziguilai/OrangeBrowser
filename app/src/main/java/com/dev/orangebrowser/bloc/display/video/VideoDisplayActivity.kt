@@ -1,5 +1,6 @@
 package com.dev.orangebrowser.bloc.display.video
 
+import android.content.pm.ActivityInfo
 import android.os.Bundle
 import android.view.View
 import android.view.animation.AccelerateInterpolator
@@ -9,10 +10,7 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.dev.base.BaseNotchActivity
-import com.dev.base.extension.getProperty
-import com.dev.base.extension.hide
-import com.dev.base.extension.onGlobalLayoutComplete
-import com.dev.base.extension.show
+import com.dev.base.extension.*
 import com.dev.orangebrowser.R
 import com.dev.orangebrowser.data.model.SimpleVideo
 import com.dev.orangebrowser.databinding.ActivityVideoDisplayBinding
@@ -50,6 +48,13 @@ class VideoDisplayActivity : BaseNotchActivity(), OnNotchCallBack, IShareElement
         super.onCreate(savedInstanceState)
     }
 
+    override fun onRestart() {
+        super.onRestart()
+        //restart的时候恢复到竖直
+        if (resources.configuration.orientation != ActivityInfo.SCREEN_ORIENTATION_PORTRAIT) {
+            requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+        }
+    }
     override fun useDataBinding(): Boolean {
         return true
     }
@@ -160,6 +165,7 @@ class VideoDisplayActivity : BaseNotchActivity(), OnNotchCallBack, IShareElement
     //自动播放
     override fun onResume() {
         GSYVideoManager.instance().start()
+        enterToImmersiveMode()
         super.onResume()
     }
 

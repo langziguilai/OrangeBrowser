@@ -1,7 +1,9 @@
 package com.dev.orangebrowser.bloc.display.player
 
+import android.content.pm.ActivityInfo
 import android.os.Bundle
 import com.dev.base.BaseNotchActivity
+import com.dev.base.extension.enterToImmersiveMode
 import com.dev.base.extension.showToast
 import com.dev.orangebrowser.R
 import com.dev.view.notchtools.NotchTools
@@ -25,6 +27,14 @@ class VideoPlayerActivity : BaseNotchActivity(), OnNotchCallBack {
     override fun initView(savedInstanceState: Bundle?) {
         NotchTools.getFullScreenTools()
             .fullScreenUseStatus(this, this)
+    }
+
+    override fun onRestart() {
+        super.onRestart()
+        //restart的时候恢复到竖直
+        if (resources.configuration.orientation != ActivityInfo.SCREEN_ORIENTATION_PORTRAIT) {
+            requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+        }
     }
 
     override fun initData(savedInstanceState: Bundle?) {
@@ -68,6 +78,7 @@ class VideoPlayerActivity : BaseNotchActivity(), OnNotchCallBack {
     //自动播放
     override fun onResume() {
         GSYVideoManager.instance().start()
+        enterToImmersiveMode()
         super.onResume()
     }
 
