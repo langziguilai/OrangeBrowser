@@ -35,7 +35,7 @@ class OpenAppSettingFragment : BaseFragment(), BackHandler {
     lateinit var activityViewModel: MainViewModel
     lateinit var binding: FragmentSettingOpenAppBinding
     override fun onBackPressed(): Boolean {
-        RouterActivity?.loadDownloadSettingFragment(R.anim.holder,R.anim.slide_right_out)
+        RouterActivity?.loadWebSettingFragment(R.anim.holder,R.anim.slide_right_out)
         return true
 
     }
