@@ -10,11 +10,13 @@ import android.os.Parcelable
  * */
 data class SimpleVideo(
     var poster: String? = null,
+    var localPoster:String?=null,
     var url: String? = null,
     var path: String? = null,
     var referer: String? = null
 ) : Parcelable {
     constructor(source: Parcel) : this(
+        source.readString(),
         source.readString(),
         source.readString(),
         source.readString(),
@@ -25,6 +27,7 @@ data class SimpleVideo(
 
     override fun writeToParcel(dest: Parcel, flags: Int) = with(dest) {
         writeString(poster)
+        writeString(localPoster)
         writeString(url)
         writeString(path)
         writeString(referer)

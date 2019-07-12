@@ -90,7 +90,11 @@ class VideoDisplayActivity : BaseNotchActivity(), OnNotchCallBack, IShareElement
             override fun convert(helper: CustomBaseViewHolder, item: SimpleVideo) {
                 helper.addOnClickListener(R.id.poster)
                 val posterImageView = helper.itemView.findViewById<ImageView>(R.id.poster)?.apply {
-                    GlideHelper.loadRemoteImage(this, item.poster, item.referer)
+                    if (item.localPoster!=null && item.localPoster!!.isNotBlank()){
+                        GlideHelper.loadLocalImage(this, item.localPoster)
+                    }else{
+                        GlideHelper.loadRemoteImage(this, item.poster, item.referer)
+                    }
                     transitionName = item.path
                 }
                 helper.itemView.findViewById<StandardGSYVideoPlayer>(R.id.content_item_video)?.apply {

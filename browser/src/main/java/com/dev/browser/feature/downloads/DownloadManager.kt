@@ -24,10 +24,7 @@ import androidx.annotation.RequiresPermission
 import com.dev.base.util.EncodeUtil
 import com.dev.browser.R
 import com.dev.browser.database.BrowserDatabase
-import com.dev.browser.database.download.DownloadEntity
-import com.dev.browser.database.download.STATUS_FINISH
-import com.dev.browser.database.download.STATUS_NOT_FINISH
-import com.dev.browser.database.download.STATUS_OTHER_DOWNLOADER
+import com.dev.browser.database.download.*
 import com.dev.browser.extension.isPermissionGranted
 import com.dev.browser.session.Download
 import com.dev.browser.support.DownloadUtils
@@ -95,6 +92,9 @@ class DownloadManager(
     private fun getMd5Name(download: Download):String{
         val name=download.fileName.split(".")[0]
         return  download.fileName.replaceFirst(name, EncodeUtil.md5(download.url))
+    }
+    private fun getMd5(download: Download):String{
+        return EncodeUtil.md5(download.url)
     }
     /**
      * Schedule a download through the [AndroidDownloadManager].
@@ -224,10 +224,10 @@ class DownloadManager(
                         val downloadFilePath=DownloadEntity.fromDownload(download).path
                         if (FileTypeUtil.isVideo(path=downloadFilePath)){
                             val bitmap= VideoUtil.getVideoThumb(DownloadEntity.fromDownload(download).path)
-                            val fileName=Environment.getExternalStorageDirectory().absolutePath + File.separator + download.destinationDirectory + File.separator + getMd5Name(download)+".webp"
+                            val fileName=Environment.getExternalStorageDirectory().absolutePath + File.separator + download.destinationDirectory + File.separator + getMd5(download)+".webp"
                             val success=VideoUtil.saveVideoThumbnial(bitmap,File(fileName))
                             if (success){
-                                downloadDao.updatePoster(download.url, poster = fileName)
+                                downloadDao.updateLocalPosterAndType(download.url, localPoster = fileName,type = VIDEO)
                             }
                         }
                         val size=FileUtil.getSize(Environment.getExternalStorageDirectory().absolutePath + File.separator + download.destinationDirectory + File.separator + download.fileName)

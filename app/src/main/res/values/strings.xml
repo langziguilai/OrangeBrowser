@@ -341,7 +341,6 @@
     <string name="saved_pages">离线网页</string>
     <string name="saved_videoes">保存的视频</string>
     <string name="download_file">下载文件</string>
-    <string name="tip_delete_fail">删除失败</string>
     <string name="tip_delete_success">删除成功</string>
     <string name="menu_download_all_image">下载所有图片</string>
     <string name="tip_switch_to_show_all_images">已切换到查看所有图片</string>
@@ -393,4 +392,5 @@
     <string name="tip_delete_record">确认删除记录?</string>
     <string name="tip_wait_for_load_finish">请等待加载完成</string>
     <string name="tip_fail_and_click_to_reload">加载失败,点击重新加载</string>
+    <string name="tip_delete_fail">删除失败</string>
 </resources>

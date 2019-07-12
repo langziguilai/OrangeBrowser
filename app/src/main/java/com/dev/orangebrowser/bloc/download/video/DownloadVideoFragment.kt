@@ -132,7 +132,12 @@ class DownloadVideoFragment : BaseFragment(), BackHandler, IShareElements {
                         helper.itemView.findViewById<ImageView>(R.id.image).apply {
                             transitionName = item.path
                         }
-                        GlideHelper.loadRemoteImage(helper.itemView.findViewById<ImageView>(R.id.image),item.poster,item.referer)
+                        if (item.localPoster.isNotBlank()){
+                            GlideHelper.loadLocalImage(helper.itemView.findViewById<ImageView>(R.id.image),item.localPoster)
+                        }else{
+                            GlideHelper.loadRemoteImage(helper.itemView.findViewById<ImageView>(R.id.image),item.poster,item.referer)
+                        }
+
                     }
                 }
                 adapter.setOnItemClickListener { _, view, position ->
@@ -149,7 +154,7 @@ class DownloadVideoFragment : BaseFragment(), BackHandler, IShareElements {
                     intent.putParcelableArrayListExtra(
                         VideoDisplayActivity.VIDEOES,
                         ArrayList<SimpleVideo>(downloads.map {
-                            SimpleVideo(poster = it.poster,url=it.url, path = it.path, referer = it.referer)
+                            SimpleVideo(poster = it.poster,localPoster = it.localPoster,url=it.url, path = it.path, referer = it.referer)
                         })
                     )
                     val options = YcShareElement.buildOptionsBundle(requireActivity(), this@DownloadVideoFragment)

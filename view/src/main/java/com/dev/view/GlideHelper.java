@@ -15,7 +15,10 @@ import java.io.File;
 public class GlideHelper {
     @KeepMemberIfNecessary
     public static void loadLocalImage(ImageView imageView, String path){
-        Glide.with(imageView.getContext()).load(Uri.fromFile(new File(path))).into(imageView);
+        Glide.with(imageView.getContext())
+                .load(Uri.fromFile(new File(path)))
+                .placeholder(R.drawable.placeholder)
+                .error(R.drawable.failure).into(imageView);
     }
     @KeepMemberIfNecessary
     public static void loadRemoteImage(ImageView imageView, String url,String referer){
@@ -25,7 +28,9 @@ public class GlideHelper {
             LazyHeaders.Builder builder=new LazyHeaders.Builder();
             builder.addHeader("Referer",referer);
             GlideUrl glideUrl=new GlideUrl(url,builder.build());
-            Glide.with(imageView.getContext()).load(glideUrl).into(imageView);
+            Glide.with(imageView.getContext()).load(glideUrl)
+                    .placeholder(R.drawable.placeholder)
+                    .error(R.drawable.failure).into(imageView);
         }
     }
 }
