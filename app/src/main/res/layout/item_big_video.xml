@@ -3,12 +3,13 @@
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-    <com.shuyu.gsyvideoplayer.video.StandardGSYVideoPlayer
+    <com.dev.orangebrowser.bloc.display.video.CustomGsyVideoPlayer
             android:id="@+id/content_item_video"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
     <ImageView
             android:id="@+id/poster"
+            android:background="#000000"
             android:scaleType="fitCenter"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />

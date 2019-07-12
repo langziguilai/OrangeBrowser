@@ -1,11 +1,8 @@
 package com.dev.orangebrowser.bloc.display.video
 
-import android.os.Build
 import android.os.Bundle
 import android.view.View
-import android.view.WindowManager
 import android.view.animation.AccelerateInterpolator
-import android.view.animation.DecelerateInterpolator
 import android.widget.ImageView
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProviders
@@ -89,15 +86,8 @@ class VideoDisplayActivity : BaseNotchActivity(), OnNotchCallBack, IShareElement
         ) {
             override fun convert(helper: CustomBaseViewHolder, item: SimpleVideo) {
                 helper.addOnClickListener(R.id.poster)
-                val posterImageView = helper.itemView.findViewById<ImageView>(R.id.poster)?.apply {
-                    if (item.localPoster!=null && item.localPoster!!.isNotBlank()){
-                        GlideHelper.loadLocalImage(this, item.localPoster)
-                    }else{
-                        GlideHelper.loadRemoteImage(this, item.poster, item.referer)
-                    }
-                    transitionName = item.path
-                }
-                helper.itemView.findViewById<StandardGSYVideoPlayer>(R.id.content_item_video)?.apply {
+
+                val player=helper.itemView.findViewById<CustomGsyVideoPlayer>(R.id.content_item_video)?.apply {
                     val gsyVideoOption = GSYVideoOptionBuilder()
                     gsyVideoOption
                         .setIsTouchWiget(true)
@@ -112,10 +102,9 @@ class VideoDisplayActivity : BaseNotchActivity(), OnNotchCallBack, IShareElement
                         .setEnlargeImageRes(R.drawable.ic_fullscreen_white_24dp)
                         .setShrinkImageRes(R.drawable.ic_fullscreen_exit_white_24dp)
                         .setGSYVideoProgressListener { progress, _, _, _ ->
-                            if (progress > 0) {
-                                posterImageView?.hide()
-                                this.show()
-                            }
+//                            if (progress > 0) {
+//                                this.show()
+//                            }
                         }
                         .build(this)
                     val orientationUtils = OrientationUtils(this@VideoDisplayActivity, this)
@@ -130,6 +119,22 @@ class VideoDisplayActivity : BaseNotchActivity(), OnNotchCallBack, IShareElement
                         }
                     }
                     startPlayLogic()
+                    hide()
+                }
+                helper.itemView.findViewById<ImageView>(R.id.poster)?.apply {
+                    if (item.localPoster!=null && item.localPoster!!.isNotBlank()){
+                        GlideHelper.loadLocalImage(this, item.localPoster)
+                    }else{
+                        GlideHelper.loadRemoteImage(this, item.poster, item.referer)
+                    }
+                    transitionName = item.path
+                    postDelayed({
+                        player?.show()
+                        player?.hideUi()
+                    },500)
+                    postDelayed({
+                        this.hide()
+                    },1000)
                 }
             }
         }
