@@ -374,7 +374,10 @@ class ImageModeModeFragment : BaseFragment(), BackHandler {
         }
         val nextPageSelectorKV = KeyValue.parse(imageModeMeta.nextPageSelectorTitle)
         linkSelectors.forEachIndexed { index, keyValue ->
-            if (keyValue.key == nextPageSelectorKV.key && keyValue.value == nextPageSelectorKV.value) {
+
+            if ( getRealNextPageSelector(keyValue.key,imageModeMeta.replaceNthChildWithLastChild)
+                == getRealNextPageSelector(nextPageSelectorKV.key,imageModeMeta.replaceNthChildWithLastChild)
+                && keyValue.value == nextPageSelectorKV.value) {
                 nextPageSpinner.setSelection(index)
             }
         }
@@ -387,7 +390,7 @@ class ImageModeModeFragment : BaseFragment(), BackHandler {
             url = sessionUrl,
             contentSelector = imageModeMeta.contentSelector,
             imageAttr = imageModeMeta.imageAttr,
-            nextPageSelector = getRealNextPageSelector()
+            nextPageSelector = getRealNextPageSelector(imageModeMeta.nextPageSelector,imageModeMeta.replaceNthChildWithLastChild)
         )
     }
 
@@ -600,7 +603,7 @@ class ImageModeModeFragment : BaseFragment(), BackHandler {
                     url = nextPageUrl,
                     contentSelector = imageModeMeta.contentSelector,
                     imageAttr = imageModeMeta.imageAttr,
-                    nextPageSelector = getRealNextPageSelector()
+                    nextPageSelector = getRealNextPageSelector(imageModeMeta.nextPageSelector,imageModeMeta.replaceNthChildWithLastChild)
                 )
             }
         }, recyclerView)
@@ -612,11 +615,11 @@ class ImageModeModeFragment : BaseFragment(), BackHandler {
         viewModel.loadImageModeMetas(sessionUrl)
     }
 
-    private fun getRealNextPageSelector(): String {
-        return if (imageModeMeta.replaceNthChildWithLastChild) {
-            StringUtil.replaceLast(imageModeMeta.nextPageSelector, "nth-child\\(\\d\\)", "last-child")
+    private fun getRealNextPageSelector(nextPageSelector:String,replaceNthChildWithLastChild:Boolean=true): String {
+        return if (replaceNthChildWithLastChild) {
+            StringUtil.replaceLast(nextPageSelector, "nth-child\\(\\d+\\)", "last-child")
         } else {
-            imageModeMeta.nextPageSelector
+            nextPageSelector
         }
     }
 
