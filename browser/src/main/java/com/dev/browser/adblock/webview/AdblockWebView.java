@@ -6,6 +6,7 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.net.http.SslError;
 import android.os.Build;
+import android.os.Bundle;
 import android.os.Message;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -76,7 +77,11 @@ public class AdblockWebView extends WebView {
         super(context, attrs, defStyle);
         initAbp();
     }
-
+    @Override
+    public WebBackForwardList restoreState(Bundle inState) {
+        initAbpLoading();
+        return super.restoreState(inState);
+    }
     public boolean isAdblockEnabled() {
         return adblockEnabled;
     }

@@ -48,7 +48,6 @@ private fun shouldSerialize(value: Any?): Boolean {
 @Suppress("ComplexMethod")
 private fun JSONObject.toBundle(): Bundle {
     val bundle = Bundle()
-
     keys().forEach { key ->
         val value = get(key)
         when (value) {

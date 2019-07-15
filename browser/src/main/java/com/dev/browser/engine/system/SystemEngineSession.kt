@@ -12,6 +12,7 @@ import com.dev.browser.concept.history.HistoryTrackingDelegate
 import com.dev.browser.concept.request.RequestInterceptor
 import com.dev.browser.session.Session
 import com.dev.browser.support.ErrorType
+import com.dev.util.StringUtil
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -38,17 +39,25 @@ class SystemEngineSession(
     private val defaultSettings: Settings? = null
 ) : EngineSession() {
 
-    @Volatile internal lateinit var internalSettings: Settings
-    @Volatile internal var historyTrackingDelegate: HistoryTrackingDelegate? = null
-    @Volatile internal var trackingProtectionPolicy: TrackingProtectionPolicy? = null
-    @Volatile internal var webFontsEnabled = true
-    @Volatile internal var currentUrl = ""
-    @Volatile internal var fullScreenCallback: WebChromeClient.CustomViewCallback? = null
-    @Volatile internal var abBlockOn: Boolean=true
-    internal val resources=CopyOnWriteArrayList<InterceptResource>()  //网页资源
+    @Volatile
+    internal lateinit var internalSettings: Settings
+    @Volatile
+    internal var historyTrackingDelegate: HistoryTrackingDelegate? = null
+    @Volatile
+    internal var trackingProtectionPolicy: TrackingProtectionPolicy? = null
+    @Volatile
+    internal var webFontsEnabled = true
+    @Volatile
+    internal var currentUrl = ""
+    @Volatile
+    internal var fullScreenCallback: WebChromeClient.CustomViewCallback? = null
+    @Volatile
+    internal var abBlockOn: Boolean = true
+    internal val resources = CopyOnWriteArrayList<InterceptResource>()  //网页资源
     // This is public for FFTV which needs access to the WebView instance. We can mark it internal once
     // https://github.com/mozilla-mobile/android-components/issues/1616 is resolved.
-    @Volatile var webView: WebView = NestedWebView(context)
+    @Volatile
+    var webView: WebView = NestedWebView(context)
         set(value) {
             field = value
             initSettings()
@@ -63,7 +72,7 @@ class SystemEngineSession(
      * 此方法会再session link的时候加载一次，我们需要忽略空的，并忽略非初始化的值，才加载
      */
     override fun loadUrl(url: String) {
-        if (!url.isEmpty() && url!= Session.NO_EXIST_URL && url!="about:blank") {
+        if (!url.isEmpty() && url != Session.NO_EXIST_URL && url != "about:blank") {
             currentUrl = url
             webView.loadUrl(url, additionalHeaders)
         }
@@ -105,23 +114,23 @@ class SystemEngineSession(
     }
 
     override fun setFontSize(size: Int) {
-        webView.settings.textZoom=size
+        webView.settings.textZoom = size
     }
 
     override fun savePage(): String {
-        val dirPath= context.filesDir.absolutePath+File.separator+OFFLINE_PAGE_PATH+File.separator
-        val dir=File(dirPath)
-        if (!dir.exists()){
-            val result=dir.mkdirs()
+        val dirPath = context.filesDir.absolutePath + File.separator + OFFLINE_PAGE_PATH + File.separator
+        val dir = File(dirPath)
+        if (!dir.exists()) {
+            val result = dir.mkdirs()
             if (!result) return SAVE_PAGE_ERROR
         }
-        val path=dirPath+webView.title+".mht"
+        val path = dirPath + webView.title + ".mht"
         webView.saveWebArchive(path)
         return path
     }
 
-    override fun executeJsFunction(js:String, callback: ValueCallback<String>) {
-       webView.evaluateJavascript(js,callback)
+    override fun executeJsFunction(js: String, callback: ValueCallback<String>) {
+        webView.evaluateJavascript(js, callback)
     }
 
     /**
@@ -131,9 +140,33 @@ class SystemEngineSession(
         return runBlocking(Dispatchers.Main) {
             val state = Bundle()
             webView.saveState(state)
-
-            SystemEngineSessionState(state)
+            val transformState = Bundle()
+            state.keySet().forEach { key ->
+                val value = state.get(key)!!
+                when (value) {
+                    is Int -> transformState.putInt(key, value)
+                    is Double -> transformState.putDouble(key, value)
+                    is Long -> transformState.putLong(key, value)
+                    is Float -> transformState.putFloat(key, value)
+                    is Char -> transformState.putChar(key, value)
+                    is Short -> transformState.putShort(key, value)
+                    is Byte -> transformState.putByte(key, value)
+                    is String -> transformState.putString(key, value)
+                    is Boolean -> transformState.putBoolean(key, value)
+                    is ByteArray ->transformState.putString(getTransformKey(key), StringUtil.bytesToHex(value))
+                }
+            }
+            SystemEngineSessionState(transformState)
         }
+    }
+
+    private val TRANSFORM_PREFIX = "byte_array_t_"
+    private fun getTransformKey(key: String): String {
+        return TRANSFORM_PREFIX + key
+    }
+
+    private fun parseTransformKey(key: String): String {
+        return key.removePrefix(TRANSFORM_PREFIX)
     }
 
     /**
@@ -143,8 +176,27 @@ class SystemEngineSession(
         if (state !is SystemEngineSessionState) {
             throw IllegalArgumentException("Can only restore from SystemEngineSessionState")
         }
-
-        webView.restoreState(state.bundle)
+        val transformState = Bundle()
+        state.bundle?.keySet()?.forEach { key ->
+            val value = state.bundle.get(key)!!
+            //如果有前缀
+            if (key.indexOf(TRANSFORM_PREFIX)>=0 && value is String){
+                transformState.putByteArray(parseTransformKey(key), StringUtil.hexStringToByteArray(value))
+            }else{
+                when (value) {
+                    is Int -> transformState.putInt(key, value)
+                    is Double -> transformState.putDouble(key, value)
+                    is Long -> transformState.putLong(key, value)
+                    is Float -> transformState.putFloat(key, value)
+                    is Char -> transformState.putChar(key, value)
+                    is Short -> transformState.putShort(key, value)
+                    is Byte -> transformState.putByte(key, value)
+                    is String -> transformState.putString(key, value)
+                    is Boolean -> transformState.putBoolean(key, value)
+                }
+            }
+        }
+        webView.restoreState(transformState)
     }
 
     /**
@@ -202,47 +254,56 @@ class SystemEngineSession(
             webViewDatabase(context).clearHttpAuthUsernamePassword()
         }
     }
+
     fun clearFormData() {
         webView.apply {
             clearFormData()
         }
     }
+
     fun clearHistory() {
         webView.apply {
             clearHistory()
         }
     }
+
     fun clearMatches() {
         webView.apply {
             clearMatches()
         }
     }
+
     fun clearSslPreferences() {
         webView.apply {
             clearSslPreferences()
         }
     }
+
     fun clearCache() {
         webView.apply {
             clearCache(true)
         }
     }
+
     fun removeCookies() {
         webView.apply {
             // We don't care about the callback - we just want to make sure cookies are gone
             CookieManager.getInstance().removeAllCookies(null)
         }
     }
+
     fun clearAllData() {
         webView.apply {
             webStorage().deleteAllData()
         }
     }
+
     fun clearHttpAuthUsernamePassword() {
         webView.apply {
             webViewDatabase(context).clearHttpAuthUsernamePassword()
         }
     }
+
     /**
      * See [EngineSession.findAll]
      */
@@ -284,25 +345,34 @@ class SystemEngineSession(
         webView.settings?.let { webSettings ->
             // Explicitly set global defaults.
             //设置Cache
-            webSettings.setAppCachePath(context.applicationContext.getDir("browser_cache",
-                Context.MODE_PRIVATE).path)
+            webSettings.setAppCachePath(
+                context.applicationContext.getDir(
+                    "browser_cache",
+                    Context.MODE_PRIVATE
+                ).path
+            )
             webSettings.setAppCacheEnabled(true)
-            webSettings.cacheMode=WebSettings.LOAD_DEFAULT
+            webSettings.cacheMode = WebSettings.LOAD_DEFAULT
             //设置database
-            webSettings.databasePath=context.applicationContext.getDir("browser_database",Context.MODE_PRIVATE).path
+            webSettings.databasePath = context.applicationContext.getDir("browser_database", Context.MODE_PRIVATE).path
             webSettings.databaseEnabled = false
             //允许https和http混合使用
-            webSettings.mixedContentMode=WebSettings.MIXED_CONTENT_ALWAYS_ALLOW
+            webSettings.mixedContentMode = WebSettings.MIXED_CONTENT_ALWAYS_ALLOW
 
             setDeprecatedWebSettings(webSettings)
 
             //设置地理位置
-            webSettings.setGeolocationDatabasePath(context.applicationContext.getDir("browser_database_geo",Context.MODE_PRIVATE).path)
+            webSettings.setGeolocationDatabasePath(
+                context.applicationContext.getDir(
+                    "browser_database_geo",
+                    Context.MODE_PRIVATE
+                ).path
+            )
             webSettings.setGeolocationEnabled(true)
             // webViewSettings built-in zoom controls are the only supported ones, so they should be turned on.
             webSettings.builtInZoomControls = true
             //支持viewport
-            webSettings.useWideViewPort=true
+            webSettings.useWideViewPort = true
             initSettings(webView, webSettings)
             webSettings.setRenderPriority(WebSettings.RenderPriority.HIGH)
         }
@@ -366,15 +436,21 @@ class SystemEngineSession(
 
             override var verticalScrollBarEnabled
                 get() = webView.isVerticalScrollBarEnabled
-                set(value) { webView.isVerticalScrollBarEnabled = value }
+                set(value) {
+                    webView.isVerticalScrollBarEnabled = value
+                }
 
             override var horizontalScrollBarEnabled
                 get() = webView.isHorizontalScrollBarEnabled
-                set(value) { webView.isHorizontalScrollBarEnabled = value }
+                set(value) {
+                    webView.isHorizontalScrollBarEnabled = value
+                }
 
             override var webFontsEnabled
                 get() = this@SystemEngineSession.webFontsEnabled
-                set(value) { this@SystemEngineSession.webFontsEnabled = value }
+                set(value) {
+                    this@SystemEngineSession.webFontsEnabled = value
+                }
 
             override var trackingProtectionPolicy: TrackingProtectionPolicy?
                 get() = this@SystemEngineSession.trackingProtectionPolicy
@@ -382,7 +458,9 @@ class SystemEngineSession(
 
             override var historyTrackingDelegate: HistoryTrackingDelegate?
                 get() = this@SystemEngineSession.historyTrackingDelegate
-                set(value) { this@SystemEngineSession.historyTrackingDelegate = value }
+                set(value) {
+                    this@SystemEngineSession.historyTrackingDelegate = value
+                }
 
             override var requestInterceptor: RequestInterceptor? = null
         }.apply {
@@ -425,7 +503,7 @@ class SystemEngineSession(
     }
 
     override fun setUserAgent(agent: String) {
-        webView.settings.userAgentString=agent
+        webView.settings.userAgentString = agent
     }
 
     override fun forbidLoadingImage(enable: Boolean, reload: Boolean) {
@@ -446,34 +524,42 @@ class SystemEngineSession(
     override fun exitFullScreenMode() {
         fullScreenCallback?.onCustomViewHidden()
     }
-   /**
-    * get Resources
-    */
+
+    /**
+     * get Resources
+     */
     override fun getInterceptResources(): List<InterceptResource> {
         return resources
     }
-    fun clearRecordResources(){
+
+    fun clearRecordResources() {
         resources.clear()
     }
-    fun addResource(resource: InterceptResource){
+
+    fun addResource(resource: InterceptResource) {
         resources.add(resource)
         resourceDetectedListeners.forEach {
             it.onResourceDeteceted(resource)
         }
     }
+
     /**
      * 添加资源加载侦听
      */
-    private val resourceDetectedListeners=LinkedList<InterceptResourceListener>()
-    override fun addResourceDetectListener(listener: InterceptResourceListener){
+    private val resourceDetectedListeners = LinkedList<InterceptResourceListener>()
+
+    override fun addResourceDetectListener(listener: InterceptResourceListener) {
         resourceDetectedListeners.add(listener)
     }
-    override fun removeResourceDetectListener(listener: InterceptResourceListener){
+
+    override fun removeResourceDetectListener(listener: InterceptResourceListener) {
         resourceDetectedListeners.remove(listener)
     }
-    override fun clearResourceDetectListener(){
+
+    override fun clearResourceDetectListener() {
         resourceDetectedListeners.clear()
     }
+
     internal fun toggleDesktopUA(userAgent: String, requestDesktop: Boolean): String {
         return if (requestDesktop) {
             userAgent.replace("Mobile", "eliboM").replace("Android", "diordnA")
