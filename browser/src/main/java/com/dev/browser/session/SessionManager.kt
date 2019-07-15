@@ -253,7 +253,7 @@ class SessionManager(
             this.engineSession = engineSession
             this.engineObserver = EngineObserver(session).also { observer ->
                 engineSession.register(observer)
-                //engineSession.loadUrl(session.url)
+                engineSession.loadUrl(session.url)
             }
         }
     }
