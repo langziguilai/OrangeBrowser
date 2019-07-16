@@ -7,6 +7,11 @@ import java.io.File;
 import java.io.IOException;
 @KeepNameIfNecessary
 public class FileUtil {
+    @KeepMemberIfNecessary
+    public static boolean exist(String fileName) {
+        File file = new File(fileName);
+        return file.exists();
+    }
     /**
      * 删除文件，可以是文件或文件夹     *     * @param fileName     *            要删除的文件名     * @return 删除成功返回true，否则返回false
      */

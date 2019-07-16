@@ -22,6 +22,8 @@ interface DownloadDao {
     fun updateStatus(url:String,status:Int,length:Long)
     @Query("UPDATE download  SET local_poster=:localPoster,file_type=:type WHERE url=:url")
     fun updateLocalPosterAndType(url:String, localPoster:String,type:Int)
+    @Query("UPDATE download  SET file_type=:type WHERE url=:url")
+    fun updateType(url:String,type:Int)
     @Query("SELECT * FROM download WHERE file_type=:type ORDER BY date DESC")
     fun getDownloadByType(type:Int): List<DownloadEntity>
     @Query("SELECT * FROM download ORDER BY date DESC")
@@ -30,4 +32,7 @@ interface DownloadDao {
     fun delete(entity: DownloadEntity)
     @Query("DELETE  FROM download")
     fun clear()
+    //获取未完成的下载
+    @Query("SELECT * FROM download WHERE status=3 ORDER BY date DESC")
+    fun getUnFinished():List<DownloadEntity>
 }

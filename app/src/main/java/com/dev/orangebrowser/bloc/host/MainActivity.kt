@@ -216,7 +216,11 @@ class MainActivity : BaseActivity(), DownloadManager.OnAutoInstallDownloadAppLis
         onRequestPermissionsResult(requestCode, grantResults)
     }
 
-
+    //在恢复的时候检查和更新下载状态
+    override fun onResume(){
+        super.onResume()
+        viewModel.checkAndUpdateDownload()
+    }
     override fun onBackPressed() {
         //这里倒序是因为：默认结构不是栈，是列表，我们要首先处理栈顶的fragment,再依次向下处理
         supportFragmentManager.fragments.asReversed().forEach {
